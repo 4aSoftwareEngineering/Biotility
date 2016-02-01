@@ -6,11 +6,17 @@ https://www.pivotaltracker.com/n/projects/1521659
 ##Skills Breakdown
 
 - Matt - Any
-- Isabel - HTML, CSS, Databases
-- Ryan - Java / Programming
-- Michael - C++ / Programming / Bootstrap
-- Eric - C++ / Java / Programming
-- Spencer - ?
+- Isabel
+  - Knows: HTML / CSS 
+  - Wants to learn: Database Organization / JavaScript
+- Ryan
+  - Wants to learn: JavaScript
+- Michael
+  - Wants to learn: Bootstrap
+- Eric
+  - Wants to learn: Eloquent JavaScript 
+- Spencer 
+  - Wants to learn: JavaScript
 
 ##Sprint #1
 - [ ] Task 1
