@@ -25,7 +25,8 @@ https://www.pivotaltracker.com/n/projects/1521659
 
 ##Installation
 1. npm install
-2. grunt
+2. bower install
+3. grunt
 
 ##Database Info
 Every time a user signs up the database is automatically updated.
