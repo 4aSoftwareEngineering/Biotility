@@ -23,5 +23,23 @@ https://www.pivotaltracker.com/n/projects/1521659
 - [ ] Task 2
 - [ ] Etc.
 
-##Previous ReadMe
-Information can be found in the [previous group's README.](https://github.com/4aSoftwareEngineering/Biotility/blob/master/README.old.md)
+##Installation
+
+1. npm install -g bower
+2. npm install -g grunt-cli
+3. git clone the repo: https://github.com/SoftwareEngineering5c/Biotility.git
+4. cd on terminal to the repo (Biotility)
+5. npm install
+6. grunt
+
+##Database Info
+Every time a user signs up the database is automatically updated.
+When a user goes to their profile page, they can edit their profile info.
+Database is automically updated as well with quiz results when a student takes a quiz.
+
+The user schema is defined in `Biotility/modules/users/server/models/user.server.model.js`
+The quiz question schema is defined in `Biotility/modules/quiz/server/models/quizQuestion.server.model.js`
+
+Database connection: `mongodb://devteam:devteam@ds027769.mongolab.com:27769/software5c`
+
+To change the connection go to `/Biotility/config/env/production.js` and input the new connection, along with the correct credentials
