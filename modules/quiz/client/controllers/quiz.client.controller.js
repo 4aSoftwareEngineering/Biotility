@@ -64,22 +64,27 @@ angular.module('quiz').controller('QuizController', ['$scope', 'QuizQuestion','$
 
     $http.get('/api/quiz', {params: {"category": $stateParams.courseName} }).then(
       function(listOfQuestions) { //Checks to see if the value is correctly returned before printing out the console.
-        console.log("List of questions: " + listOfQuestions.data);
+        console.log("List of questions: " );
+        console.dir(listOfQuestions.data);
         byCategory(listOfQuestions.data);
       });
 
 
     console.log("Category before the switch to applications: " + $scope.currCategory);
-    $scope.currCategory = "Applications"; //temp change for current results
+    //$scope.currCategory = "Applications"; //temp change for current results
 
     var byCategory = function(listOfQuestions) {
       console.log("By category");
+      console.dir(listOfQuestions);
+      $scope.questions = [];
       for (var i = 0 ; i < listOfQuestions.length; i++) {
+        console.log(i, listOfQuestions[i].category, $scope.currCategory)
         if (listOfQuestions[i].category === $scope.currCategory) {
          $scope.questions.push(listOfQuestions[i]);
         }
       }
       max = $scope.questions.length;
+      console.dir($scope.questions);
     };
 
   }//End of function for controller
