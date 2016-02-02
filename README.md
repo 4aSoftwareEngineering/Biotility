@@ -24,13 +24,8 @@ https://www.pivotaltracker.com/n/projects/1521659
 - [ ] Etc.
 
 ##Installation
-
-1. npm install -g bower
-2. npm install -g grunt-cli
-3. git clone the repo: https://github.com/SoftwareEngineering5c/Biotility.git
-4. cd on terminal to the repo (Biotility)
-5. npm install
-6. grunt
+1. npm install
+2. grunt
 
 ##Database Info
 Every time a user signs up the database is automatically updated.
