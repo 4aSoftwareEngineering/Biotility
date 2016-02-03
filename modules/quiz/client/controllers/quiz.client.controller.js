@@ -78,7 +78,7 @@ angular.module('quiz').controller('QuizController', ['$scope', 'QuizQuestion','$
       console.dir(listOfQuestions);
       $scope.questions = [];
       for (var i = 0 ; i < listOfQuestions.length; i++) {
-        console.log(i, listOfQuestions[i].category, $scope.currCategory)
+        console.log(i, listOfQuestions[i].category, $scope.currCategory);
         if (listOfQuestions[i].category === $scope.currCategory) {
          $scope.questions.push(listOfQuestions[i]);
         }
