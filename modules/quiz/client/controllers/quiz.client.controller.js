@@ -1,10 +1,9 @@
 'use strict';
 
 // Quiz main controller
-angular.module('quiz').controller('QuizController', ['$scope', 'QuizQuestion', '$stateParams', '$state', 'Authentication', '$http',
-    function($scope, QuizQuestion, $stateParams, $state, Authentication, $http) {
+angular.module('quiz').controller('QuizController', ['$scope', '$location', 'QuizQuestion', '$stateParams', '$state', 'Authentication', '$http',
+    function($scope, $location, QuizQuestion, $stateParams, $state, Authentication, $http) {
         //
-
         console.log("Loading Qs");
         $http.get('/api/quiz', {
             params: {
@@ -118,6 +117,10 @@ angular.module('quiz').controller('QuizController', ['$scope', 'QuizQuestion', '
             $scope.loadedQ = true;
             console.log($scope.questions.length + " question(s) found.");
             console.dir($scope.questions);
+        };
+
+        $scope.gotoResource = function(subjectName) {
+            $location.path('/' + subjectName + '/resources');
         };
 
     } //End of function for controller

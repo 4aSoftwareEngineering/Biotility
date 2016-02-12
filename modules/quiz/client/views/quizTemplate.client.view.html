@@ -2,10 +2,10 @@
     <!--header-->
     <div class="breadcrumbh" id="breadcrumbh">
         <div class="row topmargin-b">
-            <div class="col-md-2 col-md-offset-1 page-head">
-                Quiz
+            <div class="col-md-3 col-md-offset-1 page-head">
+                <h4>{{subject}}</h4>
             </div>
-            <div class="col-md-8 b-head">
+            <div class="col-md-7 b-head">
                 <a data-ui-sref="home">Home</a> / {{subject}} / Quiz
             </div>
         </div>
@@ -20,10 +20,11 @@
                 <h3 ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</h3>
                 <h1 ng-show="hasError">Error Occured.</h1>
                 <button ng-disabled="!questions.length" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
+                <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
             </div>
             <div id="quizContent" ng-show="quizStarted">
-                <h1> Question {{numQuestion}} : {{questions[index].description}} </h1>
-                <h5> {{questions.length - numQuestion}} question(s) remaining </h5>
+                <h1>Question {{numQuestion}}: {{questions[index].description}}</h1>
+                <h5>{{questions.length - numQuestion}} question(s) remaining.</h5>
                 <br>
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">

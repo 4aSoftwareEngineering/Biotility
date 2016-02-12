@@ -1,22 +1,13 @@
 <div ng-controller = "QuizResults">
-	<div>
-        <!-- Using this for space -->
-    </div>
 
-<!-- 	<div class = "container" >
-		<br>
-		<h1> Yay you finished the section</h1>
-
-			<h2>You got a  <div id = "results">{{score}} / {{totalNumQuestion}} </div> </h2>
-		</h2>
-	</div> -->
 		<div class = "container" >
 			<br>
 			<div class="results-h">Results</div>
 			<div class="results-s" id = "results" >
 				<h2>
-					You got {{score}} / {{totalNumQuestion}} questions correct.
+					You got {{score || 0 }} / {{totalNumQuestion || 0}} questions correct.
 				</h2>
+                <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
 			</div>
 
 		</div>
