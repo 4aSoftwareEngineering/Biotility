@@ -1,62 +1,87 @@
 <div ng-controller="SubjectController">
-
-	<!--header-->
-	<div class="breadcrumbh" id="breadcrumbh">
-    	<div class="row topmargin-b">
-        	<div class="col-md-2 col-md-offset-1 page-head">
-            	Quiz
+    <!--header-->
+    <div class="breadcrumbh" id="breadcrumbh">
+        <div class="row topmargin-b">
+            <div class="col-md-2 col-md-offset-1 page-head">
+                Quiz
             </div>
             <div class="col-md-8 b-head">
-            	<a data-ui-sref="home">Home</a> / {{subject}} / Quiz
+                <a data-ui-sref="home">Home</a> / {{subject}} / Quiz
             </div>
-    	</div>
+        </div>
     </div>
-    
 </div>
-
-<div id = "QuizView" ui-view class = "margin-top-50" ng-controller = "QuizController" >
-
-	<div class = "container" >
-		<span ng-bind="question.description"></span>
-	  	<div class = "col-md-10 col-md-offset-1">
-
-	  		<div id = "startButton" ng-hide = "isStart">
-	  			<button class = "btn btn-primary btn-block" value = "start" ng-click = "start()" ng-show = "hasStart" > Start </button>
-	  			<button class = "btn btn-primary btn-block" ui-sref = "quiz.results({correctScore: score, numQuestion: numQuestion, category: currCategory}) " ng-show = "isDone" value = "finished"> Finished </button>
-	  			<h1 ng-show = "hasError"> Error Occured: Category does not have any questions </h1>
-	  		</div>
-
-
-	  		<div id = "quizContent" ng-show = "isStart">
-		      	<h1> Question {{numQuestion}} : {{questions[index].description}} </h1>
-
-		      	<br>
-				<form class = "col-md-offset-1">
-					<div class = "row" ng-show = "isMultipleChoice">
-						<label><input type="radio" ng-model="answer" value = "1"> {{questions[index].answerDesc1}}</label><br>
-						<label><input type="radio" ng-model="answer" value = "2"> {{questions[index].answerDesc2}}</labe><br>
-						<label><input type="radio" ng-model="answer" value = "3"> {{questions[index].answerDesc3}}</label><br>
-						<label><input type="radio" ng-model="answer" value = "4"> {{questions[index].answerDesc4}}</label><br>
-					</div>
-
-					<!--Used for True/False-->
-					<br>
-					<div class = "row" ng-hide = "isMultipleChoice">
-					    <label><input type="radio" ng-model="answer" value = "T" >True</label><br>
-					    <label><input type="radio" ng-model="answer" value = "F" >False</label><br>
-					</div>
-
-					<tt>Your Choice = {{answer}}</tt><br/>
-					<tt>Actual Answer = {{questions[index].correctAnswer}}</tt><br/>
-					<!--ng-click="increment()"-->
-
-					<button class = "btn" value = "next" ng-hide = "isDone" ng-click = "checkAnswer(answer)" > Next</button>
-				</form>
-			</div>
-
-  		</div>
-	</div>
+<div id="QuizView" ui-view class="margin-top-50" ng-controller="QuizController">
+    <div class="container">
+        <span ng-bind="question.description"></span>
+        <div class="col-md-10 col-md-offset-1" ng-show="loadedQ">
+            <div id="startButton" ng-show="hasStart">
+                <h3 ng-show="!questions.length">Category does not have any questions.</h3>
+                <h3 ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</h3>
+                <h1 ng-show="hasError">Error Occured.</h1>
+                <button ng-disabled="!questions.length" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
+            </div>
+            <div id="quizContent" ng-show="quizStarted">
+                <h1> Question {{numQuestion}} : {{questions[index].description}} </h1>
+                <h5> {{questions.length - numQuestion}} question(s) remaining </h5>
+                <br>
+                <form class="col-md-offset-1">
+                    <div class="row" ng-show="isMultipleChoice">
+                        <label>
+                            <input type="radio" ng-model="answer" value="1"> {{questions[index].answerDesc1}}</label>
+                        <br>
+                        <label>
+                            <input type="radio" ng-model="answer" value="2"> {{questions[index].answerDesc2}}</labe>
+                            <br>
+                            <label>
+                                <input type="radio" ng-model="answer" value="3"> {{questions[index].answerDesc3}}</label>
+                            <br>
+                            <label>
+                                <input type="radio" ng-model="answer" value="4"> {{questions[index].answerDesc4}}</label>
+                            <br>
+                            <label>
+                                <input type="radio" ng-show="questions[index].answerDesc5" ng-model="answer" value="5"> {{questions[index].answerDesc5}}</label>
+                            <br>
+                    </div>
+                    <!--Used for True/False-->
+                    <br>
+                    <div class="row" ng-show="isTF">
+                        <label>
+                            <input type="radio" ng-model="answer" value="T">True</label>
+                        <br>
+                        <label>
+                            <input type="radio" ng-model="answer" value="F">False</label>
+                        <br>
+                    </div>
+                    <br/>
+                    <br/>
+                    <!--Used for MA -->
+                    <div class="row" ng-show="isMA">
+                        <label>
+                            <input type="checkbox" ng-model="ansMA[0]" value="1"> {{questions[index].answerDesc1}}</label>
+                        <br>
+                        <label>
+                            <input type="checkbox" ng-model="ansMA[1]" value="2"> {{questions[index].answerDesc2}}</labe>
+                            <br>
+                            <label>
+                                <input type="checkbox" ng-model="ansMA[2]" value="3"> {{questions[index].answerDesc3}}</label>
+                            <br>
+                            <label>
+                                <input type="checkbox" ng-model="ansMA[3]" value="4"> {{questions[index].answerDesc4}}</label>
+                            <br>
+                            <label>
+                                <input type="checkbox" ng-show="questions[index].answerDesc5" ng-model="ansMA[4]" value="5"> {{questions[index].answerDesc5}}</label>
+                            <br>
+                    </div>
+                    <!--ng-click="increment()"-->
+                    <button class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
+                </form>
+            </div>
+            <div id="startButton" ng-show="isDone">
+                <button class="btn btn-primary btn-block" ui-sref="quiz.results({correctScore: score, numQuestion: numQuestion, category: currCategory}) " ng-show="isDone" value="finished"> View Results </button>
+            </div>
+        </div>
+    </div>
 </div>
-
 <!--footer-->
 <div class="text-center footer" style="margin-top: 100px;">&copy; Biotility, 2015.</div>
