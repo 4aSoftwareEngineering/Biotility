@@ -107,9 +107,6 @@ select.my_dropdown {
 .accounts {
   margin-right: 100px;
 }
-.account-pick {
-  margin-left: -100px;
-}
 input {
   border-radius: 4px;
 }
