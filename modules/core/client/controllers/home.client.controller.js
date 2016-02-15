@@ -7,7 +7,7 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
-    Subjects.loadSubjects().then(function(response) {
+     Subjects.loadSubjects().then(function(response) {
       $scope.subjects = response.data;
       //console.log($scope.subjects);
     });
@@ -38,8 +38,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$state', '$lo
   }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Authentication', '$http',
-  function($scope, $state, $location, Authentication, $http) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Authentication', '$http', 'Subjects', 
+  function($scope, $state, $location, Authentication, $http, Subjects) {
 
     $scope.authentication = Authentication;
     $scope.user = $scope.authentication.user;
@@ -70,6 +70,48 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
       }
     );
+
+     // credentials object
+        $scope.credentials = {};
+        $scope.credentials.courses = [];
+
+    //get course names
+     // array of class names
+      $scope.classNames = [];
+      
+      Subjects.loadSubjects().then(function(response) {
+      $scope.subjects = response.data;
+
+      // grab all the courses, and read their names.
+      for (var i = 0; i < $scope.subjects.length; i++) {
+          $scope.classNames.push($scope.subjects[i].name);
+          console.log("JHDKJAHSDKFJHA  " + $scope.subjects[i].name);
+      }
+      });
+
+      $scope.add = function(course) {
+            if (course !== '') {
+
+                //Creates a new object to be used for user course schema
+                var courseObj = {};
+                courseObj.courseName = course;
+                courseObj.content = "";
+                courseObj.progress = "";
+                courseObj.section = "";
+
+                //Generate number when you add the course
+                courseObj.number = Math.floor((Math.random() * 1000) + 1);
+                $scope.credentials.courses.push(courseObj);
+
+            }
+
+            $scope.toAdd = '';
+        };
+
+    $scope.classupdates = function(){
+      console.log("ADDED A NEW CLASS");
+    };
+
 
     //creates groups
     $scope.groups = [{
