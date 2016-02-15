@@ -10,10 +10,10 @@ module.exports = {
     //   pass: 'abc'
     // },
     
-    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://devteam:devteam@ds027769.mongolab.com:27769/software5c',
+    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://team4a:team4a@ds041394.mongolab.com:41394/biotility',
     options: {
-      user: 'devteam',
-      pass: 'devteam'
+      user: '',
+      pass: ''
     },
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
