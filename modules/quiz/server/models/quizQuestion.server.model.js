@@ -72,12 +72,8 @@ var gradeSchema = new Schema({
         type: String,
         required: true
     },
-    score: {
-        type: String,
-        required: true
-    },
-    totalNum: {
-        type: String,
+    analytics: {
+        type: Object,
         required: true
     }
 });

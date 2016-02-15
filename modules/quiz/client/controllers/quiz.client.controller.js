@@ -27,9 +27,9 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
 
         $scope.questions = [];
         var max = 0;
-        $scope.isMultipleChoice = false;
         $scope.index = -1;
         $scope.score = 0;
+        $scope.analytics = [];
         $scope.numQuestion = 0;
         $scope.hasError = false;
         $scope.hasStart = true;
@@ -50,26 +50,36 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         };
 
         $scope.checkAnswer = function(answer) {
+            //Check answer, log analytics.
             console.log("Checking answer...");
+            if (!$scope.analytics[$scope.index] || $scope.analytics[$scope.index] === NaN) {
+                $scope.analytics[$scope.index] = {};
+                $scope.analytics[$scope.index].question = $scope.questions[$scope.index];
+                $scope.analytics[$scope.index].attempts = 1;
+            }
             if ($scope.isTF || $scope.isMultipleChoice) {
                 if ($scope.questions[$scope.index].correctAnswer === answer) {
-                    $scope.score++;
                     console.log("Correct!");
+                    console.dir($scope.analytics[$scope.index]);
+                    $scope.increment();
                 } else {
                     console.log("Incorrect!");
+                    $scope.analytics[$scope.index].attempts++;
+
+                    console.dir($scope.analytics[$scope.index]);
+
                 }
             }
             /*
             else if ($scope.isMA){
                 for (var i = 0; i < $scope.questions[$scope.index].)
             }
-        */
+        	*/
             //Load next question.
-            $scope.increment();
         };
 
         $scope.increment = function() {
-            //Preparing next question
+            //Determines question type and if quiz is finished.
             if ($scope.index === max) {
                 console.log("Quiz finished.");
                 $scope.isDone = true;
@@ -121,6 +131,8 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
 
         $scope.gotoResource = function(subjectName) {
             $location.path('/' + subjectName + '/resources');
+        };$scope.gotoQuiz = function(subjectName) {
+            $location.path('/' + subjectName + '/quiz');
         };
 
     } //End of function for controller
@@ -136,18 +148,14 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
 
-        $scope.score = $stateParams.correctScore;
-        $scope.totalNumQuestion = $stateParams.numQuestion;
-
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
             category: $stateParams.category,
             studentName: $scope.user.userName,
-            score: $scope.score,
-            totalNum: $stateParams.numQuestion
+            analytics: $scope.analytics,
         };
 
-        console.log($scope.user.userName + " " + $stateParams.correctScore + " " + $stateParams.category);
+        console.log($scope.user.userName);
 
         $http.post('/api/quiz_result', studentGrades)
             .success(function(res) {
