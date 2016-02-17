@@ -153,14 +153,14 @@
 
                 <!--select course-->
                 <div class="account-pick">
+                    <h1 ng-show="!subjects.length"> No courses found </h1>
                     <div>
-                        <label class=" control-label col-lg-3" style="
-    padding-top: 7px;
-    margin-bottom: 0;
-">Classes Selected to Add:</label>
+                        <label class=" control-label col-lg-3" style="padding-top: 7px; margin-bottom: 0;">Classes Selected to Add:</label>
 
                         <select ng-model="toAdd" class="col-lg-8  ng-pristine ng-untouched ng-valid">
-                            <!-- ngRepeat: name in classNames -->
+                            <option ng-repeat="subject in subjects track by $index">
+                                {{subject.name}}
+                            </option>
                         </select>
                         <!--button for adding more than one course-->
                         <button type="button" class="btn btn-default" ng-click="add(toAdd)">
@@ -170,7 +170,7 @@
                     </div>
                 </div>
 
-                <!--Classes already seleted-->
+                <!--Classes already selected-->
                 <div class="picked">
                     <div class="col-md-2 col-lg-offset-4 text-right">
                         <ul class="list-inline">
