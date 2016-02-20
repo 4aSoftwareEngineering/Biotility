@@ -34,7 +34,7 @@ var UserSchema = new Schema({
         type: String,
         trim: true,
         default: ''
-      },
+    },
     lastName: {
         type: String,
         trim: true,
@@ -65,13 +65,13 @@ var UserSchema = new Schema({
         trim: true
     },
     roles: {
-    type: [{
-      type: String,
-      enum: ['user', 'admin']
-    }],
-    default: ['admin'],
-    required: 'Please provide at least one role'
-  },
+        type: [{
+            type: String,
+            enum: ['user', 'admin']
+        }],
+        default: ['admin'],
+        required: 'Please provide at least one role'
+    },
 
     salt: {
         type: String
@@ -93,8 +93,8 @@ var UserSchema = new Schema({
         default: "Student"
     },
     courseCode: {
-      type: Number,
-      trim: true
+        type: Number,
+        trim: true
     },
     updated: {
         type: Date
@@ -123,7 +123,7 @@ var UserSchema = new Schema({
         section: {
             type: String
         },
-        number : {
+        number: {
             type: Number
         }
     }]
