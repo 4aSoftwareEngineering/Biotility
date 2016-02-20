@@ -1,7 +1,7 @@
 'use strict';
 
 // Main service for holding persistent data
-angular.module('core').service('Subjects', ['$http', function($http) {
+angular.module('core').service('Subjects',  ['$http', function($http) {
 
   // Array for question objects we have for the selected subject.
   this.questionsForSubject = [{}];

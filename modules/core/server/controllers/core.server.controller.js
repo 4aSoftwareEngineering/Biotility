@@ -48,16 +48,6 @@ exports.renderNotFound = function(req, res) {
 
 // Retrieve subject data, send as response.
 exports.parseSubjects = function(req, res) {
-  //Print subject
-  Subject.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
-
-
   Subject.find({}, function(err, subs) {
     return res.end(JSON.stringify(subs));
   });
@@ -65,15 +55,6 @@ exports.parseSubjects = function(req, res) {
 
 // Retrieve user data, send as response.
 exports.parseUsers = function(req, res) {
-  //Print users
-  User.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
-
   User.find({}).lean().exec(function(err, users) {
     return res.end(JSON.stringify(users));
   });
@@ -81,15 +62,6 @@ exports.parseUsers = function(req, res) {
 
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
-  //Print questions
-  QuizQuestion.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
-  
   QuizQuestion.find({}).lean().exec(function(err, users) {
     return res.end(JSON.stringify(users));
   });
@@ -97,6 +69,54 @@ exports.parseQuestions = function(req, res) {
 
 // Find student data
 exports.findStudents = function(req, res) {
+  User.find({'profileType' : 'Student', 'courseCode' : {$in: req.body.courseNums} }).lean().exec(function(err, users) {
+    return res.end(JSON.stringify(users));
+  });
+};
+
+exports.update = function (req, res) {
+  console.log("UPDATES");
+  var User = req.User;
+
+  User.courses = req.body.courses;
+  
+
+  User.save(function (err) {
+    if (err) {
+      console.log("NOOOOO");
+      return res.status(400).send({
+        
+        //message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(req.User);
+    }
+  });
+};
+
+exports.userByID = function (req, res, next, id) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'No user'
+    });
+  }
+
+  User.findOne({
+    _id: id
+  }).exec(function (err, user) {
+    if (err) {
+      return next(err);
+    } else if (!user) {
+      return next(new Error('Failed to load User ' + id));
+    }
+
+    req.profile = user;
+    next();
+  });
+};
+
+exports.tester = function(req, res) {
+  console.log("TESTER");
   User.find({'profileType' : 'Student', 'courseCode' : {$in: req.body.courseNums} }).lean().exec(function(err, users) {
     return res.end(JSON.stringify(users));
   });

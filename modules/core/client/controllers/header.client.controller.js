@@ -26,6 +26,8 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', '$loc
       }
     };
 
+    
+
     // logout: set current auth user to null
     $scope.logout = function() {
       $scope.authentication.user = null;
