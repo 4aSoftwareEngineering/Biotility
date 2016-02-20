@@ -2,12 +2,12 @@
 
 /** SEE core.server.routes.js  */
 
-angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects',
-  function($scope, $state, $location, Authentication, Subjects) {
+angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects', 'Users', 
+  function($scope, $state, $location, Authentication, Subjects, Users) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
-    Subjects.loadSubjects().then(function(response) {
+     Subjects.loadSubjects().then(function(response) {
       $scope.subjects = response.data;
       //console.log($scope.subjects);
     });
@@ -24,8 +24,8 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
   }
 ]);
 
-angular.module('core').controller('SubjectController', ['$scope', '$state', '$location', 'Authentication', '$stateParams',
-  function($scope, $state, $location, Authentication, $stateParams) {
+angular.module('core').controller('SubjectController', ['$scope', '$state', '$location','Users', 'Authentication', '$stateParams',
+  function($scope, $state, $location, Users, Authentication, $stateParams) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
@@ -38,8 +38,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$state', '$lo
   }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Authentication', '$http',
-  function($scope, $state, $location, Authentication, $http) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location','Users', 'Authentication', '$http', 'Subjects', 
+  function($scope, $state, $location, Users,  Authentication, $http, Subjects) {
 
     $scope.authentication = Authentication;
     $scope.user = $scope.authentication.user;
@@ -69,7 +69,156 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
          console.log($scope.input.courseNums);
 
       }
-    );
+    ); 
+
+     // credentials object
+    $scope.credentials = {};
+    $scope.credentials.courses = [];
+
+    //get course names
+    // array of class names
+    $scope.classNames = [];  
+    Subjects.loadSubjects().then(function(response) {
+      $scope.subjects = response.data;
+
+      // grab all the courses, and read their names.
+      for (var i = 0; i < $scope.subjects.length; i++) {
+          $scope.classNames.push($scope.subjects[i].name);
+          //console.log("JHDKJAHSDKFJHA  " + $scope.subjects[i].name);
+      }
+    });
+
+   
+    $scope.add = function(course) { 
+      if (course !== '') {
+          
+          //Creates a new object to be used for user course schema
+          var courseObj = {};
+          courseObj.courseName = course;
+          courseObj.content = "";
+          courseObj.progress = "";
+          courseObj.section = "";
+
+          //Generate number when you add the course
+          courseObj.number = Math.floor((Math.random() * 1000) + 1);
+          //$scope.credentials.courses.push(courseObj);
+          $scope.authentication.user.courses.push(courseObj);
+          console.log("I AM ADDING A CLASS " + courseObj.courseName);
+      }
+
+      $scope.authentication.user.courses.forEach(
+          function(element, index, array) {
+            //$scope.authentication.user.courses.push(courseObj);
+            console.log("CURRENT CLASSES: "+ element.courseName);
+        });
+
+      //to display on profile view
+      $scope.input = {};
+      //courseNums array
+      $scope.input.courseNums = [];
+      // for each course in their schema
+      $scope.authentication.user.courses.forEach(
+      function(element, index, array) {
+        //stores each course Name and number of the course that a teacher has
+        $scope.input.courseNums.push(element.courseName + " : " + element.number);
+        //used for testing purposes to make sure a teacher has the correct courses
+         console.log("INPUT CLASSES: "+ $scope.input.courseNums);
+      });
+        
+      // $scope.tester();
+      // $scope.update();
+      
+      var route = '/api/users/:userId';
+
+      $http.put(route, $scope.credentials).success(function(response) {
+
+          // If successful we assign the response to the global user model
+          $scope.authentication.user = response;
+
+          // And redirect to the home page
+          $location.url('/');
+
+      }).error(function(response) {
+          console.log("invalid");
+          //sets error if invalid info
+          alert("Not updating.");
+
+          $scope.error = response.message;
+      });
+
+      $scope.toAdd = '';
+    };
+
+     // Create new Users object
+    // var user = new Users({
+    //     firstName: this.firstName,
+    //     lastName: this.lastName,
+    //     // displayName: this.displayName
+    //     email: this.email, 
+    //     userName: this.userName,
+    //     password: this.password, 
+    //     courses: this.courses
+    // });
+
+
+    $scope.tester = function () {};
+    
+    $scope.update = function () {
+      $scope.error = null;
+
+      var user = $scope.user;
+      console.log("USER= " + user.email);
+       user.$update(function () {
+        console.log("HOME CONTROLLER UPDATE");
+            // $location.path('/teacher/' + user._id);
+          }, function (errorResponse) {
+            $scope.error = errorResponse.data.message;
+        });
+    };
+
+    // $scope.classupdates = function(){
+    //   console.log("ADDED A NEW CLASS");
+    //   $scope.error = null;
+
+    //   // if (!isValid) {
+    //   //   $scope.$broadcast('show-errors-check-validity', 'articleForm');
+    //   //   console.log("breaks");
+    //   //   return false;
+    //   // }
+
+    //   //how to access user info
+    //   //console.log("EMAIL: "+ $scope.authentication.user.email); 
+    
+    //   //input to put courseNames
+    //  $scope.input = {};
+    //   //courseNums array
+    //   $scope.input.courseNums = [];
+    //  // for each course in their schema
+    //   $scope.authentication.user.courses.forEach(
+    //   function(element, index, array) {
+    //     //stores each course Name and number of the course that a teacher has
+    //     $scope.input.courseNums.push(element.courseName + " : " + element.number);
+    //     //used for testing purposes to make sure a teacher has the correct courses
+    //      console.log("CURRENT CLASSES: "+ $scope.input.courseNums);
+    //   });
+      
+    //   // var listing = {
+    //   //   name: $scope.name, 
+    //   //   code: $scope.code, 
+    //   //   address: $scope.address
+    //   // };
+
+    //   // /* Save the article using the Listings factory */
+    //   // Listings.update(id, listing)
+    //   //         .then(function(response) {
+    //   //           //if the object is successfully updated redirect back to the list page
+    //   //           $state.go('listings.list', { successMessage: 'Listing succesfully update!' });
+    //   //         }, function(error) {
+    //   //           //otherwise display the error
+    //   //           $scope.error = 'Unable to update listing!\n' + error;
+    //   //         });
+    // };
+
 
     //creates groups
     $scope.groups = [{
@@ -106,15 +255,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
     $scope.studentGrades = [];
     $http.get('/api/quiz_result')
       .success(function(res) {
-        console.log("quiz result: ", res);
+       // console.log("quiz result: ", res);
         byStudent(res);
       });
     //gets student  grades by student and stores them
     var byStudent = function(allStudentGrades) {
       for (var i = 0; i < allStudentGrades.length; i++) {
-        console.log(allStudentGrades[i].studentName);
-        console.log($scope.user.userName);
-        console.log("BANG: " + allStudentGrades[i].studentName + " " + $scope.user.userName);
+        //console.log(allStudentGrades[i].studentName);
+        //console.log($scope.user.userName);
+        //console.log("BANG: " + allStudentGrades[i].studentName + " " + $scope.user.userName);
         if (allStudentGrades[i].studentName === $scope.user.userName) {
           $scope.studentGrades.push(allStudentGrades[i]);
           //TODO: "Applications" should be the name of the course, like "Biology"
