@@ -55,6 +55,12 @@ var questionSchema = new Schema({
     },
     MA5: {
         type: String
+    },
+    hint: {
+	type: String
+    },
+    links: {
+	type: String
     }
 
 });

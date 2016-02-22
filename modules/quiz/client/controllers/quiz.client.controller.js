@@ -66,7 +66,7 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         $scope.checkAnswer = function(answer) {
             //Check answer, log analytics.
             console.log("Checking answer...");
-            if (!$scope.analytics[$scope.index] || isNaN($scope.analytics[$scope.index])) {
+            if (!$scope.analytics[$scope.index] || isNaN($scope.analytics[$scope.index]) ) {
                 $scope.analytics[$scope.index] = {};
                 $scope.analytics[$scope.index].question = $scope.questions[$scope.index];
                 $scope.analytics[$scope.index].attempts = 1;
@@ -184,22 +184,31 @@ angular.module('quiz').controller('QuizCreate', ['$scope', 'QuizQuestion',
     function($scope, QuizQuestion) {
         $scope.uploadQuestions = function($fileContent) {
             //console.log("Show content");
+	    // need to convert $fileContent to CSV (; delim) before upload
             var fileText = $fileContent;
-            var rows = fileText.split('\n');
+	    var head = fileText.split('URL\n');	//remove header
+	    var text = head[1];
+            var rows = text.split(';\n');	//grab each individual row
             var obj = [];
             angular.forEach(rows, function(val) {
-                var o = val.split(',');
+                var o = val.split(';');		//separate by "commas"	
                 if (o[0] !== 'Category') { //sketchy way to get rid of first row
-                    console.log(o);
+                   // console.log(o);
                     var quizQuestion;
                     if (o[1] === 'TF') {
+			//True/False question
                         quizQuestion = new QuizQuestion({
                             category: o[0],
                             questionType: o[1],
                             description: o[2],
-                            correctAnswer: o[3]
+                            correctAnswer: o[3],
+			    hint: o[14],
+			    links: o[15]
                         });
-                    } else {
+                    } 
+		// need to add other question types! (sc, ma)
+		    else if(o[1] === 'SC') {
+			// Single choice answer question
                         quizQuestion = new QuizQuestion({
                             category: o[0],
                             questionType: o[1],
@@ -208,19 +217,44 @@ angular.module('quiz').controller('QuizCreate', ['$scope', 'QuizQuestion',
                             answerDesc1: o[4],
                             answerDesc2: o[5],
                             answerDesc3: o[6],
-                            answerDesc4: o[7]
+                            answerDesc4: o[7],
+			    answerDesc5: o[8],
+			    hint: o[14],
+			    links: o[15]
+                        });
+                    }
+		    else{// if(o[1] === 'MA') {
+			// Multiple Answer question
+                        quizQuestion = new QuizQuestion({
+                            category: o[0],
+                            questionType: o[1],
+                            description: o[2],
+                            correctAnswer: o[3],
+                            answerDesc1: o[4],
+                            answerDesc2: o[5],
+                            answerDesc3: o[6],
+                            answerDesc4: o[7],
+			    answerDesc5: o[8],
+                            MA1: o[9],
+                            MA2: o[10],
+                            MA3: o[11],
+                            MA4: o[12],
+			    MA5: o[13],
+			    hint: o[14],
+			    links: o[15]
                         });
                     }
                     obj = quizQuestion;
+		    // save stores in DB?? (server controller)
                     quizQuestion.$save(function(response) {
                         console.log("save done");
                     }, function(errorResponse) {
                         console.log("Error occured" + errorResponse.data.message);
                     });
                 } //End category if
-            });
-
-            $scope.content = obj;
+            }); // end loop
+	    // content is the text displayed after a file is uploaded
+            $scope.content = fileText;
         };
 
     }
