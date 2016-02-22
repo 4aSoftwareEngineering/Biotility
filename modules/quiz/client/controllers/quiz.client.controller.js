@@ -66,7 +66,7 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         $scope.checkAnswer = function(answer) {
             //Check answer, log analytics.
             console.log("Checking answer...");
-            if (!$scope.analytics[$scope.index] || $scope.analytics[$scope.index] === NaN) {
+            if (!$scope.analytics[$scope.index] || isNaN($scope.analytics[$scope.index])) {
                 $scope.analytics[$scope.index] = {};
                 $scope.analytics[$scope.index].question = $scope.questions[$scope.index];
                 $scope.analytics[$scope.index].attempts = 1;
@@ -131,9 +131,7 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
             $scope.loadedQ = false;
             $scope.questions = [];
             for (var i = 0; i < listOfQuestions.length; i++) {
-                console.log(listOfQuestions[i].category, $scope.currCategory)
                 $scope.questions.push(listOfQuestions[i]);
-
             }
             max = $scope.questions.length;
             $scope.loadedQ = true;
