@@ -13,21 +13,40 @@
     </div>
    
    
-   <div class="container head about-sub">
+    <div class="container head about-sub">
     	Learn More
     </div>
     
     <!--show based on url and subject -->
     <!--category and subcategories with links-->
-    
+    <div class="container" style="padding-left: 70px">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="editMode">Edit?
+            </label>
+        </div>
+    </div>
+
     <!--Cells-->
     <div ng-show="subject == 'Cells'">
     
     <div class="container head res-sub">
     		Cells (general)
     	</div>
+        
+
         <div class="container head con" style="padding-left: 70px">
-            <a href="http://www.nature.com/scitable/topicpage/eukaryotic-cells-14023963">Eukaryotic Cells</a>
+            <div ng-repeat="resource in resources | filter:resourceFilter:strict">
+                <tr>
+                    <td><a ng-href="{{resource.url}}">{{resource.title}}</a></td>
+                    <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-remove" ng-click="deleteResource($index)"></span></td>
+                </tr>
+                <br>
+                <br>
+            </div>
+
+            <!--<a href="http://www.nature.com/scitable/topicpage/eukaryotic-cells-14023963">Eukaryotic Cells</a>
+            
             <br><br>
             <a href="http://www.biology4kids.com/files/cell_mito.html">Cell Structure: Mitochondria</a>
             <br><br>
@@ -36,7 +55,7 @@
             <a href="http://www.cellsalive.com/cells/bactcell.htm">Bacterial Cell</a>
             <br><br>
             <a href="http://biology.about.com/od/cellanatomy/ss/prokaryotes.htm">Prokaryotes</a>
-            <br><br>
+            <br><br>-->
         </div>
 
     	<div class="container head res-sub">
@@ -591,6 +610,24 @@ http://dl.clackamas.edu/ch105-04/calculat.htm">Calculations Using Molarity</a>
         </div>
         
    </div>
+
+   <!--Add Resource form-->
+    <form ng-show="editMode === true" ng-submit="addResource()">
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-control" placeholder="Link Title" ng-model="newResource.title">
+      </div>
+      <div class="form-group">
+        <label>Url</label>
+        <input type="text" class="form-control" placeholder="http//..." ng-model="newResource.url">
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" class="form-control" placeholder="Cells" ng-model="newResource.subject">
+      </div>
+      <button type="submit" class="btn btn-default">Add Resource</button>
+    </form>
+
    
    <!--link to quiz for specific subject -->
     

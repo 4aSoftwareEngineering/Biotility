@@ -13,10 +13,21 @@ module.exports = function(app) {
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);
 
+
     // Fetch user data from database
     app.route('/api/data/users/:userId')
         .get(core.parseUsers)
         .put(core.update);
+
+    //Eric's Work
+    app.route('/api/parse/resources').get(core.parseResources);
+
+    app.route('/api/data/resources').post(core.addResource);
+    app.route('/api/data/resources/:resourceId').delete(core.deleteResource);
+
+    // Fetch student data from database
+    app.route('/api/data/students').post(core.findStudents);
+
 
     // Fetch question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
@@ -28,9 +39,13 @@ module.exports = function(app) {
     app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
 
 
+
     app.param('@id', core.userByID);
+
 
 
     // Define application route
     app.route('/*').get(core.renderIndex);
+    app.param('resourceId', core.resourceByID);
+
 };

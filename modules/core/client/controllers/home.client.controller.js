@@ -24,16 +24,54 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
     }
 ]);
 
-angular.module('core').controller('SubjectController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$stateParams',
-    function($scope, $state, $location, Users, Authentication, $stateParams) {
+
+angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects',
+    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
+
         $scope.subject = $stateParams.courseName;
+
+        //some variables for the resource view
+        $scope.resourceFilter = { subject: $scope.subject };
+        $scope.editMode = false;
+
+        //load all the resources from the database
+        Resources.loadResources().then(function(response) {
+            $scope.resources = response.data;
+        });
+
+        //Used to create a new Resource on database
+        $scope.addResource = function() {
+            $http.post('api/data/resources', $scope.newResource).success(function(response) {
+                console.log("Eric", response.message);
+            }).error(function(response) {
+                console.log("Eric", response.message);
+            });
+            $scope.resources.push($scope.newResource);
+
+            $scope.newResource = null;
+        };
+
+        //Used to delete a Resource from the database
+        $scope.deleteResource = function(index) {
+            var id = $scope.resources[index]._id;
+            $http.delete('api/data/resources/' + id).success(function(response) {
+                console.log("Eric", response.message);
+            }).error(function(response) {
+                console.log("Eric http delete error", response.message);
+            });
+            $scope.resources.splice(index, 1);
+
+            $scope.newResource = null;
+        };
+
 
         $scope.startQuiz = function() {
             $location.path('/' + $scope.subject + '/quiz');
         };
+
 
     }
 ]);
@@ -152,7 +190,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
         $scope.settingsupdate = function(isValid) {
-            
+
             console.log("Changing Settings");
             $scope.error = null;
 
@@ -163,49 +201,44 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             // }
 
 
-            console.dir("SCOPE: "+ $scope);
+            console.dir("SCOPE: " + $scope);
             console.log($scope.credentials.firstName);
             var route = '/api/users/' + $scope.authentication.user._id;
-            if ($scope.credentials.firstName !== undefined){
+            if ($scope.credentials.firstName !== undefined) {
                 $scope.authentication.user.firstName = $scope.credentials.firstName;
+            } else {
+                console.log("no first");
             }
-            else{
-               console.log("no first");
-            }
 
 
 
-            if ($scope.credentials.lastName !== undefined){
+            if ($scope.credentials.lastName !== undefined) {
                 $scope.authentication.user.lastName = $scope.credentials.lastName;
-            }
-            else{
-               console.log("no last");
+            } else {
+                console.log("no last");
             }
 
 
-             if ($scope.credentials.userName !== undefined){
+            if ($scope.credentials.userName !== undefined) {
                 $scope.authentication.user.userName = $scope.credentials.userName;
-            }
-            else{
-               console.log("no username");
+            } else {
+                console.log("no username");
             }
 
-             if ($scope.credentials.email !== undefined){
+            if ($scope.credentials.email !== undefined) {
                 $scope.authentication.user.email = $scope.credentials.email;
+            } else {
+                console.log("no email");
             }
-            else{
-               console.log("no email");
-            }
-            
 
-            if ($scope.credentials.password !== undefined){
+
+            if ($scope.credentials.password !== undefined) {
                 $scope.authentication.user.password = $scope.credentials.password;
+            } else {
+                console.log("no password");
             }
-            else{
-               console.log("no password");
-            }
-            
-            
+
+
             $scope.authentication.user.displayName = $scope.authentication.user.lastName + ', ' + $scope.authentication.user.firstName;
             // $scope.authentication.user.lastName = $scope.credentials.lastName;
             // $scope.authentication.user.email = $scope.credentials.email;
@@ -231,7 +264,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $scope.error = response.message;
             });
 
-            
+
         };
 
         $scope.update = function() {
@@ -247,7 +280,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
-        
+
 
         // $scope.classupdates = function(){
         //   console.log("ADDED A NEW CLASS");
