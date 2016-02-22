@@ -162,12 +162,62 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             // }
 
 
-            
+            console.dir("SCOPE: "+ $scope);
+            console.log($scope.credentials.firstName);
             var route = '/api/users/' + $scope.authentication.user._id;
-            $scope.authentication.user.firstName = $scope.credentials.firstName;
-            console.log("NEW NAME " + $scope.user.firstName);
+            if ($scope.credentials.firstName !== undefined){
 
-            $http.post(route, $scope.user.firstName).success(function(response) {
+                $scope.authentication.user.firstName = $scope.credentials.firstName;
+            }
+            else{
+               console.log("no first");
+            }
+
+
+
+            if ($scope.credentials.lastName !== undefined){
+
+                $scope.authentication.user.lastName = $scope.credentials.lastName;
+            }
+            else{
+               console.log("no last");
+            }
+
+
+             if ($scope.credentials.userName !== undefined){
+
+                $scope.authentication.user.userName = $scope.credentials.userName;
+            }
+            else{
+               console.log("no username");
+            }
+
+             if ($scope.credentials.email !== undefined){
+
+                $scope.authentication.user.email = $scope.credentials.email;
+            }
+            else{
+               console.log("no email");
+            }
+            
+
+            if ($scope.credentials.password !== undefined){
+
+                $scope.authentication.user.password = $scope.credentials.password;
+            }
+            else{
+               console.log("no password");
+            }
+            
+            
+            $scope.authentication.user.displayName = $scope.authentication.user.lastName + ', ' + $scope.authentication.user.firstName;
+            // $scope.authentication.user.lastName = $scope.credentials.lastName;
+            // $scope.authentication.user.email = $scope.credentials.email;
+            // $scope.authentication.user.userName = $scope.credentials.userName;
+            // $scope.authentication.user.password = $scope.credentials.password;
+            // console.log("NEW NAME " + $scope.user.firstName);
+
+            $http.post(route, $scope.user).success(function(response) {
 
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
@@ -177,7 +227,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             }).error(function(response) {
                 console.log("Unable to POST.");
-                console.dir(response);
+                // console.log(response);
+                console.dir("RESPONSE: " + response);
                 //sets error if invalid info
                 //alert("Not updating.");
 

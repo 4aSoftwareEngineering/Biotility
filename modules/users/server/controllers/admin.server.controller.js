@@ -22,10 +22,11 @@ exports.update = function(req, res) {
     var user = req.user;
     console.log("Will it update?");
     //For security purposes only merge these parameters
-    user.firstName = user.firstName;
+    // user.firstName = req.body;
     user.lastName = user.lastName;
     user.displayName = user.firstName + ' ' + user.lastName;
-    user.courses = req.body;
+    user.courses = req.body; //actual update
+    // user.courses = user.courses; //used for testing form
     user.roles = user.roles;
     user.save(function(err) {
         if (err) {
@@ -39,10 +40,17 @@ exports.update = function(req, res) {
 };
 
 exports.updates = function(req, res) {
-    var user = req.user;
     console.log("Will it updates?");
+    var user = req.user;
+    
     //For security purposes only merge these parameters
-    user.firstName = req.body;
+   
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.email = req.body.email;
+    user.userName = req.body.userName;
+    user.password = req.body.password;
+    user.displayName = req.body.displayName;
     user.save(function(err) {
         if (err) {
             return res.status(400).send({
