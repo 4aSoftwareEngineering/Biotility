@@ -4,14 +4,28 @@
 angular.module('quiz').controller('QuizController', ['$scope', '$location', 'QuizQuestion', '$stateParams', '$state', 'Authentication', '$http',
     function($scope, $location, QuizQuestion, $stateParams, $state, Authentication, $http) {
         //
-        console.log("Loading Qs");
+        console.log("Loading Qs:", $stateParams.courseName);
+        var courseName = $stateParams.courseName;
+        switch (courseName) {
+            case "Chemistry & Biochemistry":
+                courseName = "Chemistry/Biochemistry";
+                break;
+            case "General Topics":
+                courseName = "General Topics in Biotechnology";
+                break;
+            case "Laboratory Skills and Applications":
+                courseName = "Laboratory Skills/Applications";
+                break;
+            case "Research and Scientific Method":
+                courseName = "Research & Scientific Method";
+                break;
+        }
         $http.get('/api/quiz', {
             params: {
-                "category": $stateParams.courseName
+                "category": courseName
             }
         }).then(
             function(listOfQuestions) { //Checks to see if the value is correctly returned before printing out the console.
-                console.log("List of questions: ");
                 byCategory(listOfQuestions.data);
             });
         //console.log("Category before the switch to applications: " + $scope.currCategory);
@@ -113,15 +127,13 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         };
 
         var byCategory = function(listOfQuestions) {
-            console.log("By category");
-            console.dir(listOfQuestions);
+            console.log("Questions");
             $scope.loadedQ = false;
             $scope.questions = [];
             for (var i = 0; i < listOfQuestions.length; i++) {
-                console.log(i, listOfQuestions[i].category, $scope.currCategory);
-                if (listOfQuestions[i].category === $scope.currCategory) {
-                    $scope.questions.push(listOfQuestions[i]);
-                }
+                console.log(listOfQuestions[i].category, $scope.currCategory)
+                $scope.questions.push(listOfQuestions[i]);
+
             }
             max = $scope.questions.length;
             $scope.loadedQ = true;
@@ -131,7 +143,8 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
 
         $scope.gotoResource = function(subjectName) {
             $location.path('/' + subjectName + '/resources');
-        };$scope.gotoQuiz = function(subjectName) {
+        };
+        $scope.gotoQuiz = function(subjectName) {
             $location.path('/' + subjectName + '/quiz');
         };
 
