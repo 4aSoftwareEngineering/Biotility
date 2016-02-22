@@ -44,7 +44,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         //console.log("ProfileController");
-        //console.log($scope.user);
+        console.log($scope.credentials);
+        console.log($scope.user);
 
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
@@ -166,7 +167,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log($scope.credentials.firstName);
             var route = '/api/users/' + $scope.authentication.user._id;
             if ($scope.credentials.firstName !== undefined){
-
                 $scope.authentication.user.firstName = $scope.credentials.firstName;
             }
             else{
@@ -176,7 +176,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
             if ($scope.credentials.lastName !== undefined){
-
                 $scope.authentication.user.lastName = $scope.credentials.lastName;
             }
             else{
@@ -185,7 +184,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
              if ($scope.credentials.userName !== undefined){
-
                 $scope.authentication.user.userName = $scope.credentials.userName;
             }
             else{
@@ -193,7 +191,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
 
              if ($scope.credentials.email !== undefined){
-
                 $scope.authentication.user.email = $scope.credentials.email;
             }
             else{
@@ -202,7 +199,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             
 
             if ($scope.credentials.password !== undefined){
-
                 $scope.authentication.user.password = $scope.credentials.password;
             }
             else{
@@ -222,8 +218,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
 
-                // And redirect to the home page
-                $location.url('/');
+                //redirect to the home page
+                //$location.url('/');
 
             }).error(function(response) {
                 console.log("Unable to POST.");
