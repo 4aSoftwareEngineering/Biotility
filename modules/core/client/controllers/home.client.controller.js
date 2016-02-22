@@ -24,12 +24,47 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
   }
 ]);
 
-angular.module('core').controller('SubjectController', ['$scope', '$state', '$location', 'Authentication', '$stateParams',
-  function($scope, $state, $location, Authentication, $stateParams) {
+angular.module('core').controller('SubjectController', ['$scope','$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects',
+  function($scope,$http, $state, $location, Authentication, $stateParams, Resources, Subjects) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
     $scope.subject = $stateParams.courseName;
+
+    //some variables for the resource view
+    $scope.resourceFilter = {subject: $scope.subject};
+    $scope.editMode = false;
+
+    //load all the resources from the database
+    Resources.loadResources().then(function(response) {
+      $scope.resources = response.data;
+    });
+
+    //Used to create a new Resource on database
+    $scope.addResource = function() {
+      $http.post('api/data/resources',$scope.newResource).success(function(response){
+        console.log("Eric",response.message);
+      }).error(function(response){
+        console.log("Eric",response.message);
+      });
+      $scope.resources.push($scope.newResource);
+
+      $scope.newResource = null;
+    };
+
+    //Used to delete a Resource from the database
+    $scope.deleteResource = function(index) {
+      var id = $scope.resources[index]._id;
+      $http.delete('api/data/resources/'+ id).success(function(response){
+        console.log("Eric",response.message);
+      }).error(function(response){
+        console.log("Eric http delete error",response.message);
+      });
+      $scope.resources.splice(index,1);
+
+      $scope.newResource = null;
+    };
+
 
     $scope.startQuiz = function() {
       $location.path('/' + $scope.subject + '/quiz');

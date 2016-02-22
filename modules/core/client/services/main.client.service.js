@@ -45,6 +45,21 @@ angular.module('core').service('Subjects', ['$http', function($http) {
 
 }]);
 
+//passes in function to load resources from database
+angular.module('core').service('Resources', ['$http', function($http) {
+
+  return {
+    loadResources: function() {
+      return $http({
+        method: 'GET',
+        url: '/api/parse/resources'
+      });
+    }
+  };
+
+}]);
+
+
 angular.module('core').service('NavCrumbs', [
   function() {
     this.breadcrumb = [{

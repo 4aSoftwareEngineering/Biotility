@@ -3,8 +3,8 @@
 var mongoose = require('mongoose'),
   QuizQuestion = mongoose.model('QuizQuestion'),
   User = mongoose.model('User'),
-  Subject = mongoose.model('Subject');
-
+  Subject = mongoose.model('Subject'),
+  Resource = mongoose.model('Resource');
 /**
  * Render the main application page
  */
@@ -63,6 +63,54 @@ exports.parseSubjects = function(req, res) {
   });
 };
 
+
+//retrives all Resources from database
+exports.parseResources = function(req, res) {
+  
+  Resource.find({}, function(err, docs) {
+        if (!err) {
+            console.log(docs);
+        } else {
+            throw err;
+        }
+    });
+
+  Resource.find({}, function(err, subs) {
+    return res.end(JSON.stringify(subs));
+  });
+};
+
+//Creates a new resource for the database
+exports.addResource = function(req,res) {
+  var newResource = new Resource(req.body);
+  newResource.save(function(err){
+    if(err) {
+      console.log(err);
+      res.status(400).send(err);
+    } else {
+      res.json(newResource);
+    }
+  });
+
+
+};
+
+//Deletes a resource from the database
+exports.deleteResource = function(req,res) {
+  var resource_to_delete = req.resource;
+  
+
+  resource_to_delete.remove(function(err){
+    if(err) {
+      res.status(400).send(err);
+    }
+    else {
+      res.end();
+    }
+  });
+};
+
+
 // Retrieve user data, send as response.
 exports.parseUsers = function(req, res) {
   //Print users
@@ -99,5 +147,17 @@ exports.parseQuestions = function(req, res) {
 exports.findStudents = function(req, res) {
   User.find({'profileType' : 'Student', 'courseCode' : {$in: req.body.courseNums} }).lean().exec(function(err, users) {
     return res.end(JSON.stringify(users));
+  });
+};
+
+//middleware to delete resources
+exports.resourceByID = function(req, res, next, id) {
+  Resource.findById(id).exec(function(err, resource) {
+    if(err) {
+      res.status(400).send(err);
+    } else {
+      req.resource = resource;
+      next();
+    }
   });
 };

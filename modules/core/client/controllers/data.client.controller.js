@@ -27,3 +27,13 @@ angular.module('core').controller('SubjectData', ['$scope', '$http',
       });
   }
 ]);
+
+//might not be necessary-Eric G.
+angular.module('core').controller('ResourceData', ['$scope', '$http',
+    function($scope, $http) {
+      $http.get('/api/parse/resources')
+      .success(function(res){
+        $scope.data = res;
+      });
+  }
+]);

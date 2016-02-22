@@ -10,6 +10,12 @@ module.exports = function (app) {
   // Fetch subject data from database
   app.route('/api/parse/subjects').get(core.parseSubjects);
 
+  //Eric's Work
+  app.route('/api/parse/resources').get(core.parseResources);
+
+  app.route('/api/data/resources').post(core.addResource);
+  app.route('/api/data/resources/:resourceId').delete(core.deleteResource);
+  
   // Fetch student data from database
   app.route('/api/data/students').post(core.findStudents);
 
@@ -25,4 +31,5 @@ module.exports = function (app) {
 
   // Define application route
   app.route('/*').get(core.renderIndex);
+  app.param('resourceId',core.resourceByID);
 };
