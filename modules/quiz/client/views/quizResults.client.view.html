@@ -1,24 +1,22 @@
-<div ng-controller = "QuizResults">
-	<div>
-        <!-- Using this for space -->
+<div ng-controller="QuizResults">
+
+    <div class="container">
+        <br>
+        <div class="results-h">
+            <h1>Results</h1>
+        </div>
+        <div class="results-s" id="results" ng-show="!analytics.length">
+            <p> Error! Couldn't find your quiz results. Did you refresh the page?
+                <br>Try taking the quiz again. </p>
+        </div>
+
+        <div class="results-s" id="results" ng-repeat="q in analytics track by $index">
+            <h2> Question {{$index + 1}}: {{q.question.description}}</h2>
+            <h3> Attempts: {{q.attempts}} </h3>
+        </div>
+        <button class="btn btn-primary btn-block" ng-click="gotoQuiz(currCategory)" ng-show="hasStart"> Back to Quiz </button>
+        <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
+
     </div>
-
-<!-- 	<div class = "container" >
-		<br>
-		<h1> Yay you finished the section</h1>
-
-			<h2>You got a  <div id = "results">{{score}} / {{totalNumQuestion}} </div> </h2>
-		</h2>
-	</div> -->
-		<div class = "container" >
-			<br>
-			<div class="results-h"> Congratulations!</div>
-			<div class="results-s" id = "results" >
-				<h2>
-					You got {{score}} / {{totalNumQuestion}} questions correct.
-				</h2>
-			</div>
-
-		</div>
 
 </div>
