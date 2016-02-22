@@ -150,19 +150,42 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.toAdd = '';
         };
 
-        // Create new Users object
-        // var user = new Users({
-        //     firstName: this.firstName,
-        //     lastName: this.lastName,
-        //     // displayName: this.displayName
-        //     email: this.email, 
-        //     userName: this.userName,
-        //     password: this.password, 
-        //     courses: this.courses
-        // });
+        $scope.settingsupdate = function(isValid) {
+            
+            console.log("Changing Settings");
+            $scope.error = null;
+
+            // if (!isValid) {
+            //     $scope.$broadcast('show-errors-check-validity', 'userForm');
+
+            //     return false;
+            // }
 
 
-        $scope.tester = function() {};
+            
+            var route = '/api/users/' + $scope.authentication.user._id;
+            $scope.authentication.user.firstName = $scope.credentials.firstName;
+            console.log("NEW NAME " + $scope.user.firstName);
+
+            $http.post(route, $scope.user.firstName).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+
+            }).error(function(response) {
+                console.log("Unable to POST.");
+                console.dir(response);
+                //sets error if invalid info
+                //alert("Not updating.");
+
+                $scope.error = response.message;
+            });
+
+            
+        };
 
         $scope.update = function() {
             $scope.error = null;
@@ -176,6 +199,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $scope.error = errorResponse.data.message;
             });
         };
+
+        
 
         // $scope.classupdates = function(){
         //   console.log("ADDED A NEW CLASS");

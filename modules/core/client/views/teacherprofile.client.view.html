@@ -81,13 +81,17 @@
        
       <!--profile info-->
       <div class="col-md-9 col-md-offset-3" ng-hide="profileVisible">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
           <div class="form-group">
 
             <label class="col-lg-3 control-label">First name:</label>
+          <!--   <div class="inputs">
+          <input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
+            </div> -->
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="{{user.firstName}}">
+              <input class="form-control" ng-model="credentials.firstName"  type="text" value="{{user.firstName}}">
             </div>
+          
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Last name:</label>
@@ -131,6 +135,9 @@
             <div class="col-md-8">
               <input class="form-control" type="text" value="{{user.userName}}">
             </div>
+            <!-- <div class="inputs">
+            <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
+            </div> -->
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Change Password:</label>
@@ -147,7 +154,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-              <input type="button" class="btn btn-primary" value="Save Changes">
+              <input class="btn btn-primary" type="submit" value="Save Changes">
               <span></span>
               <input type="reset" class="btn btn-default" value="Cancel">
             </div>

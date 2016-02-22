@@ -20,7 +20,7 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
     var user = req.user;
-    console.log("2nd update fn");
+    console.log("Will it update?");
     //For security purposes only merge these parameters
     user.firstName = user.firstName;
     user.lastName = user.lastName;
@@ -37,6 +37,26 @@ exports.update = function(req, res) {
         res.json(user);
     });
 };
+
+exports.updates = function(req, res) {
+    var user = req.user;
+    console.log("Will it updates?");
+    //For security purposes only merge these parameters
+    user.firstName = req.body;
+    user.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        }
+
+        res.json(user);
+    });
+};
+
+
+
+
 
 /**
  * Delete a user

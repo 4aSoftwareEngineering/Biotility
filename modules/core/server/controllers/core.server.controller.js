@@ -79,7 +79,7 @@ exports.update = function(req, res) {
     var User = req.User;
 
     User.courses = req.body.courses;
-
+    
 
     User.save(function(err) {
         if (err) {
