@@ -1,4 +1,4 @@
-<div class="margin-top-50 content-main" ng-controller="MainController">
+<div class="margin-top-75 content-main" ng-controller="MainController">
 
 <!--Carousel-->
   <div id="main-carousel" class="carousel slide" data-ride="carousel">
@@ -17,26 +17,32 @@
       <!-- First Item -->
       <div class="item active">
         <img src="./modules/core/client/img/biotility_img/microcentrifuge.jpg" alt="...">
+        <div class="container-fluid">
         <div class="carousel-caption">
           <h3 class="m"> Advanced
             <span style="color: #FD432F">biotechnology</span> education and training </h3>
           <p class="mh">Select a topic from the list below to begin preparation for the <br>Biotechnician Assistant Credentialing Exam (BACE)</p>
         </div>
+        </div>
       </div>
       <!-- Second Item -->
       <div class="item">
         <img src="./modules/core/client/img/biotility_img/gown.jpg" alt="...">
+        <div class="container-fluid">
         <div class="carousel-caption">
           <h3 class="m"> Assess Your Knowledge </h3>
           <p class="mh">Click the Quiz link from one of the topics below to begin your knowledge assessment</p>
+        </div>
         </div>
       </div>
       <!-- Third Item -->
       <div class="item">
         <img src="./modules/core/client/img/biotility_img/plants.jpg" alt="...">
         <div class="carousel-caption">
+        <div class="container-fluid">
           <h3 class="m"> Review Resources </h3>
           <p class="mh">Click the Resources link from one of the topics below to learn more before starting a quiz</p>
+        </div>
         </div>
       </div>
     </div>
@@ -56,7 +62,7 @@
   <div class="container-fluid subjects">
     <div class="margin-top-75">
       <div class="row">
-        <div class="col-xs-3" ng-repeat="subject in subjects track by $index" ng-click="onClicked(subject)">
+        <div class="col-xs-12 col-md-3 col-sm-6" ng-repeat="subject in subjects track by $index" ng-click="onClicked(subject)">
           <div class="thumbnail under">
             <div ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-class="{hovereffect: hover}" class="overlay">
               <div class="hover-box">
@@ -66,7 +72,7 @@
               </div>
             </div>
             <img style="width: 100%;" ng-src="{{subject.imgUrl}}" alt="" class="img-responsive">
-            <div class="caption">
+            <div class="caption" id="subname">
               {{subject.name}}
             </div>
           </div>

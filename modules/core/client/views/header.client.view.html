@@ -1,32 +1,39 @@
 <div id="navbar" ng-controller="HeaderController" class="navbar container-fluid vertical-center bg-navbar">
+
   <!--<span class="navbar-brand" ng-repeat="crumb in breadcrumb track by $index" ng-click="click(crumb)">
         {{crumb.name}}<span ng-hide="$index === breadcrumb.length - 1" class="glyphicon glyphicon-chevron-right"></span>
     </span>-->
-  <div class="nav-img pull-left">
-    <a data-ui-sref="home">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a data-ui-sref="home" class="nav-img pull-left navbar-brand">
       <img src="modules/core/client/img/brand/logo.png" alt="" style="width: 130px;">
     </a>
   </div>
-  <div id="logout" ng-show="authentication.user" class="navbar-brand pull-right" ng-click="logout()">
-    Logout
-  </div>
-  <!-- Profile -->
-  <div ng-show="authentication.user" class="navbar-brand pull-right" ng-click="profile()">
-    <div class="nav-img">
-      <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
-    </div>
-  </div>
-  <div ng-show="authentication.user" class="navbar-brand pull-right" ng-click="profile()">
-    {{authentication.user.displayName}}
-  </div>
-  <!-- Login -->
-  <div id="login" ng-hide="authentication.user" class="navbar-brand pull-right">
-    <a data-ui-sref="authentication.signin">Login</a>
-  </div>
+
+  <div class="collapse navbar-collapse" id="mainNavBar" style="padding-top: 20px;">
+    <ul class="nav navbar-nav pull-right">
+      <!--Home-->
+      <li><div class="navbar-brand">
+        <a id="home" data-ui-sref="home">Home</a>
+      </div></li>
+
+  <!-- About -->
+  <li><div class="navbar-brand">
+    <a id="about" data-ui-sref="about">About Us</a>
+  </div></li>
+
+  <!-- Contact -->
+  <li><div class="navbar-brand">
+    <a id="contact" data-ui-sref="contact">Contact</a>
+  </div></li>
 
   <!-- student list -->
 
-  <div ng-show="authentication.user.profileType === 'Teacher'" class="navbar-brand pull-right admin-menu" role="navigation">
+  <li><div ng-show="authentication.user.profileType === 'Teacher'" class="navbar-brand admin-menu" role="navigation">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown"><a href="">Student List <b class="caret"></b></a>
@@ -37,20 +44,31 @@
         </li>
       </ul>
     </div>
-  </div>
-  <!-- Contact -->
-  <div class="navbar-brand pull-right">
-    <a id="contact" data-ui-sref="contact">Contact</a>
-  </div>
-  <!-- About -->
-  <div class="navbar-brand pull-right">
-    <a id="about" data-ui-sref="about">About Us</a>
-  </div>
-  <!--Home-->
-  <div class="navbar-brand pull-right">
-    <a id="home" data-ui-sref="home">Home</a>
-  </div>
+  </div></li>
 
+  <!-- Login -->
+  <li><div id="login" ng-hide="authentication.user" class="navbar-brand">
+    <a data-ui-sref="authentication.signin">Login</a>
+  </div></li>
+
+  <!-- Username -->
+  <li><div ng-show="authentication.user" class="navbar-brand " ng-click="profile()">
+    {{authentication.user.displayName}}
+  </div></li>
+
+  <!-- Profile -->
+  <li><div ng-show="authentication.user" class="navbar-brand " ng-click="profile()">
+    <div class="nav-img">
+      <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+    </div>
+  </div></li>
+
+  <li><div id="logout" ng-show="authentication.user" class="navbar-brand" ng-click="logout()">
+    Logout
+  </div></li>
+
+  </ul>
+  </div>
   <!-- <div ng-show="authentication.user.profileType === 'Teacher'" class="navbar-brand-pull-right">
     <a class="dropdown-toggle user-header-dropdown-toggle" dropdown-toggle role="button">
       <li ui-sref-active="active">

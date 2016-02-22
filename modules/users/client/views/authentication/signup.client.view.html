@@ -3,12 +3,12 @@
 <!--header-->
     <div class="breadcrumbh">
     	<div class="row topmargin-b">
-        	<div class="col-md-2 col-md-offset-1 page-head">
-            	Sign-up
-            </div>
-            <div class="col-md-8 b-head">
-            	<a data-ui-sref="home">Home</a> / <a data-ui-sref="authentication.signin">Login</a> / Sign-Up
-            </div>
+        <div class="col-md-3 col-md-offset-1 col-xs-offset-1 col-xs-4 col-sm-4 page-head">
+           	Sign-up
+        </div>
+        <div class="col-md-7 col-sm-pull-1 col-xs-pull-1 b-head">
+           	<a data-ui-sref="home">Home</a> / <a data-ui-sref="authentication.signin">Login</a> / Sign-Up
+        </div>
     	</div>
     </div>
 
@@ -31,15 +31,13 @@
             <input type="password" ng-model="credentials.password" required placeholder="Password" required style="height:40px;">
             </div>
         </div>
-
+<!-- class="col-md-2 col-md-offset-4 col-xs-12 col-xs-offset-1"  -->
 <!--account type-->
-        <div class="row">
-            <div class="col-md-2 col-md-offset-4 text-right">
+        <div class="row" align="center" style="margin-left:80px">
                 <div class="accounts">
                 Account Type:
                 </div>
-            </div>
-            <div class="radio col-md-2 account-pick">
+            <div class="radio account-pick">
                 <label>
                     <input type="radio" name="profiletype" value="Teacher" ng-model="credentials.profileType" required> Teacher
                 </label>
@@ -56,16 +54,16 @@
         </div>
         <!-- if teacher - select courses  -->
         <div ng-show="credentials.profileType=='Teacher'">
-            <div class="row">
-                <div class="col-md-2 col-md-offset-4 text-right">
+            <div class="row" align="center" style="margin-left:80px">
+                <div>
                     <div class="accounts">
                 		Courses:
                 	</div>
                 </div>
-                
+
                 <!--select course-->
-                <div class="col-md-2 account-pick">
-                    <select ng-model="toAdd" style="height: 30px;">
+                <div class="account-pick" align="center">
+                    <select ng-model="toAdd" style="width: 175px; height: 30px;">
                         <option ng-repeat="name in classNames track by $index">{{name}}</option>
                     </select>
                     <!--button for adding more than one course-->
@@ -74,10 +72,10 @@
                    		</button>
                 </div>
             </div>
-            
+
             <!--Classes already seleted-->
-            <div class="row">
-                <div class="col-md-2 col-md-offset-4 text-right">
+            <div class="row" align="center">
+                <div class="col-md-2 col-md-offset-5 col-sm-offset-5 col-xs-2 col-xs-offset-4">
                     <ul class="list-inline">
                         <li ng-repeat="x in credentials.courses track by $index">
                             <button type="button" class="btn btn-success">{{x.courseName}}</button>
