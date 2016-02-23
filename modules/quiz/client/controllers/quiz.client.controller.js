@@ -191,7 +191,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', 'QuizQuestion',
             var rows = text.split(';\n');	//grab each individual row
             var obj = [];
             angular.forEach(rows, function(val) {
-                var o = val.split(';');		//separate by "commas"	
+                var o = val.split(';');	   //separate by "commas"	
                 if (o[0] !== 'Category') { //sketchy way to get rid of first row
                    // console.log(o);
                     var quizQuestion;
@@ -214,11 +214,11 @@ angular.module('quiz').controller('QuizCreate', ['$scope', 'QuizQuestion',
                             questionType: o[1],
                             description: o[2],
                             correctAnswer: o[3],
-                            answerDesc1: o[4],
-                            answerDesc2: o[5],
-                            answerDesc3: o[6],
-                            answerDesc4: o[7],
-			    answerDesc5: o[8],
+                            answerDesc1: [o[4],o[5],o[6],o[7],o[8]],
+                            //answerDesc2: o[5],
+                            //answerDesc3: o[6],
+                            //answerDesc4: o[7],
+			    //answerDesc5: o[8],
 			    hint: o[14],
 			    links: o[15]
                         });
@@ -230,16 +230,16 @@ angular.module('quiz').controller('QuizCreate', ['$scope', 'QuizQuestion',
                             questionType: o[1],
                             description: o[2],
                             correctAnswer: o[3],
-                            answerDesc1: o[4],
-                            answerDesc2: o[5],
-                            answerDesc3: o[6],
-                            answerDesc4: o[7],
-			    answerDesc5: o[8],
-                            MA1: o[9],
-                            MA2: o[10],
-                            MA3: o[11],
-                            MA4: o[12],
-			    MA5: o[13],
+                            answerDesc1: [o[4],o[5],o[6],o[7],o[8]],
+                            //answerDesc2: o[5],
+                            //answerDesc3: o[6],
+                            //answerDesc4: o[7],
+			    //answerDesc5: o[8],
+                            MA1: [o[9],o[10],o[11],o[12],o[13]],
+                            //MA2: o[10],
+                            //MA3: o[11],
+                            //MA4: o[12],
+			    //MA5: o[13],
 			    hint: o[14],
 			    links: o[15]
                         });
