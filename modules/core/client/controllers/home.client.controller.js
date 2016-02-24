@@ -55,14 +55,14 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         };
 
         //Used to delete a Resource from the database
-        $scope.deleteResource = function(index) {
-            var id = $scope.resources[index]._id;
+        $scope.deleteResource = function(resource_obj) {
+            var id = resource_obj._id;
             $http.delete('api/data/resources/' + id).success(function(response) {
                 console.log("Eric", response.message);
             }).error(function(response) {
                 console.log("Eric http delete error", response.message);
             });
-            $scope.resources.splice(index, 1);
+            $scope.resources.splice($scope.resources.indexOf(resource_obj), 1);
 
             $scope.newResource = null;
         };

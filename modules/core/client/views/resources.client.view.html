@@ -39,7 +39,7 @@
             <div ng-repeat="resource in resources | filter:resourceFilter:strict">
                 <tr>
                     <td><a ng-href="{{resource.url}}">{{resource.title}}</a></td>
-                    <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-remove" ng-click="deleteResource($index)"></span></td>
+                    <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-remove" ng-click="deleteResource(resource)"></span></td>
                 </tr>
                 <br>
                 <br>
