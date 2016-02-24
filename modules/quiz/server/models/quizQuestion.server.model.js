@@ -26,36 +26,42 @@ var questionSchema = new Schema({
         type: String,
         required: true
     },
+//    answerDesc: {
+//        type: Object
+//    },
     answerDesc1: {
-        type: Object
+        type: String
     },
-//    answerDesc2: {
-//        type: String
-//    },
-//    answerDesc3: {
-//        type: String
-//    },
-//    answerDesc4: {
-//        type: String
-//    },
-//    answerDesc5: {
-//        type: String
+    answerDesc2: {
+        type: String
+    },
+    answerDesc3: {
+        type: String
+    },
+    answerDesc4: {
+        type: String
+    },
+    answerDesc5: {
+        type: String
+    },
+//    MA: {
+//        type: Object
 //    },
     MA1: {
-        type: Object
+        type: String
     },
-//    MA2: {
-//        type: String
-//    },
-//    MA3: {
-//        type: String
-//    },
-//    MA4: {
-//        type: String
-//    },
-//    MA5: {
-//        type: String
-//    },
+    MA2: {
+        type: String
+    },
+    MA3: {
+        type: String
+    },
+    MA4: {
+        type: String
+    },
+    MA5: {
+        type: String
+    },
     hint: {
 	type: String
     },
