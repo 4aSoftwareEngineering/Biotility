@@ -1,9 +1,10 @@
 <div class="container" ng-controller="ProfileController">
+  <!-- modules/core/client/profile.client.view.html -->
   <h1>Edit Profile</h1>
   <hr>
   <div class="row">
     <div id="left-side" class="list-view ">
-      <h1 id="section-tabs-header">
+      <h1>
         {{user.firstName}} {{user.lastName}}
       </h1>
 
@@ -18,6 +19,7 @@
 
         <nav aria-label="context" role="navigation">
           <ul class="nav" id="section-tabs">
+            <li class="section"><a class="home" href="/" tabindex="0">Home</a></li>
             <li class="section"><a ng-click="profileVisible = true" class="profile" href="#" tabindex="0">Profile</a></li>
             <li class="section"><a ng-click="profileVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
           </ul>
@@ -41,7 +43,7 @@
           <span>{{user.userName}}</span>
         </div>
       </div>
-      
+
     </div>
   <!--</div>-->
 
@@ -79,32 +81,32 @@
       <form class="form-horizontal" role="form">
         <div class="form-group">
 
-          <label class="col-lg-3 control-label">First name:</label>
-          <div class="col-lg-8">
+          <label class="col-xs-offset-1 col-xs-10 col-xs-10 col-lg-3 control-label">First name:</label>
+          <div class="col-xs-offset-1 col-xs-10 col-lg-8">
             <input class="form-control" type="text" value="{{user.firstName}}">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-3 control-label">Last name:</label>
-          <div class="col-lg-8">
+          <label class="col-lg-3 col-xs-offset-1 col-xs-10 control-label">Last name:</label>
+          <div class="col-xs-offset-1 col-lg-8 col-xs-10">
             <input class="form-control" type="text" value="{{user.lastName}}">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-3 control-label">School:</label>
-          <div class="col-lg-8">
+          <label class="col-lg-3 col-xs-offset-1 control-label">School:</label>
+          <div class="col-lg-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="text" value="">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-3 control-label">Email:</label>
-          <div class="col-lg-8">
+          <label class="col-lg-3 col-xs-offset-1 control-label">Email:</label>
+          <div class="col-lg-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="text" value="{{user.email}}">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-3 control-label">Time Zone:</label>
-          <div class="col-lg-8">
+          <label class="col-lg-3 col-xs-offset-1 control-label">Time Zone:</label>
+          <div class="col-lg-8 col-xs-offset-1 col-xs-10">
             <div class="ui-select">
               <select id="user_time_zone" class="form-control">
                 <option value="Hawaii">(GMT-10:00) Hawaii</option>
@@ -120,26 +122,26 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="col-md-3 control-label">Username:</label>
-          <div class="col-md-8">
+          <label class="col-md-3 col-xs-offset-1 control-label">Username:</label>
+          <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="text" value="{{user.userName}}">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-md-3 control-label">Change Password:</label>
-          <div class="col-md-8">
+          <label class="col-md-3 col-xs-offset-1 control-label">Change Password:</label>
+          <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="password" value="">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-md-3 control-label">Confirm Password:</label>
-          <div class="col-md-8">
+          <label class="col-md-3 col-xs-offset-1 control-label">Confirm Password:</label>
+          <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="password" value="">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-md-3 control-label"></label>
-          <div class="col-md-8">
+          <label class="col-md-3 col-xs-offset-1 control-label"></label>
+          <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <input type="button" class="btn btn-primary" value="Save Changes">
             <span></span>
             <input type="reset" class="btn btn-default" value="Cancel">
@@ -261,7 +263,7 @@
 
   </div>
 
-  <div class = "row">
+  <div class = "col-xs-offset-1 row">
     <h1>Grades</h1>
     <ul ng-repeat="grade in studentGrades">
       <li> {{grade.category}} : {{grade.score}} </li>

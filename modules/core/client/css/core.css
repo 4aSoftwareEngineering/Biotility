@@ -35,6 +35,7 @@
 body {
   font-family: AwesomeFont, Verdana, Geneva, sans-serif;
 }
+/*
 .navbar {
   height: 75px;
 }
@@ -49,6 +50,7 @@ body {
   min-width: 100%;
   background-color: white;
 }
+*/
 .glyphicon-chevron-right {
   margin-left: 12px;
 }
@@ -57,6 +59,19 @@ body {
 }
 .carousel-indicators>li {
   box-shadow: 1px 1px 6px black;
+}
+
+@media only screen and (max-width: 720px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+  #subname {
+    font-size: 30px;
+  }
 }
 
 /* MAIN PAGE BUTTONS */
@@ -84,52 +99,7 @@ body {
   background: #252525;
   color: white;
 }
-
-/* NAVBAR */
-.navbar-brand {
-  font-size: 15px;
-  padding-right: 20px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.navbar-brand>span {
-  color: white;
-}
-.navbar a:link, .navbar a:visited {
-  color: #959595;
-  text-decoration: none;
-}
-.navbar a:hover {
-  color: white;
-  text-decoration: none;
-}
-.navbar a:active {
-  color: #464646;
-  text-decoration: none;
-}
-.top-span>.vertical-center {
-  top: 40% !important;
-}
-.bg-navbar {
-  margin-top: 0;
-  height: 75px;
-  background-color: #242424;
-  color: white;
-}
-.header-text {
-  font-size: 30px;
-  margin-top: 30px;
-}
-
-.vertical-center {
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
+/* Addition for text on pic */
 
 /* HOME PAGE */
 
@@ -336,4 +306,6 @@ margin-right: -8px;
 ul.nav li.dropdown:hover ul.dropdown-menu {
     display: block;
 }
-
+li.nav-collapse{
+  list-style-type: none;
+}
