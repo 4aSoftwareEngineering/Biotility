@@ -280,50 +280,21 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
+        $scope.sendEmail = function(isValid){
+            console.log("sending email for resources" );
+            console.log("Subject: " + $scope.resource.subject );
+            console.log("Subject Details: "+ $scope.resource.subjectdetails );
+            console.log("Link: "+ $scope.resource.resourcelink);
+            console.log("Comments: " + $scope.resource.comments);
 
+            var email = "isalau@me.com" ;
+            // separate addresses by commas, no spaces //
+            var subject = "Biotility" ;
+            var body = "Testing" ;
 
-        // $scope.classupdates = function(){
-        //   console.log("ADDED A NEW CLASS");
-        //   $scope.error = null;
-
-        //   // if (!isValid) {
-        //   //   $scope.$broadcast('show-errors-check-validity', 'articleForm');
-        //   //   console.log("breaks");
-        //   //   return false;
-        //   // }
-
-        //   //how to access user info
-        //   //console.log("EMAIL: "+ $scope.authentication.user.email); 
-
-        //   //input to put courseNames
-        //  $scope.input = {};
-        //   //courseNums array
-        //   $scope.input.courseNums = [];
-        //  // for each course in their schema
-        //   $scope.authentication.user.courses.forEach(
-        //   function(element, index, array) {
-        //     //stores each course Name and number of the course that a teacher has
-        //     $scope.input.courseNums.push(element.courseName + " : " + element.number);
-        //     //used for testing purposes to make sure a teacher has the correct courses
-        //      console.log("CURRENT CLASSES: "+ $scope.input.courseNums);
-        //   });
-
-        //   // var listing = {
-        //   //   name: $scope.name, 
-        //   //   code: $scope.code, 
-        //   //   address: $scope.address
-        //   // };
-
-        //   // /* Save the article using the Listings factory */
-        //   // Listings.update(id, listing)
-        //   //         .then(function(response) {
-        //   //           //if the object is successfully updated redirect back to the list page
-        //   //           $state.go('listings.list', { successMessage: 'Listing succesfully update!' });
-        //   //         }, function(error) {
-        //   //           //otherwise display the error
-        //   //           $scope.error = 'Unable to update listing!\n' + error;
-        //   //         });
-        // };
+           var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
+           window.location.href = link;
+        };
 
 
         //creates groups
@@ -357,13 +328,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log($scope.section);
 
         });
+        
         //gets student grades
         $scope.studentGrades = [];
         $http.get('/api/quiz_result')
             .success(function(res) {
                 // console.log("quiz result: ", res);
                 byStudent(res);
-            });
+        });
+
         //gets student  grades by student and stores them
         var byStudent = function(allStudentGrades) {
             for (var i = 0; i < allStudentGrades.length; i++) {
@@ -395,6 +368,5 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
             $scope.groups[0].progress *= 25;
         };
-
     }
 ]);

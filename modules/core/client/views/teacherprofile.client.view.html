@@ -1,164 +1,229 @@
 <!--teacher profile page-->
 <div class="container" ng-controller="ProfileController">
-    <div style="margin-top: 45px;">
-    </div>
-    <hr>
-    <div class="row">
-        <div id="left-side" class="list-view ">
-            <h1 id="section-tabs-header">
+  <div style="margin-top: 45px;">
+  </div>
+  <hr>
+  <div class="row">
+    <div id="left-side" class="list-view ">
+      <h1 id="section-tabs-header">
         <!--teacher name-->
         {{user.firstName}} {{user.lastName}}
 
 
       </h1>
+
+
+    </div>
+    <!-- left column -->
+    <div class="col-md-3">
+      <div class="text-center">
+        <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+        <h6>Upload a different photo...</h6>
+
+        <input type="file" class="form-control">
+        <!--profile menu-->
+        <nav aria-label="context" role="navigation">
+          <ul class="nav" id="section-tabs">
+            <li class="section"><a class="home" href="/" tabindex="0">Home</a></li>
+
+            <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Profile</a></li>
+
+            <li class="section"><a ng-click="toShow='settingsVisible'" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+
+             <li class="section"><a ng-click="toShow='resourceVisible'" class="resource active" href="#" tabindex="0">Request a Resource</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- edit form column -->
+    <div class="col-md-9 personal-info">
+      <!--       <div class="alert alert-info alert-dismissable">
+        <a class="panel-close close" data-dismiss="alert">×</a>
+        <i class="fa fa-coffee"></i>
+        This is an <strong>.alert</strong>. Use this to show important messages to the user.
+      </div> -->
+
+      <!--teacher info-->
+      <h3>Personal info</h3>
+        <div class="col-lg-3">
+          <div class="col-lg-8">
+            <label>Username</label>
+            <span>{{user.userName}}</span>
+            <br>
+            <label>Email</label>
+            <span>{{user.email}}</span>
+          </div>
         </div>
-        <!-- left column -->
-        <div class="col-md-3">
-            <div class="text-center">
-                <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
-                <h6>Upload a different photo...</h6>
-                <input type="file" class="form-control">
-                <!--profile menu-->
-                <nav aria-label="context" role="navigation">
-                    <ul class="nav" id="section-tabs">
-                        <li class="section"><a ng-click="profileVisible = true" class="profile" href="#" tabindex="0">Classes</a></li>
-                        <li class="section"><a ng-click="profileVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
-                    </ul>
-                </nav>
+       </div>
+
+    <!--</div>-->
+    <!--class codes-->
+    <div class="row">
+      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='profileVisible'">
+        <!--table to put in class codes-->
+        <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
+          <caption>Class codes for students to register</caption>
+          <thead>
+            <h2>Classes</h2>
+            <th>Codes</th>
+          </thead>
+          <tbody>
+            <!--gets class codes from controller-->
+            <tr ng-repeat="d in input.courseNums">
+              <td>{{d}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+       
+      <!--profile info-->
+      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='settingsVisible'">
+        <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
+          <div class="form-group">
+
+            <label class="col-lg-3 control-label">First name:</label>
+            <div class="col-lg-8">
+
+              <input class="form-control"  ng-model="credentials.firstName" ng-init= "credentials.firstName = user.firstName" type="text" ng-value="{{user.firstName}}">
             </div>
-        </div>
-        <!--</div>-->
-        <!--class codes-->
-        <div class="row">
-            <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
-                <!--table to put in class codes-->
-                <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
-                    <caption>Class codes for students to register</caption>
-                    <thead>
-                        <h2>Classes</h2>
-                        <th>Codes</th>
-                    </thead>
-                    <tbody>
-                        <!--gets class codes from controller-->
-                        <tr ng-repeat="d in input.courseNums">
-                            <td>{{d}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+          
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Last name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" ng-model="credentials.lastName"  ng-init= "credentials.lastName = user.lastName"type="text" value="{{user.lastName}}">
             </div>
-            <!--profile info-->
-            <div class="col-md-9 col-md-offset-3" ng-hide="profileVisible">
-                <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
-                    <h3> Personal Info </h3>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">First name:</label>
-                        <!--   <div class="inputs">
-          <input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
-            </div> -->
-                        <div class="col-lg-8">
-                            <input class="form-control" type="text" ng-model="credentials.firstName" ng-value="user.firstName">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">Last name:</label>
-                        <div class="col-lg-8">
-                            <input class="form-control" type="text" ng-model="credentials.lastName" ng-value="user.lastName">
-                        </div>
-                    </div>
-                    <!-- <div class="form-group">
+          </div>
+          <!-- <div class="form-group">
             <label class="col-lg-3 control-label">School:</label>
             <div class="col-lg-8">
               <input class="form-control" type="text" value="">
             </div>
           </div> -->
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">Email:</label>
-                        <div class="col-lg-8">
-                            <input class="form-control" type="text" ng-model="credentials.email" ng-value="user.email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <!--time zone-->
-                        <label class="col-lg-3 control-label">Time Zone:</label>
-                        <div class="col-lg-8">
-                            <div class="ui-select">
-                                <select id="user_time_zone" class="form-control">
-                                    <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                                    <option value="Alaska">(GMT-09:00) Alaska</option>
-                                    <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                                    <option value="Arizona">(GMT-07:00) Arizona</option>
-                                    <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                                    <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                                    <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                                    <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!--account info-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Username:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" ng-model="credentials.userName" ng-value="user.userName">
-                        </div>
-                        <!-- <div class="inputs">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" ng-init= "credentials.email = user.email" value="{{user.email}}" ng-model="credentials.email">
+            </div>
+          </div>
+      
+          <!--account info-->
+          <div class="form-group">
+            <label class="col-md-3 control-label">Username:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="text"  ng-init= "credentials.userName = user.userName" value="{{user.userName}}" ng-model="credentials.userName">
+            </div>
+            <!-- <div class="inputs">
             <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
             </div> -->
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">New Password:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="password" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Confirm Password:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="password" value="" ng-model="credentials.password">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-8">
-                            <input class="btn btn-primary" type="submit" value="Save Changes">
-                            <span></span>
-                            <input type="reset" class="btn btn-default" value="Cancel">
-                        </div>
-                    </div>
-                </form>
-                <!--select course-->
-                <div class="account-pick">
-                    <div>
-                        <label class="col-lg-3 col-lg-offset-1 control-label">Classes Selected to Add:</label>
-                        <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
-                            <option ng-repeat="name in classNames">{{name}}</option>
-                        </select>
-                        <!--button for adding more than one course-->
-                        <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd)">
-                            +
-                        </button>
-                    </div>
-                </div>
-                <!--Classes already seleted-->
-                <div class="picked">
-                    <div class="col-md-2 col-lg-offset-4 text-right">
-                        <ul class="list-inline">
-                            <li ng-repeat="x in credentials.courses track by $index">
-                                <button type="button" class="btn btn-info">{{x.courseName}}</button>
-                                <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Change Password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" value="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Confirm Password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" value="" ng-model="credentials.password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+              <input class="btn btn-primary" type="submit" value="Save Changes">
+              <span></span>
+              <input type="reset" class="btn btn-default" value="Cancel">
+            </div>
+          </div>
+        </form>
+
+
+        <!--select course-->
+        <div class="account-pick">
+          <div>
+              <label class="col-lg-3 col-lg-offset-1 control-label">Classes Selected to Add:</label>
+          
+                <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
+                   <option  ng-repeat="name in classNames">{{name}}</option>
+                </select>
+                <!--button for adding more than one course-->
+                 <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd)">
+                      +
+                  </button>
+                  
+          </div>
+        </div>
+
+        <!--Classes already seleted-->
+        <div class="picked">
+            <div class="col-md-2 col-lg-offset-4 text-right">
+                <ul class="list-inline">
+                    <li ng-repeat="x in credentials.courses track by $index">
+                        <button type="button" class="btn btn-info">{{x.courseName}}</button>
+                        <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
                         </button> -->
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!--class scores-->
-                <!--apply new courses -->
-                <!--  <div class = "col-md-9 col-md-offset-9">
-        <button type="button" class="btn btn-success" ng-click="classupdates()">Add</button>
-         </div>   
-      </div>
- -->
+                    </li>
+                    
+                </ul>
             </div>
         </div>
-        <hr>
+        <!--class scores-->
+      </div>
     </div>
+
+    <!-- Request a resource -->
+      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='resourceVisible'">
+          <h3 > Please fill out form to request a resource </h3>
+            <form class="form-horizontal" role="form" ng-submit="sendEmail(true)">
+          
+            <div class="form-group">
+              <label class="col-lg-3 control-label">Subject:</label>
+              <div class="col-lg-8">
+                <input class="form-control"  type="text" ng-model="resource.subject">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-3 control-label" >
+                Subject Detail:
+              </label>
+              <div class="col-lg-8">
+                  <input class="form-control" type="text" ng-model= "resource.subjectdetails" >
+                </div>
+              </div>
+
+              
+            <div class="form-group">
+              <label class="col-md-3 control-label" >
+                Link:
+              </label>
+              <div class="col-md-8">
+                <input class="form-control" type="text" ng-model= "resource.resourcelink">
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                Comments:
+              </label>
+              <div class="col-md-8">
+                <input class="form-control" type="password" value="" ng-model = "resource.comments">
+              </div>
+            </div>
+
+            <div class="col-md-8">
+                <input class="btn btn-primary" type="submit" value="Send Request" action="mailto:isalau@me.com">
+                <span></span>
+                <input type="reset" class="btn btn-default" value="Cancel">
+            </div>
+
+          </div>
+        </form>
+      </div>
+    <hr>
+  </div>
