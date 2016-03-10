@@ -33,21 +33,19 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         //
 
         $scope.authentication = Authentication;
-        console.log($scope.authentication.user);
-        console.log($stateParams);
 
+        var max = 0;
         $scope.isDone = false; //checks if the quiz is finished ->switches models to done state
         $scope.quizStarted = false; //checks if quiz start button is triggered
 
         $scope.questions = [];
-        var max = 0;
         $scope.index = -1;
         $scope.score = 0;
         $scope.analytics = [];
         $scope.numQuestion = 0;
-        $scope.firstIncorrect = {};
         $scope.hasError = false;
         $scope.hasStart = true;
+        $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
 
         $scope.start = function() {
@@ -68,7 +66,8 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
             //Check answer, log analytics.
             console.log("Checking answer...");
             //Create analytics obj.
-            if (!$scope.analytics[$scope.index] || isNaN($scope.analytics[$scope.index])) {
+            if (!$scope.analytics[$scope.index]) {
+                console.log("Creating analytics...");
                 $scope.analytics[$scope.index] = {};
                 $scope.analytics[$scope.index].question = $scope.question;
                 $scope.analytics[$scope.index].attempts = 1;
@@ -80,13 +79,15 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
                 if ($scope.question.correctAnswer === answer) {
                     console.log("Correct!");
                     console.dir($scope.analytics[$scope.index]);
+                    $scope.answer = 0;
                     $scope.increment();
                 } else {
                     console.log("Incorrect!");
+                    $scope.hasError = true;
                     $scope.error = "Incorrect. Please try again.";
                     if (!$scope.analytics[$scope.index].firstIncorrect)
-                        $scope.analytics[$scope.index].firstIncorrect = $scope.question;
-                    console.log('first Incorrect    ', $scope.analytics[$scope.index].firstIncorrect);
+                        $scope.analytics[$scope.index].firstIncorrect = answer;
+                    console.log('first Incorrect', $scope.analytics[$scope.index].firstIncorrect);
                     $scope.analytics[$scope.index].attempts++;
                     console.dir($scope.analytics[$scope.index]);
 
@@ -100,8 +101,11 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
             //Load next question.
         };
 
+
+
         $scope.increment = function() {
             //Determines question type and if quiz is finished.
+            $scope.answer = 0; //prevent auto selection of radio btns
             if ($scope.index === max) {
                 console.log("Quiz finished.");
                 $scope.isDone = true;
@@ -146,6 +150,7 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
             $scope.loadedQ = true;
             console.log($scope.questions.length + " question(s) found.");
             console.dir($scope.questions);
+            $scope.canStart = $scope.questions.length && $scope.loggedIn;
         };
 
         $scope.gotoResource = function(subjectName) {
@@ -208,3 +213,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http',
 
     }
 ]);
+
+$('#next').click(function(){
+    alert('lol');
+});

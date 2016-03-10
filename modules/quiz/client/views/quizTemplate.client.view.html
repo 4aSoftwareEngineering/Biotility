@@ -18,13 +18,14 @@
             <div id="startButton" ng-show="hasStart">
                 <h3 ng-show="!questions.length">Category does not have any questions.</h3>
                 <h3 ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</h3>
-                <h1 ng-show="hasError">Error Occured.</h1>
-                <button ng-disabled="!questions.length" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
+                <h1 ng-hide="loggedIn">Please log in to take the assessment.</h1>
+                <button ng-disabled="!canStart" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
                 <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
             </div>
             <div id="quizContent" ng-show="quizStarted">
                 <h1>Question {{numQuestion}}: {{questions[index].description}}</h1>
                 <h5>{{questions.length - numQuestion}} question(s) remaining.</h5>
+                <h5 ng-show="hasError"> {{error}} </h5>
                 <br>
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
@@ -75,7 +76,7 @@
                             <br>
                     </div>
                     <!--ng-click="increment()"-->
-                    <button class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
+                    <button id="next" class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
                 </form>
             </div>
             <div id="startButton" ng-show="isDone">
