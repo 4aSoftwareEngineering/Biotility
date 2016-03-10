@@ -1,7 +1,7 @@
 'use strict';
 
 // Main service for holding persistent data
-angular.module('core').service('Subjects', ['$http', function($http) {
+angular.module('core').service('Subjects',  ['$http', function($http) {
 
   // Array for question objects we have for the selected subject.
   this.questionsForSubject = [{}];
@@ -44,6 +44,21 @@ angular.module('core').service('Subjects', ['$http', function($http) {
   };
 
 }]);
+
+//passes in function to load resources from database
+angular.module('core').service('Resources', ['$http', function($http) {
+
+  return {
+    loadResources: function() {
+      return $http({
+        method: 'GET',
+        url: '/api/parse/resources'
+      });
+    }
+  };
+
+}]);
+
 
 angular.module('core').service('NavCrumbs', [
   function() {

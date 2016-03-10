@@ -4,10 +4,10 @@
 <!--header-->
     <div class="breadcrumbh">
     	<div class="row topmargin-b">
-        	<div class="col-md-2 col-md-offset-1 page-head">
+        	<div class="col-md-2 col-md-offset-1 col-xs-offset-1 col-xs-2 page-head">
             	Login
             </div>
-            <div class="col-md-8 b-head">
+            <div class="col-md-8 col-sm-pull-1 col-xs-pull-1 b-head">
             	<a data-ui-sref="home">Home</a> / Login
             </div>
     	</div>
@@ -26,17 +26,17 @@
                  </div>
             </div>
         </div>
-        
+
         <!-- log-in button -->
         <div class="topmargin-10" style="text-align:center;">
             <!--modal-->
-            
+
             <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
             <h3>Attempting to Log-in...</h3>
             </div>
 			</script>
-            
+
             <!--login button-->
             <button type="submit" ng-click="open()" class="btn btn-default">
                 Log-in
@@ -44,7 +44,7 @@
             <div ng-show="selected">Selection from a modal: {{ selected }}</div>
         </div>
     </form>
-    
+
     <!-- register link -->
     <div class="registerLink topmargin-10" style="text-align:center;">
         <a data-ui-sref="authentication.signup">Don't have an account? Click here to register.</a>

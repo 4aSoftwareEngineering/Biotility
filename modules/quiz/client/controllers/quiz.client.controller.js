@@ -68,6 +68,7 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
             //Create analytics obj.
             if (!$scope.analytics[$scope.index]) {
                 console.log("Creating analytics...");
+
                 $scope.analytics[$scope.index] = {};
                 $scope.analytics[$scope.index].question = $scope.question;
                 $scope.analytics[$scope.index].attempts = 1;
@@ -209,11 +210,12 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http',
                 });
 
             $scope.content = $fileContent;
+
         };
 
     }
 ]);
 
-$('#next').click(function(){
+$('#next').click(function() {
     alert('lol');
 });
