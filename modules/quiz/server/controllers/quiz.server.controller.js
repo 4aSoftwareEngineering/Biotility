@@ -101,4 +101,4 @@ exports.CSVtoJSON = function(req) {
     converter.fromString(req.body.data, function(err, result) {
         console.log(result);
     });
-}
+};

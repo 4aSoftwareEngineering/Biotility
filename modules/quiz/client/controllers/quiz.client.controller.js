@@ -45,13 +45,14 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         $scope.score = 0;
         $scope.analytics = [];
         $scope.numQuestion = 0;
+        $scope.firstIncorrect = {};
         $scope.hasError = false;
         $scope.hasStart = true;
         $scope.currCategory = $stateParams.courseName;
 
         $scope.start = function() {
             if (max === 0) {
-                console.log("No questions found.");
+                $scope.error = "No questions found.";
                 $scope.hasError = true;
                 $scope.hasStart = false;
             } else {
@@ -66,20 +67,27 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
         $scope.checkAnswer = function(answer) {
             //Check answer, log analytics.
             console.log("Checking answer...");
+            //Create analytics obj.
             if (!$scope.analytics[$scope.index] || isNaN($scope.analytics[$scope.index])) {
                 $scope.analytics[$scope.index] = {};
-                $scope.analytics[$scope.index].question = $scope.questions[$scope.index];
+                $scope.analytics[$scope.index].question = $scope.question;
                 $scope.analytics[$scope.index].attempts = 1;
             }
+
+            //Check based off question type.
+            console.log('answer', answer);
             if ($scope.isTF || $scope.isMultipleChoice) {
-                if ($scope.questions[$scope.index].correctAnswer === answer) {
+                if ($scope.question.correctAnswer === answer) {
                     console.log("Correct!");
                     console.dir($scope.analytics[$scope.index]);
                     $scope.increment();
                 } else {
                     console.log("Incorrect!");
+                    $scope.error = "Incorrect. Please try again.";
+                    if (!$scope.analytics[$scope.index].firstIncorrect)
+                        $scope.analytics[$scope.index].firstIncorrect = $scope.question;
+                    console.log('first Incorrect    ', $scope.analytics[$scope.index].firstIncorrect);
                     $scope.analytics[$scope.index].attempts++;
-
                     console.dir($scope.analytics[$scope.index]);
 
                 }
@@ -100,16 +108,17 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
                 $scope.hasStart = false;
             } else {
                 $scope.index = ($scope.index + 1) % $scope.questions.length;
-
-                if ($scope.questions[$scope.index].questionType === "TF") {
+                $scope.question = $scope.questions[$scope.index];
+                $scope.hasError = false;
+                if ($scope.question.questionType === "TF") {
                     $scope.isMA = false;
                     $scope.isTF = true;
                     $scope.isMultipleChoice = false;
-                } else if ($scope.questions[$scope.index].questionType === "SC") {
+                } else if ($scope.question.questionType === "SC") {
                     $scope.isMA = false;
                     $scope.isMultipleChoice = true;
                     $scope.isTF = false;
-                } else if ($scope.questions[$scope.index].questionType === "MA") {
+                } else if ($scope.question.questionType === "MA") {
                     $scope.isMA = true;
                     $scope.isMultipleChoice = false;
                     $scope.isTF = false;
@@ -183,7 +192,9 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
 angular.module('quiz').controller('QuizCreate', ['$scope', '$http',
     function($scope, $http) {
         $scope.uploadQuestions = function($fileContent) {
-            var obj = {data: $fileContent}
+            var obj = {
+                data: $fileContent
+            };
             $http.post('/question_upload', obj)
                 .success(function(res) {
                     console.log('posted');
