@@ -10,6 +10,7 @@ var path = require('path'),
     User = mongoose.model('User'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
+var Converter = require("csvtojson").Converter;
 
 /**
  * Create a quiz question
@@ -33,7 +34,7 @@ exports.create = function(req, res) {
 Retrieve all of the questions by category in quiz_bank
 */
 exports.retrieveQuestionsByCategory = function(req, res) {
-	//Print all questions in DB.
+    //Print all questions in DB.
     QuizQuestion.find({}, function(err, docs) {
         if (!err) {
             console.log(docs);
@@ -94,3 +95,10 @@ exports.quizQuestionByID = function(req, res, next, id) {
         next();
     });
 };
+
+exports.CSVtoJSON = function(req) {
+    var converter = new Converter({});
+    converter.fromString(req.body.data, function(err, result) {
+        console.log(result);
+    });
+}
