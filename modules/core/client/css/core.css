@@ -241,14 +241,24 @@ body {
 }
 
 /* footer */
-
-
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 100px;
+}
 .footer {
-  padding-top: 42px;
-  padding-bottom: 30px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 100px;
   background: #252525;
   color: #B9B9B9;
 }
+
 
 /*image css */
 
