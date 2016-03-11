@@ -43,14 +43,22 @@
                 </label>
                 <br>
                 <label>
-                    <input type="radio" name="profiletype" value="Student" ng-model="credentials.profileType" required> Student
+                    <input type="radio" name="profiletype" value="Student" ng-model="credentials.profileType" required> Student with class code
                 </label>
                 <br>
+                <label>
+                  <input type="radio" name="profiletype" value="Student2" ng-model="credentials.profileType" required> Student without class code
+                </label>
+              <br>
             </div>
         </div>
         <!-- if student - input class code -->
         <div ng-show="credentials.profileType=='Student'" class="inputs" align="center">
                 <input type="text" ng-model="credentials.courseCode" placeholder="Class Code" style="height:40px;">
+        </div>
+        <!-- if student - input class code -->
+        <div ng-show="credentials.profileType=='Student2'" class="inputs" align="center">
+          You will have to verify your e-mail.
         </div>
         <!-- if teacher - select courses  -->
         <div ng-show="credentials.profileType=='Teacher'">
