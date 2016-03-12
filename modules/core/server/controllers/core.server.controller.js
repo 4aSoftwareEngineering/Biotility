@@ -97,6 +97,24 @@ exports.deleteResource = function(req, res) {
     });
 };
 
+//Update a resource from the database
+exports.updateResource = function(req, res) {
+    var resource_to_update = req.resource;
+
+    resource_to_update.title = req.body.title;
+    resource_to_update.url = req.body.url;
+    resource_to_update.subject = req.body.subject;
+
+
+    resource_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.json(resource_to_update);
+        }
+    });
+};
+
 
 // Retrieve user data, send as response.
 exports.parseUsers = function(req, res) {

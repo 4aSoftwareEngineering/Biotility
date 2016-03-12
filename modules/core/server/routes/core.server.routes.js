@@ -24,6 +24,9 @@ module.exports = function(app) {
 
     app.route('/api/data/resources').post(core.addResource);
     app.route('/api/data/resources/:resourceId').delete(core.deleteResource);
+    //update work
+    app.route('/api/data/resources/:resourceId').put(core.updateResource);
+
 
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);

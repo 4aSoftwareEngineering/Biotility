@@ -36,6 +36,7 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //some variables for the resource view
         $scope.resourceFilter = { subject: $scope.subject };
         $scope.editMode = false;
+        $scope.updateMode = false;
 
         //load all the resources from the database
         Resources.loadResources().then(function(response) {
@@ -45,11 +46,14 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //Used to create a new Resource on database
         $scope.addResource = function() {
             $http.post('api/data/resources', $scope.newResource).success(function(response) {
-                console.log("Eric", response.message);
+                console.log("Eric It added", response.message);
+                Resources.loadResources().then(function(response) {
+                    $scope.resources = response.data;
+                });
             }).error(function(response) {
                 console.log("Eric", response.message);
             });
-            $scope.resources.push($scope.newResource);
+            //$scope.resources.push($scope.newResource);
 
             $scope.newResource = null;
         };
@@ -58,13 +62,40 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.deleteResource = function(resource_obj) {
             var id = resource_obj._id;
             $http.delete('api/data/resources/' + id).success(function(response) {
-                console.log("Eric", response.message);
+                console.log("Eric It Deleted", response.message);
+                Resources.loadResources().then(function(response) {
+                    $scope.resources = response.data;
+                });
             }).error(function(response) {
                 console.log("Eric http delete error", response.message);
             });
-            $scope.resources.splice($scope.resources.indexOf(resource_obj), 1);
+            //$scope.resources.splice($scope.resources.indexOf(resource_obj), 1);
 
             $scope.newResource = null;
+        };
+        //Used to update a Resource from the database
+        $scope.updateResource = function(resource_obj) {
+            var id = resource_obj._id;
+
+            $http.put('api/data/resources/' + id,$scope.newResource).success(function(response) {
+                console.log("Eric It Updated", response.message);
+                $scope.newResource = {};
+                $scope.updateMode = false;
+            }).error(function(response) {
+                console.log("Eric http update error", response.message);
+            });
+
+        };
+
+        $scope.editResource = function(resource_obj) {
+            $scope.updateMode = true;
+            $scope.newResource = resource_obj;
+            $scope.updateID = resource_obj._id;
+        };
+
+        $scope.clearResourceField = function() {
+            $scope.newResource = {};
+            $scope.updateMode = false;
         };
 
 
