@@ -62,30 +62,61 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                         // }  
                     }
 
-                    var num =  Math.floor((Math.random() * 1000) + 1);
-                    // var num = 89;
-                    var check = true;
+                    
+                    // var num = 8;
+                    // var matching = false;
+                    // var posted = false;
 
                     // console.log("Checking course codes:");
                     //see if num already exists in the savedCodes array
-                    for (var s = 0; s < savedCodes.length; s++) {
-                        console.log(savedCodes[s]);
-                        if (num === savedCodes[s]) {
-                            check = false;
-                        }
-                    }
+                    // while (posted === false) {
+                    //     //make random number
+                    //     var num =  Math.floor((Math.random() * 1000) + 1);
+                    //     //reset matching to false
+                    //     matching = false;
+                    //     //check if there is a mtch
+                    //     while (matching === false){
+                    //         for (var s = 0; s < savedCodes.length; s++) {
+                    //         // console.log(savedCodes[s]);
+                    //             //if there is go back to beginning of loop
+                    //             if (num === savedCodes[s]) {
+                    //                 matching = true;
+                    //                 console.log("Duplicate Code");
+                    //                 break;
+                    //             }
+                    //         }
+                    //     //if there is not save items
+                    //     console.log("New Course Code Created");
+                    //     courseObj.number = num;
+                    //     $scope.credentials.courses.push(courseObj);
+                    //     posted = true 
+                    //     }   
+                    // }
+                     var posted = false;
+                    var match = false;
+                    var num =  Math.floor((Math.random() * 1000) + 1);
+                    while (posted === false){
+                        match = false;
+                        //check if there is a match
+                        while (match === false){
+                            //make random number
+                            num =  Math.floor((Math.random() * 1000) + 1);
+                            match = true;
+                            for (var s = 0; s < savedCodes.length; s++) {
+                                //if there is go back to beginning 
+                                if (num === savedCodes[s]) {
+                                    match = false;
+                                    console.log("Duplicate Code");
+                                    break;
+                                }
+                            }
 
-                    //if so make a new one and keep checking
-                    if (check === false){
-                        // var num2 =  Math.floor((Math.random() * 1000) + 1);
-                        console.log("Duplicate Code");
-                        check = true;
-                    }
-                    //if not assign that number to the courseObj and add it to the array
-                    else{
+                        }
+                        //if not add course code
                         console.log("New Course Code Created");
                         courseObj.number = num;
                         $scope.credentials.courses.push(courseObj);
+                        posted = true; 
                     }
                 });
             }
