@@ -18,7 +18,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.classNames = [];
 
         //array of saved codes
-        $scope.savedCodes = [];
+        var savedCodes = [];
+        var test = "HI ISABEL";
 
         // load subjects
         Subjects.loadSubjects().then(function(response) {
@@ -33,36 +34,60 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         $scope.add = function(course) {
             if (course !== '') {
-
-                //get all the teachers
-                 Teachers.loadTeachers().then(function(response) {
-                    $scope.teachers = response.data;
-                });
-
                 //Creates a new object to be used for user course schema
-                var courseObj = {};
-                courseObj.courseName = course;
-                courseObj.content = "";
-                courseObj.progress = "";
-                courseObj.section = "";
+                    var courseObj = {};
+                    courseObj.courseName = course;
+                    courseObj.content = "";
+                    courseObj.progress = "";
+                    courseObj.section = "";
 
-                //Generate number when you add the course
-                // var num =  Math.floor((Math.random() * 1000) + 1);
-                var num = 8;
+                    //Generate number when you add the course
+                   
 
-                console.log("Checking course codes:");
-                //see if num already exists in the savedCodes array
-                for (var i = 0; i < $scope.savedCodes.length; i++) {
-                    console.log($scope.savedCodes[i]);
-                    console.log("printed");
+                //get all the coursecodes
+                Teachers.loadTeachers().then(function(response) {
+                    $scope.teachers = response.data;
+                    //dowload all current course codes
+                    for (var i = 0; i < $scope.teachers.length; i++) {
+                        // if ($scope.teacher[i].courses !== undefined) {
+                            // console.log("not empty");
+                            // console.log($scope.teachers[i].courses[0].number);
+                            // var number = $scope.teachers[i].courses[0].number;
+                            for(var f = 0; f < $scope.teachers[i].courses.length; f++){
+                                // console.log($scope.teachers[i].courses[f].number);
+                                var number = $scope.teachers[i].courses[f].number;
+                                //save course codes to savedCodes array
+                                savedCodes.push(number);
+                            }
+                        // }  
+                    }
+
+                    var num =  Math.floor((Math.random() * 1000) + 1);
+                    // var num = 89;
+                    var check = true;
+
+                    // console.log("Checking course codes:");
+                    //see if num already exists in the savedCodes array
+                    for (var s = 0; s < savedCodes.length; s++) {
+                        console.log(savedCodes[s]);
+                        if (num === savedCodes[s]) {
+                            check = false;
+                        }
+                    }
+
                     //if so make a new one and keep checking
+                    if (check === false){
+                        // var num2 =  Math.floor((Math.random() * 1000) + 1);
+                        console.log("Duplicate Code");
+                        check = true;
+                    }
                     //if not assign that number to the courseObj and add it to the array
-                }
-                
-                $scope.savedCodes.push(num);
-                courseObj.number = num;
-                $scope.credentials.courses.push(courseObj);
-
+                    else{
+                        console.log("New Course Code Created");
+                        courseObj.number = num;
+                        $scope.credentials.courses.push(courseObj);
+                    }
+                });
             }
 
             $scope.toAdd = '';
