@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'PasswordValidator', 'Authentication', 'Subjects',
-    function($scope, $state, $http, $location, $window, PasswordValidator, Authentication, Subjects) {
+angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'PasswordValidator', 'Authentication', 'Subjects', 'Teachers',
+    function($scope, $state, $http, $location, $window, PasswordValidator, Authentication, Subjects, Teachers) {
 
         //Added Stuff
         $scope.authentication = Authentication;
@@ -17,6 +17,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         // array of class names
         $scope.classNames = [];
 
+        //array of saved codes
+        $scope.savedCodes = [];
+
         // load subjects
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
@@ -31,6 +34,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.add = function(course) {
             if (course !== '') {
 
+                //get all the teachers
+                 Teachers.loadTeachers().then(function(response) {
+                    $scope.teachers = response.data;
+                });
+
                 //Creates a new object to be used for user course schema
                 var courseObj = {};
                 courseObj.courseName = course;
@@ -39,7 +47,20 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 courseObj.section = "";
 
                 //Generate number when you add the course
-                courseObj.number = Math.floor((Math.random() * 1000) + 1);
+                // var num =  Math.floor((Math.random() * 1000) + 1);
+                var num = 8;
+
+                console.log("Checking course codes:");
+                //see if num already exists in the savedCodes array
+                for (var i = 0; i < $scope.savedCodes.length; i++) {
+                    console.log($scope.savedCodes[i]);
+                    console.log("printed");
+                    //if so make a new one and keep checking
+                    //if not assign that number to the courseObj and add it to the array
+                }
+                
+                $scope.savedCodes.push(num);
+                courseObj.number = num;
                 $scope.credentials.courses.push(courseObj);
 
             }

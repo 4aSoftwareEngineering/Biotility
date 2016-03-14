@@ -25,7 +25,7 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 ]);
 
 
-angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects',
+angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 
     function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
@@ -294,6 +294,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
            var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
            window.location.href = link;
+
+      
         };
 
 

@@ -15,12 +15,14 @@ module.exports = function(app) {
     app.route('/api/auth/reset/:token').post(users.reset);
 
     // Setting up the users authentication api
-    app.route('/api/auth/signup').post(users.signup);
+    app.route('/api/auth/signup').post(users.signup).get(users.parseTeachers);
     app.route('/api/auth/signup/student').post(users.signupStudent);
     app.route('/api/auth/signin').post(users.signin);
     app.route('/api/auth/signout').get(users.signout);
     //app.route('/api/auth/signup/courseCode').get(users.checkStudentCode);
 
+
+    // app.route('/api/auth/signup')
 
     // Setting the facebook oauth routes
     app.route('/api/auth/facebook').get(users.oauthCall('facebook', {
