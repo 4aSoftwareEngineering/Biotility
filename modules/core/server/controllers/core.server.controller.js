@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
     QuizQuestion = mongoose.model('QuizQuestion'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
-    Resource = mongoose.model('Resource');
+    Resource = mongoose.model('Resource'),
+    SubHead = mongoose.model('SubHead');
 /**
  * Render the main application page
  */
@@ -64,13 +65,22 @@ exports.parseSubjects = function(req, res) {
 };
 
 
-//retrives all Resources from database
+//Retrieves all Resources from database
 exports.parseResources = function(req, res) {
 
     Resource.find({}, function(err, subs) {
         return res.end(JSON.stringify(subs));
     });
 };
+
+//Retrieves all the SubHeadings from database
+exports.parseSubHeads = function(req, res) {
+
+    SubHead.find({}, function(err, subs) {
+        return res.end(JSON.stringify(subs));
+    });
+};
+
 
 //Creates a new resource for the database
 exports.addResource = function(req, res) {
@@ -115,6 +125,43 @@ exports.updateResource = function(req, res) {
     });
 };
 
+//Server side mongoose functions for SubHeadings
+exports.addSubHead = function(req, res) {
+    var newSubHead = new SubHead(req.body);
+    newSubHead.save(function(err) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        } else {
+            res.json(newSubHead);
+        }
+    });
+};
+exports.deleteSubHead = function(req, res) {
+    var subHead_to_delete = req.subHead;
+    subHead_to_delete.remove(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.end();
+        }
+    });
+};
+exports.updateSubHead = function(req, res) {
+    var subHead_to_update = req.subHead;
+
+    subHead_to_update.title = req.body.title;
+    subHead_to_update.subject = req.body.subject;
+
+
+    subHead_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.json(subHead_to_update);
+        }
+    });
+};
 
 // Retrieve user data, send as response.
 exports.parseUsers = function(req, res) {
@@ -198,13 +245,25 @@ exports.tester = function(req, res) {
     });
 };
 
-//middleware to delete resources
+//middleware for resources
 exports.resourceByID = function(req, res, next, id) {
     Resource.findById(id).exec(function(err, resource) {
         if (err) {
             res.status(400).send(err);
         } else {
             req.resource = resource;
+            next();
+        }
+    });
+};
+
+//middleware for subheadings
+exports.subHeadByID = function(req, res, next, id) {
+    SubHead.findById(id).exec(function(err, subHead) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            req.subHead = subHead;
             next();
         }
     });

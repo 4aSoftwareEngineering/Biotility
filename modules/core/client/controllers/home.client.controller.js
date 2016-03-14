@@ -25,22 +25,27 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 ]);
 
 
-angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects',
-    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects) {
+angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 'SubHeads',
+    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects, SubHeads) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
-
+        //Remember the subjected we are in
         $scope.subject = $stateParams.courseName;
 
         //some variables for the resource view
-        $scope.resourceFilter = { subject: $scope.subject };
         $scope.editMode = false;
         $scope.updateMode = false;
+        $scope.ResourceField = true;
 
         //load all the resources from the database
         Resources.loadResources().then(function(response) {
             $scope.resources = response.data;
+        });
+
+        //load all the subheadings from the database
+        SubHeads.loadSubHeads().then(function(response) {
+            $scope.subHeads = response.data;
         });
 
         //Used to create a new Resource on database
@@ -53,7 +58,6 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             }).error(function(response) {
                 console.log("Eric", response.message);
             });
-            //$scope.resources.push($scope.newResource);
 
             $scope.newResource = null;
         };
@@ -69,10 +73,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             }).error(function(response) {
                 console.log("Eric http delete error", response.message);
             });
-            //$scope.resources.splice($scope.resources.indexOf(resource_obj), 1);
 
             $scope.newResource = null;
         };
+
         //Used to update a Resource from the database
         $scope.updateResource = function(resource_obj) {
             var id = resource_obj._id;
@@ -87,14 +91,63 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
         };
 
+        //Angular SubHeading Functions like the ones above
+        $scope.addSubHead = function() {
+            $http.post('api/data/subHeads', $scope.newSubHead).success(function(response) {
+                console.log("Eric It added", response.message);
+                SubHeads.loadSubHeads().then(function(response) {
+                    $scope.subHeads = response.data;
+                });
+            }).error(function(response) {
+                console.log("Eric", response.message);
+            });
+            
+            $scope.newSubHead = null;
+        };
+        $scope.deleteSubHead = function(subHead_obj) {
+            var id = subHead_obj._id;
+            $http.delete('api/data/subheads/' + id).success(function(response) {
+                console.log("Eric It Deleted", response.message);
+                SubHeads.loadSubHeads().then(function(response) {
+                    $scope.subHeads = response.data;
+                });
+            }).error(function(response) {
+                console.log("Eric http delete error", response.message);
+            });
+            
+            $scope.newResource = null;
+        };
+        $scope.updateSubHead = function(subHead_obj) {
+            var id = subHead_obj._id;
+
+            $http.put('api/data/subheads/' + id,$scope.newSubHead).success(function(response) {
+                console.log("Eric It Updated", response.message);
+                $scope.newSubHead = {};
+                $scope.updateMode = false;
+            }).error(function(response) {
+                console.log("Eric http update error", response.message);
+            });
+
+        };
+
+        //Used to Update Angular Parameters
         $scope.editResource = function(resource_obj) {
             $scope.updateMode = true;
             $scope.newResource = resource_obj;
             $scope.updateID = resource_obj._id;
+            $scope.ResourceField = true;
+        };
+        $scope.editSubHead = function(subHead_obj) {
+            $scope.updateMode = true;
+            $scope.newSubHead = subHead_obj;
+            $scope.updateSubHeadID = subHead_obj._id;
+            $scope.ResourceField = false;
         };
 
+        //Clears all fields, including the SubHead field        
         $scope.clearResourceField = function() {
             $scope.newResource = {};
+            $scope.newSubHead = {};
             $scope.updateMode = false;
         };
 

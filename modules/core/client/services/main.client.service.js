@@ -59,6 +59,21 @@ angular.module('core').service('Resources', ['$http', function($http) {
 
 }]);
 
+//passes in function to load subheadings from database
+angular.module('core').service('SubHeads', ['$http', function($http) {
+
+  return {
+    loadSubHeads: function() {
+      return $http({
+        method: 'GET',
+        url: '/api/parse/subheads'
+      });
+    }
+  };
+
+}]);
+
+
 
 angular.module('core').service('NavCrumbs', [
   function() {
