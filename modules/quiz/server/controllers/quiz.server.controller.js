@@ -3,14 +3,16 @@
 /**
  * Module dependencies.
  */
+
 var path = require('path'),
+ appDir = path.dirname(require.main.filename),
     mongoose = require('mongoose'),
     QuizQuestion = mongoose.model('QuizQuestion'),
     StudentGrades = mongoose.model('StudentGrades'),
     User = mongoose.model('User'),
+    xlsxj = require("xlsx-to-json"),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-var Converter = require("csvtojson").Converter;
 
 /**
  * Create a quiz question
@@ -97,8 +99,13 @@ exports.quizQuestionByID = function(req, res, next, id) {
 };
 
 exports.CSVtoJSON = function(req) {
-    var converter = new Converter({});
-    converter.fromString(req.body.data, function(err, result) {
-        console.log(result);
+    var data = req.body.data;
+    xlsxj({
+        input: appDir + "/uploads/Web App Uploader.xlsx",
+        output: appDir + "/quizJSON/output.json"
+    }, function(err, result) {
+        if (err) {
+            console.error("Error Parsing XLSX", err);
+        }
     });
 };

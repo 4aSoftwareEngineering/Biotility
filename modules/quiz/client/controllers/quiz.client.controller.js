@@ -102,8 +102,6 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', 'Qui
             //Load next question.
         };
 
-
-
         $scope.increment = function() {
             //Determines question type and if quiz is finished.
             $scope.answer = 0; //prevent auto selection of radio btns
@@ -215,7 +213,3 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http',
 
     }
 ]);
-
-$('#next').click(function() {
-    alert('lol');
-});
