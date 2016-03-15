@@ -1,21 +1,17 @@
 <style type="text/css">
-	form .progress {
+form .progress {
     line-height: 15px;
 }
 
 .progress {
-    display: inline-block;
     width: 100px;
-    border: 3px groove #CCC;
 }
 
 .progress div {
-    font-size: smaller;
-    background: orange;
+    background: green;
     width: 0;
 }
 </style>
-
 <div ui-view class="margin-top-50" ng-controller="QuizCreate">
     <div class="header-space">
         <!-- Using this for space -->
@@ -24,17 +20,18 @@
     <br>
     <br>
     <div class="container">
-        <h1> Upload Quiz XLSX File</h1>
+        <h2>Quiz Upload</h2>
+        <p>Uploads are restricted to Microsoft Excel (.xlsx) types only.</p>
+        <p>The file will be uploaded upon selection.</p>
         <button type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ngf-max-height="1000" ngf-max-size="1MB">
-            Select File</button>
+            Select File
+        </button>
         <br>
-        <br> File:
-        <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
-            <span class="progress" ng-show="f.progress >= 0">
-          <div style="width:{{f.progress}}%"  
-               ng-bind="f.progress + '%'"></div>
-      </span>
-        </div>
-        {{errorMsg}}
+        <br>
+        <span class="progress" ng-show="f.progress >= 0">
+                <div style="width:{{f.progress}}%">{{f.progress == 100 ? "Complete!" : "Uploading..."}}</div>
+                <p ng-bind="'Progress: ' + f.progress + '%'"></p>
+        </span>
+        <p>File Name: {{f.name || "N/A"}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}} {{errorMsg}}</p>
     </div>
 </div>

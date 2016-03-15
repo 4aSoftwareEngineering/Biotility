@@ -142,9 +142,7 @@ function uploadQuizQuestions(result, res) {
 
         qModel.save(function(err) {
             if (err) {
-                
-            } else {
-                
+                console.log('Error saving question: ', err);
             }
         });
     }

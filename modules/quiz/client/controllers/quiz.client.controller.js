@@ -214,6 +214,7 @@ angular.module('quiz', ['ngFileUpload']).controller('QuizCreate', ['$scope', '$h
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));
+
                 });
             }
         };
