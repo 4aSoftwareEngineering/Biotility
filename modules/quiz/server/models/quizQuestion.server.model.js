@@ -14,66 +14,27 @@ var questionSchema = new Schema({
         type: String,
         required: true
     },
-    questionType: {
+    type: {
         type: String,
         required: true
     },
-    description: {
+    text: {
         type: String,
         required: true
     },
-    correctAnswer: {
-        type: String,
+    answers: {
+        type: Object,
         required: true
-    },
-//    answerDesc: {
-//        type: Object
-//    },
-    answerDesc1: {
-        type: String
-    },
-    answerDesc2: {
-        type: String
-    },
-    answerDesc3: {
-        type: String
-    },
-    answerDesc4: {
-        type: String
-    },
-    answerDesc5: {
-        type: String
-    },
-//    MA: {
-//        type: Object
-//    },
-    MA1: {
-        type: String
-    },
-    MA2: {
-        type: String
-    },
-    MA3: {
-        type: String
-    },
-    MA4: {
-        type: String
-    },
-    MA5: {
-        type: String
     },
     hint: {
-	type: String
+        type: String
     },
-    links: {
-	type: String
+    link:{
+        type: String
     }
 
 });
 
-questionSchema.methods.getQuizResults = function(userID) {
-
-};
 
 var gradeSchema = new Schema({
     category: {

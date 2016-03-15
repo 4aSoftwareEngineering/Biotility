@@ -5,12 +5,14 @@
  */
 
 var path = require('path'),
- appDir = path.dirname(require.main.filename),
+    fs = require('fs'),
+    appDir = path.dirname(require.main.filename),
     mongoose = require('mongoose'),
     QuizQuestion = mongoose.model('QuizQuestion'),
     StudentGrades = mongoose.model('StudentGrades'),
     User = mongoose.model('User'),
     xlsxj = require("xlsx-to-json"),
+    _ = require("underscore"),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 
@@ -99,13 +101,60 @@ exports.quizQuestionByID = function(req, res, next, id) {
 };
 
 exports.CSVtoJSON = function(req) {
-    var data = req.body.data;
-    xlsxj({
-        input: appDir + "/uploads/Web App Uploader.xlsx",
-        output: appDir + "/quizJSON/output.json"
-    }, function(err, result) {
-        if (err) {
-            console.error("Error Parsing XLSX", err);
+    var file = req.files.file;
+    var appDir = path.dirname(require.main.filename);
+    var newPath = appDir + "/uploads/" + file.originalname;
+    var data = file.buffer;
+    fs.writeFile(newPath, data, function(err) {
+        if (err)
+            console.log("Error uploading XLSX.");
+        else {
+            console.log(file.originalname + " successfully saved.");
+            xlsxj({
+                input: newPath,
+                output: "./temp/output.json"
+            }, function(err, data) {
+                if (err) {
+                    console.error("Error Parsing XLSX", err);
+                } else {
+                    console.log("Successfully parsed XLSX.");
+                    uploadQuizQuestions(data);
+                }
+            });
         }
     });
 };
+
+function uploadQuizQuestions(result) {
+    var output = [];
+    for (var key in result) {
+        if (result[key].Category === "")
+            break;
+        var question = {};
+        question.answers = {};
+        question.category = result[key].Category;
+        question.type = result[key]['Question Type'];
+        question.text = result[key].Question;
+        question.answers.MCTF = [
+            result[key].Choice1,
+            result[key].Choice2,
+            result[key].Choice3,
+            result[key].Choice4,
+            result[key].Choice5
+        ];
+
+        //Dont assign if there arent any MA.
+        if (result[key]['Matching Answer 1'])
+            question.answers.MA = [
+                result[key]['Matching Answer 1'],
+                result[key]['Matching Answer 2'],
+                result[key]['Matching Answer 3'],
+                result[key]['Matching Answer 4'],
+                result[key]['Matching Answer 5']
+            ];
+        question.hint = result[key]['Hint upon incorrect answer'];
+        question.link = result[key]['Topic Link(s) or Text'];
+        output.push(question);
+        console.log(question);
+    }
+}

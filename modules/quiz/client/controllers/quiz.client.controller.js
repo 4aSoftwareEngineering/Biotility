@@ -193,23 +193,29 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
 /*
  * Controller for storing quiz into MongoDB
  */
-angular.module('quiz').controller('QuizCreate', ['$scope', '$http',
-    function($scope, $http) {
-        $scope.uploadQuestions = function($fileContent) {
-            var obj = {
-                data: $fileContent
-            };
-            $http.post('/question_upload', obj)
-                .success(function(res) {
-                    console.log('posted');
-                })
-                .error(function(res) {
-                    console.log('error');
+angular.module('quiz', ['ngFileUpload']).controller('QuizCreate', ['$scope', '$http', 'Upload', '$timeout',
+    function($scope, $http, Upload, $timeout) {
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                file.upload = Upload.upload({
+                    url: '/question_upload',
+                    data: { file: file }
                 });
 
-            $scope.content = $fileContent;
-
+                file.upload.then(function(response) {
+                    $timeout(function() {
+                        file.result = response.data;
+                    });
+                }, function(response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function(evt) {
+                    file.progress = Math.min(100, parseInt(100.0 *
+                        evt.loaded / evt.total));
+                });
+            }
         };
-
     }
 ]);
