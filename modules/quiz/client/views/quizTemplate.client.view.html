@@ -13,17 +13,16 @@
 </div>
 <div id="QuizView" ui-view class="margin-top-50" ng-controller="QuizController">
     <div class="container">
-        <span ng-bind="question.description"></span>
         <div class="col-md-10 col-md-offset-1" ng-show="loadedQ">
             <div id="startButton" ng-show="hasStart">
-                <h3 ng-show="!questions.length">Category does not have any questions.</h3>
-                <h3 ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</h3>
-                <h1 ng-hide="loggedIn">Please log in to take the assessment.</h1>
+                <p ng-show="!questions.length">Category does not have any questions.</p>
+                <p ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</p>
+                <p ng-hide="loggedIn">Please log in to take the assessment.</p>
                 <button ng-disabled="!canStart" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
                 <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
             </div>
             <div id="quizContent" ng-show="quizStarted">
-                <h1>Question {{numQuestion}}: {{questions[index].description}}</h1>
+                <h1>Question {{numQuestion}}: {{questions[index].text}}</h1>
                 <h5>{{questions.length - numQuestion}} question(s) remaining.</h5>
                 <h5 ng-show="hasError"> {{error}} </h5>
                 <br>

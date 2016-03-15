@@ -8,10 +8,10 @@ var quiz = require('../controllers/quiz.server.controller');
 
 module.exports = function(app) {
     // Articles collection routes
-    /*app.route('/api/quiz')
-        .post(quiz.create);*/
 
-    app.route('/question_upload').post(quiz.CSVtoJSON);
+
+    app.route('/question_upload')
+        .post(quiz.CSVtoJSON);
     
     app.route('/api/quiz/')
         .get(quiz.retrieveQuestionsByCategory);

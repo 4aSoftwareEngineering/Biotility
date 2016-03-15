@@ -1,8 +1,8 @@
 'use strict';
 
 // Quiz main controller
-angular.module('quiz').controller('QuizController', ['$scope', '$location', 'QuizQuestion', '$stateParams', '$state', 'Authentication', '$http',
-    function($scope, $location, QuizQuestion, $stateParams, $state, Authentication, $http) {
+angular.module('quiz').controller('QuizController', ['$scope', '$location', '$stateParams', '$state', 'Authentication', '$http',
+    function($scope, $location, $stateParams, $state, Authentication, $http) {
         //
         console.log("Loading Qs:", $stateParams.courseName);
         var courseName = $stateParams.courseName;
@@ -193,7 +193,7 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
 /*
  * Controller for storing quiz into MongoDB
  */
-angular.module('quiz', ['ngFileUpload']).controller('QuizCreate', ['$scope', '$http', 'Upload', '$timeout',
+angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$timeout',
     function($scope, $http, Upload, $timeout) {
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
