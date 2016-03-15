@@ -15,25 +15,6 @@ var path = require('path'),
     _ = require("underscore"),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-
-/**
- * Create a quiz question
- */
-exports.create = function(req, res) {
-
-    var question = new QuizQuestion(req.body);
-
-    question.save(function(err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.json(question);
-        }
-    });
-};
-
 /*
 Retrieve all of the questions by category in quiz_bank
 */
@@ -100,7 +81,7 @@ exports.quizQuestionByID = function(req, res, next, id) {
     });
 };
 
-exports.CSVtoJSON = function(req) {
+exports.CSVtoJSON = function(req, res) {
     var file = req.files.file;
     var appDir = path.dirname(require.main.filename);
     var newPath = appDir + "/uploads/" + file.originalname;
@@ -125,7 +106,7 @@ exports.CSVtoJSON = function(req) {
     });
 };
 
-function uploadQuizQuestions(result) {
+function uploadQuizQuestions(result, res) {
     var output = [];
     for (var key in result) {
         if (result[key].Category === "")
@@ -156,5 +137,15 @@ function uploadQuizQuestions(result) {
         question.link = result[key]['Topic Link(s) or Text'];
         output.push(question);
         console.log(question);
+
+        var qModel = new QuizQuestion(question);
+
+        qModel.save(function(err) {
+            if (err) {
+                
+            } else {
+                
+            }
+        });
     }
 }
