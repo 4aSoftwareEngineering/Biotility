@@ -18,7 +18,7 @@
     </div>
     
     <!-- Temporary Button Until Admin Account -->
-    <div class="container" style="padding-left: 70px">
+    <div ng-show="authentication.user.profileType === 'Admin'" class="container" style="padding-left: 70px">
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="editMode">Edit?

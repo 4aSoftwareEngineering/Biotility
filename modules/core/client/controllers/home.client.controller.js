@@ -37,7 +37,7 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.editMode = false;
         $scope.updateMode = false;
         $scope.ResourceField = true;
-
+        $scope.isAdmin = false;
         //load all the resources from the database
         Resources.loadResources().then(function(response) {
             $scope.resources = response.data;
@@ -47,7 +47,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         SubHeads.loadSubHeads().then(function(response) {
             $scope.subHeads = response.data;
         });
-
+        // if ($scope.authentication.user.profileType === 'Admin') {
+        //     $scope.isAdmin = true;
+        // }    
         //Used to create a new Resource on database
         $scope.addResource = function() {
             $http.post('api/data/resources', $scope.newResource).success(function(response) {
@@ -171,11 +173,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
+        $scope.isAdmin = false;
         $scope.profileVisible = true;
         //checks if teacher
         if ($scope.profileType === "Teacher") {
             console.log("I am a teacher");
             $scope.isTeacher = true;
+        } else if ($scope.profileType === "Admin") {
+            console.log("I am a admin");
+            $scope.isAdmin = true;
         }
 
         //input to put courseNames
