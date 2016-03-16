@@ -48,6 +48,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
         $scope.answer;
+        $scope.progress = 0;
 
         $scope.changehappened = function(data) {
             $rootScope.$emit('radioSel', data);
@@ -122,6 +123,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             if ($scope.index === max) {
                 console.log("Quiz finished.");
                 $scope.isDone = true;
+                $scope.progress = 100;
                 $scope.hasStart = false;
             } else {
                 $scope.index = ($scope.index + 1) % $scope.questions.length;
@@ -146,6 +148,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.isTF = false;
                 }
                 $scope.numQuestion++;
+                $scope.progress = 100 *  ($scope.numQuestion - 1) / $scope.questions.length;
                 // console.log("Max index is " + max);
                 // console.log("Index is " + $scope.index);
                 // console.log("Score is " + $scope.score);

@@ -24,6 +24,11 @@
             <div id="quizContent" ng-show="quizStarted">
                 <h1>Question {{numQuestion}}: {{questions[index].text}}</h1>
                 <p>{{questions.length - numQuestion}} question(s) remaining.</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+                        {{progress}}%
+                    </div>
+                </div>
                 <p ng-show="questions[index].hint.length">Hint: {{questions[index].hint}}</p>
                 <a ng-show="questions[index].link.length" href="{{questions[index].link}}">Supplementary Reading</a>
                 <p ng-show="hasError"> {{error}} </p>
@@ -31,10 +36,9 @@
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
                         <div>
-                            <li style="list-style: none"ng-repeat="a in questions[index].answers.MCTF">
-                                <label>
+                            <li style="list-style: none" ng-repeat="a in questions[index].answers.MCTF">
+                                <label ng-show="a.length">
                                     <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" required />{{a}}
-
                                 </label>
                             </li>
                         </div>
@@ -55,21 +59,14 @@
                     <br/>
                     <!--Used for MA -->
                     <div class="row" ng-show="isMA">
-                        <label>
-                            <input type="checkbox" ng-model="ansMA[0]" value="1"> {{questions[index].answerDesc1}}</label>
+                        <div>
+                            <li style="list-style: none" ng-repeat="a in questions[index].answers.MA track by $index">
+                                <label ng-show="a.length">
+                                    <input type="checkbox" ng-model="answer" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" />{{a}}
+                                </label>
+                            </li>
+                        </div>
                         <br>
-                        <label>
-                            <input type="checkbox" ng-model="ansMA[1]" value="2"> {{questions[index].answerDesc2}}</labe>
-                            <br>
-                            <label>
-                                <input type="checkbox" ng-model="ansMA[2]" value="3"> {{questions[index].answerDesc3}}</label>
-                            <br>
-                            <label>
-                                <input type="checkbox" ng-model="ansMA[3]" value="4"> {{questions[index].answerDesc4}}</label>
-                            <br>
-                            <label>
-                                <input type="checkbox" ng-show="questions[index].answerDesc5" ng-model="ansMA[4]" value="5"> {{questions[index].answerDesc5}}</label>
-                            <br>
                     </div>
                     <!--ng-click="increment()"-->
                     <button id="next" class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
