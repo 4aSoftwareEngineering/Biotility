@@ -1,8 +1,8 @@
 'use strict';
 
 // Quiz main controller
-angular.module('quiz').controller('QuizController', ['$scope', '$location', '$stateParams', '$state', 'Authentication', '$http',
-    function($scope, $location, $stateParams, $state, Authentication, $http) {
+angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$location', '$stateParams', '$state', 'Authentication', '$http',
+    function($rootScope, $scope, $location, $stateParams, $state, Authentication, $http) {
         //
         console.log("Loading Qs:", $stateParams.courseName);
         var courseName = $stateParams.courseName;
@@ -47,6 +47,15 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', '$st
         $scope.hasStart = true;
         $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
+        $scope.answer;
+
+        $scope.changehappened = function(data) {
+            $rootScope.$emit('radioSel', data);
+        };
+        $rootScope.$on('radioSel', function(evt, data) {
+            console.log(data);
+            $scope.answer = data;
+        });
 
         $scope.start = function() {
             if (max === 0) {
@@ -76,11 +85,16 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', '$st
 
             //Check based off question type.
             console.log('answer', answer);
-            if ($scope.isTF || $scope.isMultipleChoice) {
-                if ($scope.question.correctAnswer === answer) {
+            if ($scope.isMultipleChoice || $scope.isTF) {
+                var correct = $scope.question.answers.correct;
+                var expected;
+                if ($scope.isMultipleChoice)
+                    expected = $scope.question.answers.MCTF[correct - 1];
+                else
+                    expected = correct;
+                if (expected === answer) {
                     console.log("Correct!");
                     console.dir($scope.analytics[$scope.index]);
-                    $scope.answer = 0;
                     $scope.increment();
                 } else {
                     console.log("Incorrect!");
@@ -113,15 +127,15 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', '$st
                 $scope.index = ($scope.index + 1) % $scope.questions.length;
                 $scope.question = $scope.questions[$scope.index];
                 $scope.hasError = false;
-                if ($scope.question.questionType === "TF") {
+                if ($scope.question.type === "TF") {
                     $scope.isMA = false;
                     $scope.isTF = true;
                     $scope.isMultipleChoice = false;
-                } else if ($scope.question.questionType === "SC") {
+                } else if ($scope.question.type === "SC") {
                     $scope.isMA = false;
                     $scope.isMultipleChoice = true;
                     $scope.isTF = false;
-                } else if ($scope.question.questionType === "MA") {
+                } else if ($scope.question.type === "MA") {
                     $scope.isMA = true;
                     $scope.isMultipleChoice = false;
                     $scope.isTF = false;
@@ -148,7 +162,6 @@ angular.module('quiz').controller('QuizController', ['$scope', '$location', '$st
             max = $scope.questions.length;
             $scope.loadedQ = true;
             console.log($scope.questions.length + " question(s) found.");
-            console.dir($scope.questions);
             $scope.canStart = $scope.questions.length && $scope.loggedIn;
         };
 

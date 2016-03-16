@@ -22,7 +22,7 @@ exports.retrieveQuestionsByCategory = function(req, res) {
     //Print all questions in DB.
     QuizQuestion.find({}, function(err, docs) {
         if (!err) {
-            console.log(docs);
+            //console.log(docs);
         } else {
             throw err;
         }
@@ -31,7 +31,7 @@ exports.retrieveQuestionsByCategory = function(req, res) {
         "category": req.query.category
     }).exec(function(err, questions) {
         console.log("retrieveQuestionsByCategory");
-        console.dir(JSON.stringify(questions));
+        //console.dir(JSON.stringify(questions));
         return res.end(JSON.stringify(questions));
     });
 };
@@ -116,6 +116,9 @@ function uploadQuizQuestions(result, res) {
         question.category = result[key].Category;
         question.type = result[key]['Question Type'];
         question.text = result[key].Question;
+        if (result[key]['Correct Answer'])
+            question.answers.correct = result[key]['Correct Answer'];
+        
         question.answers.MCTF = [
             result[key].Choice1,
             result[key].Choice2,

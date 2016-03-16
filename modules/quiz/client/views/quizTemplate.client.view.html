@@ -28,21 +28,16 @@
                 <br>
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
-                        <label>
-                            <input type="radio" ng-model="answer" value="1"> {{questions[index].answerDesc1}}</label>
+                        <div>
+                            <li style="list-style: none"ng-repeat="a in questions[index].answers.MCTF">
+                                <label>
+                                    <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" required />{{a}}
+
+                                </label>
+                            </li>
+                        </div>
                         <br>
-                        <label>
-                            <input type="radio" ng-model="answer" value="2"> {{questions[index].answerDesc2}}</labe>
-                            <br>
-                            <label>
-                                <input type="radio" ng-model="answer" value="3"> {{questions[index].answerDesc3}}</label>
-                            <br>
-                            <label>
-                                <input type="radio" ng-model="answer" value="4"> {{questions[index].answerDesc4}}</label>
-                            <br>
-                            <label>
-                                <input type="radio" ng-show="questions[index].answerDesc5" ng-model="answer" value="5"> {{questions[index].answerDesc5}}</label>
-                            <br>
+                        <br>
                     </div>
                     <!--Used for True/False-->
                     <br>

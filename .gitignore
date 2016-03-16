@@ -71,3 +71,4 @@ mongod
 *.ntvs*
 *.njsproj
 *.sln
+~$Questions.xlsx
