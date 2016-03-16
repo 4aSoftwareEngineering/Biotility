@@ -23,8 +23,10 @@
             </div>
             <div id="quizContent" ng-show="quizStarted">
                 <h1>Question {{numQuestion}}: {{questions[index].text}}</h1>
-                <h5>{{questions.length - numQuestion}} question(s) remaining.</h5>
-                <h5 ng-show="hasError"> {{error}} </h5>
+                <p>{{questions.length - numQuestion}} question(s) remaining.</p>
+                <p ng-show="questions[index].hint.length">Hint: {{questions[index].hint}}</p>
+                <a ng-show="questions[index].link.length" href="{{questions[index].link}}">Supplementary Reading</a>
+                <p ng-show="hasError"> {{error}} </p>
                 <br>
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
