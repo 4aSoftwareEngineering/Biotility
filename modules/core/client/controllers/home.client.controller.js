@@ -25,46 +25,132 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 ]);
 
 
-angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects',
-    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects) {
+angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 'SubHeads',
+    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects, SubHeads) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
-
+        //Remember the subjected we are in
         $scope.subject = $stateParams.courseName;
 
         //some variables for the resource view
-        $scope.resourceFilter = { subject: $scope.subject };
         $scope.editMode = false;
-
+        $scope.updateMode = false;
+        $scope.ResourceField = true;
+        $scope.isAdmin = false;
         //load all the resources from the database
         Resources.loadResources().then(function(response) {
             $scope.resources = response.data;
         });
 
+        //load all the subheadings from the database
+        SubHeads.loadSubHeads().then(function(response) {
+            $scope.subHeads = response.data;
+        });
+        // if ($scope.authentication.user.profileType === 'Admin') {
+        //     $scope.isAdmin = true;
+        // }    
         //Used to create a new Resource on database
         $scope.addResource = function() {
             $http.post('api/data/resources', $scope.newResource).success(function(response) {
-                console.log("Eric", response.message);
+                console.log("Eric It added", response.message);
+                Resources.loadResources().then(function(response) {
+                    $scope.resources = response.data;
+                });
             }).error(function(response) {
                 console.log("Eric", response.message);
             });
-            $scope.resources.push($scope.newResource);
 
             $scope.newResource = null;
         };
 
         //Used to delete a Resource from the database
-        $scope.deleteResource = function(index) {
-            var id = $scope.resources[index]._id;
+        $scope.deleteResource = function(resource_obj) {
+            var id = resource_obj._id;
             $http.delete('api/data/resources/' + id).success(function(response) {
-                console.log("Eric", response.message);
+                console.log("Eric It Deleted", response.message);
+                Resources.loadResources().then(function(response) {
+                    $scope.resources = response.data;
+                });
             }).error(function(response) {
                 console.log("Eric http delete error", response.message);
             });
-            $scope.resources.splice(index, 1);
 
             $scope.newResource = null;
+        };
+
+        //Used to update a Resource from the database
+        $scope.updateResource = function(resource_obj) {
+            var id = resource_obj._id;
+
+            $http.put('api/data/resources/' + id,$scope.newResource).success(function(response) {
+                console.log("Eric It Updated", response.message);
+                $scope.newResource = {};
+                $scope.updateMode = false;
+            }).error(function(response) {
+                console.log("Eric http update error", response.message);
+            });
+
+        };
+
+        //Angular SubHeading Functions like the ones above
+        $scope.addSubHead = function() {
+            $http.post('api/data/subHeads', $scope.newSubHead).success(function(response) {
+                console.log("Eric It added", response.message);
+                SubHeads.loadSubHeads().then(function(response) {
+                    $scope.subHeads = response.data;
+                });
+            }).error(function(response) {
+                console.log("Eric", response.message);
+            });
+            
+            $scope.newSubHead = null;
+        };
+        $scope.deleteSubHead = function(subHead_obj) {
+            var id = subHead_obj._id;
+            $http.delete('api/data/subheads/' + id).success(function(response) {
+                console.log("Eric It Deleted", response.message);
+                SubHeads.loadSubHeads().then(function(response) {
+                    $scope.subHeads = response.data;
+                });
+            }).error(function(response) {
+                console.log("Eric http delete error", response.message);
+            });
+            
+            $scope.newResource = null;
+        };
+        $scope.updateSubHead = function(subHead_obj) {
+            var id = subHead_obj._id;
+
+            $http.put('api/data/subheads/' + id,$scope.newSubHead).success(function(response) {
+                console.log("Eric It Updated", response.message);
+                $scope.newSubHead = {};
+                $scope.updateMode = false;
+            }).error(function(response) {
+                console.log("Eric http update error", response.message);
+            });
+
+        };
+
+        //Used to Update Angular Parameters
+        $scope.editResource = function(resource_obj) {
+            $scope.updateMode = true;
+            $scope.newResource = resource_obj;
+            $scope.updateID = resource_obj._id;
+            $scope.ResourceField = true;
+        };
+        $scope.editSubHead = function(subHead_obj) {
+            $scope.updateMode = true;
+            $scope.newSubHead = subHead_obj;
+            $scope.updateSubHeadID = subHead_obj._id;
+            $scope.ResourceField = false;
+        };
+
+        //Clears all fields, including the SubHead field        
+        $scope.clearResourceField = function() {
+            $scope.newResource = {};
+            $scope.newSubHead = {};
+            $scope.updateMode = false;
         };
 
 
@@ -87,11 +173,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
+        $scope.isAdmin = false;
         $scope.profileVisible = true;
         //checks if teacher
         if ($scope.profileType === "Teacher") {
             console.log("I am a teacher");
             $scope.isTeacher = true;
+        } else if ($scope.profileType === "Admin") {
+            console.log("I am a admin");
+            $scope.isAdmin = true;
         }
 
         //input to put courseNames

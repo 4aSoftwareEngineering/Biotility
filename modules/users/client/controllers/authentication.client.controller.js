@@ -60,11 +60,18 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
 
             console.log($scope.credentials);
-            var route = '/api/auth/signup/';
+            var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
                 route = '/api/auth/signup/student';
                 console.log("Is a student");
+            } else if($scope.credentials.profileType === "Admin") {
+                route = '/api/auth/signup/admin';
+                console.log("Is a Admin");
+            } else if($scope.credentials.profileType === "Teacher") {
+                route = '/api/auth/signup/teacher';
+                console.log("Is a Teacher");
             }
+
 
             $http.post(route, $scope.credentials).success(function(response) {
 
