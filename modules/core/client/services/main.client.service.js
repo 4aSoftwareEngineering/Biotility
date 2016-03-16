@@ -59,6 +59,18 @@ angular.module('core').service('Resources', ['$http', function($http) {
 
 }]);
 
+// angular.module('core').service('Users', ['http', function($http){
+//   return{
+//     parseUsers: function(){
+//       return $http({
+//         method: 'GET', 
+//         url: '/api/data/users/:userId'
+//       });
+//     }
+//   };
+// }]);
+
+
 
 angular.module('core').service('NavCrumbs', [
   function() {

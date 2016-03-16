@@ -6,6 +6,24 @@ angular.module('users').factory('Users', ['$resource',
     return $resource('api/users', {}, {
       update: {
         method: 'PUT'
+      },
+      parseUsers:{
+        method: 'GET' , 
+        isArray: true
+      }
+    });
+  }
+]);
+
+angular.module('users').factory('Temps', ['$resource',
+  function ($resource) {
+    return $resource('api/users', {}, {
+      update: {
+        method: 'PUT'
+      },
+      parseUsers:{
+        method: 'GET' , 
+        isArray: true
       }
     });
   }
@@ -20,6 +38,7 @@ angular.module('users.admin').factory('Admin', ['$resource',
       update: {
         method: 'PUT'
       }
+
     });
   }
 ]);

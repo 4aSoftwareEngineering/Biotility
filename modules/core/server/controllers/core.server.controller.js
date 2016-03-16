@@ -100,6 +100,7 @@ exports.deleteResource = function(req, res) {
 
 // Retrieve user data, send as response.
 exports.parseUsers = function(req, res) {
+    
     User.find({}, function(err, docs) {
         if (!err) {
             console.log(docs);

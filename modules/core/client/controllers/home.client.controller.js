@@ -78,7 +78,6 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects',
     function($scope, $state, $location, Users, Authentication, $http, Subjects) {
-
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         //console.log("ProfileController");
@@ -263,8 +262,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                 $scope.error = response.message;
             });
-
-
         };
 
         $scope.update = function() {
@@ -294,9 +291,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
            var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
            window.location.href = link;
-
-      
         };
+
+
 
 
         //creates groups
@@ -370,5 +367,87 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
             $scope.groups[0].progress *= 25;
         };
+
+        //reset a single teachers code
+        $scope.resetCodes = function(){
+
+            console.log(Users);
+            Users.parseUsers().then(function(response) {
+                $scope.users = response.data;
+                //dowload all current course codes
+                for (var i = 0; i < $scope.users.length; i++) {
+                    console.log($scope.users[i]);
+                }
+            });
+
+
+            while ($scope.authentication.user.courses.length > 0) {
+                $scope.authentication.user.courses.pop();
+            }
+
+            
+            var route = '/api/users/' + $scope.authentication.user._id;
+
+            $http.put(route, $scope.user.courses).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+
+            }).error(function(response) {
+                console.log("Unable to PUT.");
+                console.dir(response);
+                $scope.error = response.message;
+            });
+
+            // $scope.toAdd = '';
+        };
+
+        //reset all the teachers code
+        $scope.resetAllCodes = function(){
+            //get all teachers
+           
+            
+             //check to see if date is August 1st
+            var d = new Date();
+            var dlog = d.getDate();
+            console.log(dlog);
+
+            var m = new Date();
+            var mlog = d.getMonth();
+            console.log(mlog);
+
+
+            //if so change all course arrays to empty
+            if(dlog === 1 && mlog === 7){
+                console.log("It's August 1st, time for a reset!");
+
+                while ($scope.authentication.user.courses.length > 0) {
+                $scope.authentication.user.courses.pop();
+            }
+
+            
+            var route = '/api/users/' + $scope.authentication.user._id;
+
+            $http.put(route, $scope.user.courses).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+
+            }).error(function(response) {
+                console.log("Unable to PUT.");
+                console.dir(response);
+                $scope.error = response.message;
+            });
+
+            
+            }    
+        };
+
     }
 ]);
