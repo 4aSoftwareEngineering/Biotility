@@ -12,9 +12,9 @@
 
         <div class="results-s" id="results" ng-repeat="q in analytics track by $index">
             <h2> Question {{$index + 1}}: {{q.question.text}}</h2>
-            <li> Attempts: {{q.attempts}} </li>
-            <li> First Incorrect Choice: {{q.firstIncorrect || "N/A"}} </li>
-            <li> Correct Answer: ...</li>
+            <li class="results-property"> Attempts: {{q.attempts}} </li>
+            <li class="results-property"> First Incorrect Choice: {{q.firstIncorrect || "N/A"}} </li>
+            <li class="results-property"> Correct Answer: ...</li>
         </div>
         <button class="btn btn-primary btn-block" ng-click="gotoQuiz(currCategory)" ng-show="hasStart"> Back to Quiz </button>
         <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>

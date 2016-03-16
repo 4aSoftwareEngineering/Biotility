@@ -47,7 +47,6 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.hasStart = true;
         $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
-        $scope.answer;
         $scope.progress = 0;
 
         $scope.changehappened = function(data) {
