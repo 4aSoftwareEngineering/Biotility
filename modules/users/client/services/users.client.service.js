@@ -29,6 +29,19 @@ angular.module('users').factory('Temps', ['$resource',
   }
 ]);
 
+angular.module('core').factory('Users', ['$http', function($http) {
+
+  this.parseUsers = function() {
+        return $http.get('/app/parse/users/').then(
+            
+            function() {
+              console.log('Error checking server.');
+            }
+        );
+    };
+
+}]);
+
 //TODO this should be Users service
 angular.module('users.admin').factory('Admin', ['$resource',
   function ($resource) {
@@ -37,6 +50,10 @@ angular.module('users.admin').factory('Admin', ['$resource',
     }, {
       update: {
         method: 'PUT'
+      },
+      parseUsers:{
+        method: 'GET' , 
+        isArray: true
       }
 
     });

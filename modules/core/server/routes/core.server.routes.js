@@ -15,11 +15,9 @@ module.exports = function(app) {
 
 
     // Fetch user data from database
-    app.route('/api/data/users/:userId')
-        // .get(core.parseUsers)
-        .put(core.update);
+    app.route('/api/data/users/:userId').put(core.update);
 
-    app.route('api/data/users').get(core.parseUsers);
+    app.route('/api/parse/user').get(core.parseUsers);
     //Eric's Work
     app.route('/api/parse/resources').get(core.parseResources);
 

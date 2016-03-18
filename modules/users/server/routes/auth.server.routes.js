@@ -8,6 +8,7 @@ var passport = require('passport');
 module.exports = function(app) {
     // User Routes
     var users = require('../controllers/users.server.controller');
+    // var core2= require('../controllers/core.server.controller');
     console.log('users', users);
     // Setting up the users password api
     app.route('/api/auth/forgot').post(users.forgot);
@@ -20,7 +21,6 @@ module.exports = function(app) {
     app.route('/api/auth/signin').post(users.signin);
     app.route('/api/auth/signout').get(users.signout);
     //app.route('/api/auth/signup/courseCode').get(users.checkStudentCode);
-
 
     // app.route('/api/auth/signup')
 

@@ -2,7 +2,7 @@
 
 /** SEE core.server.routes.js  */
 
-angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects', 'Users',
+angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects', '`',
     function($scope, $state, $location, Authentication, Subjects, Users) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
@@ -76,8 +76,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
     }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp) {
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         //console.log("ProfileController");
@@ -371,38 +371,41 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         //reset a single teachers code
         $scope.resetCodes = function(){
 
-            console.log(Users);
-            Users.parseUsers().then(function(response) {
+            // console.log(Temp);
+            Temp.parseUsers().then(function(response) {
                 $scope.users = response.data;
                 //dowload all current course codes
                 for (var i = 0; i < $scope.users.length; i++) {
-                    console.log($scope.users[i]);
+                    
+                    while ($scope.users[i].courses.length > 0) {
+                        $scope.users[i].courses.pop();
+                    }
+
+                    updateresetCodes($scope.users[i]);
+                }
+
+                function updateresetCodes(newuser){
+                    
+
+                    var route = '/api/users/' + newuser._id;
+
+                    $http.put(route, newuser.courses).success(function(response) {
+                        console.log(newuser.firstName + newuser.courses);
+                        
+                        // If successful we assign the response to the global user model
+                        // newuser = response;
+
+                        // And redirect to the home page
+                        // $location.url('/');
+
+                        }).error(function(response) {
+                            console.log("Unable to PUT.");
+                            console.dir(response);
+                            $scope.error = response.message;
+                    });
+                  
                 }
             });
-
-
-            while ($scope.authentication.user.courses.length > 0) {
-                $scope.authentication.user.courses.pop();
-            }
-
-            
-            var route = '/api/users/' + $scope.authentication.user._id;
-
-            $http.put(route, $scope.user.courses).success(function(response) {
-
-                // If successful we assign the response to the global user model
-                $scope.authentication.user = response;
-
-                // And redirect to the home page
-                $location.url('/');
-
-            }).error(function(response) {
-                console.log("Unable to PUT.");
-                console.dir(response);
-                $scope.error = response.message;
-            });
-
-            // $scope.toAdd = '';
         };
 
         //reset all the teachers code
@@ -439,13 +442,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 // And redirect to the home page
                 $location.url('/');
 
-            }).error(function(response) {
-                console.log("Unable to PUT.");
-                console.dir(response);
-                $scope.error = response.message;
-            });
-
-            
+                }).error(function(response) {
+                    console.log("Unable to PUT.");
+                    console.dir(response);
+                    $scope.error = response.message;
+                });
             }    
         };
 
