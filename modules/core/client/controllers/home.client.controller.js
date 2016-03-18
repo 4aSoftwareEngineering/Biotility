@@ -194,10 +194,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.isAdmin = false;
         $scope.profileVisible = true;
         //checks if teacher
-        if ($scope.profileType === "Teacher") {
+        if ($scope.authentication.user.profileType === "Teacher") {
             console.log("I am a teacher");
             $scope.isTeacher = true;
-        } else if ($scope.profileType === "Admin") {
+        } else if ($scope.authentication.user.profileType === "Admin") {
             console.log("I am a admin");
             $scope.isAdmin = true;
         }

@@ -1,6 +1,6 @@
 <div ng-controller="authController">
 
-<div ui-view class = "margin-top-50" ng-controller = "QuizCreate">
+<div ui-view class = "margin-top-50" ng-controller = "QuizController">
     <div class="header-space">
         <!-- Using this for space -->
     </div>
@@ -9,10 +9,7 @@
     <br>
 		<div ng-show="isAdmin" class = "container" >
 			<h1> Quiz Questions </h1>
-			<div ng-if="content">
-				<h2>File content is:</h2>
-				<pre>{{ content }}</pre>
-		    </div>
+			
 		</div>
 		<div ng-hide="isAdmin" >
 			<br><br>
