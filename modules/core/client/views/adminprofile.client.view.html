@@ -21,17 +21,42 @@
                 <!--profile menu-->
                 <nav aria-label="context" role="navigation">
                     <ul class="nav" id="section-tabs">
-                        <li class="section"><a ng-click="profileVisible = true" class="profile" href="#" tabindex="0">Classes</a></li>
-                        <li class="section"><a ng-click="profileVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+                        <li class="section"><a ng-click="profileVisible = true; settingsVisible=false; statsVisible=false; editVisible=false" class="profile" href="#" tabindex="0">Profile</a></li>
+                        <li class="section"><a ng-click="settingsVisible = true" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+                        <li class="section"><a ng-click="statsVisible = true; profileVisible=false; settingsVisible=false; editVisible=false" class="profile_settings active" href="#" tabindex="0">Statistics</a></li>
+                        <li class="section"><a ng-click="editVisible = true; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Question Control</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
         <!--</div>-->
-        <!--class codes-->
-        <div class="row">
+        <!-- edit form column -->
+		<div ng-show="profileVisible" class="col-md-9 personal-info">
+	<!--       <div class="alert alert-info alert-dismissable">
+		    <a class="panel-close close" data-dismiss="alert">×</a>
+		    <i class="fa fa-coffee"></i>
+		    This is an <strong>.alert</strong>. Use this to show important messages to the user.
+		  </div> -->
+		  <h3>Account Information</h3>
+		  <div class="col-lg-3">
+		    <div class = "col-lg-8">
+		      <label>Email</label>
+		      <span>{{user.email}}</span><br>
+		      <label>Username</label>
+		      <span>{{user.userName}}</span>
+		    </div>
+		  </div>
+
+		</div> <!-- end show profile -->
+        
+        <div ng-show="editVisible"> <!--begin display question edit buttons-->
+        	<br><a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
+        	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a>
+        </div>
+        
+        <div class="row"> <!-- begin settings display -->
             <!--profile info-->
-            <div class="col-md-9 col-md-offset-3" ng-hide="profileVisible">
+            <div class="col-md-9 col-md-offset-3" ng-show="settingsVisible">
                 <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
                     <h3> Personal Info </h3>
                     <div class="form-group">
