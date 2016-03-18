@@ -24,7 +24,6 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
     }
 ]);
 
-
 angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 'SubHeads',
     function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects, SubHeads) {
         // This provides Authentication context.
@@ -160,6 +159,25 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
 
     }
+]);
+
+angular.module('core').controller('authController',['$scope', '$state', '$location', 'Users', 'Authentication', '$http',function($scope, $state, $location, Users, Authentication, $http) {
+		//This is a min config for authenticating admin features
+        $scope.authentication = Authentication;
+        $scope.user = $scope.authentication.user;
+        
+        $scope.isTeacher = false;
+        $scope.isAdmin = false;
+        
+        //Set flags to true if admin or teacher 
+        if ($scope.authentication.user.profileType === "Admin") {
+            console.log("I am a admin");
+            $scope.isAdmin = true;
+        } else if ($scope.authentication.user.profileType === "Teacher") {
+            console.log("I am a teacher");
+            $scope.isTeacher = true;
+        }
+	}
 ]);
 
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects',

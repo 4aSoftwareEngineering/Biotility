@@ -1,3 +1,5 @@
+<div ng-controller="authController">
+
 <div ui-view class = "margin-top-50" ng-controller = "QuizCreate">
     <div class="header-space">
         <!-- Using this for space -->
@@ -5,12 +7,15 @@
     <br>
     <br>
     <br>
-		<div ng-show="authentication.user.profileType === 'Admin'" class = "container" >
+		<div ng-show="isAdmin" class = "container" >
 			<h1> Quiz Questions </h1>
 			<div ng-if="content">
 				<h2>File content is:</h2>
 				<pre>{{ content }}</pre>
 		    </div>
+		</div>
+		<div ng-hide="isAdmin" >
+			<h2> Access unauthorized. </h2>
 		</div>
 </div>
 
