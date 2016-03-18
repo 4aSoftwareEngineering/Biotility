@@ -1,4 +1,4 @@
-<!--teacher profile page-->
+<!--admin profile page-->
 <div class="container" ng-controller="ProfileController">
     <div style="margin-top: 45px;">
     </div>
@@ -6,7 +6,7 @@
     <div class="row">
         <div id="left-side" class="list-view ">
             <h1 id="section-tabs-header">
-        <!--teacher name-->
+        <!--admin name-->
         {{user.firstName}} {{user.lastName}}
 
 
@@ -30,22 +30,6 @@
         <!--</div>-->
         <!--class codes-->
         <div class="row">
-            <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
-                <!--table to put in class codes-->
-                <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
-                    <caption>Class codes for students to register</caption>
-                    <thead>
-                        <h2>Classes</h2>
-                        <th>Codes</th>
-                    </thead>
-                    <tbody>
-                        <!--gets class codes from controller-->
-                        <tr ng-repeat="d in input.courseNums">
-                            <td>{{d}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <!--profile info-->
             <div class="col-md-9 col-md-offset-3" ng-hide="profileVisible">
                 <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
@@ -126,31 +110,7 @@
                         </div>
                     </div>
                 </form>
-                <!--select course-->
-                <div class="account-pick">
-                    <div>
-                        <label class="col-lg-3 col-lg-offset-1 control-label">Classes Selected to Add:</label>
-                        <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
-                            <option ng-repeat="name in classNames">{{name}}</option>
-                        </select>
-                        <!--button for adding more than one course-->
-                        <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd)">
-                            +
-                        </button>
-                    </div>
-                </div>
-                <!--Classes already seleted-->
-                <div class="picked">
-                    <div class="col-md-2 col-lg-offset-4 text-right">
-                        <ul class="list-inline">
-                            <li ng-repeat="x in credentials.courses track by $index">
-                                <button type="button" class="btn btn-info">{{x.courseName}}</button>
-                                <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
-                        </button> -->
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                >
                 <!--class scores-->
                 <!--apply new courses -->
                 <!--  <div class = "col-md-9 col-md-offset-9">
