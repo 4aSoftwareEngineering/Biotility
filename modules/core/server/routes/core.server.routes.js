@@ -4,6 +4,7 @@ module.exports = function(app) {
     // Root routing
     var core = require('../controllers/core.server.controller');
     var users = require('../controllers/core.server.controller');
+    var plotly = require('plotly')("biotilitysp18", "tmplea9qm7");
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 

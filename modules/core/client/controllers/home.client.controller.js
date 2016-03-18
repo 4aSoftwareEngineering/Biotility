@@ -2,6 +2,7 @@
 
 /** SEE core.server.routes.js  */
 
+
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects', '`',
     function($scope, $state, $location, Authentication, Subjects, Users) {
         // This provides Authentication context.
@@ -78,6 +79,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp',
     function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp) {
+        
+
+
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         //console.log("ProfileController");
@@ -371,7 +375,25 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         //reset a single teachers code
         $scope.resetCodes = function(){
 
-            // console.log(Temp);
+            var d = new Date();
+            var dlog = d.getDate();
+            console.log(dlog);
+
+            var m = new Date();
+            var mlog = d.getMonth();
+            console.log(mlog);
+
+            var mi = new Date();
+            var milog = mi.getMinutes();
+            console.log(milog);
+
+            var s = new Date();
+            var slog = s.getSeconds();
+
+
+            //if so change all course arrays to empty
+            // if(dlog === 1 && mlog === 7 && milog === 0 && s === 0){
+                           
             Temp.parseUsers().then(function(response) {
                 $scope.users = response.data;
                 //dowload all current course codes
@@ -387,16 +409,17 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 function updateresetCodes(newuser){
                     
 
-                    var route = '/api/users/' + newuser._id;
+                    // var route = '/api/users/' + newuser._id;
+                    var route = '/api/users/no';
 
                     $http.put(route, newuser.courses).success(function(response) {
-                        console.log(newuser.firstName + newuser.courses);
+                        // console.log(newuser.firstName + newuser.courses);
                         
                         // If successful we assign the response to the global user model
                         // newuser = response;
 
                         // And redirect to the home page
-                        // $location.url('/');
+                        $location.url('/');
 
                         }).error(function(response) {
                             console.log("Unable to PUT.");
@@ -406,7 +429,26 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                   
                 }
             });
-        };
+        // }
+    };
+
+
+
+        // $scope.viewStats = function(){
+            
+            
+        //     var data = [
+        //       {
+        //         x: ["giraffes", "orangutans", "monkeys"],
+        //         y: [20, 14, 23],
+        //         type: "bar"
+        //       }
+        //     ];
+        //     var graphOptions = {filename: "basic-bar", fileopt: "overwrite"};
+        //     plotly.plot(data, graphOptions, function (err, msg) {
+        //         console.log(msg);
+        //     });
+        // };
 
         //reset all the teachers code
         $scope.resetAllCodes = function(){

@@ -9,6 +9,8 @@ var mongoose = require('mongoose'),
 /**
  * Render the main application page
  */
+var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
+
 exports.renderIndex = function(req, res) {
     res.render('modules/core/server/views/index', {
         user: req.user || null

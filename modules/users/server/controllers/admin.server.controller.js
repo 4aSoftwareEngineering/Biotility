@@ -19,35 +19,15 @@ exports.read = function(req, res) {
  * Update a User
  */
 exports.update = function(req, res) {
-    var user = User;
-   
-   var id = req.params.userId;  
-
-        User.findById(id,function(err, users) {
-            if (err){
-                res.send(err);
-            }
-            console.log("Will it update? " + req.params.userId);
-            users.courses = [];
-            users.save(function(err) {
-                if (err) {
-                    return res.status(400).send({
-                        message: errorHandler.getErrorMessage(err)
-                    });
-                }
-
-                res.json(user);
-            });
-         
-        });
-};
-
-exports.course = function(req, res) {
-    var user = User;
-    console.log("Will it update courses?" + req.firstName);
-
-    user.courses = []; //actual update
-    
+    var user = req.user;
+    console.log("Will it update?");
+    //For security purposes only merge these parameters
+    // user.firstName = req.body;
+    user.lastName = user.lastName;
+    user.displayName = user.firstName + ' ' + user.lastName;
+    user.courses = req.body; //actual update
+    // user.courses = user.courses; //used for testing form
+    user.roles = user.roles;
     user.save(function(err) {
         if (err) {
             return res.status(400).send({
@@ -58,7 +38,6 @@ exports.course = function(req, res) {
         res.json(user);
     });
 };
-
 
 exports.updates = function(req, res) {
     console.log("Will it updates?");
@@ -83,7 +62,26 @@ exports.updates = function(req, res) {
     });
 };
 
+exports.course = function(req, res) {
+    var users = User;
+   console.log("Will it update courses? ");
 
+        User.find({}, function(err,users){
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        }
+         for (var i = 0; i < users.length; i++) {        
+            users[i].courses = [];
+            users[i].save(function(err) {
+                if (err) {
+                }
+            });
+        }
+        res.json(users);
+    });
+};
 
 
 
