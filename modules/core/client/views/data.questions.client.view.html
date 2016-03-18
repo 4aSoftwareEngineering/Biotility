@@ -1,33 +1,43 @@
 <div class="margin-top-75">
 	<!-- -->
 </div>
+<div ng-controller="authController">
 
 <div ng-controller="QuestionData">
 	<h2 class="text-center" style="font-size: 60px;">Question Data</h2>
-	<table class="table table-striped">
+	<div ng-show="isAdmin" class="container" style="padding-left: 70px">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="editMode">Edit?
+            </label>
+        </div>
+    </div>
+	<table ng-show="isAdmin" class="table table-striped">
 		<thead>
 			<th>Category</th>
-			<th>QuestionType</th>
+			<th>Question Type</th>
 			<th>Description</th>
-			<th>CorrectAnswer</th>
-			<th>Answer1</th>
-			<th>Answer2</th>
-      <th>Answer3</th>
-      <th>Answer4</th>
+			<th>Answers</th>
 		</thead>
 		<tbody>
 			<tr ng-repeat="d in data">
 				<td>{{d.category}}</td>
-				<td>{{d.questionType}}</td>
-				<td>{{d.description}}</td>
-				<td>{{d.correctAnswer}}</td>
-				<td>{{d.answerDesc1}}</td>
-				<td>{{d.answerDesc2}}</td>
-        <td>{{d.answerDesc3}}</td>
-        <td>{{d.answerDesc4}}</td>
+				<td>{{d.type}}</td>
+				<td>{{d.text}}</td>
+				<td>{{d.answers}}</td>
+				<td ng-show="editMode" ng-click=""><span class="glyphicon glyphicon-remove"></span></td> <!--deleteQuestion($index)-->
 			</tr>
 		</tbody>
 
 	</table>
+	<div ng-hide="isAdmin" >
+		<br><br>
+		<p> Access unauthorized. </p>
+		<br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
 
 </div>
+</div>
+
+<!--footer-->
+<div class="text-center footer" style="margin-top: 100px;">&#9400; Biotility </div>
