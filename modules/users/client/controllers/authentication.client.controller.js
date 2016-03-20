@@ -66,7 +66,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 console.log("Is a student");
             }
 
-            $http.post(route, $scope.credentials).success(function(response) {
+            $http.post(route, $scope.credentials).success(function(response){
 
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
@@ -77,10 +77,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }).error(function(response) {
                 console.log("invalid");
                 //sets error if invalid info
-                alert("Use a valid course code. For testing, use 863.");
+                alert("Use a valid course . For testing, use 863.");
 
                 $scope.error = response.message;
             });
+
 
         };
 

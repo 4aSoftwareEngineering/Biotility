@@ -1,5 +1,8 @@
 'use strict';
 
+
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport();
 var mongoose = require('mongoose'),
 
     QuizQuestion = mongoose.model('QuizQuestion'),
@@ -23,6 +26,20 @@ exports.renderServerError = function(req, res) {
         error: 'Oops! Something went wrong...'
     });
 };
+
+exports.signup = function(req, res){
+    var data = req.body;
+    if(data.credentials.profileType === "Student2") {
+        transporter.signup({
+            from: 'biotility-donot-reply@biotility.com',
+            to: data.credentials.email,
+            subject: 'Biotility: Course Code',
+            text: 'Your course code is 1234'
+        });
+    }
+};
+
+
 
 /**
  * Render the server not found responses

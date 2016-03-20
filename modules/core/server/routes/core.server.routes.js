@@ -48,4 +48,6 @@ module.exports = function(app) {
     app.route('/*').get(core.renderIndex);
     app.param('resourceId', core.resourceByID);
 
+
+
 };
