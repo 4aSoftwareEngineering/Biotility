@@ -77,7 +77,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }).error(function(response) {
                 console.log("Invalid (Sign up)", response);
                 //sets error if invalid info
-                alert("Use a valid course code. For testing, use 863.");
+                alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
 
                 $scope.error = response.message;
             });
