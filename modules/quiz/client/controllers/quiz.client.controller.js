@@ -191,10 +191,11 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
         var studentGrades = {
             category: $stateParams.category,
             studentName: $scope.user.userName,
+            courses: $scope.user.courses,
             analytics: $scope.analytics,
         };
 
-        console.log($scope.user.userName);
+        console.log("User", $scope.user);
 
         $http.post('/api/quiz_result', studentGrades)
             .success(function(res) {
