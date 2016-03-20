@@ -20,6 +20,7 @@ var noReturnUrls = [
  */
 exports.signupStudent = function(req, res) {
   // First looks through Teachers course code
+  console.log(req.body.courseCode)
   User.findOne({
       'profileType': "Teacher",
       'courses.number': req.body.courseCode
@@ -105,20 +106,21 @@ exports.signup = function(req, res) {
  * Signin after passport authentication
  */
 exports.signin = function(req, res) {
-
+  console.log("Sign in");
     // First find if user name exists in db.
     User.findOne({
         'userName': req.body.username
       },
       function(err, user) {
         if (user) { // if exists, authenticate with provided password.
-          // if valid, login.
           req.login(user, function(err) {
             if (err) {
               return res.status(403).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
+              //No Error
+              console.log(user);
               res.json(user);
             }
           });

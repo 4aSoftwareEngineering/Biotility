@@ -75,7 +75,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 $location.url('/');
 
             }).error(function(response) {
-                console.log("invalid");
+                console.log("Invalid (Sign up)", response);
                 //sets error if invalid info
                 alert("Use a valid course code. For testing, use 863.");
 
@@ -101,7 +101,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 // And redirect to home page
                 $state.go('home');
             }).error(function(response) {
-                console.log("invalid");
+                console.log("Invalid (Sign in)", response);
                 //sets popup for invalid usernmae or password
                 setTimeout(function() {
                     alert("Invalid Username or Password");
