@@ -1,25 +1,7 @@
-<?php 
-if(isset($_GET['submit']){
-    $to = "isalau@me.com"; // this is your Email address
-    $from = $_GET['email']; // this is the sender's Email address
-    $first_name = $_GET['first_name'];
-    $last_name = $_GET['last_name'];
-    $subject = "Form submission";
-    $subject2 = "Copy of your form submission";
-    $message = $first_name . " " . $last_name . " wrote the following:" . "\n\n" . $_GET['message'];
-    $message2 = "Here is a copy of your message " . $first_name . "\n\n" . $_GET['message'];
 
-    $headers = "From:" . $from;
-    $headers2 = "From:" . $to;
-    mail($to,$subject,$message,$headers);
-    mail($from,$subject2,$message2,$headers2); // sends a copy of the message to the sender
-    echo "Mail Sent. Thank you " . $first_name . ", we will contact you shortly.";
-    You can also use header('Location: thank_you.php'); to redirect to another page.
-    }
-?>
 
 <!--teacher profile page-->
-<div class="container" ng-controller="ProfileController">
+<div class="container" ng-controller="ProfileController" ng-init= "resetCodes()">
   <div style="margin-top: 45px;">
   </div>
   <hr>
@@ -32,7 +14,6 @@ if(isset($_GET['submit']){
 
       </h1>
 
-      <!-- resetCodes(); -->
 
     </div>
     <!-- left column -->
@@ -50,6 +31,8 @@ if(isset($_GET['submit']){
             <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Profile</a></li>
 
             <li class="section"><a ng-click="toShow='settingsVisible'" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+
+            <li class="section"><a ng-click="toShow='statsicsVisible'" class="profile_settings active" href="#" tabindex="0">Statsitics</a></li>
 
              <li class="section"><a ng-click="toShow='resourceVisible'" class="resource active" href="#" tabindex="0">Request a Resource</a></li>
           </ul>
@@ -96,9 +79,18 @@ if(isset($_GET['submit']){
             </tr>
           </tbody>
         </table>
-        <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats()">
-            View Stats
-        </button> -->
+      </div>
+
+      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='statsicsVisible'">
+        <div>
+          <a href="https://plot.ly/~biotilitysp18/0/" target="_blank" title="" style="display: block; text-align: center;"><img src="https://plot.ly/~biotilitysp18/0.png" alt="" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+          <script data-plotly="biotilitysp18:0"  src="https://plot.ly/embed.js" async></script>
+        </div>
+
+
+         <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats()">
+            Update Stats
+        </button>
 
       </div>
 

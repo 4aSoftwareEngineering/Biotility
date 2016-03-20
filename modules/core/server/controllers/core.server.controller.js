@@ -6,10 +6,13 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource');
+
 /**
  * Render the main application page
  */
-var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
+ var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
+ var Email = require('email').Email;
+ var sendmail = require('sendmail')();
 
 exports.renderIndex = function(req, res) {
     res.render('modules/core/server/views/index', {
@@ -25,6 +28,33 @@ exports.renderServerError = function(req, res) {
         error: 'Oops! Something went wrong...'
     });
 };
+
+
+exports.plot = function(req,res){
+        console.log("PLOTLY");
+
+            var data = [
+              {
+                x: ["isabel", "poop", "eric"],
+                y: [5, 5, 5],
+                type: "bar"
+              }
+            ];
+
+            var graphOptions = {filename: "basic-bar", fileopt: "overwrite"};
+
+            plotly.plot(data, graphOptions, function (err, msg) {
+                console.log(msg);
+            });
+};
+
+exports.email = function(req,res){
+   console.log("EMAILS");
+    var myMsg = new Email(
+    { from: "isalau@bellsouth.net", to:   "isalau@me.com" , subject: "Knock knock...", body: "Who's there?"
+    });
+};
+
 
 /**
  * Render the server not found responses

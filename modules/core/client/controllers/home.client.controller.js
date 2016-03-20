@@ -77,11 +77,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
     }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
         
-
-
+        // var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         //console.log("ProfileController");
@@ -282,20 +281,29 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
         $scope.sendEmail = function(isValid){
-            console.log("sending email for resources" );
-            console.log("Subject: " + $scope.resource.subject );
-            console.log("Subject Details: "+ $scope.resource.subjectdetails );
-            console.log("Link: "+ $scope.resource.resourcelink);
-            console.log("Comments: " + $scope.resource.comments);
+            var route = '/api/data/email';
+            $http.get(route).success(function (req, res) {
+                console.log("sending email");
+            });
 
-            var email = "isalau@me.com" ;
-            // separate addresses by commas, no spaces //
-            var subject = "Biotility" ;
-            var body = "Testing" ;
 
-           var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
-           window.location.href = link;
+           //  console.log("sending email for resources" );
+           //  console.log("Subject: " + $scope.resource.subject );
+           //  console.log("Subject Details: "+ $scope.resource.subjectdetails );
+           //  console.log("Link: "+ $scope.resource.resourcelink);
+           //  console.log("Comments: " + $scope.resource.comments);
+
+           //  var email = "isalau@me.com" ;
+           //  // separate addresses by commas, no spaces //
+           //  var subject = "Biotility" ;
+           //  var body = "Testing" ;
+
+           // var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
+           // window.location.href = link;
         };
+
+
+       
 
 
 
@@ -377,78 +385,76 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             var d = new Date();
             var dlog = d.getDate();
-            console.log(dlog);
+            console.log("Date: "+dlog);
 
             var m = new Date();
             var mlog = d.getMonth();
-            console.log(mlog);
+            console.log("Month: "+mlog);
+
+            var h = new Date();
+            var hlog = d.getHours();
+            console.log("Hour: "+ hlog);
 
             var mi = new Date();
             var milog = mi.getMinutes();
-            console.log(milog);
+            console.log("Miniute: "+milog);
 
             var s = new Date();
             var slog = s.getSeconds();
-
+            console.log("TODAY AND NOW"); 
 
             //if so change all course arrays to empty
-            // if(dlog === 1 && mlog === 7 && milog === 0 && s === 0){
-                           
-            Temp.parseUsers().then(function(response) {
-                $scope.users = response.data;
-                //dowload all current course codes
-                for (var i = 0; i < $scope.users.length; i++) {
-                    
-                    while ($scope.users[i].courses.length > 0) {
-                        $scope.users[i].courses.pop();
+            if(dlog === 1 && mlog === 7 && hlog===0 && milog === 0 && s === 0){
+            // if(dlog === 18 && mlog === 2 && hlog === 18 && milog === 22){
+                  
+
+                Temp.parseUsers().then(function(response) {
+                    $scope.users = response.data;
+                    //dowload all current course codes
+                    for (var i = 0; i < $scope.users.length; i++) {
+                        
+                        while ($scope.users[i].courses.length > 0) {
+                            $scope.users[i].courses.pop();
+                        }
+
+                        updateresetCodes($scope.users[i]);
                     }
 
-                    updateresetCodes($scope.users[i]);
-                }
-
-                function updateresetCodes(newuser){
-                    
-
-                    // var route = '/api/users/' + newuser._id;
-                    var route = '/api/users/no';
-
-                    $http.put(route, newuser.courses).success(function(response) {
-                        // console.log(newuser.firstName + newuser.courses);
+                    function updateresetCodes(newuser){
                         
-                        // If successful we assign the response to the global user model
-                        // newuser = response;
 
-                        // And redirect to the home page
-                        $location.url('/');
+                        // var route = '/api/users/' + newuser._id;
+                        var route = '/api/users/no';
 
-                        }).error(function(response) {
-                            console.log("Unable to PUT.");
-                            console.dir(response);
-                            $scope.error = response.message;
-                    });
-                  
-                }
+                        $scope.put(route, newuser.courses).success(function(response) {
+                            // console.log(newuser.firstName + newuser.courses);
+                            
+                            // If successful we assign the response to the global user model
+                            // newuser = response;
+
+                            // And redirect to the home page
+                            //$location.url('/');
+
+                            }).error(function(response) {
+                                console.log("Unable to PUT.");
+                                console.dir(response);
+                                $scope.error = response.message;
+                        });
+                      
+                    }
+                });
+            }
+        };
+
+
+        $scope.viewStats = function(){
+            var route = '/api/data/plotly';
+            $http.get(route).success(function (req, res) {
+                console.log("plotly go");
             });
-        // }
-    };
 
-
-
-        // $scope.viewStats = function(){
-            
-            
-        //     var data = [
-        //       {
-        //         x: ["giraffes", "orangutans", "monkeys"],
-        //         y: [20, 14, 23],
-        //         type: "bar"
-        //       }
-        //     ];
-        //     var graphOptions = {filename: "basic-bar", fileopt: "overwrite"};
-        //     plotly.plot(data, graphOptions, function (err, msg) {
-        //         console.log(msg);
-        //     });
-        // };
+            location.reload();
+        };
 
         //reset all the teachers code
         $scope.resetAllCodes = function(){

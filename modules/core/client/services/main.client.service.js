@@ -73,6 +73,10 @@ angular.module('core').service('Temp', ['$http', function($http) {
 
 }]);
 
+angular.module('core').service('plotly', ['$http', function($http) {
+
+}]);
+
 
 angular.module('core').service('NavCrumbs', [
   function() {

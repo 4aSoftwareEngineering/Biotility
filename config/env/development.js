@@ -1,7 +1,6 @@
 'use strict';
 
 var defaultEnvConfig = require('./default');
-
 module.exports = {
     db: {
         // uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://abc:abc@ds055574.mongolab.com:55574/intro_soft',

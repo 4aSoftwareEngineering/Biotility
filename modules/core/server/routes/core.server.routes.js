@@ -4,7 +4,10 @@ module.exports = function(app) {
     // Root routing
     var core = require('../controllers/core.server.controller');
     var users = require('../controllers/core.server.controller');
-    var plotly = require('plotly')("biotilitysp18", "tmplea9qm7");
+    var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
+    var schedule = require('node-schedule');
+    var Email = require('email').Email;
+    
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 
@@ -28,6 +31,9 @@ module.exports = function(app) {
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);
 
+    //Isabel's Work Sprint2
+    app.route('/api/data/plotly').get(core.plot);
+    app.route('/api/data/email').get(core.email);
 
     // Fetch question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
@@ -38,6 +44,7 @@ module.exports = function(app) {
     // GOES AFTER ALL API CALLS ^^^^
     app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
 
+    
 
 
     app.param('@id', core.userByID);
