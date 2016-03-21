@@ -22,7 +22,7 @@
                 <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
             </div>
             <div id="quizContent" ng-show="quizStarted">
-                <h1>Question {{numQuestion}}: {{questions[index].text}}</h1>
+                <h5>Question {{numQuestion}} <br>{{questions[index].text}}</h5>
                 <p>{{questions.length - numQuestion}} question(s) remaining.</p>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
@@ -31,7 +31,7 @@
                 </div>
                 <p ng-show="questions[index].hint.length">Hint: {{questions[index].hint}}</p>
                 <a ng-show="questions[index].link.length" href="{{questions[index].link}}">Supplementary Reading</a>
-                <p ng-show="hasError"> {{error}} </p>
+                <p id="quizError" ng-show="hasError" class="alert alert-danger" role="alert"> {{error}} </p>
                 <br>
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
@@ -73,7 +73,7 @@
                 </form>
             </div>
             <div id="startButton" ng-show="isDone">
-                <button class="btn btn-primary btn-block" ui-sref="quiz.results({correctScore: score, numQuestion: numQuestion, category: currCategory}) " ng-show="isDone" value="finished"> View Results </button>
+                <button class="btn btn-primary btn-block" ui-sref="quiz.results({correctScore: score, numQuestion: numQuestion, category: currCategory}) " ng-show="isDone" value="finished">Submit & View Results </button>
             </div>
         </div>
     </div>

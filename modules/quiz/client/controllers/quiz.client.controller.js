@@ -102,7 +102,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.error = "Incorrect. Please try again.";
                     if (!$scope.analytics[$scope.index].firstIncorrect)
                         $scope.analytics[$scope.index].firstIncorrect = answer;
-                    console.log('first Incorrect', $scope.analytics[$scope.index].firstIncorrect);
+                    console.log('First Incorrect', $scope.analytics[$scope.index].firstIncorrect);
                     $scope.analytics[$scope.index].attempts++;
                     console.dir($scope.analytics[$scope.index]);
 
@@ -118,7 +118,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
 
         $scope.increment = function() {
             //Determines question type and if quiz is finished.
-            $scope.answer = 0; //prevent auto selection of radio btns
+            $scope.hasError = false;
             if ($scope.index === max) {
                 console.log("Quiz finished.");
                 $scope.isDone = true;
@@ -147,7 +147,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.isTF = false;
                 }
                 $scope.numQuestion++;
-                $scope.progress = 100 * ($scope.numQuestion - 1) / $scope.questions.length;
+                $scope.progress = Math.round(100 * ($scope.numQuestion - 1) / $scope.questions.length);
                 // console.log("Max index is " + max);
                 // console.log("Index is " + $scope.index);
                 // console.log("Score is " + $scope.score);
