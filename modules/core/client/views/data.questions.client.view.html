@@ -1,33 +1,33 @@
 <div class="margin-top-75">
-	<!-- -->
+    <!-- -->
 </div>
 
 <div ng-controller="QuestionData">
-	<h2 class="text-center" style="font-size: 60px;">Question Data</h2>
-	<table class="table table-striped">
-		<thead>
-			<th>Category</th>
-			<th>QuestionType</th>
-			<th>Description</th>
-			<th>CorrectAnswer</th>
-			<th>Answer1</th>
-			<th>Answer2</th>
-      <th>Answer3</th>
-      <th>Answer4</th>
-		</thead>
-		<tbody>
-			<tr ng-repeat="d in data">
-				<td>{{d.category}}</td>
-				<td>{{d.questionType}}</td>
-				<td>{{d.description}}</td>
-				<td>{{d.correctAnswer}}</td>
-				<td>{{d.answerDesc1}}</td>
-				<td>{{d.answerDesc2}}</td>
-        <td>{{d.answerDesc3}}</td>
-        <td>{{d.answerDesc4}}</td>
-			</tr>
-		</tbody>
+    <h2 class="text-center" style="font-size: 60px;">Question Data</h2>
+    <table class="table table-striped">
+        <thead>
+            <th>Category</th>
+            <th>QuestionType</th>
+            <th>Description</th>
+            <th>CorrectAnswer</th>
+            <th>Answer1</th>
+            <th>Answer2</th>
+            <th>Answer3</th>
+            <th>Answer4</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="d in data">
+                <td>{{d.category}}</td>
+                <td>{{d.questionType}}</td>
+                <td>{{d.description}}</td>
+                <td>{{d.correctAnswer}}</td>
+                <td>{{d.answerDesc1}}</td>
+                <td>{{d.answerDesc2}}</td>
+                <td>{{d.answerDesc3}}</td>
+                <td>{{d.answerDesc4}}</td>
+            </tr>
+        </tbody>
 
-	</table>
+    </table>
 
 </div>
