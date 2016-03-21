@@ -58,7 +58,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            $scope.credentials.courses = [$scope.credentials.courseCode];
+            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)];
             console.log($scope.credentials);
             var route = '/api/auth/signup/';
             if ($scope.credentials.profileType === "Student") {

@@ -147,7 +147,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.isTF = false;
                 }
                 $scope.numQuestion++;
-                $scope.progress = 100 *  ($scope.numQuestion - 1) / $scope.questions.length;
+                $scope.progress = 100 * ($scope.numQuestion - 1) / $scope.questions.length;
                 // console.log("Max index is " + max);
                 // console.log("Index is " + $scope.index);
                 // console.log("Score is " + $scope.score);
@@ -190,8 +190,10 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
             category: $stateParams.category,
-            studentName: $scope.user.userName,
-            courses: $scope.user.courses,
+            student: {
+                studentName: $scope.user.userName,
+                courses: $scope.user.courses
+            },
             analytics: $scope.analytics,
         };
 
