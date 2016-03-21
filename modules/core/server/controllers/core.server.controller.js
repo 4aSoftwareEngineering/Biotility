@@ -6,13 +6,23 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource');
+    // Grades = mongoose.model('studentgrades');
 
 /**
  * Render the main application page
  */
  var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
- var Email = require('email').Email;
- var sendmail = require('sendmail')();
+ var nodemailer = require('nodemailer');
+ var transport = nodemailer.createTransport("SMTP", {
+        service: 'Gmail',
+        auth: {
+            user: "biotilitysp18@gmail.com",
+            pass: "team4asp18"
+        }
+    });
+
+ // var Email = require('email').Email;
+ var CronJob = require('cron').CronJob;
 
 exports.renderIndex = function(req, res) {
     res.render('modules/core/server/views/index', {
@@ -31,11 +41,49 @@ exports.renderServerError = function(req, res) {
 
 
 exports.plot = function(req,res){
-        console.log("PLOTLY");
+    console.log("PLOTLY "+req.user.courses.length );
+    var num = [];
+       
+    //find all the courses   
+    for(var i = 0; i < req.user.courses.length ; i++){
+        num.push(req.user.courses[i].number);
+            // console.log(req.user.courses[i].number);
+    }  
 
-            var data = [
+    //find all the students in that course
+    for(var s = 0; s < req.user.courses.length ; s++){     
+        findStudents(num[s]);
+    }
+
+   
+
+    function findStudents(stud){
+        User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
+            
+            for (var i = 0; i < users.length; i++) {           
+                
+                console.log(users);  
+                // findGrades(users[i], stud);
+            }
+
+            return res.end(JSON.stringify(users));
+        });
+    }
+
+    //in each student that matches go to the other database studentgrades and see their scores.
+    // function findGrades(student, stud){
+    //     Grades.find({ "studentname" : student.userName , 'courseCode': stud }).lean().exec(function(err, grades) { 
+    //         for (var i = 0; i < grades.length; i++) {           
+                
+    //             console.log(grades);  
+    //         }
+    //         return res.end(JSON.stringify(grades));
+    //     });
+    // }
+
+    var data = [
               {
-                x: ["isabel", "poop", "eric"],
+                x: ["isabel", "matt", "eric"],
                 y: [5, 5, 5],
                 type: "bar"
               }
@@ -46,13 +94,52 @@ exports.plot = function(req,res){
             plotly.plot(data, graphOptions, function (err, msg) {
                 console.log(msg);
             });
+
+           
 };
 
 exports.email = function(req,res){
    console.log("EMAILS");
-    var myMsg = new Email(
-    { from: "isalau@bellsouth.net", to:   "isalau@me.com" , subject: "Knock knock...", body: "Who's there?"
+
+   // var transporter = nodemailer.createTransport();
+   var data = req.body;
+  var message = {
+
+// sender info
+    from: data.email,
+
+    // Comma separated list of recipients
+    to: 'biotilitysp18@gmail.com',
+
+    // Subject of the message
+    subject: 'Resource Request', 
+
+    //text
+    text: 'Subject: '+ data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link  + '\nComments: ' + data.comments
+
+    };
+
+    console.log('Sending Mail');
+    transport.sendMail(message, function(error){
+      if(error){
+          console.log('Error occured');
+          console.log(error.message);
+          return;
+      }
+      console.log('Message sent successfully!');
+
+      // if you don't want to use this transport object anymore, uncomment following line
+      //transport.close(); // close the connection pool
     });
+
+};
+
+exports.cron = function(req,res){
+   console.log("CRON");
+    
+    new CronJob('* * * * * *', function() {
+      console.log('You will see this message every second');
+    }, null, true, 'America/Los_Angeles');
 };
 
 

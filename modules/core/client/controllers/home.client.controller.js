@@ -3,8 +3,8 @@
 /** SEE core.server.routes.js  */
 
 
-angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects', '`',
-    function($scope, $state, $location, Authentication, Subjects, Users) {
+angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', '`',
+    function($scope, $state, $http, $location, Authentication, Subjects, Users) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -19,6 +19,14 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 
         $scope.gotoResource = function(subjectObj) {
             $location.path('/' + subjectObj.name + '/resources');
+        };
+
+        $scope.codeReset = function(){
+             console.log("cron go");
+            var route = '/api/data/cron';
+            $http.get(route).success(function (req, res) {
+               
+            });
         };
 
 
@@ -281,17 +289,30 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
         $scope.sendEmail = function(isValid){
+
+            console.log("sending email for resources" );
+            console.log("Subject: " + $scope.resource.subject );
+            console.log("Subject Details: "+ $scope.resource.subjectdetails );
+            console.log("Link: "+ $scope.resource.resourcelink);
+            console.log("Comments: " + $scope.resource.comments);
+
+            var data = ({
+
+                subject: $scope.resource.subject,
+                subheading: $scope.resource.subjectdetails,
+                link: $scope.resource.resourcelink,
+                comments: $scope.resource.comments,
+                email: $scope.resource.email
+
+            });
+
             var route = '/api/data/email';
-            $http.get(route).success(function (req, res) {
+            $http.post(route, data).success(function (req, res) {
                 console.log("sending email");
             });
 
 
-           //  console.log("sending email for resources" );
-           //  console.log("Subject: " + $scope.resource.subject );
-           //  console.log("Subject Details: "+ $scope.resource.subjectdetails );
-           //  console.log("Link: "+ $scope.resource.resourcelink);
-           //  console.log("Comments: " + $scope.resource.comments);
+           
 
            //  var email = "isalau@me.com" ;
            //  // separate addresses by commas, no spaces //
@@ -374,7 +395,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         /* if (allStudentGrades[i].pass == true) { */
                     }
                 }
-                //console.log($scope.studentGrades[i].studentName);
+                // console.log($scope.studentGrades[i].studentName);
 
             }
             $scope.groups[0].progress *= 25;
@@ -449,11 +470,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.viewStats = function(){
             var route = '/api/data/plotly';
-            $http.get(route).success(function (req, res) {
+            $http.get(route, $scope.user).success(function (req, res) {
                 console.log("plotly go");
-            });
+            }); 
 
-            location.reload();
+            // location.reload();
+
+
+            // var route = '/api/data/plotly';
+            // $http.get(route), function (req, res) {
+            //     req.params.q = "something";
+            // });
+
+            // location.reload();
         };
 
         //reset all the teachers code
