@@ -147,7 +147,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.isTF = false;
                 }
                 $scope.numQuestion++;
-                $scope.progress = 100 * ($scope.numQuestion - 1) / $scope.questions.length;
+                $scope.progress = 100 *  ($scope.numQuestion - 1) / $scope.questions.length;
                 // console.log("Max index is " + max);
                 // console.log("Index is " + $scope.index);
                 // console.log("Score is " + $scope.score);
@@ -186,22 +186,20 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
     function($http, $scope, $stateParams, Authentication) {
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-        console.log($scope.user);
+
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
-            analytics: $scope.analytics,
             category: $stateParams.category,
-            student: {
-                name: $scope.user.userName,
-                courses: $scope.user.courses
-            }
+            studentName: $scope.user.userName,
+            courses: $scope.user.courses,
+            analytics: $scope.analytics,
         };
 
-        console.log("Saving Student Grades");
+        console.log("User", $scope.user);
 
         $http.post('/api/quiz_result', studentGrades)
             .success(function(res) {
-                console.log("Grade Response:", res);
+                console.log(res);
             });
 
     }
