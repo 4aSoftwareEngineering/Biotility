@@ -58,7 +58,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-
+            $scope.credentials.courses = [$scope.credentials.courseCode];
             console.log($scope.credentials);
             var route = '/api/auth/signup/';
             if ($scope.credentials.profileType === "Student") {
@@ -75,9 +75,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 $location.url('/');
 
             }).error(function(response) {
-                console.log("invalid");
+                console.log("Invalid (Sign up)", response);
                 //sets error if invalid info
-                alert("Use a valid course code. For testing, use 863.");
+                alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
 
                 $scope.error = response.message;
             });
@@ -101,7 +101,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 // And redirect to home page
                 $state.go('home');
             }).error(function(response) {
-                console.log("invalid");
+                console.log("Invalid (Sign in)", response);
                 //sets popup for invalid usernmae or password
                 setTimeout(function() {
                     alert("Invalid Username or Password");

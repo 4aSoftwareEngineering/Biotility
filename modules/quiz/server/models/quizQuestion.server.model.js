@@ -29,7 +29,7 @@ var questionSchema = new Schema({
     hint: {
         type: String
     },
-    link:{
+    link: {
         type: String
     }
 
@@ -37,18 +37,27 @@ var questionSchema = new Schema({
 
 
 var gradeSchema = new Schema({
+    analytics: {
+        type: Object,
+        required: true
+    },
     category: {
         type: String,
         required: true
     },
-    studentName: {
-        type: String,
-        required: true
-    },
-    analytics: {
+    student: {
         type: Object,
-        required: true
+        required: true,
+        name: {
+            type: String
+        },
+        courses: {
+            type: Array
+        }
+
     }
+
+
 });
 
 mongoose.model('QuizQuestion', questionSchema);

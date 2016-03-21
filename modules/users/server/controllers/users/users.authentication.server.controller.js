@@ -21,10 +21,12 @@ var noReturnUrls = [
 exports.signupStudent = function(req, res) {
     // First looks through Teachers course code
     User.findOne({
-            'profileType': "Teacher",
-            'courses.number': req.body.courseCode
+            "profileType": "Teacher",
+            "courses.number": parseInt(req.body.courseCode)
         },
         function(err, user) {
+            console.log("User", user);
+            console.log("Error", err);
             if (user) { // if exists, authenticate with provided password.
                 ///////Previous Code/////
                 // Init Schema
@@ -51,7 +53,6 @@ exports.signupStudent = function(req, res) {
                                     message: errorHandler.getErrorMessage(err)
                                 });
                             } else {
-                                //Return user info
                                 res.json(newUser);
                             }
                         });
@@ -84,7 +85,6 @@ exports.signup = function(req, res) {
                 tried: newUser
             });
         } else {
-            //Success
             // Remove sensitive data before login
             newUser.password = undefined;
             newUser.salt = undefined;
@@ -95,7 +95,6 @@ exports.signup = function(req, res) {
                         message: errorHandler.getErrorMessage(err)
                     });
                 } else {
-                    //Return user info
                     res.json(newUser);
                 }
             });
@@ -108,22 +107,21 @@ exports.signup = function(req, res) {
  * Signin after passport authentication
  */
 exports.signin = function(req, res) {
-    console.log("Signing in...");
+    console.log("Sign in");
     // First find if user name exists in db.
     User.findOne({
             'userName': req.body.username
         },
         function(err, user) {
             if (user) { // if exists, authenticate with provided password.
-                // if valid, login.
                 req.login(user, function(err) {
                     if (err) {
                         return res.status(403).send({
                             message: errorHandler.getErrorMessage(err)
                         });
                     } else {
+                        //No Error
                         console.log(user);
-                        //Return user info
                         res.json(user);
                     }
                 });
