@@ -220,8 +220,7 @@ describe('User Model Unit Tests:', function () {
     });
   });
 
-  describe('Course Reset', function () {
-
+ describe('Course Reset', function () {
     it('save a user', function (done) {
       var _user1 = new User(user1);
 
@@ -246,31 +245,29 @@ describe('User Model Unit Tests:', function () {
       });
     });
 
-
-
-        User.find({}, function(err,users){
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        }
-         for (var i = 0; i < users.length; i++) {        
-            users[i].courses = [];
-            users[i].save(function(err) {
-                if (err) {
-                }
-            });
-        }
-        res.json(users);
+    it('remove courses', function (done) {
+      User.find({}, function (err, users) {
+        for (var i = 0; i < users.length; i++) { 
+          users[i].courses = [];
+          users[i].save(function(err) {
+              if (err) {}
+          });
+        } 
+        done();
+      });
     });
 
-
+    
     it('should reset all course codes to null', function (done) {
-      User.course({}, function (err, users) {
+      User.find({}, function (err, users) {
         users.courses.should.have.length(0);
         done();
       });
+    });
+
+
   });
+ 
 
 
   describe("User Password Validation Tests", function() {
