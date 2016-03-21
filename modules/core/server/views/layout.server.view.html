@@ -36,10 +36,7 @@
 <body>
     <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
     {% block content %}{% endblock %}
-    <!--Embedding The User Object-->
-    <script type="text/javascript">
-    var user = {{ user | json | safe }};
-    </script>
+
 
     <!-- jQuery for Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>

@@ -48,16 +48,7 @@ exports.renderNotFound = function(req, res) {
 };
 
 // Retrieve subject data, send as response.
-exports.parseSubjects = function(req, res) {
-
-    Subject.find({}, function(err, docs) {
-
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
+exports.parseSubjects = function(req, res) {    
     Subject.find({}, function(err, subs) {
         return res.end(JSON.stringify(subs));
     });
@@ -114,13 +105,6 @@ exports.parseUsers = function(req, res) {
 
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
-    QuizQuestion.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
     QuizQuestion.find({}).lean().exec(function(err, users) {
         return res.end(JSON.stringify(users));
     });
