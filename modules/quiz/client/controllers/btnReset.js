@@ -7,7 +7,7 @@ $(document).ready(function() {
         if (!hasError && !isDone) {
             setTimeout(function() {
                 $('input[type="radio"]').prop('checked', false);
-            }, 50);
+            }, 35);
         }
     });
 });
