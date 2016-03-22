@@ -5,8 +5,8 @@ var mongoose = require('mongoose'),
     QuizQuestion = mongoose.model('QuizQuestion'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
-    Resource = mongoose.model('Resource');
-    // Grades = mongoose.model('studentgrades');
+    Resource = mongoose.model('Resource'),
+    StudentGrades = mongoose.model('StudentGrades');
 
 /**
  * Render the main application page
@@ -41,8 +41,13 @@ exports.renderServerError = function(req, res) {
 
 
 exports.plot = function(req,res){
+    // console.log("PLOTLY "+req.user.courses.length );
+    // console.log("COURSE GIVEN: " + req.course);
+    var params = req.body; 
     console.log("PLOTLY "+req.user.courses.length );
+    console.log("COURSE GIVEN: " + params.give);
     var num = [];
+    var classes = [];
        
     //find all the courses   
     for(var i = 0; i < req.user.courses.length ; i++){
@@ -55,31 +60,95 @@ exports.plot = function(req,res){
         findStudents(num[s]);
     }
 
-   
 
     function findStudents(stud){
         User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
             
             for (var i = 0; i < users.length; i++) {           
                 
-                console.log(users);  
-                // findGrades(users[i], stud);
+                console.log("STUDENTS: " +users[i].userName);  
+                findGrades(users[i], stud);
             }
 
             return res.end(JSON.stringify(users));
         });
     }
 
-    //in each student that matches go to the other database studentgrades and see their scores.
-    // function findGrades(student, stud){
-    //     Grades.find({ "studentname" : student.userName , 'courseCode': stud }).lean().exec(function(err, grades) { 
-    //         for (var i = 0; i < grades.length; i++) {           
-                
-    //             console.log(grades);  
+   
+    //reset the data array
+    var grade = [];
+
+    // //find all grades for the course code
+    // function findGrades(student, course){
+    //     StudentGrades.find({'student.studentName' : student.userName }).lean().exec(function(err, grades) { 
+    //         for (var i = 0; i < grades.length;  i++) { 
+    //             grade.size =  grades[i].analytics.length;
+    //             for(var gradesize = 0; gradesize < grade.size ; gradesize++){
+    //                 grade[gradesize] = 0;
+    //             }
+
+    //             for (var c = 0; c< grades[i].student.courses.length; c++){
+    //                console.log("COURSES: "+ grades[i].student.courses);
+    //                 //iterate through analytics and see if attempt = 1
+    //                for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+    //                     //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
+    //                     if(grades[i].analytics[analytics].attempts === 1){
+    //                         console.log("you got it right");
+    //                         grade[analytics] = grade[analytics]++;
+    //                     }
+    //                 }
+    //             }                
     //         }
+
+    //          for(var results = 0; results < grade.length ; results++){
+    //             console.log("RESULTS: " + grade[results]);
+    //         } 
+
     //         return res.end(JSON.stringify(grades));
     //     });
     // }
+
+    //find all grades for the course code
+    function findGrades(givenstudent, course){
+        StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+            //lookup a test
+            for (var i = 0; i < grades.length;  i++) {
+                for (var c = 0; c < grades[i].student.courses.length; c++){
+                    //see if the test has a category that the teacher is looking for
+                    if(grades[i].category === "Genetics"){
+                         //see if test has a course code that matches the teachers 
+                       if(grades[i].student.courses[c] === course){
+                        console.log("COURSES: "+ grades[i].student.courses);
+                        //iterate through analytics and see if attempt = 1
+                           for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+                                //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
+                                if(grades[i].analytics[analytics].attempts === 1){
+                                    console.log("you got it right");
+                                    grade[analytics] = grade[analytics]++;
+                                }
+                            }
+                       }
+                    }
+                }                
+            }
+
+             for(var results = 0; results < grade.length ; results++){
+                console.log("RESULTS: " + grade[results]);
+            } 
+
+            return res.end(JSON.stringify(grades));
+        });
+    }
+
+
+
+   
+   
+    
+    // for(var r = 0; r < req.user.courses.length ; r++){
+    //     classes.push(req.user.courses[i].courseName);
+    //     console.log(req.user.courses[i].courseName);
+    // } 
 
     var data = [
               {
@@ -89,12 +158,43 @@ exports.plot = function(req,res){
               }
             ];
 
-            var graphOptions = {filename: "basic-bar", fileopt: "overwrite"};
-
-            plotly.plot(data, graphOptions, function (err, msg) {
+            var layout = { title: "title" };
+            var graphOptions = {layout: layout, filename: "basic-bar", fileopt: "overwrite"};
+            plotly.plot(data, graphOptions,  function (err, msg) {
                 console.log(msg);
-            });
+    });
 
+   
+
+
+    // console.log("GRADES: ");
+    //in each student that matches go to the other database studentgrades and see their scores.
+    // function findGrades(student, course){
+    //     StudentGrades.find({'student.studentName' : student.userName }).lean().exec(function(err, grades) { 
+    //         console.log("AMOUNT: "+ grades.length);  
+    //         for (var i = 0; i < grades.length;  i++) { 
+    //             for (var c = 0; c< grades[i].student.courses.length; c++){
+    //                 if (grades[i].student.courses[c] === course){       
+    //                 // var size = Object.keys(grades[i].student.analytics).length;
+    //                 // console.log("Size: "+ size); 
+    //                 //     for(var j=0; j < size; j++){
+    //                 //         console.log("Name: "+ grades[i].student.studentName);  
+    //                 //         console.log("analytics: "+ grades[i].student.analytics); 
+    //                 //     } 
+    //                 }
+
+    //             }                
+    //         }
+    //         return res.end(JSON.stringify(grades));
+    //     });
+    // }
+
+    //find the students in each class
+    //check if their attempt for each question is 1
+        //if so add 1 to that location in array
+    //if not move to next question
+
+    
            
 };
 

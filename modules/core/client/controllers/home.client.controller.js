@@ -468,11 +468,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
 
-        $scope.viewStats = function(){
+        $scope.viewStats = function(course){
+            console.log("Passing: "+ course);
             var route = '/api/data/plotly';
+
+            var params = ({
+                person: $scope.user, 
+                given: course 
+            });
             $http.get(route, $scope.user).success(function (req, res) {
+            // $http.get(route, params).success(function (req, res) {
                 console.log("plotly go");
             }); 
+
 
             // location.reload();
 
