@@ -48,6 +48,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
         $scope.progress = 0;
+        $scope.numOpts = 0;
 
         $scope.changehappened = function(data) {
             $rootScope.$emit('radioSel', data);
@@ -128,6 +129,15 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 $scope.index = ($scope.index + 1) % $scope.questions.length;
                 $scope.question = $scope.questions[$scope.index];
                 $scope.hasError = false;
+                if ($scope.questions[$scope.index].answers.MA) {
+                    $scope.numOpts = $scope.questions[$scope.index].answers.MA.length;
+                    for (var i = $scope.questions[$scope.index].answers.MA.length - 1; i >= 0; i--) {
+                        if ($scope.questions[$scope.index].answers.MA[i].length)
+                            break;
+                        else
+                            $scope.numOpts--;
+                    }
+                }
                 if ($scope.question.type === "TF") {
                     $scope.isMA = false;
                     $scope.isTF = true;
@@ -164,8 +174,13 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             max = $scope.questions.length;
             $scope.loadedQ = true;
             console.log($scope.questions.length + " question(s) found.");
+            console.log($scope.questions);
             $scope.canStart = $scope.questions.length && $scope.loggedIn;
         };
+
+        $scope.getNumber = function(num) {
+            return new Array(num);
+        }
 
         $scope.gotoResource = function(subjectName) {
             $location.path('/' + subjectName + '/resources');
