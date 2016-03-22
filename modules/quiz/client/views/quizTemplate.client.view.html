@@ -36,7 +36,7 @@
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
                         <div>
-                            <li style="list-style: none" ng-repeat="a in questions[index].answers.MCTF">
+                            <li style="list-style: none" ng-repeat="a in questions[index].answers.MCTF track by $index">
                                 <label ng-show="a.length">
                                     <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" required />{{a}}
                                 </label>
@@ -48,23 +48,33 @@
                     <!--Used for True/False-->
                     <br>
                     <div class="row" ng-show="isTF">
-                        <label>
-                            <input type="radio" ng-model="answer" value="T">True</label>
+                        <input type="radio" ng-model="answer" value="T">True</label>
                         <br>
-                        <label>
-                            <input type="radio" ng-model="answer" value="F">False</label>
+                        <input type="radio" ng-model="answer" value="F">False</label>
                         <br>
+                        <!--input style="" type="radio" ng-model="answer" value="X">Hidden</label-->
                     </div>
                     <br/>
                     <br/>
                     <!--Used for MA -->
                     <div class="row" ng-show="isMA">
-                        <div>
-                            <li style="list-style: none" ng-repeat="a in questions[index].answers.MA track by $index">
-                                <label ng-show="a.length">
-                                    <input type="checkbox" ng-model="answer" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" />{{a}}
-                                </label>
-                            </li>
+                        <div class="col-xs-5">
+                            <ul>
+                                <li style="list-style: none" ng-repeat="txt in questions[index].answers.MCTF track by $index">
+                                    <p ng-show="txt.length">{{$index + 1}}. {{txt}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-7">
+                            <ul>
+                                <li class="row" style="list-style: none; margin-bottom: 20px" ng-repeat="txt in questions[index].answers.MA.present track by $index">
+                                    <select class="form-control" ng-model="ansMA[$index]" ng-show="txt.length" style="list-style: none; width: auto !important; display: inline-block;">
+                                        <option selected disabled hidden style='display: none' value=''></option>
+                                        <option ng-repeat="i in getNumber(numOpts) track by $index">{{$index + 1}}</option>
+                                    </select>
+                                    <span class="" ng-show="txt.length">{{txt}}</span>
+                                </li>
+                            </ul>
                         </div>
                         <br>
                     </div>

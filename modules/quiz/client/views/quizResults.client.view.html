@@ -6,12 +6,10 @@
         </div>
         <div class="results-s" id="results" ng-show="!analytics.length">
             <div class="alert alert-danger" role="alert">
-                <strong>Error!</strong>Couldn't find your quiz results. Please log in again.
+                <strong>Error!</strong> Couldn't find your quiz results. Please log in again.
             </div>
         </div>
         <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Panel heading</div>
             <!-- Table -->
             <table class="table table-striped">
                 <thead>
@@ -29,7 +27,7 @@
                         <td>{{q.question.text}}</td>
                         <td>{{q.attempts}}</td>
                         <td>{{q.firstIncorrect || "N/A"}}</td>
-                        <td>...</td>
+                        <td>{{q.question.answers.correct}}</td>
                     </tr>
                 </tbody>
             </table>
