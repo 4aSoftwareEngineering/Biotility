@@ -60,19 +60,22 @@ exports.plot = function(req,res){
     }  
 
     //find all the students in that course
-    for(var s = 0; s < req.user.courses.length ; s++){     
+    var findcount = false; 
+    console.log("AMOUNT:" + req.user.courses.length);
+    for(var s = 0; s < req.user.courses.length ; s++){
+        
         findStudents(num[s]);
     }
 
     for(var gradesize = 0; gradesize < 20 ; gradesize++){
         grade[gradesize] = 0;
     }
-    var findcount = 0; 
+    
     //find all grades for the course code
     function findGrades(givenstudent, course){
         StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
             //lookup a test
-            findcount++;
+            
             for (var i = 0; i < grades.length;  i++) {
                 
                 for (var c = 0; c < grades[i].student.courses.length; c++){
@@ -101,9 +104,9 @@ exports.plot = function(req,res){
                 datagraph = grade;        
             }
 
-            // if(findcount === grades.length ){
+            if(findcount === true ){
                 callgraph(datagraph);
-            // }    
+            }    
             // console.log("FINDCOUNT: " + findcount);
 
              
@@ -117,6 +120,7 @@ exports.plot = function(req,res){
 
             return res.end(JSON.stringify(grades));
         });
+
     }
 
 
@@ -126,6 +130,9 @@ exports.plot = function(req,res){
             
             for (var i = 0; i < users.length; i++) {           
                 // console.log("STUDENTS: " +users[i].userName);  
+                if (i === users.length -1 ) {
+                        findcount = true;
+                } 
                 findGrades(users[i], stud);
             }
 

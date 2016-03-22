@@ -483,7 +483,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }); 
 
 
-            location.reload();
+            // location.reload();
         };
 
         //reset all the teachers code
