@@ -472,25 +472,18 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log("Passing: "+ course);
             var route = '/api/data/plotly';
 
-            var params = ({
-                person: $scope.user, 
-                given: course 
-            });
-            $http.get(route, $scope.user).success(function (req, res) {
+            // var params = ({
+            //     person: $scope.user, 
+            //     given: course 
+            // });
+
+            $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
             // $http.get(route, params).success(function (req, res) {
                 console.log("plotly go");
             }); 
 
 
-            // location.reload();
-
-
-            // var route = '/api/data/plotly';
-            // $http.get(route), function (req, res) {
-            //     req.params.q = "something";
-            // });
-
-            // location.reload();
+            location.reload();
         };
 
         //reset all the teachers code
