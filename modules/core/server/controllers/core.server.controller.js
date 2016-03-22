@@ -27,19 +27,19 @@ exports.renderServerError = function(req, res) {
     });
 };
 
-exports.signup = function(req, res){
+
+exports.sendMail = function(req, res) {
+
     var data = req.body;
-    if(data.credentials.profileType === "Student2") {
-        transporter.signup({
-            from: 'biotility-donot-reply@biotility.com',
-            to: data.credentials.email,
-            subject: 'Biotility: Course Code',
-            text: 'Your course code is 1234'
-        });
-    }
+
+    transporter.sendMail({
+        from: 'bio@biotility.com',
+        to: data.contactEmail,
+        subject: 'Biotility: Course code ',
+        text: 'The course code for you to use is 1234'
+    });
+    res.json(data);
 };
-
-
 
 /**
  * Render the server not found responses

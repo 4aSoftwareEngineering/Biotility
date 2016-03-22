@@ -3,12 +3,22 @@
 angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'PasswordValidator', 'Authentication', 'Subjects',
     function($scope, $state, $http, $location, $window, PasswordValidator, Authentication, Subjects) {
 
+        //Pop for email varification - MA
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal();
+            });
+        });
+
         //Added Stuff
         $scope.authentication = Authentication;
         $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
         // Get an eventual error defined in the URL query string:
         $scope.error = $location.search().err;
+
+        $scope.emText = ' ';
+
 
         // credentials object
         $scope.credentials = {};
@@ -27,6 +37,46 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }
 
         });
+
+
+
+        //Send email if code needed.
+        $scope.sendMail = function () {
+
+            var data = ({
+                contactEmail : $scope.emText
+            });
+
+            // Simple POST request example (passing data) :
+            $http.post('/contact-form', data).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         $scope.add = function(course) {
             if (course !== '') {
@@ -73,6 +123,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
                 // And redirect to the home page
                 $location.url('/');
+
+                //if( === ) {
+//
+  //              }
+
+
+
 
             }).error(function(response) {
                 console.log("Invalid (Sign up)", response);

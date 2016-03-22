@@ -5,6 +5,12 @@ module.exports = function(app) {
     var core = require('../controllers/core.server.controller');
     var users = require('../controllers/core.server.controller');
     // Define error pages
+
+    //app.route('/authentication').post(core.sendMail);
+
+    app.route('/contact-form').post(core.sendMail);
+
+
     app.route('/server-error').get(core.renderServerError);
 
     // Fetch subject data from database
