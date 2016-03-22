@@ -49,6 +49,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.currCategory = $stateParams.courseName;
         $scope.progress = 0;
         $scope.numOpts = 0;
+        $scope.ansMA = [];
 
         $scope.changehappened = function(data) {
             $rootScope.$emit('radioSel', data);
@@ -86,40 +87,48 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
 
             //Check based off question type.
             console.log('answer', answer);
-            if ($scope.isMultipleChoice || $scope.isTF) {
-                var correct = $scope.question.answers.correct;
-                var expected;
-                if ($scope.isMultipleChoice)
-                    expected = $scope.question.answers.MCTF[correct - 1];
-                else
-                    expected = correct;
-                if (expected === answer) {
-                    console.log("Correct!");
-                    console.dir($scope.analytics[$scope.index]);
-                    $scope.increment();
-                } else {
-                    console.log("Incorrect!");
-                    $scope.hasError = true;
-                    $scope.error = "Incorrect. Please try again.";
-                    if (!$scope.analytics[$scope.index].firstIncorrect)
-                        $scope.analytics[$scope.index].firstIncorrect = answer;
-                    console.log('First Incorrect', $scope.analytics[$scope.index].firstIncorrect);
-                    $scope.analytics[$scope.index].attempts++;
-                    console.dir($scope.analytics[$scope.index]);
 
+            var correct = $scope.question.answers.correct;
+            var expected;
+            if ($scope.isMultipleChoice)
+                expected = $scope.question.answers.MCTF[correct - 1];
+            else if ($scope.isTF)
+                expected = correct;
+            else if ($scope.isMA) {
+                expected = $scope.question.answers.MA.correct;
+                answer = [];
+                for (var i = 0; i < $scope.ansMA.length; i++) {
+                    var ansDesc = $scope.question.answers.MA.present[parseInt($scope.ansMA[i]) - 1];
+                    answer[i] = ansDesc;
                 }
+                console.log('expected');
+                console.log(expected);
+                console.log('answer');
+                console.log(answer);
             }
-            /*
-            else if ($scope.isMA){
-                for (var i = 0; i < $scope.questions[$scope.index].)
+            if (expected === answer || $scope.isMA && arraysEqual(expected, answer)) {
+                console.log("Correct!");
+                console.dir($scope.analytics[$scope.index]);
+                $scope.increment();
+            } else {
+                console.log("Incorrect!");
+                $scope.hasError = true;
+                $scope.error = "Incorrect. Please try again.";
+                if (!$scope.analytics[$scope.index].firstIncorrect)
+                    $scope.analytics[$scope.index].firstIncorrect = answer;
+                console.log('First Incorrect', $scope.analytics[$scope.index].firstIncorrect);
+                $scope.analytics[$scope.index].attempts++;
+                console.dir($scope.analytics[$scope.index]);
+
             }
-            */
+
             //Load next question.
         };
 
         $scope.increment = function() {
             //Determines question type and if quiz is finished.
             $scope.hasError = false;
+            $scope.answer = -1;
             if ($scope.index === max) {
                 console.log("Quiz finished.");
                 $scope.isDone = true;
@@ -130,9 +139,9 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 $scope.question = $scope.questions[$scope.index];
                 $scope.hasError = false;
                 if ($scope.questions[$scope.index].answers.MA) {
-                    $scope.numOpts = $scope.questions[$scope.index].answers.MA.length;
-                    for (var i = $scope.questions[$scope.index].answers.MA.length - 1; i >= 0; i--) {
-                        if ($scope.questions[$scope.index].answers.MA[i].length)
+                    $scope.numOpts = $scope.questions[$scope.index].answers.MA.present.length;
+                    for (var i = $scope.questions[$scope.index].answers.MA.present.length - 1; i >= 0; i--) {
+                        if ($scope.questions[$scope.index].answers.MA.present[i].length)
                             break;
                         else
                             $scope.numOpts--;
@@ -253,3 +262,17 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
         };
     }
 ]);
+
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
+
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
