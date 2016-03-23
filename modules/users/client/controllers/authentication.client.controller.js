@@ -49,10 +49,22 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         $scope.signup = function(isValid) {
             $scope.error = null;
+			//recaptcha.validate(key)
+			//.then(function(){
+			  // validated and secure
+			//})
+			//.catch(function(errorCodes){
+			  // invalid
+			//  console.log(recaptcha.translateErrors(errorCodes));// translate error codes to human readable text
+			//  console.log("invalid");
+                //sets error if invalid info
+            //    alert("Use a valid course code. For testing, use 863.");
 
+            //    $scope.error = response.message;
+			//});
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');
-
+				
                 return false;
             }
 

@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     crypto = require('crypto'),
     validator = require('validator'),
     owasp = require('owasp-password-strength-test');
-
+//var app = angular.module('myApp', ['noCAPTCHA']);
 /**
  * A Validation function for local strategy properties
  */
