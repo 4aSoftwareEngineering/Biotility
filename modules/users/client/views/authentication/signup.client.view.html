@@ -11,7 +11,37 @@
         </div>
     	</div>
     </div>
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<!--take off after we host it
+	<script src="/src/angular-no-captcha.js"></script>
+	-->
+	<!--take off after we host it
+	<script>
+    var SITE_KEY = '6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo';
+    var app = angular
+      .module('myApp', ['noCAPTCHA'])
+      .config(['noCAPTCHAProvider',
+        function (noCaptchaProvider){
+          noCaptchaProvider.setSiteKey(SITE_KEY);
+          noCaptchaProvider.setTheme('dark');
+        }
+      ])
+      .controller('exampleController', [
+        '$scope',
+        function exampleController($scope){
+          $scope.gRecaptchaResponse = '';
+          $scope.$watch('gRecaptchaResponse', function (){
+            $scope.expired = false;
+          });
+          $scope.expiredCallback = function expiredCallback(){
+            $scope.expired = true;
+          };
+        }]);
+  </script>-->
+	
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+
+	
+	
 	<!--submit form-->
     <form ng-submit="signup(true)">
    		 <div class="container topmargin-50" align="center">
@@ -88,6 +118,10 @@
                 </div>
             </div>
         </div>
+		
+		
+		
+		
 		<style>
 		.capatcha {
 			text-align: center;
@@ -100,8 +134,15 @@
 			<div class="capatcha">
 					<div class="g-recaptcha" data-sitekey="6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo"></div>
 			</div>
-
+									
         <!--Registration button-->
+		<!--Google Captcha showing, not showing for now till we put it on the site
+		<no-captcha
+			g-recaptcha-response="gRecaptchaResponse"
+			theme='light'
+			control="noCaptchaControl"
+			site-key="<your site key>">
+		</no-captcha>-->
         <div class="topmargin-10" style="text-align:center;">
             <button class="btn btn-default" type="submit">
                 Register

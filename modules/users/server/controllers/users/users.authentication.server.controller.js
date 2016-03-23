@@ -8,13 +8,18 @@ var path = require('path'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User');
+  //reCAPTCHA=require('recaptcha2');
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
   '/authentication/signin',
   '/authentication/signup'
 ];
-
+//var app = angular.module('myApp', ['noCAPTCHA']);
+//recaptcha=new reCAPTCHA({
+//  siteKey:'6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo',
+//  secretKey:'6LcGiBsTAAAAAFxhCXEIXj40XpmvyrtVywvpYqUR'
+//})
 /**
  * Signup
  */
