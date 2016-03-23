@@ -11,7 +11,7 @@
         </div>
     	</div>
     </div>
-
+	<script src='https://www.google.com/recaptcha/api.js'></script>
 	<!--submit form-->
     <form ng-submit="signup(true)">
    		 <div class="container topmargin-50" align="center">
@@ -88,6 +88,19 @@
                 </div>
             </div>
         </div>
+		<style>
+		.capatcha {
+			text-align: center;
+		}
+
+		.g-recaptcha {
+			display: inline-block;
+		}
+		</style>
+			<div class="capatcha">
+					<div class="g-recaptcha" data-sitekey="6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo"></div>
+			</div>
+
         <!--Registration button-->
         <div class="topmargin-10" style="text-align:center;">
             <button class="btn btn-default" type="submit">
