@@ -92,10 +92,17 @@ var UserSchema = new Schema({
         trim: true,
         default: "Student"
     },
-    courseCode: {
-        type: Number,
-        trim: true
-    },
+    //OLD single code
+    //courseCode: {
+    //    type: Number,
+    //    trim: true
+    //},
+    courseCode: [
+            {
+                type: Number,
+                trim: true
+            }
+        ],
     updated: {
         type: Date
     },

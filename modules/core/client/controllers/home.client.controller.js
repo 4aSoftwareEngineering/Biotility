@@ -98,6 +98,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.input = {};
         //courseNums array
         $scope.input.courseNums = [];
+
+
         //for each course in their schema
         $scope.authentication.user.courses.forEach(
             function(element, index, array) {
@@ -106,13 +108,13 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                 //used for testing purposes to make sure a teacher has the correct courses
                 console.log($scope.input.courseNums);
-
             }
         );
 
         // credentials object
         $scope.credentials = {};
         $scope.credentials.courses = [];
+        $scope.hello = 0;
 
         //get course names
         // array of class names
@@ -127,6 +129,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
         });
 
+        $scope.myFunction = function(hello){
+            $scope.user.courseCode.push(hello);
+        };
 
         $scope.add = function(course) {
             if (course !== '') {

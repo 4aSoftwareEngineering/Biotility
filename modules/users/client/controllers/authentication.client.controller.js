@@ -64,20 +64,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         $scope.add = function(course) {
             if (course !== '') {
 

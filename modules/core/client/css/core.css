@@ -1,3 +1,21 @@
+html, body {
+    height: 100%;
+}
+#container {
+    min-height: 100%;
+    margin-bottom: -20px;
+    position: relative;
+}
+#footer {
+    height: 20px;
+    position: relative;
+}
+.clearfooter {
+    height: 150px;
+    clear: both;
+}
+
+
 /* Font */
 
 @font-face {
