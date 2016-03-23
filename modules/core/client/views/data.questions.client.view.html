@@ -9,6 +9,7 @@
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="editMode">Edit?
+                <p ng-show="editMode"> Click any black "x" to remove a question. </p>
             </label>
         </div>
     </div>
@@ -25,7 +26,7 @@
 				<td>{{d.type}}</td>
 				<td>{{d.text}}</td>
 				<td>{{d.answers}}</td>
-				<td ng-show="editMode" ng-click=""><span class="glyphicon glyphicon-remove"></span></td> <!--deleteQuestion($index)-->
+				<td ng-show="editMode" ng-click="deleteQuestion($index)"><span class="glyphicon glyphicon-remove"></span></td> <!--deleteQuestion($index)-->
 			</tr>
 		</tbody>
 
