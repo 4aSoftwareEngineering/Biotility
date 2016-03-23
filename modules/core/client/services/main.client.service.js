@@ -75,6 +75,24 @@ angular.module('core').service('SubHeads', ['$http', function($http) {
 
 
 
+angular.module('core').service('Temp', ['$http', function($http) {
+
+  return {
+    parseUsers: function() {
+      return $http({
+        method: 'GET',
+        url: '/api/parse/user'
+      });
+    }
+  };
+
+}]);
+
+angular.module('core').service('plotly', ['$http', function($http) {
+
+}]);
+
+
 angular.module('core').service('NavCrumbs', [
   function() {
     this.breadcrumb = [{

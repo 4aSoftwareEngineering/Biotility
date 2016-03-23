@@ -6,6 +6,11 @@ module.exports = function(app) {
     var core = require('../controllers/core.server.controller');
     var users = require('../controllers/core.server.controller');
 
+    var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
+    var schedule = require('node-schedule');
+    var Email = require('email').Email;
+    var CronJob = require('cron').CronJob;
+
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 
@@ -17,11 +22,12 @@ module.exports = function(app) {
 
 
     // Fetch user data from database
-    app.route('/api/data/users/:userId')
-       .get(core.parseUsers)
-       .put(core.update);
 
-    //Routes for resources
+    app.route('/api/data/users/:userId').put(core.update);
+
+    app.route('/api/parse/user').get(core.parseUsers);
+    //Eric's Work
+
     app.route('/api/parse/resources').get(core.parseResources);
     app.route('/api/data/resources').post(core.addResource);
     app.route('/api/data/resources/:resourceId').delete(core.deleteResource);
@@ -36,6 +42,13 @@ module.exports = function(app) {
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);
 
+
+    //Isabel's Work Sprint2
+    app.route('/api/data/plotly').get(core.plot);
+    app.route('/api/data/email').post(core.email);
+    app.route('/ap/data/cron').get(core.cron);
+
+
     // Fetch question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
 
@@ -44,6 +57,7 @@ module.exports = function(app) {
     // Return a 404 for all undefined api, module or lib routes
     // GOES AFTER ALL API CALLS ^^^^
     app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
+
 
     app.param('@id', core.userByID);
     app.param('resourceId', core.resourceByID);

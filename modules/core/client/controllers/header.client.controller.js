@@ -20,6 +20,8 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', '$loc
       // routing depending on profile type
       if ($scope.authentication.user.profileType === 'Teacher') {
         $location.url('/teacher/' + $scope.authentication.user.userName);
+      } else if ($scope.authentication.user.profileType === 'Admin'){
+        $location.url('/admin/' + $scope.authentication.user.userName);
       } else {
         $location.url('/student/' + $scope.authentication.user.userName);
 

@@ -2,8 +2,9 @@
 
 /** SEE core.server.routes.js  */
 
-angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', 'Subjects', 'Users',
-    function($scope, $state, $location, Authentication, Subjects, Users) {
+
+angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', '`',
+    function($scope, $state, $http, $location, Authentication, Subjects, Users) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -20,6 +21,14 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
             $location.path('/' + subjectObj.name + '/resources');
         };
 
+        $scope.codeReset = function(){
+             console.log("cron go");
+            var route = '/api/data/cron';
+            $http.get(route).success(function (req, res) {
+               
+            });
+        };
+
 
     }
 ]);
@@ -27,6 +36,7 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 
 angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 'SubHeads',
     function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects, SubHeads) {
+
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -170,8 +180,29 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
     }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects) {
+
+angular.module('core').controller('authController',['$scope', '$state', '$location', 'Users', 'Authentication', '$http',function($scope, $state, $location, Users, Authentication, $http) {
+		//This is a min config for authenticating admin features
+        $scope.authentication = Authentication;
+        $scope.user = $scope.authentication.user;
+        
+        $scope.isTeacher = false;
+        $scope.isAdmin = false;
+        
+        //Set flags to true if admin or teacher 
+        if ($scope.authentication.user.profileType === "Admin") {
+            console.log("I am a admin");
+            $scope.isAdmin = true;
+        } else if ($scope.authentication.user.profileType === "Teacher") {
+            console.log("I am a teacher");
+            $scope.isTeacher = true;
+        }
+	}
+]);
+
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
@@ -184,10 +215,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.isAdmin = false;
         $scope.profileVisible = true;
         //checks if teacher
-        if ($scope.profileType === "Teacher") {
+        if ($scope.authentication.user.profileType === "Teacher") {
             console.log("I am a teacher");
             $scope.isTeacher = true;
-        } else if ($scope.profileType === "Admin") {
+        } else if ($scope.authentication.user.profileType === "Admin") {
             console.log("I am a admin");
             $scope.isAdmin = true;
         }
@@ -366,8 +397,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                 $scope.error = response.message;
             });
-
-
         };
 
         $scope.update = function() {
@@ -383,50 +412,45 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
+        $scope.sendEmail = function(isValid){
+
+            console.log("sending email for resources" );
+            console.log("Subject: " + $scope.resource.subject );
+            console.log("Subject Details: "+ $scope.resource.subjectdetails );
+            console.log("Link: "+ $scope.resource.resourcelink);
+            console.log("Comments: " + $scope.resource.comments);
+
+            var data = ({
+
+                subject: $scope.resource.subject,
+                subheading: $scope.resource.subjectdetails,
+                link: $scope.resource.resourcelink,
+                comments: $scope.resource.comments,
+                email: $scope.resource.email
+
+            });
+
+            var route = '/api/data/email';
+            $http.post(route, data).success(function (req, res) {
+                console.log("sending email");
+            });
 
 
-        // $scope.classupdates = function(){
-        //   console.log("ADDED A NEW CLASS");
-        //   $scope.error = null;
+           
 
-        //   // if (!isValid) {
-        //   //   $scope.$broadcast('show-errors-check-validity', 'articleForm');
-        //   //   console.log("breaks");
-        //   //   return false;
-        //   // }
+           //  var email = "isalau@me.com" ;
+           //  // separate addresses by commas, no spaces //
+           //  var subject = "Biotility" ;
+           //  var body = "Testing" ;
 
-        //   //how to access user info
-        //   //console.log("EMAIL: "+ $scope.authentication.user.email); 
+           // var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
+           // window.location.href = link;
+        };
 
-        //   //input to put courseNames
-        //  $scope.input = {};
-        //   //courseNums array
-        //   $scope.input.courseNums = [];
-        //  // for each course in their schema
-        //   $scope.authentication.user.courses.forEach(
-        //   function(element, index, array) {
-        //     //stores each course Name and number of the course that a teacher has
-        //     $scope.input.courseNums.push(element.courseName + " : " + element.number);
-        //     //used for testing purposes to make sure a teacher has the correct courses
-        //      console.log("CURRENT CLASSES: "+ $scope.input.courseNums);
-        //   });
 
-        //   // var listing = {
-        //   //   name: $scope.name, 
-        //   //   code: $scope.code, 
-        //   //   address: $scope.address
-        //   // };
+       
 
-        //   // /* Save the article using the Listings factory */
-        //   // Listings.update(id, listing)
-        //   //         .then(function(response) {
-        //   //           //if the object is successfully updated redirect back to the list page
-        //   //           $state.go('listings.list', { successMessage: 'Listing succesfully update!' });
-        //   //         }, function(error) {
-        //   //           //otherwise display the error
-        //   //           $scope.error = 'Unable to update listing!\n' + error;
-        //   //         });
-        // };
+
 
 
         //creates groups
@@ -460,13 +484,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log($scope.section);
 
         });
+        
         //gets student grades
         $scope.studentGrades = [];
         $http.get('/api/quiz_result')
             .success(function(res) {
                 // console.log("quiz result: ", res);
                 byStudent(res);
-            });
+        });
+
         //gets student  grades by student and stores them
         var byStudent = function(allStudentGrades) {
             for (var i = 0; i < allStudentGrades.length; i++) {
@@ -493,10 +519,137 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         /* if (allStudentGrades[i].pass == true) { */
                     }
                 }
-                //console.log($scope.studentGrades[i].studentName);
+                // console.log($scope.studentGrades[i].studentName);
 
             }
             $scope.groups[0].progress *= 25;
+        };
+
+        //reset a single teachers code
+        $scope.resetCodes = function(){
+
+            var d = new Date();
+            var dlog = d.getDate();
+            console.log("Date: "+dlog);
+
+            var m = new Date();
+            var mlog = d.getMonth();
+            console.log("Month: "+mlog);
+
+            var h = new Date();
+            var hlog = d.getHours();
+            console.log("Hour: "+ hlog);
+
+            var mi = new Date();
+            var milog = mi.getMinutes();
+            console.log("Miniute: "+milog);
+
+            var s = new Date();
+            var slog = s.getSeconds();
+            console.log("TODAY AND NOW"); 
+
+            //if so change all course arrays to empty
+            if(dlog === 1 && mlog === 7 && hlog===0 && milog === 0 && s === 0){
+            // if(dlog === 18 && mlog === 2 && hlog === 18 && milog === 22){
+                  
+
+                Temp.parseUsers().then(function(response) {
+                    $scope.users = response.data;
+                    //dowload all current course codes
+                    for (var i = 0; i < $scope.users.length; i++) {
+                        
+                        while ($scope.users[i].courses.length > 0) {
+                            $scope.users[i].courses.pop();
+                        }
+
+                        updateresetCodes($scope.users[i]);
+                    }
+
+                    function updateresetCodes(newuser){
+                        
+
+                        // var route = '/api/users/' + newuser._id;
+                        var route = '/api/users/no';
+
+                        $scope.put(route, newuser.courses).success(function(response) {
+                            // console.log(newuser.firstName + newuser.courses);
+                            
+                            // If successful we assign the response to the global user model
+                            // newuser = response;
+
+                            // And redirect to the home page
+                            //$location.url('/');
+
+                            }).error(function(response) {
+                                console.log("Unable to PUT.");
+                                console.dir(response);
+                                $scope.error = response.message;
+                        });
+                      
+                    }
+                });
+            }
+        };
+
+
+        $scope.viewStats = function(course){
+            console.log("Passing: "+ course);
+            var route = '/api/data/plotly';
+
+            // var params = ({
+            //     person: $scope.user, 
+            //     given: course 
+            // });
+
+            $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
+            // $http.get(route, params).success(function (req, res) {
+                console.log("plotly go");
+            }); 
+
+
+            // location.reload();
+        };
+
+        //reset all the teachers code
+        $scope.resetAllCodes = function(){
+            //get all teachers
+           
+            
+             //check to see if date is August 1st
+            var d = new Date();
+            var dlog = d.getDate();
+            console.log(dlog);
+
+            var m = new Date();
+            var mlog = d.getMonth();
+            console.log(mlog);
+
+
+            //if so change all course arrays to empty
+            if(dlog === 1 && mlog === 7){
+                console.log("It's August 1st, time for a reset!");
+
+                while ($scope.authentication.user.courses.length > 0) {
+                $scope.authentication.user.courses.pop();
+            }
+
+            
+            var route = '/api/users/' + $scope.authentication.user._id;
+
+            $http.put(route, $scope.user.courses).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+
+                }).error(function(response) {
+                    console.log("Unable to PUT.");
+                    console.dir(response);
+                    $scope.error = response.message;
+                });
+            }    
         };
 
     }
