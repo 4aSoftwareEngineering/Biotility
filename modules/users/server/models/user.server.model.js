@@ -24,7 +24,7 @@ var validateLocalStrategyEmail = function(email) {
 };
 
 /** Enum profile values */
-var profileStates = 'Student Teacher'.split(' ');
+var profileStates = 'Student Teacher Admin'.split(' ');
 
 /**
  * User Schema

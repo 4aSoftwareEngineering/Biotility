@@ -118,7 +118,7 @@ function uploadQuizQuestions(result, res) {
         question.text = result[key].Question;
         if (result[key]['Correct Answer'])
             question.answers.correct = result[key]['Correct Answer'];
-        
+
         question.answers.MCTF = [
             result[key].Choice1,
             result[key].Choice2,
@@ -126,20 +126,30 @@ function uploadQuizQuestions(result, res) {
             result[key].Choice4,
             result[key].Choice5
         ];
+        //Prune for empty strings.
+        question.answers.MCTF = _.compact(question.answers.MCTF);
 
         //Dont assign if there arent any MA.
-        if (result[key]['Matching Answer 1'])
-            question.answers.MA = [
+        if (result[key]['Matching Answer 1']) {
+            question.answers.MA = {};
+            question.answers.MA.correct = [
                 result[key]['Matching Answer 1'],
                 result[key]['Matching Answer 2'],
                 result[key]['Matching Answer 3'],
                 result[key]['Matching Answer 4'],
                 result[key]['Matching Answer 5']
             ];
+            //Prune for empty strings.
+            question.answers.MA.correct = _.compact(question.answers.MA.correct);
+
+            //Shuffle
+            question.answers.MA.present = question.answers.MA.correct;
+            question.answers.MA.present = _.shuffle(question.answers.MA.present);
+        }
         question.hint = result[key]['Hint upon incorrect answer'];
         question.link = result[key]['Topic Link(s) or Text'];
         output.push(question);
-        console.log(question);
+        //console.log(question);
 
         var qModel = new QuizQuestion(question);
 
