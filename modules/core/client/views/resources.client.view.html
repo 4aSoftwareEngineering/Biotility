@@ -16,101 +16,129 @@
     <div class="container head about-sub">
     	Learn More
     </div>
-    
+
     <!-- Temporary Button Until Admin Account -->
-    <div ng-show="authentication.user.profileType === 'Admin'" class="container" style="padding-left: 70px">
+    <div ng-show="authentication.user.profileType === 'Admin'" class="container head" style="padding-left: 70px">
+        <!-- Edit Box -->
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="editMode">Edit?
             </label>
         </div>
-    </div>
-
-    <!--Add/Edit forms-->
-    <div ng-show="editMode === true">
-
-        <!-- Resource/SubHead Selection -->
-        <form>
-           <label class="radio-inline">
-                <input type="radio" ng-value = "true" ng-model="ResourceField"> Edit Links
-           </label>
-           <label class="radio-inline">
-                <input type="radio" ng-value = "false" ng-model="ResourceField"> Edit Sub Headings
-           </label>
-        </form>
-
-        <!-- Resource Forms -->
-        <div ng-show="ResourceField == true">
-            <!--Add Resource form-->
-            <form class="form-inline" ng-show="updateMode === false" ng-submit="addResource()">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" placeholder="Link Title" ng-model="newResource.title">
-                </div>
-                <div class="form-group">
-                    <label>Url</label>
-                    <input type="text" class="form-control" placeholder="http//..." ng-model="newResource.url">
-                </div>
-                <div class="form-group">
-                    <label>SubHead</label>
-                    <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
-                        <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption.title}}">{{subHeadOption.title}}</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-default">Add Resource</button>
-            </form>
-
-            <!--Update Resource form-->
-            <form class="form-inline" ng-show="updateMode === true" ng-submit="updateResource(newResource)">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" placeholder="Link Title" ng-model="newResource.title">
-                </div>
-                <div class="form-group">
-                    <label>Url</label>
-                    <input type="text" class="form-control" placeholder="http//..." ng-model="newResource.url">
-                </div>
-                <div class="form-group">
-                    <label>SubHead</label>
-                    <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
-                          <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption.title}}">{{subHeadOption.title}}</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-default">Update Resource</button>
-            </form>
+        <!-- Error Message -->
+        <div ng-show="error" class="text-danger">
+            <strong ng-bind="error"></strong>
+            <span style="color: black;" class="glyphicon glyphicon-remove" ng-click="clearErrorMessage()"></span>
+        </div>
+        <!-- Success message -->
+        <div ng-show="success" class="text-success">
+          <strong ng-bind="success"></strong>
+          <span style="color: black;" class="glyphicon glyphicon-remove" ng-click="clearSuccessMessage()"></span>
         </div>
 
-        <!-- SubHead Form -->
-        <div ng-show="ResourceField == false">
-            <!-- Add SubHead Form -->
-            <form  class="form-inline" ng-show="updateMode === false" ng-submit="addSubHead()">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" placeholder="Subhead" ng-model="newSubHead.title">
-                </div>
-                <div class="form-group">
-                    <label>Subject</label>
-                    <input type="text" class="form-control" placeholder="Cells" ng-model="newSubHead.subject">
-                </div>
-                <button type="submit" class="btn btn-default">Add SubHead</button>
-            </form>
+        <!--Add/Edit forms-->
+        <div ng-show="editMode === true" class="panel panel-default">
+            <div class="panel-body">
+                <!-- Resource/SubHead Selection -->
+                <form>
+                   <label class="radio-inline">
+                        <input type="radio" ng-value = "true" ng-model="ResourceField"> Edit Links
+                   </label>
+                   <label class="radio-inline">
+                        <input type="radio" ng-value = "false" ng-model="ResourceField"> Edit Sub Headings
+                   </label>
+                </form>
+                <br>
 
-            <!-- Update SubHead Form -->
-            <form  class="form-inline" ng-show="updateMode === true" ng-submit="updateSubHead(newSubHead)">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" placeholder="Subhead" ng-model="newSubHead.title">
+                <!-- Resource Forms -->
+                <div ng-show="ResourceField == true">
+                    <!--Add Resource form-->
+
+                    <form class="form-inline" ng-show="updateMode === false" ng-submit="addResource()">
+
+                        <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
+                        </div>
+                        
+                        <div class="form-group">
+                                <label>Url</label>
+                                <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <label>SubHead</label>
+                            <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
+                                <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption._id}}">{{subHeadOption.title}}</option>
+                            </select>
+                        </div>
+
+
+                        
+
+                        <!-- <div class="input-group input-group-sm">
+                          <span class="input-group-addon" id="sizing-addon3">@</span>
+                          <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+                        </div> -->
+
+                        <button type="submit" class="btn btn-default">Add Resource</button>
+                        <span style="color: black;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                    </form>
+
+                    <!--Update Resource form-->
+                    <form class="form-inline" ng-show="updateMode === true" ng-submit="updateResource(newResource)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
+                        </div>
+                        <div class="form-group">
+                            <label>Url</label>
+                            <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
+                        </div>
+                        <div class="form-group">
+                            <label>SubHead</label>
+                            <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
+                                  <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption._id}}">{{subHeadOption.title}}</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-default">Update Resource</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label>Subject</label>
-                    <input type="text" class="form-control" placeholder="Cells" ng-model="newSubHead.subject">
+
+                <!-- SubHead Form -->
+                <div ng-show="ResourceField == false">
+                    <!-- Add SubHead Form -->
+                    <form  class="form-inline" ng-show="updateMode === false" ng-submit="addSubHead()">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control input-sm" placeholder="Subhead" ng-model="newSubHead.title">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" class="form-control input-sm" placeholder="Cells, etc." ng-model="newSubHead.subject">
+                        </div>
+                        <button type="submit" class="btn btn-default">Add SubHead</button>
+                    </form>
+
+                    <!-- Update SubHead Form -->
+                    <form  class="form-inline" ng-show="updateMode === true" ng-submit="updateSubHead(newSubHead)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control input-sm" placeholder="Subhead" ng-model="newSubHead.title">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" class="form-control input-sm" placeholder="Cells, etc." ng-model="newSubHead.subject">
+                        </div>
+                        <button type="submit" class="btn btn-default">Update SubHead</button>
+                    </form>
+                    <br>
                 </div>
-                <button type="submit" class="btn btn-default">Update SubHead</button>
-            </form>
-            <br>
+            </div>
         </div>
-        <span style="color: black;" ng-show="editMode === true" class="glyphicon glyphicon-remove" ng-click="clearResourceField()"></span>
     </div>
+    <br><br>
 
     <!-- SubHeadings -->
     <div ng-repeat="subHead in subHeads | filter:{subject: subject}:strict" class="container head res-sub">
@@ -121,7 +149,7 @@
             
         </tr>
         <!-- Links -->
-        <div ng-repeat="resource in resources | filter:{subject: subHead.title}:strict" class="container head con" style="padding-left: 70px">
+        <div ng-repeat="resource in resources | filter:{subject: subHead._id}:strict" class="container head con">
             <br>
             <tr>
                 <td><a ng-href="{{resource.url}}">{{resource.title}}</a></td>
@@ -131,12 +159,14 @@
         </div>
     </div>
 
-    <div>--------------------------------------</div>
-    <!--show based on url and subject -->
-    <!--category and subcategories with links-->
 
+
+
+    <!-- Below is old hardcoded resources. -->
+
+    
     <!--Cells-->
-    <div ng-show="subject == 'Cells'">
+<!--     <div ng-show="subject == 'Cells'">
         <div class="container head res-sub">
             Cells (general)
         </div>
@@ -166,15 +196,15 @@
             <a href="http://www.cellsalive.com/cells/cell_model.htm">Eukaryotic Organelles</a>
             <br><br>
         </div>
-    </div>
+    </div> -->
 
     <!--Chemistry and Biochemistry-->
-    <div ng-show="subject == 'Chemistry & Biochemistry'">
+<!--     <div ng-show="subject == 'Chemistry & Biochemistry'">
     
     
-    <div class="container head res-sub">
-    		Bonds
-	</div>
+        <div class="container head res-sub">
+        		Bonds
+    	</div>
     
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.khanacademy.org/science/chemistry/chemical-bonds">Chemical Bonds</a>
@@ -281,16 +311,14 @@
             <a href="http://www.johnkyrk.com/DNAtranscription.html">DNA Transcription</a>
             <br><br>
         </div>
-        
-
-    </div>
+    </div> -->
    
     <!--Genetics-->
-    <div ng-show="subject == 'Genetics'">
+<!--     <div ng-show="subject == 'Genetics'">
 
-    <div class="container head res-sub">
-    		Genomics
-	</div>
+        <div class="container head res-sub">
+        		Genomics
+    	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.genome.gov/18016863">DNA, Genes and Genomes</a>
             <br><br>
@@ -327,15 +355,14 @@
             <a href="https://www.boundless.com/biology/textbooks/boundless-biology-textbook/meiosis-and-sexual-reproduction-11/the-process-of-meiosis-92/comparing-meiosis-and-mitosis-406-11633/">Comparing Meiosis and Mitosis</a>
             <br><br>
         </div>
-        
-    </div>
+    </div> -->
 
     <!--lab skills and applications-->
-    <div ng-show="subject == 'Laboratory Skills and Applications'">
+<!--     <div ng-show="subject == 'Laboratory Skills and Applications'">
     
-    <div class="container head res-sub">
-    		Cell & Tissue Culture
-	</div>
+        <div class="container head res-sub">
+        		Cell & Tissue Culture
+    	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.youtube.com/watch?v=bi755vQVNx8">Plant tissue culture basics</a>
             <br><br>
@@ -506,15 +533,14 @@
             <a href="https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-biology-learning-center/protein-biology-resource-library/pierce-protein-methods/overview-elisa.html">Overview of ELISA</a>
             <br><br>
         </div>
-        
-    </div>
+    </div> -->
    
     <!--research and sci method-->
-    <div ng-show="subject == 'Research and Scientific Method'">
+<!--     <div ng-show="subject == 'Research and Scientific Method'">
     
-    <div class="container head res-sub">
-    		Experimental Design
-	</div>
+        <div class="container head res-sub">
+        		Experimental Design
+    	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://explorable.com/experimental-research"> Experimental Research</a>
             <br><br>
@@ -539,15 +565,14 @@
             <a href="http://serc.carleton.edu/quantskills/methods/quantlit/basicgraph.html"> Basic Graphing Skills</a>
             <br><br>
         </div>
-        
-    </div>
+    </div> -->
    
     <!--general biotech-->
-    <div ng-show="subject == 'General Topics'">
+<!--     <div ng-show="subject == 'General Topics'">
     
-    <div class="container head res-sub">
-    		Applications
-	</div>
+        <div class="container head res-sub">
+        		Applications
+    	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="http://www.biotechonweb.com/Applications-of-Biotech.html">Applications of Biotechnology</a>
             <br><br>
@@ -630,11 +655,10 @@
             <a href="http://www.archives.gov/federal-register/cfr/about.html">Regulations</a>
             <br><br>
         </div>
-        
-    </div>
+    </div> -->
    
     <!--preparing solutions-->
-    <div ng-show="subject == 'Preparing Solutions'">
+<!--     <div ng-show="subject == 'Preparing Solutions'">
     
     	<div class="container head res-sub">
     		Proper Technique
@@ -683,8 +707,7 @@
             <a href="http://www.sciencecompany.com/Preparing-Chemical-Solutions.aspx">Preparing Chemical Solutions</a>
             <br><br>
         </div>
-        
-    </div>
+    </div> -->
     
     
     <!--link to quiz for specific subject -->
