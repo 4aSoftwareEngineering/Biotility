@@ -14,74 +14,50 @@ var questionSchema = new Schema({
         type: String,
         required: true
     },
-    questionType: {
+    type: {
         type: String,
         required: true
     },
-    description: {
+    text: {
         type: String,
         required: true
     },
-    correctAnswer: {
-        type: String,
+    answers: {
+        type: Object,
         required: true
-    },
-    answerDesc1: {
-        type: String
-    },
-    answerDesc2: {
-        type: String
-    },
-    answerDesc3: {
-        type: String
-    },
-    answerDesc4: {
-        type: String
-    },
-    answerDesc5: {
-        type: String
-    },
-    MA1: {
-        type: String
-    },
-    MA2: {
-        type: String
-    },
-    MA3: {
-        type: String
-    },
-    MA4: {
-        type: String
-    },
-    MA5: {
-        type: String
     },
     hint: {
-	type: String
+        type: String
     },
-    links: {
-	type: String
+    link: {
+        type: String
     }
 
 });
 
-questionSchema.methods.getQuizResults = function(userID) {
-
-};
 
 var gradeSchema = new Schema({
+    analytics: {
+        type: Object,
+        required: true
+    },
     category: {
         type: String,
         required: true
     },
-    studentName: {
-        type: String,
-        required: true
-    },
-    analytics: {
+    student: {
         type: Object,
-        required: true
+        required: true,
+        name: {
+            type: String
+        },
+        courses: {
+            type: Array
+        }
+
     }
+
+
 });
 
 mongoose.model('QuizQuestion', questionSchema);

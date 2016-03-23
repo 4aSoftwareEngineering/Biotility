@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     crypto = require('crypto'),
     validator = require('validator'),
     owasp = require('owasp-password-strength-test');
-
+//var app = angular.module('myApp', ['noCAPTCHA']);
 /**
  * A Validation function for local strategy properties
  */
@@ -24,7 +24,7 @@ var validateLocalStrategyEmail = function(email) {
 };
 
 /** Enum profile values */
-var profileStates = 'Student Teacher'.split(' ');
+var profileStates = 'Student Teacher Admin'.split(' ');
 
 /**
  * User Schema
@@ -110,23 +110,10 @@ var UserSchema = new Schema({
     resetPasswordExpires: {
         type: Date
     },
-    courses: [{
-        courseName: {
-            type: String
-        },
-        content: {
-            type: String
-        },
-        progress: {
-            type: String
-        },
-        section: {
-            type: String
-        },
-        number: {
-            type: Number
-        }
-    }]
+    courses:{
+        type: Array,
+        required: true
+    }
 });
 
 /**

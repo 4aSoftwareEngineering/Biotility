@@ -4,12 +4,18 @@
  * Module dependencies.
  */
 var path = require('path'),
+<<<<<<< HEAD
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User');
   //reCAPTCHA=require('recaptcha2');
-
+=======
+    errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    User = mongoose.model('User');
+>>>>>>> master
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -24,20 +30,6 @@ var noReturnUrls = [
 /**
  * Signup
  */
-exports.loadTeachers = function(req, res) {
-    
-    User.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
-    User.find({}).lean().exec(function(err, users) {
-        return res.end(JSON.stringify(users));
-    });
-};
-
 exports.signupStudent = function(req, res) {
     // First looks through Teachers course code
     User.findOne({

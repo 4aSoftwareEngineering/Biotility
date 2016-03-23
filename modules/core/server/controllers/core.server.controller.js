@@ -6,7 +6,9 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource'),
-    StudentGrades = mongoose.model('StudentGrades');
+
+    StudentGrades = mongoose.model('StudentGrades'),
+    SubHead = mongoose.model('SubHead');
 
 /**
  * Render the main application page
@@ -323,28 +325,28 @@ exports.renderNotFound = function(req, res) {
 
 // Retrieve subject data, send as response.
 exports.parseSubjects = function(req, res) {
-
-    Subject.find({}, function(err, docs) {
-
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
     Subject.find({}, function(err, subs) {
         return res.end(JSON.stringify(subs));
     });
 };
 
 
-//retrives all Resources from database
+//Retrieves all Resources from database
 exports.parseResources = function(req, res) {
 
     Resource.find({}, function(err, subs) {
         return res.end(JSON.stringify(subs));
     });
 };
+
+//Retrieves all the SubHeadings from database
+exports.parseSubHeads = function(req, res) {
+
+    SubHead.find({}, function(err, subs) {
+        return res.end(JSON.stringify(subs));
+    });
+};
+
 
 //Creates a new resource for the database
 exports.addResource = function(req, res) {
@@ -371,17 +373,64 @@ exports.deleteResource = function(req, res) {
     });
 };
 
+//Update a resource from the database
+exports.updateResource = function(req, res) {
+    var resource_to_update = req.resource;
+    resource_to_update.title = req.body.title;
+    resource_to_update.url = req.body.url;
+    resource_to_update.subject = req.body.subject;
+
+
+    resource_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+
+        } else {
+            res.json(resource_to_update);
+        }
+    });
+};
+
+//Server side mongoose functions for SubHeadings
+exports.addSubHead = function(req, res) {
+    var newSubHead = new SubHead(req.body);
+    newSubHead.save(function(err) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        } else {
+            res.json(newSubHead);
+        }
+    });
+};
+exports.deleteSubHead = function(req, res) {
+    var subHead_to_delete = req.subHead;
+    subHead_to_delete.remove(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.end();
+        }
+    });
+};
+exports.updateSubHead = function(req, res) {
+    var subHead_to_update = req.subHead;
+
+    subHead_to_update.title = req.body.title;
+    subHead_to_update.subject = req.body.subject;
+
+
+    subHead_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.json(subHead_to_update);
+        }
+    });
+};
 
 // Retrieve user data, send as response.
 exports.parseUsers = function(req, res) {
-    
-    User.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
     User.find({}).lean().exec(function(err, users) {
         return res.end(JSON.stringify(users));
     });
@@ -455,13 +504,25 @@ exports.tester = function(req, res) {
     });
 };
 
-//middleware to delete resources
+//middleware for resources
 exports.resourceByID = function(req, res, next, id) {
     Resource.findById(id).exec(function(err, resource) {
         if (err) {
             res.status(400).send(err);
         } else {
             req.resource = resource;
+            next();
+        }
+    });
+};
+
+//middleware for subheadings
+exports.subHeadByID = function(req, res, next, id) {
+    SubHead.findById(id).exec(function(err, subHead) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            req.subHead = subHead;
             next();
         }
     });
