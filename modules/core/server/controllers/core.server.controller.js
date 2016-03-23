@@ -1,5 +1,8 @@
 'use strict';
 
+
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport();
 var mongoose = require('mongoose'),
 
     QuizQuestion = mongoose.model('QuizQuestion'),
@@ -40,6 +43,20 @@ exports.renderServerError = function(req, res) {
     res.status(500).render('modules/core/server/views/500', {
         error: 'Oops! Something went wrong...'
     });
+};
+
+
+exports.sendMail = function(req, res) {
+
+    var data = req.body;
+
+    transporter.sendMail({
+        from: 'bio@biotility.com',
+        to: data.contactEmail,
+        subject: 'Biotility: Course code ',
+        text: 'The course code for you to use is 1234'
+    });
+    res.json(data);
 };
 
 
@@ -298,6 +315,7 @@ exports.cron = function(req,res){
       console.log('You will see this message every second');
     }, null, true, 'America/Los_Angeles');
 };
+
 
 
 /**

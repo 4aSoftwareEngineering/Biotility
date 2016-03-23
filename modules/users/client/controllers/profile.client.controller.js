@@ -1,3 +1,4 @@
+
 'use strict';
 
 //controler for teacher page list retrieval of students
@@ -37,6 +38,7 @@ angular.module('users').controller('StudentListController', ['$rootScope', '$sco
         };
     }
 ]);
+
 //controller for the student teacher page
 angular.module('users').controller('StudentGetController', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$filter', '$http', 'Authentication',
     function($rootScope, $scope, $state, $stateParams, $location, $filter, $http, Authentication) {

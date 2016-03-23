@@ -18,17 +18,17 @@
     <ul class="nav navbar-nav pull-right">
       <!--Home-->
       <li><div class="navbar-brand">
-        <a id="home" data-ui-sref="home">Home</a>
+        <a id="home" style="color: white;" data-ui-sref="home">Home</a>
       </div></li>
 
   <!-- About -->
   <li><div class="navbar-brand">
-    <a id="about" data-ui-sref="about">About Us</a>
+    <a id="about" style="color: white;" data-ui-sref="about">About Us</a>
   </div></li>
 
   <!-- Contact -->
   <li><div class="navbar-brand">
-    <a id="contact" data-ui-sref="contact">Contact</a>
+    <a id="contact" style="color: white;" data-ui-sref="contact">Contact</a>
   </div></li>
 
   <!-- student list -->
@@ -38,7 +38,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown"><a href="">Student List <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a data-ui-sref="studentList">Students</a>
+            <li><a style="color: white;"  data-ui-sref="studentList">Students</a>
             </li>
           </ul>
         </li>
@@ -47,12 +47,12 @@
   </div></li>
 
   <!-- Login -->
-  <li><div id="login" ng-hide="authentication.user" class="navbar-brand">
+  <li><div id="login" ng-hide="authentication.user" class="navbar-brand" style="color: white;">
     <a data-ui-sref="authentication.signin">Login</a>
   </div></li>
 
   <!-- Username -->
-  <li><div ng-show="authentication.user" class="navbar-brand " ng-click="profile()">
+  <li><div ng-show="authentication.user" class="navbar-brand " style="color: white;" ng-click="profile()">
     {{authentication.user.displayName}}
   </div></li>
 
@@ -63,7 +63,7 @@
     </div>
   </div></li>
 
-  <li><div id="logout" ng-show="authentication.user" class="navbar-brand" ng-click="logout()">
+  <li><div id="logout" ng-show="authentication.user" class="navbar-brand" style="color: white;" ng-click="logout()">
     Logout
   </div></li>
 
