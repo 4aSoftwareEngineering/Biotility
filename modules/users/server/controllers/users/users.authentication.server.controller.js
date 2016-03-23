@@ -24,6 +24,20 @@ var noReturnUrls = [
 /**
  * Signup
  */
+exports.loadTeachers = function(req, res) {
+    
+    User.find({}, function(err, docs) {
+        if (!err) {
+            console.log(docs);
+        } else {
+            throw err;
+        }
+    });
+    User.find({}).lean().exec(function(err, users) {
+        return res.end(JSON.stringify(users));
+    });
+};
+
 exports.signupStudent = function(req, res) {
     // First looks through Teachers course code
     User.findOne({

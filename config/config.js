@@ -8,7 +8,6 @@ var _ = require('lodash'),
   glob = require('glob'),
   fs = require('fs'),
   path = require('path');
-
 /**
  * Get files by glob patterns
  */
