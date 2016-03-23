@@ -33,10 +33,13 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.subject = $stateParams.courseName;
 
         //some variables for the resource view
+        $scope.success = null;
+        $scope.error = null;
         $scope.editMode = false;
         $scope.updateMode = false;
         $scope.ResourceField = true;
         $scope.isAdmin = false;
+
         //load all the resources from the database
         Resources.loadResources().then(function(response) {
             $scope.resources = response.data;
@@ -46,18 +49,17 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         SubHeads.loadSubHeads().then(function(response) {
             $scope.subHeads = response.data;
         });
-        // if ($scope.authentication.user.profileType === 'Admin') {
-        //     $scope.isAdmin = true;
-        // }    
+        
         //Used to create a new Resource on database
         $scope.addResource = function() {
+            var name = $scope.newResource.title;
             $http.post('api/data/resources', $scope.newResource).success(function(response) {
-                console.log("Eric It added", response.message);
                 Resources.loadResources().then(function(response) {
                     $scope.resources = response.data;
+                    $scope.success =  name+' Successfully Added.';
                 });
             }).error(function(response) {
-                console.log("Eric", response.message);
+                $scope.error = name+' Unsuccessfully added.';
             });
 
             $scope.newResource = null;
@@ -66,13 +68,14 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //Used to delete a Resource from the database
         $scope.deleteResource = function(resource_obj) {
             var id = resource_obj._id;
+            var name = resource_obj.title;
             $http.delete('api/data/resources/' + id).success(function(response) {
-                console.log("Eric It Deleted", response.message);
                 Resources.loadResources().then(function(response) {
                     $scope.resources = response.data;
                 });
+                $scope.success =  name+' Successfully Deleted.';
             }).error(function(response) {
-                console.log("Eric http delete error", response.message);
+                $scope.error = name+' Unsuccessfully Deleted.';
             });
 
             $scope.newResource = null;
@@ -81,39 +84,40 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //Used to update a Resource from the database
         $scope.updateResource = function(resource_obj) {
             var id = resource_obj._id;
-
+            var name = resource_obj.title;
             $http.put('api/data/resources/' + id,$scope.newResource).success(function(response) {
-                console.log("Eric It Updated", response.message);
                 $scope.newResource = {};
                 $scope.updateMode = false;
+                $scope.success =  name+' Successfully Edited.';
             }).error(function(response) {
-                console.log("Eric http update error", response.message);
+                $scope.error = name+' Unsuccessfully Edited.';
             });
-
         };
 
         //Angular SubHeading Functions like the ones above
         $scope.addSubHead = function() {
+            var name = $scope.newSubHead.title;
             $http.post('api/data/subHeads', $scope.newSubHead).success(function(response) {
-                console.log("Eric It added", response.message);
                 SubHeads.loadSubHeads().then(function(response) {
                     $scope.subHeads = response.data;
                 });
+                $scope.success =  name+' Successfully Added.';
             }).error(function(response) {
-                console.log("Eric", response.message);
+                $scope.error =  $scope.newSubHead.title+' Unsuccessfully Added.';
             });
             
             $scope.newSubHead = null;
         };
         $scope.deleteSubHead = function(subHead_obj) {
             var id = subHead_obj._id;
+            var name = subHead_obj.title;
             $http.delete('api/data/subheads/' + id).success(function(response) {
-                console.log("Eric It Deleted", response.message);
                 SubHeads.loadSubHeads().then(function(response) {
                     $scope.subHeads = response.data;
                 });
+                $scope.success =  name+' Successfully Deleted.';
             }).error(function(response) {
-                console.log("Eric http delete error", response.message);
+                $scope.error =  name+' Unsuccessfully Deleted.';
             });
             
             $scope.newResource = null;
@@ -122,13 +126,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             var id = subHead_obj._id;
 
             $http.put('api/data/subheads/' + id,$scope.newSubHead).success(function(response) {
-                console.log("Eric It Updated", response.message);
+                $scope.success =  $scope.newSubHead.title+' Successfully Edited.';
                 $scope.newSubHead = {};
                 $scope.updateMode = false;
             }).error(function(response) {
-                console.log("Eric http update error", response.message);
+                $scope.error =  $scope.newSubHead.title+' Unsuccessfully Edited.';
             });
-
         };
 
         //Used to Update Angular Parameters
@@ -151,7 +154,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.newSubHead = {};
             $scope.updateMode = false;
         };
-
+        $scope.clearSuccessMessage = function() {
+            $scope.success = null;
+        };
+        $scope.clearErrorMessage = function() {
+            $scope.error = null;
+        };
 
         $scope.startQuiz = function() {
             $location.path('/' + $scope.subject + '/quiz');

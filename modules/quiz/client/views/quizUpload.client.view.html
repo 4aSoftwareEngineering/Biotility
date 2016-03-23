@@ -1,12 +1,15 @@
+
 <div ng-controller="authController">
 
 <div ui-view class = "margin-top-50" ng-controller = "QuizCreate">
+
     <div class="header-space">
         <!-- Using this for space -->
     </div>
     <br>
     <br>
     <br>
+
 		<div ng-show="isAdmin" class = "container" >
 			<h1> Upload Quiz Questions </h1>
 			<input type="file" on-read-csv = "uploadQuestions($fileContent)" />
@@ -26,3 +29,4 @@
 <!--footer-->
 <div class="text-center footer" style="margin-top: 100px;">&#9400; Biotility </div>
 </div>
+

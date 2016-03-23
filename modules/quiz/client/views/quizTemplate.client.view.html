@@ -13,73 +13,77 @@
 </div>
 <div id="QuizView" ui-view class="margin-top-50" ng-controller="QuizController">
     <div class="container">
-        <span ng-bind="question.description"></span>
         <div class="col-md-10 col-md-offset-1" ng-show="loadedQ">
             <div id="startButton" ng-show="hasStart">
-                <h3 ng-show="!questions.length">Category does not have any questions.</h3>
-                <h3 ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</h3>
-                <h1 ng-show="hasError">Error Occured.</h1>
-                <button ng-disabled="!questions.length" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
+                <p ng-show="!questions.length">Category does not have any questions.</p>
+                <p ng-show="questions.length">There are a total of {{questions.length}} question(s) for this assessment.</p>
+                <p ng-hide="loggedIn">Please log in to take the assessment.</p>
+                <button ng-disabled="!canStart" class="btn btn-primary btn-block" value="start" ng-click="start()" ng-show="hasStart"> Start </button>
                 <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
             </div>
             <div id="quizContent" ng-show="quizStarted">
-                <h1>Question {{numQuestion}}: {{questions[index].description}}</h1>
-                <h5>{{questions.length - numQuestion}} question(s) remaining.</h5>
+                <h5>Question {{numQuestion}} <br>{{questions[index].text}}</h5>
+                <p>{{questions.length - numQuestion}} question(s) remaining.</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+                        {{progress}}%
+                    </div>
+                </div>
+                <p ng-show="questions[index].hint.length">Hint: {{questions[index].hint}}</p>
+                <a ng-show="questions[index].link.length" href="{{questions[index].link}}">Supplementary Reading</a>
+                <p id="quizError" ng-show="hasError" class="alert alert-danger" role="alert"> {{error}} </p>
                 <br>
                 <form class="col-md-offset-1">
                     <div class="row" ng-show="isMultipleChoice">
-                        <label>
-                            <input type="radio" ng-model="answer" value="1"> {{questions[index].answerDesc1}}</label>
+                        <div>
+                            <li style="list-style: none" ng-repeat="a in questions[index].answers.MCTF track by $index">
+                                <label ng-show="a.length">
+                                    <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" required />{{a}}
+                                </label>
+                            </li>
+                        </div>
                         <br>
-                        <label>
-                            <input type="radio" ng-model="answer" value="2"> {{questions[index].answerDesc2}}</labe>
-                            <br>
-                            <label>
-                                <input type="radio" ng-model="answer" value="3"> {{questions[index].answerDesc3}}</label>
-                            <br>
-                            <label>
-                                <input type="radio" ng-model="answer" value="4"> {{questions[index].answerDesc4}}</label>
-                            <br>
-                            <label>
-                                <input type="radio" ng-show="questions[index].answerDesc5" ng-model="answer" value="5"> {{questions[index].answerDesc5}}</label>
-                            <br>
+                        <br>
                     </div>
                     <!--Used for True/False-->
                     <br>
                     <div class="row" ng-show="isTF">
-                        <label>
-                            <input type="radio" ng-model="answer" value="T">True</label>
+                        <input type="radio" ng-model="answer" value="T">True</label>
                         <br>
-                        <label>
-                            <input type="radio" ng-model="answer" value="F">False</label>
+                        <input type="radio" ng-model="answer" value="F">False</label>
                         <br>
+                        <!--input style="" type="radio" ng-model="answer" value="X">Hidden</label-->
                     </div>
                     <br/>
                     <br/>
                     <!--Used for MA -->
                     <div class="row" ng-show="isMA">
-                        <label>
-                            <input type="checkbox" ng-model="ansMA[0]" value="1"> {{questions[index].answerDesc1}}</label>
+                        <div class="col-xs-5">
+                            <ul>
+                                <li style="list-style: none" ng-repeat="txt in questions[index].answers.MCTF track by $index">
+                                    <p ng-show="txt.length">{{$index + 1}}. {{txt}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-7">
+                            <ul>
+                                <li class="row" style="list-style: none; margin-bottom: 20px" ng-repeat="txt in questions[index].answers.MA.present track by $index">
+                                    <select class="form-control" ng-model="ansMA[$index]" ng-show="txt.length" style="list-style: none; width: auto !important; display: inline-block;">
+                                        <option selected disabled hidden style='display: none' value=''></option>
+                                        <option ng-repeat="i in getNumber(numOpts) track by $index">{{$index + 1}}</option>
+                                    </select>
+                                    <span class="" ng-show="txt.length">{{txt}}</span>
+                                </li>
+                            </ul>
+                        </div>
                         <br>
-                        <label>
-                            <input type="checkbox" ng-model="ansMA[1]" value="2"> {{questions[index].answerDesc2}}</labe>
-                            <br>
-                            <label>
-                                <input type="checkbox" ng-model="ansMA[2]" value="3"> {{questions[index].answerDesc3}}</label>
-                            <br>
-                            <label>
-                                <input type="checkbox" ng-model="ansMA[3]" value="4"> {{questions[index].answerDesc4}}</label>
-                            <br>
-                            <label>
-                                <input type="checkbox" ng-show="questions[index].answerDesc5" ng-model="ansMA[4]" value="5"> {{questions[index].answerDesc5}}</label>
-                            <br>
                     </div>
                     <!--ng-click="increment()"-->
-                    <button class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
+                    <button id="next" class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
                 </form>
             </div>
             <div id="startButton" ng-show="isDone">
-                <button class="btn btn-primary btn-block" ui-sref="quiz.results({correctScore: score, numQuestion: numQuestion, category: currCategory}) " ng-show="isDone" value="finished"> View Results </button>
+                <button class="btn btn-primary btn-block" ui-sref="quiz.results({correctScore: score, numQuestion: numQuestion, category: currCategory}) " ng-show="isDone" value="finished">Submit & View Results </button>
             </div>
         </div>
     </div>
