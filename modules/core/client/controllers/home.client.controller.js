@@ -200,8 +200,8 @@ angular.module('core').controller('authController',['$scope', '$state', '$locati
 	}
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects','Temp', 'plotly',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp,  plotly) {
 
 
         $scope.authentication = Authentication;
