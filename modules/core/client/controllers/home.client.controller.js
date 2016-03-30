@@ -3,7 +3,7 @@
 /** SEE core.server.routes.js  */
 
 
-angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', '`',
+angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', 'Users',
     function($scope, $state, $http, $location, Authentication, Subjects, Users) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
