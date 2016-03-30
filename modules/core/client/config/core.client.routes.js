@@ -33,8 +33,12 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         templateUrl: 'modules/core/client/views/resources.client.view.html'
       })
       .state('question_upload', {
-        url: '/question_upload',
+        url: '/admin/question_upload',
         templateUrl: 'modules/quiz/client/views/quizUpload.client.view.html'
+      })
+      .state('question_edit', {
+        url: '/admin/question_edit',
+        templateUrl: 'modules/quiz/client/views/quizEdit.client.view.html'
       })
       .state('studentprofile', {
         url: '/student/{userName:.+}',
@@ -43,6 +47,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('teacherprofile', {
         url: '/teacher/{userName:.+}',
         templateUrl: 'modules/core/client/views/teacherprofile.client.view.html'
+      })
+      .state('adminprofile', {
+        url: '/admin/{userName:.+}',
+        templateUrl: 'modules/core/client/views/adminprofile.client.view.html'
       })
       .state('userData', {
         url: '/data/users',

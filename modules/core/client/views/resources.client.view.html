@@ -17,14 +17,21 @@
     	Learn More
     </div>
 
+<<<<<<< HEAD
     <!--show based on url and subject -->
     <!--category and subcategories with links-->
     <div class="container" style="padding-left: 70px">
+=======
+    <!-- Temporary Button Until Admin Account -->
+    <div ng-show="authentication.user.profileType === 'Admin'" class="container head" style="padding-left: 70px">
+        <!-- Edit Box -->
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="editMode">Edit?
             </label>
         </div>
+<<<<<<< HEAD
     </div>
 
     <!--Cells-->
@@ -34,19 +41,160 @@
     		Cells (general)
     	</div>
 
+=======
+        <!-- Error Message -->
+        <div ng-show="error" class="text-danger">
+            <strong ng-bind="error"></strong>
+            <span style="color: black;" class="glyphicon glyphicon-remove" ng-click="clearErrorMessage()"></span>
+        </div>
+        <!-- Success message -->
+        <div ng-show="success" class="text-success">
+          <strong ng-bind="success"></strong>
+          <span style="color: black;" class="glyphicon glyphicon-remove" ng-click="clearSuccessMessage()"></span>
+        </div>
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
 
-        <div class="container head con" style="padding-left: 70px">
-            <div ng-repeat="resource in resources | filter:resourceFilter:strict">
-                <tr>
-                    <td><a ng-href="{{resource.url}}">{{resource.title}}</a></td>
-                    <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-remove" ng-click="deleteResource($index)"></span></td>
-                </tr>
+        <!--Add/Edit forms-->
+        <div ng-show="editMode === true" class="panel panel-default">
+            <div class="panel-body">
+                <!-- Resource/SubHead Selection -->
+                <form>
+                   <label class="radio-inline">
+                        <input type="radio" ng-value = "true" ng-model="ResourceField"> Edit Links
+                   </label>
+                   <label class="radio-inline">
+                        <input type="radio" ng-value = "false" ng-model="ResourceField"> Edit Sub Headings
+                   </label>
+                </form>
                 <br>
-                <br>
+
+                <!-- Resource Forms -->
+                <div ng-show="ResourceField == true">
+                    <!--Add Resource form-->
+
+                    <form class="form-inline" ng-show="updateMode === false" ng-submit="addResource()">
+
+                        <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
+                        </div>
+                        
+                        <div class="form-group">
+                                <label>Url</label>
+                                <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <label>SubHead</label>
+                            <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
+                                <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption._id}}">{{subHeadOption.title}}</option>
+                            </select>
+                        </div>
+
+
+                        
+
+                        <!-- <div class="input-group input-group-sm">
+                          <span class="input-group-addon" id="sizing-addon3">@</span>
+                          <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+                        </div> -->
+
+                        <button type="submit" class="btn btn-default">Add Resource</button>
+                        <span style="color: black;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                    </form>
+
+                    <!--Update Resource form-->
+                    <form class="form-inline" ng-show="updateMode === true" ng-submit="updateResource(newResource)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
+                        </div>
+                        <div class="form-group">
+                            <label>Url</label>
+                            <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
+                        </div>
+                        <div class="form-group">
+                            <label>SubHead</label>
+                            <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
+                                  <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption._id}}">{{subHeadOption.title}}</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-default">Update Resource</button>
+                    </form>
+                </div>
+
+                <!-- SubHead Form -->
+                <div ng-show="ResourceField == false">
+                    <!-- Add SubHead Form -->
+                    <form  class="form-inline" ng-show="updateMode === false" ng-submit="addSubHead()">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control input-sm" placeholder="Subhead" ng-model="newSubHead.title">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" class="form-control input-sm" placeholder="Cells, etc." ng-model="newSubHead.subject">
+                        </div>
+                        <button type="submit" class="btn btn-default">Add SubHead</button>
+                    </form>
+
+                    <!-- Update SubHead Form -->
+                    <form  class="form-inline" ng-show="updateMode === true" ng-submit="updateSubHead(newSubHead)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control input-sm" placeholder="Subhead" ng-model="newSubHead.title">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" class="form-control input-sm" placeholder="Cells, etc." ng-model="newSubHead.subject">
+                        </div>
+                        <button type="submit" class="btn btn-default">Update SubHead</button>
+                    </form>
+                    <br>
+                </div>
             </div>
+        </div>
+    </div>
+    <br><br>
 
+<<<<<<< HEAD
             <!--<a href="http://www.nature.com/scitable/topicpage/eukaryotic-cells-14023963">Eukaryotic Cells</a>
 
+=======
+    <!-- SubHeadings -->
+    <div ng-repeat="subHead in subHeads | filter:{subject: subject}:strict" class="container head res-sub">
+        <tr>
+            <td>{{subHead.title}}</td>
+            <td><span style="color: blue;" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editSubHead(subHead)"></span></td>
+            <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="deleteSubHead(subHead)"></span></td>
+            
+        </tr>
+        <!-- Links -->
+        <div ng-repeat="resource in resources | filter:{subject: subHead._id}:strict" class="container head con">
+            <br>
+            <tr>
+                <td><a ng-href="{{resource.url}}">{{resource.title}}</a></td>
+                <td><span style="color: blue;" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editResource(resource)"></span></td>
+                <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="deleteResource(resource)"></span></td>
+            </tr>
+        </div>
+    </div>
+
+
+
+
+    <!-- Below is old hardcoded resources. -->
+
+    
+    <!--Cells-->
+<!--     <div ng-show="subject == 'Cells'">
+        <div class="container head res-sub">
+            Cells (general)
+        </div>
+            <a href="http://www.nature.com/scitable/topicpage/eukaryotic-cells-14023963">Eukaryotic Cells</a>
+            
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
             <br><br>
             <a href="http://www.biology4kids.com/files/cell_mito.html">Cell Structure: Mitochondria</a>
             <br><br>
@@ -55,8 +203,8 @@
             <a href="http://www.cellsalive.com/cells/bactcell.htm">Bacterial Cell</a>
             <br><br>
             <a href="http://biology.about.com/od/cellanatomy/ss/prokaryotes.htm">Prokaryotes</a>
-            <br><br>-->
-        </div>
+            <br><br>
+
 
     	<div class="container head res-sub">
     		Cell Structures and Organelles
@@ -71,6 +219,7 @@
             <a href="http://www.cellsalive.com/cells/cell_model.htm">Eukaryotic Organelles</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
    </div>
 
@@ -80,7 +229,18 @@
 
     <div class="container head res-sub">
     		Bonds
+=======
+    </div> -->
+
+    <!--Chemistry and Biochemistry-->
+<!--     <div ng-show="subject == 'Chemistry & Biochemistry'">
+    
+    
+        <div class="container head res-sub">
+        		Bonds
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
+    
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.khanacademy.org/science/chemistry/chemical-bonds">Chemical Bonds</a>
             <br><br>
@@ -88,12 +248,16 @@
             <br><br>
         </div>
 
+<<<<<<< HEAD
 
 
 
 
 
     	<div class="container head res-sub">
+=======
+        <div class="container head res-sub">
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Cell Respiration
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -107,8 +271,7 @@
         <div class="container head con" style="padding-left: 70px">
             <a href="http://www.dummies.com/how-to/content/four-groups-of-macromolecules.html">Macromolecules</a>
             <br><br>
-            <a href="
-http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=culture+media%2C+supplements+and+raw+materials&lang=EN&c=UK">Formulation of Culture Media</a>
+            <a href="http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=culture+media%2C+supplements+and+raw+materials&lang=EN&c=UK">Formulation of Culture Media</a>
             <br><br>
         </div>
 
@@ -123,8 +286,13 @@ http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=cultu
             <a href="http://www.nature.com/scitable/definition/dna-polymerase-dnap-1">DNA Polymerase</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
        <div class="container head res-sub">
+=======
+        
+        <div class="container head res-sub">
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Enzymes & Reactions
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -192,15 +360,22 @@ http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=cultu
             <a href="http://www.johnkyrk.com/DNAtranscription.html">DNA Transcription</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
 
    </div>
 
        <!--Genetics-->
     <div ng-show="subject == 'Genetics'">
+=======
+    </div> -->
+   
+    <!--Genetics-->
+<!--     <div ng-show="subject == 'Genetics'">
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
 
-    <div class="container head res-sub">
-    		Genomics
+        <div class="container head res-sub">
+        		Genomics
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.genome.gov/18016863">DNA, Genes and Genomes</a>
@@ -238,6 +413,7 @@ http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=cultu
             <a href="https://www.boundless.com/biology/textbooks/boundless-biology-textbook/meiosis-and-sexual-reproduction-11/the-process-of-meiosis-92/comparing-meiosis-and-mitosis-406-11633/">Comparing Meiosis and Mitosis</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
    </div>
 
@@ -246,6 +422,15 @@ http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=cultu
 
     <div class="container head res-sub">
     		Cell & Tissue Culture
+=======
+    </div> -->
+
+    <!--lab skills and applications-->
+<!--     <div ng-show="subject == 'Laboratory Skills and Applications'">
+    
+        <div class="container head res-sub">
+        		Cell & Tissue Culture
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.youtube.com/watch?v=bi755vQVNx8">Plant tissue culture basics</a>
@@ -262,8 +447,7 @@ http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=cultu
     		Correct Use of Decimals
     	</div>
         <div class="container head con" style="padding-left: 70px">
-            <a href="http://www.mathgoodies.com/lessons/decimals/introduction.html
-">Introduction to Decimals</a>
+            <a href="http://www.mathgoodies.com/lessons/decimals/introduction.html">Introduction to Decimals</a>
             <br><br>
             <a href="http://www.aaamath.com/dec71ix2.htm">Decimals to Scientific Notation</a>
             <br><br>
@@ -343,8 +527,7 @@ http://www.oxoid.com/uk/blue/techsupport/its.asp?itsp=faq&faq=tsfaq010&cat=cultu
             <br><br>
             <a href="http://www.geogene.com/genetic-eng-basics.html">What is Genetic Engineering? (Basics)</a>
             <br><br>
-            <a href="
-http://learn.genetics.utah.edu/content/cloning/"> Cloning</a>
+            <a href="http://learn.genetics.utah.edu/content/cloning/"> Cloning</a>
             <br><br>
         </div>
 
@@ -416,10 +599,10 @@ http://learn.genetics.utah.edu/content/cloning/"> Cloning</a>
             <br><br>
             <a href="https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-biology-learning-center/protein-biology-resource-library/pierce-protein-methods/overview-western-blotting.html">Overview of Western Blotting</a>
             <br><br>
-            <a href="
-https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-biology-learning-center/protein-biology-resource-library/pierce-protein-methods/overview-elisa.html">Overview of ELISA</a>
+            <a href="https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-biology-learning-center/protein-biology-resource-library/pierce-protein-methods/overview-elisa.html">Overview of ELISA</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
    </div>
 
@@ -428,6 +611,15 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
 
     <div class="container head res-sub">
     		Experimental Design
+=======
+    </div> -->
+   
+    <!--research and sci method-->
+<!--     <div ng-show="subject == 'Research and Scientific Method'">
+    
+        <div class="container head res-sub">
+        		Experimental Design
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://explorable.com/experimental-research"> Experimental Research</a>
@@ -453,6 +645,7 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
             <a href="http://serc.carleton.edu/quantskills/methods/quantlit/basicgraph.html"> Basic Graphing Skills</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
    </div>
 
@@ -461,6 +654,15 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
 
     <div class="container head res-sub">
     		Applications
+=======
+    </div> -->
+   
+    <!--general biotech-->
+<!--     <div ng-show="subject == 'General Topics'">
+    
+        <div class="container head res-sub">
+        		Applications
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="http://www.biotechonweb.com/Applications-of-Biotech.html">Applications of Biotechnology</a>
@@ -470,8 +672,13 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
             <a href="http://learn.genetics.utah.edu/content/genetherapy/">Gene Therapy</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
       <div class="container head res-sub">
+=======
+        
+        <div class="container head res-sub">
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Applications
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -514,6 +721,7 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
             <a href="http://theibdimmunologist.com/learning/basic-immunology">Basic Immunology</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
 
 
@@ -526,6 +734,10 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
 
 
        <div class="container head res-sub">
+=======
+        
+        <div class="container head res-sub">
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Manufacture of a Biopharmaceutical Product
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -554,12 +766,20 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
             <a href="http://www.archives.gov/federal-register/cfr/about.html">Regulations</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
    </div>
 
     <!--preparing solutions-->
     <div ng-show="subject == 'Preparing Solutions'">
 
+=======
+    </div> -->
+   
+    <!--preparing solutions-->
+<!--     <div ng-show="subject == 'Preparing Solutions'">
+    
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	<div class="container head res-sub">
     		Proper Technique
     	</div>
@@ -596,8 +816,7 @@ https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-bio
             <br><br>
             <a href="http://abacus.bates.edu/~ganderso/biology/resources/Calculating_final_concentrations_2012.pdf">Calculating Final Concentrations</a>
             <br><br>
-            <a href="
-http://dl.clackamas.edu/ch105-04/calculat.htm">Calculations Using Molarity</a>
+            <a href="http://dl.clackamas.edu/ch105-04/calculat.htm">Calculations Using Molarity</a>
             <br><br>
         </div>
 
@@ -608,6 +827,7 @@ http://dl.clackamas.edu/ch105-04/calculat.htm">Calculations Using Molarity</a>
             <a href="http://www.sciencecompany.com/Preparing-Chemical-Solutions.aspx">Preparing Chemical Solutions</a>
             <br><br>
         </div>
+<<<<<<< HEAD
 
    </div>
 
@@ -641,3 +861,20 @@ http://dl.clackamas.edu/ch105-04/calculat.htm">Calculations Using Molarity</a>
 <div class="text-center footer" style="margin-top: 100px;">Biotility<i class="glyphicon glyphicon-copyright-mark"></i></div>
 
 </div>
+=======
+    </div> -->
+    
+    
+    <!--link to quiz for specific subject -->
+    <div class="container" align="center">
+        <div class="btn btn-default about-ssub" ng-click="startQuiz()">
+          	Go to Quiz!
+        </div>
+    </div>
+    
+    <!--footer-->
+    <div class="text-center footer" style="margin-top: 100px;">
+        &copy; Biotility, 2015.
+    </div>
+</div>
+>>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac

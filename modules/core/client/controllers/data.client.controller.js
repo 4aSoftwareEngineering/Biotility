@@ -16,7 +16,12 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
       .success(function(res){
       	$scope.data = res;
       });
-  }
+      
+		$scope.deleteQuestion = function(index) {
+		  $scope.data.splice(index, 1);
+		};
+      
+  	}
 ]);
 
 angular.module('core').controller('SubjectData', ['$scope', '$http',

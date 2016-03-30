@@ -1,24 +1,38 @@
 <div ng-controller="QuizResults">
-
     <div class="container">
         <br>
         <div class="results-h">
             <h1>Results</h1>
         </div>
         <div class="results-s" id="results" ng-show="!analytics.length">
-            <p> Error! Couldn't find your quiz results. Did you refresh the page?
-                <br>Try taking the quiz again. </p>
+            <div class="alert alert-danger" role="alert">
+                <strong>Error!</strong> Couldn't find your quiz results. Please log in again.
+            </div>
         </div>
-
-        <div class="results-s" id="results" ng-repeat="q in analytics track by $index">
-            <h2> Question {{$index + 1}}: {{q.question.text}}</h2>
-            <li class="results-property"> Attempts: {{q.attempts}} </li>
-            <li class="results-property"> First Incorrect Choice: {{q.firstIncorrect || "N/A"}} </li>
-            <li class="results-property"> Correct Answer: ...</li>
+        <div class="panel panel-default">
+            <!-- Table -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Attempts</th>
+                        <th>First Inc. Choice</th>
+                        <th>Correct Answer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="q in analytics track by $index">
+                        <td>{{$index + 1}}</td>
+                        <td>{{q.question.text}}</td>
+                        <td>{{q.attempts}}</td>
+                        <td>{{q.firstIncorrect || "N/A"}}</td>
+                        <td>{{q.question.answers.correct}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <button class="btn btn-primary btn-block" ng-click="gotoQuiz(currCategory)" ng-show="hasStart"> Back to Quiz </button>
         <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
-
     </div>
-
 </div>

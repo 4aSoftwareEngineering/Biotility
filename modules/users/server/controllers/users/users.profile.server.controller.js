@@ -85,6 +85,20 @@ exports.changeProfilePicture = function (req, res) {
   }
 };
 
+// exports.parseUsers = function(req, res) {
+    
+//     User.find({}, function(err, docs) {
+//         if (!err) {
+//             console.log(docs);
+//         } else {
+//             throw err;
+//         }
+//     });
+//     User.find({}).lean().exec(function(err, users) {
+//         return res.end(JSON.stringify(users));
+//     });
+// };
+
 /**
  * Send User
  */
@@ -104,3 +118,4 @@ exports.list = function (req, res) {
     res.json(users);
   });
 };
+

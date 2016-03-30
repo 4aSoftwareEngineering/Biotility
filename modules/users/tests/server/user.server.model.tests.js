@@ -23,6 +23,7 @@ describe('User Model Unit Tests:', function () {
       displayName: 'Full Name',
       email: 'test@test.com',
       username: 'username',
+      courses: ["course 1"],
       password: 'M3@n.jsI$Aw3$0m3',
       provider: 'local'
     };
@@ -34,6 +35,7 @@ describe('User Model Unit Tests:', function () {
       displayName: 'Full Different Name',
       email: 'test3@test.com',
       username: 'different_username',
+      courses: ["course2 "],
       password: 'Different_Password1!',
       provider: 'local'
     };
@@ -217,6 +219,56 @@ describe('User Model Unit Tests:', function () {
       });
     });
   });
+
+ describe('Course Reset', function () {
+    it('save a user', function (done) {
+      var _user1 = new User(user1);
+
+      _user1.save(function (err) {
+        should.not.exist(err);
+        _user1.remove(function (err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+    });
+
+    it('save a 2nd user', function (done) {
+      var _user3 = new User(user1);
+
+      _user3.save(function (err) {
+        should.not.exist(err);
+        _user3.remove(function (err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+    });
+
+    it('remove courses', function (done) {
+      User.find({}, function (err, users) {
+        for (var i = 0; i < users.length; i++) { 
+          users[i].courses = [];
+          users[i].save(function(err) {
+              if (err) {}
+          });
+        } 
+        done();
+      });
+    });
+
+    
+    it('should reset all course codes to null', function (done) {
+      User.find({}, function (err, users) {
+        users.courses.should.have.length(0);
+        done();
+      });
+    });
+
+
+  });
+ 
+
 
   describe("User Password Validation Tests", function() {
     it('should validate when the password strength passes - "P@$$w0rd!!"', function () {
