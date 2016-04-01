@@ -2,6 +2,11 @@
 
 <!--teacher profile page-->
 <div class="container" ng-controller="ProfileController" ng-init= "resetCodes()">
+  <script src="Chart.js"></script>
+  <!-- <link href ="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.css"> -->
+<!-- <script src ="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" ></script> -->
+<!-- <script src = "//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"> </script> -->
+
   <div style="margin-top: 45px;">
   </div>
   <hr>
@@ -74,8 +79,8 @@
           </thead>
           <tbody>
             <!--gets class codes from controller-->
-            <tr ng-repeat="d in input.courseNums">
-              <td>{{d}}</td>
+            <tr ng-repeat="d in input.courseNums ">
+              <td>{{d}} </td>
             </tr>
           </tbody>
         </table>
@@ -177,13 +182,18 @@
                 <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
                    <option  ng-repeat="name in classNames">{{name}}</option>
                 </select>
+
+                <select ng-model="periodtoAdd" class="col-md-3 " style="height: 30px;">
+                   <option  ng-repeat="period in Periods">{{period}}</option>
+                </select>
+
                 <!--button for adding more than one course-->
                  <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd)">
                       +
                   </button>
-                  <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()">
+                <!--   <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()">
                       -
-                  </button>
+                  </button> -->
                   
           </div>
         </div>

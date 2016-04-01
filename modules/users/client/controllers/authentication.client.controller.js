@@ -16,6 +16,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         // array of class names
         $scope.classNames = [];
+        $scope.Periods = [];
 
         //array of saved codes
         var savedCodes = [];
@@ -29,17 +30,21 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             for (var i = 0; i < $scope.subjects.length; i++) {
                 $scope.classNames.push($scope.subjects[i].name);
             }
+            //periods
+            for (var j = 1; j < $scope.subjects.length; j++) {
+                $scope.Periods.push("Period "+ j);
+            }
 
         });
 
-        $scope.add = function(course) {
+        $scope.add = function(course,period) {
             if (course !== '') {
                 //Creates a new object to be used for user course schema
                     var courseObj = {};
                     courseObj.courseName = course;
                     courseObj.content = "";
                     courseObj.progress = "";
-                    courseObj.section = "";
+                    courseObj.section = period;
 
                     //Generate number when you add the course
                    
@@ -147,7 +152,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)];
+            // $scope.credentials.courses = [parseInt($scope.credentials.courseCode)];
             console.log($scope.credentials);
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {

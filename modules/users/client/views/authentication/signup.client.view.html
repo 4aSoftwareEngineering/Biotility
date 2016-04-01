@@ -97,11 +97,14 @@
 
                 <!--select course-->
                 <div class="account-pick" align="center">
-                    <select ng-model="toAdd" style="width: 175px; height: 30px;">
+                    <select ng-model="toAdd" class="col-md-3 col-md-offset-5 " style="width: 175px; height: 30px;">
                         <option ng-repeat="name in classNames track by $index">{{name}}</option>
                     </select>
+                    <select ng-model="periodtoAdd" class="col-md-3 " style="width: 175px; height: 30px;">
+                        <option  ng-repeat="period in Periods">{{period}}</option>
+                    </select>
                     <!--button for adding more than one course-->
-                    	<button type="button" class="btn btn-default" ng-click="add(toAdd)">
+                    	<button type="button" class="btn btn-default" ng-click="add(toAdd, periodtoAdd)">
                         	+
                    		</button>
                 </div>
