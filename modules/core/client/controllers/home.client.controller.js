@@ -4,7 +4,7 @@
 
 
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', 'Users',
-    function($scope, $state, $http, $location, Authentication, Subjects, Users) {
+    function($scope, $state, $location, Authentication, $http, Subjects, Users) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -50,6 +50,11 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.updateMode = false;
         $scope.ResourceField = true;
         $scope.isAdmin = false;
+
+        //Load Subjects
+        Subjects.loadSubjects().then(function(response) {
+            $scope.subjects = response.data;
+        });
 
         //load all the resources from the database
         Resources.loadResources().then(function(response) {
@@ -135,7 +140,6 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         };
         $scope.updateSubHead = function(subHead_obj) {
             var id = subHead_obj._id;
-
             $http.put('api/data/subheads/' + id,$scope.newSubHead).success(function(response) {
                 $scope.success =  $scope.newSubHead.title+' Successfully Edited.';
                 $scope.newSubHead = {};
