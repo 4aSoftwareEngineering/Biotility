@@ -43,7 +43,7 @@
     "istanbul": "0.4.2",
     "jasmine-core": "^2.4.1",
     "kerberos": "0.0.18",
-    "lodash": "^3.10.0",
+    "lodash": "^3.10.1",
     "method-override": "^2.3.3",
     "mocha": "~1.20.0",
     "mongoose": "^4.0.6",
@@ -114,6 +114,7 @@
     "karma-ng-html2js-preprocessor": "^0.1.2",
     "karma-phantomjs-launcher": "~0.2.0",
     "load-grunt-tasks": "^3.2.0",
+    "protractor": "^3.2.2",
     "run-sequence": "^1.1.1",
     "should": "^7.0.1",
     "supertest": "^1.0.1"
