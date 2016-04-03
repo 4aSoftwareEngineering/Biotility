@@ -4,7 +4,7 @@
 
 
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', 'Users',
-    function($scope, $state, $http, $location, Authentication, Subjects, Users) {
+    function($scope, $state, $location, Authentication, $http, Subjects, Users) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 

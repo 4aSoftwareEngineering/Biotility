@@ -17,31 +17,13 @@
     	Learn More
     </div>
 
-<<<<<<< HEAD
-    <!--show based on url and subject -->
-    <!--category and subcategories with links-->
-    <div class="container" style="padding-left: 70px">
-=======
-    <!-- Temporary Button Until Admin Account -->
     <div ng-show="authentication.user.profileType === 'Admin'" class="container head" style="padding-left: 70px">
         <!-- Edit Box -->
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="editMode">Edit?
             </label>
         </div>
-<<<<<<< HEAD
-    </div>
-
-    <!--Cells-->
-    <div ng-show="subject == 'Cells'">
-
-    <div class="container head res-sub">
-    		Cells (general)
-    	</div>
-
-=======
         <!-- Error Message -->
         <div ng-show="error" class="text-danger">
             <strong ng-bind="error"></strong>
@@ -52,7 +34,6 @@
           <strong ng-bind="success"></strong>
           <span style="color: black;" class="glyphicon glyphicon-remove" ng-click="clearSuccessMessage()"></span>
         </div>
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
 
         <!--Add/Edit forms-->
         <div ng-show="editMode === true" class="panel panel-default">
@@ -158,10 +139,6 @@
     </div>
     <br><br>
 
-<<<<<<< HEAD
-            <!--<a href="http://www.nature.com/scitable/topicpage/eukaryotic-cells-14023963">Eukaryotic Cells</a>
-
-=======
     <!-- SubHeadings -->
     <div ng-repeat="subHead in subHeads | filter:{subject: subject}:strict" class="container head res-sub">
         <tr>
@@ -193,8 +170,6 @@
             Cells (general)
         </div>
             <a href="http://www.nature.com/scitable/topicpage/eukaryotic-cells-14023963">Eukaryotic Cells</a>
-            
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
             <br><br>
             <a href="http://www.biology4kids.com/files/cell_mito.html">Cell Structure: Mitochondria</a>
             <br><br>
@@ -219,17 +194,6 @@
             <a href="http://www.cellsalive.com/cells/cell_model.htm">Eukaryotic Organelles</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-   </div>
-
-    <!--Chemistry and Biochemistry-->
-    <div ng-show="subject == 'Chemistry & Biochemistry'">
-
-
-    <div class="container head res-sub">
-    		Bonds
-=======
     </div> -->
 
     <!--Chemistry and Biochemistry-->
@@ -238,7 +202,6 @@
     
         <div class="container head res-sub">
         		Bonds
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
     
         <div class="container head con" style="padding-left: 70px">
@@ -248,16 +211,7 @@
             <br><br>
         </div>
 
-<<<<<<< HEAD
-
-
-
-
-
-    	<div class="container head res-sub">
-=======
         <div class="container head res-sub">
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Cell Respiration
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -286,13 +240,8 @@
             <a href="http://www.nature.com/scitable/definition/dna-polymerase-dnap-1">DNA Polymerase</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-       <div class="container head res-sub">
-=======
         
         <div class="container head res-sub">
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Enzymes & Reactions
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -360,19 +309,10 @@
             <a href="http://www.johnkyrk.com/DNAtranscription.html">DNA Transcription</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-
-   </div>
-
-       <!--Genetics-->
-    <div ng-show="subject == 'Genetics'">
-=======
     </div> -->
    
     <!--Genetics-->
 <!--     <div ng-show="subject == 'Genetics'">
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
 
         <div class="container head res-sub">
         		Genomics
@@ -413,16 +353,6 @@
             <a href="https://www.boundless.com/biology/textbooks/boundless-biology-textbook/meiosis-and-sexual-reproduction-11/the-process-of-meiosis-92/comparing-meiosis-and-mitosis-406-11633/">Comparing Meiosis and Mitosis</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-   </div>
-
-          <!--lab skills and applications-->
-    <div ng-show="subject == 'Laboratory Skills and Applications'">
-
-    <div class="container head res-sub">
-    		Cell & Tissue Culture
-=======
     </div> -->
 
     <!--lab skills and applications-->
@@ -430,7 +360,6 @@
     
         <div class="container head res-sub">
         		Cell & Tissue Culture
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.youtube.com/watch?v=bi755vQVNx8">Plant tissue culture basics</a>
@@ -602,16 +531,6 @@
             <a href="https://www.thermofisher.com/us/en/home/life-science/protein-biology/protein-biology-learning-center/protein-biology-resource-library/pierce-protein-methods/overview-elisa.html">Overview of ELISA</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-   </div>
-
-       <!--research and sci method-->
-    <div ng-show="subject == 'Research and Scientific Method'">
-
-    <div class="container head res-sub">
-    		Experimental Design
-=======
     </div> -->
    
     <!--research and sci method-->
@@ -619,7 +538,6 @@
     
         <div class="container head res-sub">
         		Experimental Design
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="https://explorable.com/experimental-research"> Experimental Research</a>
@@ -645,16 +563,6 @@
             <a href="http://serc.carleton.edu/quantskills/methods/quantlit/basicgraph.html"> Basic Graphing Skills</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-   </div>
-
-         <!--general biotech-->
-    <div ng-show="subject == 'General Topics'">
-
-    <div class="container head res-sub">
-    		Applications
-=======
     </div> -->
    
     <!--general biotech-->
@@ -662,7 +570,6 @@
     
         <div class="container head res-sub">
         		Applications
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	</div>
         <div class="container head con" style="padding-left: 70px">
             <a href="http://www.biotechonweb.com/Applications-of-Biotech.html">Applications of Biotechnology</a>
@@ -672,13 +579,8 @@
             <a href="http://learn.genetics.utah.edu/content/genetherapy/">Gene Therapy</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-      <div class="container head res-sub">
-=======
         
         <div class="container head res-sub">
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Applications
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -721,23 +623,8 @@
             <a href="http://theibdimmunologist.com/learning/basic-immunology">Basic Immunology</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-       <div class="container head res-sub">
-=======
         
         <div class="container head res-sub">
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     		Manufacture of a Biopharmaceutical Product
     	</div>
         <div class="container head con" style="padding-left: 70px">
@@ -766,20 +653,11 @@
             <a href="http://www.archives.gov/federal-register/cfr/about.html">Regulations</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-   </div>
-
-    <!--preparing solutions-->
-    <div ng-show="subject == 'Preparing Solutions'">
-
-=======
     </div> -->
    
     <!--preparing solutions-->
 <!--     <div ng-show="subject == 'Preparing Solutions'">
     
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
     	<div class="container head res-sub">
     		Proper Technique
     	</div>
@@ -827,41 +705,6 @@
             <a href="http://www.sciencecompany.com/Preparing-Chemical-Solutions.aspx">Preparing Chemical Solutions</a>
             <br><br>
         </div>
-<<<<<<< HEAD
-
-   </div>
-
-   <!--Add Resource form-->
-    <form ng-show="editMode === true" ng-submit="addResource()">
-      <div class="form-group">
-        <label>Title</label>
-        <input type="text" class="form-control" placeholder="Link Title" ng-model="newResource.title">
-      </div>
-      <div class="form-group">
-        <label>Url</label>
-        <input type="text" class="form-control" placeholder="http//..." ng-model="newResource.url">
-      </div>
-      <div class="form-group">
-        <label>Subject</label>
-        <input type="text" class="form-control" placeholder="Cells" ng-model="newResource.subject">
-      </div>
-      <button type="submit" class="btn btn-default">Add Resource</button>
-    </form>
-
-
-   <!--link to quiz for specific subject -->
-
-    <div class="container" align="center">
-         <div class="btn btn-default about-ssub" ng-click="startQuiz()">
-      	Go to Quiz!
-     </div>
-     </div>
-
-<!--footer-->
-<div class="text-center footer" style="margin-top: 100px;">Biotility<i class="glyphicon glyphicon-copyright-mark"></i></div>
-
-</div>
-=======
     </div> -->
     
     
@@ -877,4 +720,3 @@
         &copy; Biotility, 2015.
     </div>
 </div>
->>>>>>> 5152f09de7ea929369272bed13ee8028a68b8fac
