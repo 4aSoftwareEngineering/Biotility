@@ -4,7 +4,9 @@
 
 
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', 'Users',
+
     function($scope, $state, $location, Authentication, $http, Subjects, Users) {
+
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -21,13 +23,13 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
             $location.path('/' + subjectObj.name + '/resources');
         };
 
-        $scope.codeReset = function(){
-             console.log("cron go");
-            var route = '/api/data/cron';
-            $http.get(route).success(function (req, res) {
+        // $scope.codeReset = function(){
+        //      console.log("cron go");
+        //     var route = '/api/data/cron';
+        //     $http.get(route).success(function (req, res) {
                
-            });
-        };
+        //     });
+        // };
 
 
     }
@@ -204,15 +206,17 @@ angular.module('core').controller('authController',['$scope', '$state', '$locati
 	}
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects','Temp', 'plotly',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp,  plotly) {
+
+       
 
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-        //console.log("ProfileController");
+        // console.log("ProfileController");
         console.log($scope.credentials);
-        console.log($scope.user);
+        console.log("CHECK" + $scope.user);
 
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
@@ -237,7 +241,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.authentication.user.courses.forEach(
             function(element, index, array) {
                 //stores each course Name and number of the course that a teacher has
-                $scope.input.courseNums.push(element.courseName + " : " + element.number);
+                $scope.input.courseNums.push(element.courseName + " : " + element.number+" "+  element.section);
 
                 //used for testing purposes to make sure a teacher has the correct courses
                 console.log($scope.input.courseNums);
@@ -252,6 +256,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         //get course names
         // array of class names
         $scope.classNames = [];
+        $scope.Periods = [];
+
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
 
@@ -260,13 +266,18 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $scope.classNames.push($scope.subjects[i].name);
                 //console.log("JHDKJAHSDKFJHA  " + $scope.subjects[i].name);
             }
+
+            for (var j = 1; j < $scope.subjects.length; j++) {
+                $scope.Periods.push("Period "+ j);
+            }
+
         });
 
         $scope.myFunction = function(hello){
             $scope.user.courseCode.push(hello);
         };
 
-        $scope.add = function(course) {
+        $scope.add = function(course,period) {
             if (course !== '') {
 
                 //Creates a new object to be used for user course schema
@@ -274,7 +285,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 courseObj.courseName = course;
                 courseObj.content = "";
                 courseObj.progress = "";
-                courseObj.section = "";
+                courseObj.section = period;
 
                 //Generate number when you add the course
                 courseObj.number = Math.floor((Math.random() * 1000) + 1);
@@ -297,7 +308,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.authentication.user.courses.forEach(
                 function(element, index, array) {
                     //stores each course Name and number of the course that a teacher has
-                    $scope.input.courseNums.push(element.courseName + " : " + element.number);
+                    $scope.input.courseNums.push(element.courseName + " : " + element.number + element.section);
                     //used for testing purposes to make sure a teacher has the correct courses
                     console.log("INPUT CLASSES: " + $scope.input.courseNums);
                 });
@@ -597,18 +608,48 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
         $scope.viewStats = function(course){
-            console.log("Passing: "+ course);
-            var route = '/api/data/plotly';
+            // Chart.js Stuff
+            var ctx = $("#myChart").get(0).getContext("2d");
+            // // This will get the first returned node in the jQuery collection.
+            // var myNewChart = new Chart(ctx);
+            var myBarChart = new Chart(ctx).Bar(data);
+               var data = {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [
+                        {
+                            label: "My First dataset",
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: [65, 59, 80, 81, 56, 55, 40]
+                        },
+                        {
+                            label: "My Second dataset",
+                            fillColor: "rgba(151,187,205,0.5)",
+                            strokeColor: "rgba(151,187,205,0.8)",
+                            highlightFill: "rgba(151,187,205,0.75)",
+                            highlightStroke: "rgba(151,187,205,1)",
+                            data: [28, 48, 40, 19, 86, 27, 90]
+                        }
+                    ]
+                };
 
-            // var params = ({
-            //     person: $scope.user, 
-            //     given: course 
-            // });
 
-            $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
-            // $http.get(route, params).success(function (req, res) {
-                console.log("plotly go");
-            }); 
+
+            //Plotly Stuff
+            // console.log("Passing: "+ course);
+            // var route = '/api/data/plotly';
+
+            // // var params = ({
+            // //     person: $scope.user, 
+            // //     given: course 
+            // // });
+
+            // $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
+            // // $http.get(route, params).success(function (req, res) {
+            //     console.log("plotly go");
+            // }); 
 
 
             // location.reload();
