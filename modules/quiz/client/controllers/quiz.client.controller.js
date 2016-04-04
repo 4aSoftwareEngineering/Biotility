@@ -210,6 +210,12 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
     function($http, $scope, $stateParams, Authentication) {
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
+		$(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal();
+            });
+        });
+
 
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
