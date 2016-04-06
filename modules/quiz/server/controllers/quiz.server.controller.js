@@ -126,6 +126,7 @@ function uploadQuizQuestions(result, res) {
             result[key].Choice4,
             result[key].Choice5
         ];
+        
         //Prune for empty strings.
         question.answers.MCTF = _.compact(question.answers.MCTF);
 
