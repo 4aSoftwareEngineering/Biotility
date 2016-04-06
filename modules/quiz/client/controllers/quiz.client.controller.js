@@ -44,6 +44,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.analytics = [];
         $scope.numQuestion = 0;
         $scope.hasError = false;
+        $scope.hasHint = false;
         $scope.hasStart = true;
         $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
@@ -83,6 +84,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 $scope.analytics[$scope.index] = {};
                 $scope.analytics[$scope.index].question = $scope.question;
                 $scope.analytics[$scope.index].attempts = 1;
+                $scope.hasHint = true;
             }
 
             //Check based off question type.
@@ -112,7 +114,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 $scope.increment();
             } else {
                 console.log("Incorrect!");
-                $scope.hasError = true;
+                $scope.hasError = true && $scope.questions[index].hint.length;
                 $scope.error = "Incorrect. Please try again.";
                 if (!$scope.analytics[$scope.index].firstIncorrect)
                     $scope.analytics[$scope.index].firstIncorrect = answer;
@@ -128,6 +130,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.increment = function() {
             //Determines question type and if quiz is finished.
             $scope.hasError = false;
+            $scope.hasHint = false;
             $scope.answer = -1;
             if ($scope.index === max) {
                 console.log("Quiz finished.");
@@ -171,6 +174,11 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 // console.log("Index is " + $scope.index);
                 // console.log("Score is " + $scope.score);
             }
+        };
+
+        //In controller
+        $scope.openTab = function(link_url) {
+            $window.open(link_url, '_blank');
         };
 
         var byCategory = function(listOfQuestions) {
@@ -243,7 +251,9 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
             if (file) {
                 file.upload = Upload.upload({
                     url: '/question_upload',
-                    data: { file: file }
+                    data: {
+                        file: file
+                    }
                 });
 
                 file.upload.then(function(response) {

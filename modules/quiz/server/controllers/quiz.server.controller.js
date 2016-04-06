@@ -9,6 +9,7 @@ var path = require('path'),
     appDir = path.dirname(require.main.filename),
     mongoose = require('mongoose'),
     QuizQuestion = mongoose.model('QuizQuestion'),
+    questionBank = [],
     StudentGrades = mongoose.model('StudentGrades'),
     User = mongoose.model('User'),
     xlsxj = require("xlsx-to-json"),
@@ -20,13 +21,6 @@ Retrieve all of the questions by category in quiz_bank
 */
 exports.retrieveQuestionsByCategory = function(req, res) {
     //Print all questions in DB.
-    QuizQuestion.find({}, function(err, docs) {
-        if (!err) {
-            //console.log(docs);
-        } else {
-            throw err;
-        }
-    });
     QuizQuestion.find({
         "category": req.query.category
     }).exec(function(err, questions) {
@@ -35,6 +29,17 @@ exports.retrieveQuestionsByCategory = function(req, res) {
         return res.end(JSON.stringify(questions));
     });
 };
+
+function questionExists (question) {
+    if (!questionBank.length){
+        console.log("No questions found!");
+        return;
+    }
+    _.find(questionBank, function(item) {
+        var isMatch = item.text == question.text && item.type == question.type && item.category == question.category;
+        return isMatch;
+    });
+}
 
 exports.getGrades = function(req, res) {
     StudentGrades.find({}).lean().exec(function(err, grades) {
@@ -90,7 +95,7 @@ exports.CSVtoJSON = function(req, res) {
         if (err)
             console.log("Error uploading XLSX.");
         else {
-            console.log(file.originalname + " successfully saved.");
+            console.log(file.originalname + " successfully transferred.");
             xlsxj({
                 input: newPath,
                 output: "./temp/output.json"
@@ -107,7 +112,21 @@ exports.CSVtoJSON = function(req, res) {
 };
 
 function uploadQuizQuestions(result, res) {
+    console.log("Uploading quiz questions...");
+    QuizQuestion.find({}).exec(function(err, questions) {
+        if (!err){
+            questionBank = questions;
+            parseQuizQuestions(result);
+        }
+        else
+            console.log("Error getting all questions:", err);
+    });
+}
+
+function parseQuizQuestions(result) {
     var output = [];
+    var upCount = 0;
+    var dupeCount = 0;
     for (var key in result) {
         if (result[key].Category === "")
             break;
@@ -116,6 +135,12 @@ function uploadQuizQuestions(result, res) {
         question.category = result[key].Category;
         question.type = result[key]['Question Type'];
         question.text = result[key].Question;
+        var isDuplicate = questionExists(question);
+        if (isDuplicate) {
+            Console.log("Question already exists!");
+            dupeCount++;
+            continue;
+        }
         if (result[key]['Correct Answer'])
             question.answers.correct = result[key]['Correct Answer'];
 
@@ -156,6 +181,11 @@ function uploadQuizQuestions(result, res) {
         qModel.save(function(err) {
             if (err) {
                 console.log('Error saving question: ', err);
+            } else {
+                console.log('Question saved');
+                upCount++;
+                console.log(upCount, "questions saved.");
+                console.log(dupeCount, "duplicates found.");
             }
         });
     }
