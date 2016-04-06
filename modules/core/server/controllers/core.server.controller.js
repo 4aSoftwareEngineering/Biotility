@@ -301,6 +301,8 @@ exports.email = function(req,res){
           return;
       }
       console.log('Message sent successfully!');
+      $("#myModal").modal();
+    
 
       // if you don't want to use this transport object anymore, uncomment following line
       //transport.close(); // close the connection pool

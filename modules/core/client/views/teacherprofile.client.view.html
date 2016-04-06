@@ -31,7 +31,7 @@
         <!--profile menu-->
         <nav aria-label="context" role="navigation">
           <ul class="nav" id="section-tabs">
-            <li class="section"><a class="home" href="/" tabindex="0">Home</a></li>
+            <!-- <li class="section"><a class="home" href="/" tabindex="0">Home</a></li> -->
 
             <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Profile</a></li>
 
@@ -68,8 +68,8 @@
 
     <!--</div>-->
     <!--class codes-->
-    <div class="row">
-      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='profileVisible'">
+   
+      <div class="col-md-9" ng-show="toShow=='profileVisible'">
         <!--table to put in class codes-->
         <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
           <caption>Class codes for students to register</caption>
@@ -86,7 +86,7 @@
         </table>
       </div>
 
-      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='statsicsVisible'">
+      <div class="col-md-9 " ng-show="toShow=='statsicsVisible'">
          <select ng-model="ClassStats" style="height: 30px;">
                    <option  ng-repeat="name in classNames">{{name}}</option>
           </select>
@@ -111,7 +111,7 @@
 
        
       <!--profile info-->
-      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='settingsVisible'">
+      <div class="col-md-9" ng-show="toShow=='settingsVisible'">
         <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
           <div class="form-group">
 
@@ -213,10 +213,10 @@
         </div>
         <!--class scores-->
       </div>
-    </div>
+   
 
     <!-- Request a resource -->
-      <div class="col-md-9 col-md-offset-3" ng-show="toShow=='resourceVisible'">
+      <div class="col-md-9 " ng-show="toShow=='resourceVisible'">
           <h3 > Please fill out form to request a resource </h3>
          <!--  <form action="" method="get">
           First Name: <input type="text" name="first_name"><br>
@@ -276,6 +276,28 @@
                 <span></span>
                 <input type="reset" class="btn btn-default" value="Cancel">
             </div>
+            <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 style="color:red;"><span class="glyphicon glyphicon-envelope"></span> Request Sent! </h4>
+        </div>
+        <!-- Body -->
+        <div class="modal-body">
+          <p> Your request was sent successfully!
+          </p>
+        </div>
+        <!-- footer -->
+        <div class="modal-footer">
+          <a class="btn btn-danger" data-dismiss="modal">Close</a>
+          <div class ="row">Biotility &#9400></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
           </div>
         </form>
