@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!--    modules/core/server/views/layout.server.view.html   -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -34,9 +34,13 @@
 </head>
 
 <body>
+  <div id="contain">
     <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-    {% block content %}{% endblock %}
 
+    {% block content %}{% endblock %}
+    <div class="clearfooter"></div>
+  </div><!--End Container-->
+  <div id="foot" ng-include="'/modules/core/client/views/footer.client.view.html'"></div>
 
     <!-- jQuery for Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -56,6 +60,7 @@
     <!--Livereload script rendered -->
     <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
     {% endif %}
+
 </body>
 
 </html>
