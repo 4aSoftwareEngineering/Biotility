@@ -59,12 +59,12 @@
                                 <label>Title</label>
                                 <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
                         </div>
-                        
+
                         <div class="form-group">
                                 <label>Url</label>
                                 <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
                         </div>
-                        
+
 
                         <div class="form-group">
                             <label>SubHead</label>
@@ -74,7 +74,7 @@
                         </div>
 
 
-                        
+
 
                         <!-- <div class="input-group input-group-sm">
                           <span class="input-group-addon" id="sizing-addon3">@</span>
@@ -152,7 +152,7 @@
             <td>{{subHead.title}}</td>
             <td><span style="color: blue;" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editSubHead(subHead)"></span></td>
             <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="deleteSubHead(subHead)"></span></td>
-            
+
         </tr>
         <!-- Links -->
         <div ng-repeat="resource in resources | filter:{subject: subHead._id}:strict" class="container head con">
@@ -170,7 +170,7 @@
 
     <!-- Below is old hardcoded resources. -->
 
-    
+
     <!--Cells-->
 <!--     <div ng-show="subject == 'Cells'">
         <div class="container head res-sub">
@@ -205,12 +205,12 @@
 
     <!--Chemistry and Biochemistry-->
 <!--     <div ng-show="subject == 'Chemistry & Biochemistry'">
-    
-    
+
+
         <div class="container head res-sub">
         		Bonds
     	</div>
-    
+
         <div class="container head con" style="padding-left: 70px">
             <a href="https://www.khanacademy.org/science/chemistry/chemical-bonds">Chemical Bonds</a>
             <br><br>
@@ -247,7 +247,7 @@
             <a href="http://www.nature.com/scitable/definition/dna-polymerase-dnap-1">DNA Polymerase</a>
             <br><br>
         </div>
-        
+
         <div class="container head res-sub">
     		Enzymes & Reactions
     	</div>
@@ -317,7 +317,7 @@
             <br><br>
         </div>
     </div> -->
-   
+
     <!--Genetics-->
 <!--     <div ng-show="subject == 'Genetics'">
 
@@ -364,7 +364,7 @@
 
     <!--lab skills and applications-->
 <!--     <div ng-show="subject == 'Laboratory Skills and Applications'">
-    
+
         <div class="container head res-sub">
         		Cell & Tissue Culture
     	</div>
@@ -539,10 +539,10 @@
             <br><br>
         </div>
     </div> -->
-   
+
     <!--research and sci method-->
 <!--     <div ng-show="subject == 'Research and Scientific Method'">
-    
+
         <div class="container head res-sub">
         		Experimental Design
     	</div>
@@ -571,10 +571,10 @@
             <br><br>
         </div>
     </div> -->
-   
+
     <!--general biotech-->
 <!--     <div ng-show="subject == 'General Topics'">
-    
+
         <div class="container head res-sub">
         		Applications
     	</div>
@@ -586,7 +586,7 @@
             <a href="http://learn.genetics.utah.edu/content/genetherapy/">Gene Therapy</a>
             <br><br>
         </div>
-        
+
         <div class="container head res-sub">
     		Applications
     	</div>
@@ -630,7 +630,7 @@
             <a href="http://theibdimmunologist.com/learning/basic-immunology">Basic Immunology</a>
             <br><br>
         </div>
-        
+
         <div class="container head res-sub">
     		Manufacture of a Biopharmaceutical Product
     	</div>
@@ -661,10 +661,10 @@
             <br><br>
         </div>
     </div> -->
-   
+
     <!--preparing solutions-->
 <!--     <div ng-show="subject == 'Preparing Solutions'">
-    
+
     	<div class="container head res-sub">
     		Proper Technique
     	</div>
@@ -713,17 +713,12 @@
             <br><br>
         </div>
     </div> -->
-    
-    
+
+
     <!--link to quiz for specific subject -->
     <div class="container" align="center">
         <div class="btn btn-default about-ssub" ng-click="startQuiz()">
           	Go to Quiz!
         </div>
-    </div>
-    
-    <!--footer-->
-    <div class="text-center footer" style="margin-top: 100px;">
-        &copy; Biotility, 2015.
     </div>
 </div>
