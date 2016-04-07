@@ -27,7 +27,8 @@
                         <td>{{q.question.text}}</td>
                         <td>{{q.attempts}}</td>
                         <td>{{q.firstIncorrect || "N/A"}}</td>
-                        <td>{{q.question.answers.correct}}</td>
+                        <td ng-show="isMultipleChoice">{{q.question.answers.MCTF[q.question.answers.correct - 1]}}</td>
+                        <td ng-show="isTF">{{q.question.answers.correct}}</td>
                     </tr>
                 </tbody>
             </table>

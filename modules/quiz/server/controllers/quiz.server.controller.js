@@ -33,12 +33,17 @@ exports.retrieveQuestionsByCategory = function(req, res) {
 function questionExists(question) {
     var isMatch = false;
     if (!questionBank.length) {
+        console.log("No questions found.");
         return isMatch;
     }
     _.find(questionBank, function(item) {
         isMatch = item.text === question.text && item.link === question.link && item.hint === question.hint;
-        if (isMatch) return true;
+        if (isMatch) {
+            console.log(item.text, question.text);
+            return true;
+        }
     });
+    console.log("Return", isMatch);
     return isMatch;
 }
 
@@ -116,6 +121,7 @@ function uploadQuizQuestions(result, res) {
     console.log("Uploading quiz questions...");
     QuizQuestion.find({}).exec(function(err, questions) {
         if (!err) {
+            //Load Quiz Bank and then parse to check for dupes.
             questionBank = questions;
             parseQuizQuestions(result);
         } else
@@ -124,41 +130,53 @@ function uploadQuizQuestions(result, res) {
 }
 
 function parseQuizQuestions(result) {
-    var output = [];
-    var upCount = 0;
     var dupeCount = 0;
+    var itrCount = -1;
+
     for (var key in result) {
-        if (result[key].Category === "")
-            break;
+        itrCount++;
+        var item = result[key];
+        if (itrCount === 0) {
+            if (!item.Category && !item['Question Type'] && !item.Question) {
+                console.log("Excel file does not match expected template!");
+                return;
+            }
+        }
+
+        if (item.Category === "") break;
+
+        //Set up question obj
         var question = {};
         question.answers = {};
-        question.category = result[key].Category;
-        question.type = result[key]['Question Type'];
-        question.text = result[key].Question;
+        question.category = item.Category;
+        question.type = item['Question Type'];
+        question.text = item.Question;
 
-        if (result[key]['Correct Answer'])
-            question.answers.correct = result[key]['Correct Answer'];
+        //Assign correct answer if exists.
+        if (item['Correct Answer']) question.answers.correct = item['Correct Answer'];
 
-        question.answers.MCTF = [
-            result[key].Choice1,
-            result[key].Choice2,
-            result[key].Choice3,
-            result[key].Choice4,
-            result[key].Choice5
-        ];
-        //Prune for empty strings.
+        //Assign MCTF as they always exist.
+        question.answers.MCTF = [];
+        if (item.Choice1 !== "") question.answers.MCTF.push(item.Choice1);
+        if (item.Choice2 !== "") question.answers.MCTF.push(item.Choice2);
+        if (item.Choice3 !== "") question.answers.MCTF.push(item.Choice3);
+        if (item.Choice4 !== "") question.answers.MCTF.push(item.Choice4);
+        if (item.Choice5 !== "") question.answers.MCTF.push(item.Choice5);
+
+        //Prune empty strings as failsafe.
         question.answers.MCTF = _.compact(question.answers.MCTF);
 
         //Dont assign if there arent any MA.
-        if (result[key]['Matching Answer 1']) {
+        if (item['Matching Answer 1']) {
             question.answers.MA = {};
-            question.answers.MA.correct = [
-                result[key]['Matching Answer 1'],
-                result[key]['Matching Answer 2'],
-                result[key]['Matching Answer 3'],
-                result[key]['Matching Answer 4'],
-                result[key]['Matching Answer 5']
-            ];
+            question.answers.MA.correct = [];
+
+            if (item['Matching Answer 1'] !== "") question.answers.MA.correct.push(item['Matching Answer 1']);
+            if (item['Matching Answer 2'] !== "") question.answers.MA.correct.push(item['Matching Answer 2']);
+            if (item['Matching Answer 3'] !== "") question.answers.MA.correct.push(item['Matching Answer 3']);
+            if (item['Matching Answer 4'] !== "") question.answers.MA.correct.push(item['Matching Answer 4']);
+            if (item['Matching Answer 5'] !== "") question.answers.MA.correct.push(item['Matching Answer 5']);
+
             //Prune for empty strings.
             question.answers.MA.correct = _.compact(question.answers.MA.correct);
 
@@ -166,29 +184,27 @@ function parseQuizQuestions(result) {
             question.answers.MA.present = question.answers.MA.correct;
             question.answers.MA.present = _.shuffle(question.answers.MA.present);
         }
-        question.hint = result[key]['Hint upon incorrect answer'];
-        question.link = result[key]['Topic Link(s) or Text'];
+        question.hint = item['Hint upon incorrect answer'];
+        question.link = item['Topic Link(s) or Text'];
 
         var isDuplicate = questionExists(question);
         if (isDuplicate) {
-            console.log("Question already exists!");
             dupeCount++;
             continue;
         }
-        output.push(question);
-        //console.log(question);
 
-        var qModel = new QuizQuestion(question);
-
-        qModel.save(function(err) {
-            if (err) {
-                console.log('Error saving question: ', err);
-            } else {
-                console.log('Question saved');
-                upCount++;
-            }
-        });
+        saveQuestion(question);
     }
-    console.log(upCount, "questions saved.");
+    console.log(itrCount - dupeCount, "questions saved.");
     console.log(dupeCount, "duplicates found.");
+}
+
+function saveQuestion(question) {
+    var qModel = new QuizQuestion(question);
+
+    qModel.save(function(err) {
+        if (err) {
+            console.log('Error saving question: ', err);
+        }
+    });
 }
