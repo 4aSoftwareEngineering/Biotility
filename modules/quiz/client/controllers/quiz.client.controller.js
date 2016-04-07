@@ -113,18 +113,30 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             } else if ($scope.isMA) {
                 expected = $scope.question.answers.MA.correct;
                 answer = [];
-                console.log($scope.ansMA);
+
+                console.log($scope.ansMA); //Letter array before conversion.
                 for (var i = 0; i < $scope.ansMA.length; i++) {
                     var letterIdx = $scope.ansMA[i];
                     var idx = $scope.charToNum(letterIdx.toLowerCase()) - 1;
                     var ansDesc = $scope.question.answers.MA.present[i];
                     answer[idx] = ansDesc;
                 }
+
+                for (var i = 0; i < answer.length; i++) {
+                    if (!answer[i]) {
+                        $scope.hasError = true;
+                        $scope.error = "Make sure to make unique selections."
+                        return;
+                    }
+                }
+
                 console.log('expected');
                 console.log(expected);
                 console.log('answer');
                 console.log(answer);
             }
+
+
             if (expected === answer || $scope.isMA && arraysEqual(expected, answer)) {
                 console.log("Correct!");
                 console.dir($scope.analytics[$scope.index]);
@@ -300,8 +312,10 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                         file.result = response.data;
                     });
                 }, function(response) {
-                    if (response.status > 0)
-                        $scope.errorMsg = response.status + ': ' + response.data;
+                    if (response.status > 0) {
+                        $scope.hasError = true;
+                        $scope.error = response.status + ': ' + response.data;
+                    }
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));

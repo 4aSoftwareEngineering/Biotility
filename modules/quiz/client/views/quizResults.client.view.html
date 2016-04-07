@@ -30,7 +30,7 @@
                         <td ng-show="!isMA">{{q.firstIncorrect || "N/A"}}</td>
                         <td ng-show="isMA">
                             <li ng-repeat="fInc in q.firstIncorrect track by $index">{{fInc}}</li>
-                            <span ng-show="!fInc">N/A</span>
+                            <span ng-show="!q.firstIncorrect.length">N/A</span>
                         </td>
                         <!--Correct Answer-->
                         <td ng-show="isMultipleChoice">{{q.question.answers.MCTF[q.question.answers.correct - 1]}}</td>
