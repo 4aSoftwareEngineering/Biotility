@@ -79,13 +79,13 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             //Check answer, log analytics.
             console.log("Checking answer...");
 
-            var TF_NoSel = $scope.isTF && $scope.answer.val == -1;
-            var MC_NoSel = $scope.isMultipleChoice && $scope.answer == -1;
-            var MA_NoSel = $scope.isMA && $scope.ansMA.length == 0;
+            var TF_NoSel = $scope.isTF && $scope.answer.val === -1;
+            var MC_NoSel = $scope.isMultipleChoice && $scope.answer === -1;
+            var MA_NoSel = $scope.isMA && $scope.ansMA.length < $scope.question.answers.MCTF.length;
 
             if (TF_NoSel || MC_NoSel || MA_NoSel) {
                 $scope.hasError = true;
-                $scope.error = "Please select an option."
+                $scope.error = "Please select a valid option.";
                 return;
             }
 
@@ -219,7 +219,14 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             return new Array(num);
         };
         $scope.numToChar = function(n) {
-            return String.fromCharCode(96 + n).toUpperCase();
+            return String.fromCharCode(96 + parseInt(n)).toUpperCase();
+        };
+        $scope.numToCharArr = function(arr) {
+            var ltrArr = [];
+            for (var num in arr) {
+                ltrArr.push($scope.numToChar(num));
+            }
+            return ltrArr.join(", ");
         };
         $scope.charToNum = function(c) {
             return c.charCodeAt(0) - 96;
