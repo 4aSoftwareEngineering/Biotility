@@ -252,6 +252,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                     data: { file: file }
                 });
 
+                //Progress Bar
                 file.upload.then(function(response) {
                     $timeout(function() {
                         file.result = response.data;
@@ -262,7 +263,6 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));
-
                 });
             }
         };
