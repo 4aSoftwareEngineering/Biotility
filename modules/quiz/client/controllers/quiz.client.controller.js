@@ -1,8 +1,8 @@
 'use strict';
 
 // Quiz main controller
-angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$location', '$stateParams', '$state', 'Authentication', '$http',
-    function($rootScope, $scope, $location, $stateParams, $state, Authentication, $http) {
+angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$location', '$stateParams', '$state', 'Authentication', '$http', '$window',
+    function($rootScope, $scope, $location, $stateParams, $state, Authentication, $http, $window) {
         //
         console.log("Loading Qs:", $stateParams.courseName);
         var courseName = $stateParams.courseName;
@@ -266,7 +266,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));
-
+                    if (file.progress == 100 || file.progress == 100.00) return;
                 });
             }
         };

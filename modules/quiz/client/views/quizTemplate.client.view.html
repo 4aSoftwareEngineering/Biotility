@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <p ng-show="hasHint">Hint: {{questions[index].hint}}</p>
-                <a ng-show="questions[index].link.length" href="{{questions[index].link}}" ng-mousedown="openTab(resource.url)">Supplementary Reading</a>
+                <a ng-show="questions[index].link.length" style="cursor: pointer" ng-mousedown="openTab(questions[index].link)">Supplementary Reading</a>
                 <p id="quizError" ng-show="hasError" class="alert alert-danger" role="alert"> {{error}} </p>
                 <br>
                 <form class="col-md-offset-1">

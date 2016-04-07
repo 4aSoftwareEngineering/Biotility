@@ -30,15 +30,16 @@ exports.retrieveQuestionsByCategory = function(req, res) {
     });
 };
 
-function questionExists (question) {
-    if (!questionBank.length){
-        console.log("No questions found!");
-        return;
+function questionExists(question) {
+    var isMatch = false;
+    if (!questionBank.length) {
+        return isMatch;
     }
     _.find(questionBank, function(item) {
-        var isMatch = item.text == question.text && item.type == question.type && item.category == question.category;
-        return isMatch;
+        isMatch = item.text === question.text && item.link === question.link && item.hint === question.hint;
+        if (isMatch) return true;
     });
+    return isMatch;
 }
 
 exports.getGrades = function(req, res) {
@@ -114,11 +115,10 @@ exports.CSVtoJSON = function(req, res) {
 function uploadQuizQuestions(result, res) {
     console.log("Uploading quiz questions...");
     QuizQuestion.find({}).exec(function(err, questions) {
-        if (!err){
+        if (!err) {
             questionBank = questions;
             parseQuizQuestions(result);
-        }
-        else
+        } else
             console.log("Error getting all questions:", err);
     });
 }
@@ -135,12 +135,7 @@ function parseQuizQuestions(result) {
         question.category = result[key].Category;
         question.type = result[key]['Question Type'];
         question.text = result[key].Question;
-        var isDuplicate = questionExists(question);
-        if (isDuplicate) {
-            Console.log("Question already exists!");
-            dupeCount++;
-            continue;
-        }
+
         if (result[key]['Correct Answer'])
             question.answers.correct = result[key]['Correct Answer'];
 
@@ -173,6 +168,13 @@ function parseQuizQuestions(result) {
         }
         question.hint = result[key]['Hint upon incorrect answer'];
         question.link = result[key]['Topic Link(s) or Text'];
+
+        var isDuplicate = questionExists(question);
+        if (isDuplicate) {
+            console.log("Question already exists!");
+            dupeCount++;
+            continue;
+        }
         output.push(question);
         //console.log(question);
 
@@ -184,9 +186,9 @@ function parseQuizQuestions(result) {
             } else {
                 console.log('Question saved');
                 upCount++;
-                console.log(upCount, "questions saved.");
-                console.log(dupeCount, "duplicates found.");
             }
         });
     }
+    console.log(upCount, "questions saved.");
+    console.log(dupeCount, "duplicates found.");
 }
