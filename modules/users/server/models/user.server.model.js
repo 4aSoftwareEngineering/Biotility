@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     crypto = require('crypto'),
     validator = require('validator'),
     owasp = require('owasp-password-strength-test');
-
+//var app = angular.module('myApp', ['noCAPTCHA']);
 /**
  * A Validation function for local strategy properties
  */
@@ -24,7 +24,7 @@ var validateLocalStrategyEmail = function(email) {
 };
 
 /** Enum profile values */
-var profileStates = 'Student Teacher'.split(' ');
+var profileStates = 'Student Teacher Admin'.split(' ');
 
 /**
  * User Schema
@@ -92,10 +92,17 @@ var UserSchema = new Schema({
         trim: true,
         default: "Student"
     },
-    courseCode: {
-        type: Number,
-        trim: true
-    },
+    //OLD single code
+    //courseCode: {
+    //    type: Number,
+    //    trim: true
+    //},
+    courseCode: [
+            {
+                type: Number,
+                trim: true
+            }
+        ],
     updated: {
         type: Date
     },

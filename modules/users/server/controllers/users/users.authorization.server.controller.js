@@ -30,3 +30,19 @@ exports.userByID = function (req, res, next, id) {
     next();
   });
 };
+
+// Retrieve subject data, send as response.
+exports.parseTeachers = function(req, res) {
+
+    User.find({}, function(err, docs) {
+
+        if (!err) {
+            console.log(docs);
+        } else {
+            throw err;
+        }
+    });
+    User.find({}, function(err, subs) {
+        return res.end(JSON.stringify(subs));
+    });
+};

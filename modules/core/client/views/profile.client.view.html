@@ -127,18 +127,100 @@
             <input class="form-control" type="text" value="{{user.userName}}">
           </div>
         </div>
+
+
         <div class="form-group">
           <label class="col-md-3 col-xs-offset-1 control-label">Change Password:</label>
           <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="password" value="">
           </div>
         </div>
+
+
         <div class="form-group">
           <label class="col-md-3 col-xs-offset-1 control-label">Confirm Password:</label>
           <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <input class="form-control" type="password" value="">
           </div>
         </div>
+
+
+
+
+
+
+
+
+
+        <label class="col-md-3 col-xs-offset-1 control-label">Course Code(s):</label>
+        <div class="row">
+          <div class="col-md-8 col-xs-offset-1 col-xs-10">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="hello" placeholder="New course code">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" ng-click="myFunction()">Add</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class = "col-xs-offset-1 row">
+          <h1>Currest Course Codes</h1>
+          <ul ng-repeat="num in user.courseCode">
+            <li>{{user.courseCode}}</li>
+          </ul>
+        </div>
+
+
+              <!--<input class="form-control" type="password" value="">-->
+
+
+
+              <!--
+              <select ng-model="toAdd" style="width: 175px; height: 30px;">
+                <option ng-repeat="name in classNames track by $index">{{name}}</option>
+              </select>
+              -->
+
+
+
+
+
+              <!--button for adding more than one course-->
+              <!--<button type="button" class="btn btn-default" ng-click="add(toAdd)">
+                +
+              </button>-->
+            </div>
+
+
+          <!--Classes already seleted-->
+          <div class="row" align="center">
+            <div class="col-md-2 col-md-offset-5 col-sm-offset-5 col-xs-2 col-xs-offset-4">
+              <ul class="list-inline">
+                <li ng-repeat="x in credentials.courses track by $index">
+                  <button type="button" class="btn btn-success">{{user.userName}}</button>
+                </ li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="form-group">
           <label class="col-md-3 col-xs-offset-1 control-label"></label>
           <div class="col-md-8 col-xs-offset-1 col-xs-10">
@@ -196,8 +278,7 @@
           <div class="form-group">
             <label class="col-lg-3 control-label">Last name:</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="{{user.lastName}}" disabled>
-            </div>
+              <input class="form-control" type="text" value="{{user.lastName}}" disabled></div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">School:</label>
@@ -240,12 +321,23 @@
               <input class="form-control" type="password" value="">
             </div>
           </div>
+
+
           <div class="form-group">
             <label class="col-md-3 control-label">Confirm Password:</label>
             <div class="col-md-8">
               <input class="form-control" type="password" value="">
             </div>
           </div>
+
+
+
+
+
+
+
+
+
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
@@ -273,3 +365,6 @@
 
   <hr>
 </div>
+
+<!--footer-->
+<div class="text-center footer" style="margin-top: 100px;">Biotility <i class="glyphicon glyphicon-copyright-mark"></i></div>

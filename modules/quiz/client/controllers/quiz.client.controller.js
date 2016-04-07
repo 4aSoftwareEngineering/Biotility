@@ -243,6 +243,12 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
     function($http, $scope, $stateParams, Authentication) {
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
+        $(document).ready(function() {
+            $("#myBtn").click(function() {
+                $("#myModal").modal();
+            });
+        });
+
 
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
@@ -281,6 +287,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                     }
                 });
 
+                //Progress Bar
                 file.upload.then(function(response) {
                     $timeout(function() {
                         file.result = response.data;
@@ -292,6 +299,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));
                     if (file.progress === 100 || file.progress === 100.00) return;
+
                 });
             }
         };

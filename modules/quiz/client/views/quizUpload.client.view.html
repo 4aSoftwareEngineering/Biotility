@@ -1,25 +1,58 @@
-<div ui-view class="margin-top-50" ng-controller="QuizCreate">
-    <div class="header-space">
-        <!-- Using this for space -->
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="container">
-        <h2>Quiz Upload</h2>
-        <p>Uploads are restricted to Microsoft Excel (.xlsx) types only.</p>
-        <p>The file will be uploaded upon selection.</p>
-        
-        <br>
-        <br>
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{f.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{f.progress}}%;">
-                {{f.progress}}%
-            </div>
+<div ng-controller="authController">
+
+    <div ui-view class="margin-top-50" ng-controller="QuizCreate">
+
+        <div class="header-space">
+            <!-- Using this for space -->
         </div>
-        <button type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ngf-max-height="1000" ngf-max-size="1MB">
-            Select File
-        </button>
-        <p>File Name: {{f.name || "N/A"}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}} {{errorMsg}}</p>
+        <br>
+        <br>
+        <br>
+
+        <div ng-show="isAdmin" class="container">
+            <h2>Quiz Upload</h2>
+            <p>Uploads are restricted to Microsoft Excel (.xlsx) types only.</p>
+            <p>The file will be uploaded upon selection.</p>
+
+            <br>
+            <br>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{f.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{f.progress}}%;">
+                    {{f.progress}}%
+                </div>
+            </div>
+            <button type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ngf-max-height="1000" ngf-max-size="1MB">
+                Select File
+            </button>
+            <p>File Name: {{f.name || "N/A"}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}} {{errorMsg}}</p>
+        </div>
+
+        <div ng-hide="isAdmin">
+            <br>
+            <br>
+            <p> Access unauthorized. </p>
+            <br>
+        </div>
     </div>
+
+
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <!--footer-->
+    <div class="text-center footer" style="margin-top: 100px;">&#9400; Biotility </div>
 </div>

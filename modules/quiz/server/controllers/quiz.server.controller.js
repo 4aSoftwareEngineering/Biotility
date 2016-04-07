@@ -148,6 +148,7 @@ function parseQuizQuestions(result) {
         //Set up question obj
         var question = {};
         question.answers = {};
+
         question.category = item.Category;
         question.type = item['Question Type'];
         question.text = item.Question;

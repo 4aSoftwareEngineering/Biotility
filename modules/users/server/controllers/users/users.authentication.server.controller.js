@@ -4,20 +4,40 @@
  * Module dependencies.
  */
 var path = require('path'),
-    errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-    mongoose = require('mongoose'),
-    passport = require('passport'),
-    User = mongoose.model('User');
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  mongoose = require('mongoose'),
+  passport = require('passport'),
+  User = mongoose.model('User');
+  //reCAPTCHA=require('recaptcha2');
+
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
     '/authentication/signin',
     '/authentication/signup'
 ];
-
+//var app = angular.module('myApp', ['noCAPTCHA']);
+//recaptcha=new reCAPTCHA({
+//  siteKey:'6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo',
+//  secretKey:'6LcGiBsTAAAAAFxhCXEIXj40XpmvyrtVywvpYqUR'
+//})
 /**
  * Signup
  */
+exports.loadTeachers = function(req, res) {
+    
+    User.find({}, function(err, docs) {
+        if (!err) {
+            console.log(docs);
+        } else {
+            throw err;
+        }
+    });
+    User.find({}).lean().exec(function(err, users) {
+        return res.end(JSON.stringify(users));
+    });
+};
+
 exports.signupStudent = function(req, res) {
     // First looks through Teachers course code
     User.findOne({

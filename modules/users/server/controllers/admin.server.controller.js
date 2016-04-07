@@ -62,7 +62,26 @@ exports.updates = function(req, res) {
     });
 };
 
+exports.course = function(req, res) {
+    var users = User;
+   console.log("Will it update courses? ");
 
+        User.find({}, function(err,users){
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        }
+         for (var i = 0; i < users.length; i++) {        
+            users[i].courses = [];
+            users[i].save(function(err) {
+                if (err) {
+                }
+            });
+        }
+        res.json(users);
+    });
+};
 
 
 
