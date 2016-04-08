@@ -60,179 +60,173 @@ exports.sendMail = function(req, res) {
 };
 
 
-exports.plot = function(req,res){
-    console.log("PLOTLY "+req.user.courses.length );
-    // console.log("COURSE GIVEN: " + req.course);
-    // var params = req.body; 
-    // console.log("PLOTLY "+params.person.user.courses.length );
-    // console.log("COURSE GIVEN: " + req.param('given'));
-    var searchCourse = req.param('given');
-    var num = [];
-    var classes = [];
-    var grade = [];
-    var xside = [];
-    // var datagraph = [];
+// exports.plot = function(req,res){
+//     console.log("PLOTLY "+req.user.courses.length );
+//     // console.log("COURSE GIVEN: " + req.course);
+//     // var params = req.body; 
+//     // console.log("PLOTLY "+params.person.user.courses.length );
+//     // console.log("COURSE GIVEN: " + req.param('given'));
+//     var searchCourse = req.param('given');
+//     var num = [];
+//     var classes = [];
+//     var grade = [];
+//     var xside = [];
+//     // var datagraph = [];
        
-    //find all the courses   
-    for(var i = 0; i < req.user.courses.length ; i++){
-        num.push(req.user.courses[i].number);
-    }  
+//     //find all the courses   
+//     for(var i = 0; i < req.user.courses.length ; i++){
+//         num.push(req.user.courses[i].number);
+//     }  
 
-    //find all the students in that course
-    var findcount = false; 
-    console.log("AMOUNT:" + req.user.courses.length);
-    for(var s = 0; s < req.user.courses.length ; s++){
+//     //find all the students in that course
+//     var findcount = false; 
+//     console.log("AMOUNT:" + req.user.courses.length);
+//     for(var s = 0; s < req.user.courses.length ; s++){
         
-        findStudents(num[s]);
-    }
+//         findStudents(num[s]);
+//     }
 
-    for(var gradesize = 0; gradesize < 20 ; gradesize++){
-        grade[gradesize] = 0;
-    }
+//     for(var gradesize = 0; gradesize < 20 ; gradesize++){
+//         grade[gradesize] = 0;
+//     }
     
-    //find all grades for the course code
-    function findGrades(givenstudent, course){
-        StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-            //lookup a test
+//     //find all grades for the course code
+//     function findGrades(givenstudent, course){
+//         StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+//             //lookup a test
             
-            for (var i = 0; i < grades.length;  i++) {
+//             for (var i = 0; i < grades.length;  i++) {
                 
-                for (var c = 0; c < grades[i].student.courses.length; c++){
+//                 for (var c = 0; c < grades[i].student.courses.length; c++){
 
                     
-                    //see if the test has a category that the teacher is looking for
-                    if(grades[i].category === searchCourse){
+//                     //see if the test has a category that the teacher is looking for
+//                     if(grades[i].category === searchCourse){
                         
 
-                        //see if test has a course code that matches the teachers 
-                       if(grades[i].student.courses[c] === course){
-                        console.log("COURSES: "+ grades[i].student.courses);
+//                         //see if test has a course code that matches the teachers 
+//                        if(grades[i].student.courses[c] === course){
+//                         console.log("COURSES: "+ grades[i].student.courses);
 
-                        //iterate through analytics and see if attempt = 1
-                           for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
-                                //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
-                                //if it is equal to one add it to the correct array 
-                                if(grades[i].analytics[analytics].attempts === 1){
-                                    // console.log("you got it right");
-                                    grade[analytics] = grade[analytics]+1;
-                                }
-                            }
-                       }
-                    }
-                }   
-                datagraph = grade;        
-            }
+//                         //iterate through analytics and see if attempt = 1
+//                            for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+//                                 //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
+//                                 //if it is equal to one add it to the correct array 
+//                                 if(grades[i].analytics[analytics].attempts === 1){
+//                                     // console.log("you got it right");
+//                                     grade[analytics] = grade[analytics]+1;
+//                                 }
+//                             }
+//                        }
+//                     }
+//                 }   
+//                 datagraph = grade;        
+//             }
 
-            if(findcount === true ){
-                callgraph(datagraph);
-            }    
-            // console.log("FINDCOUNT: " + findcount);
+//             if(findcount === true ){
+//                 callgraph(datagraph);
+//             }    
+//             // console.log("FINDCOUNT: " + findcount);
+//             // for(var results = 0; results < grade.length ; results++){
+//                 // console.log("RESULTS: " + grade[results]);
+//             // } 
 
-             
-             
+//             return res.end(JSON.stringify(grades));
+//         });
 
-
-
-            // for(var results = 0; results < grade.length ; results++){
-                // console.log("RESULTS: " + grade[results]);
-            // } 
-
-            return res.end(JSON.stringify(grades));
-        });
-
-    }
+//     }
 
 
 
-    function findStudents(stud){
-        User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
+//     function findStudents(stud){
+//         User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
             
-            for (var i = 0; i < users.length; i++) {           
-                // console.log("STUDENTS: " +users[i].userName);  
-                if (i === users.length -1 ) {
-                        findcount = true;
-                } 
-                findGrades(users[i], stud);
-            }
+//             for (var i = 0; i < users.length; i++) {           
+//                 // console.log("STUDENTS: " +users[i].userName);  
+//                 if (i === users.length -1 ) {
+//                         findcount = true;
+//                 } 
+//                 findGrades(users[i], stud);
+//             }
 
-            return res.end(JSON.stringify(users));
-        });
-    }
+//             return res.end(JSON.stringify(users));
+//         });
+//     }
 
-    //actual plot
-    function callgraph(datagraph){
-         console.log("DATAGRAPH");
-           for(var size = 0; size < 20 ; size++){
-               console.log(datagraph[size]);
-            }
+//     //actual plot
+//     function callgraph(datagraph){
+//          console.log("DATAGRAPH");
+//            for(var size = 0; size < 20 ; size++){
+//                console.log(datagraph[size]);
+//             }
 
-            for(var xaxis = 1; xaxis < 20; xaxis++){
-                xside[xaxis]  = xaxis;
-            }
-
-
-
-        var data = [
-          {
-            x: xside,
-            y: datagraph,
-            type: "bar"
-          }
-        ];
-
-        var graphOptions = {title: searchCourse, filename: "GRADES", fileopt: "overwrite"};
-        plotly.plot(data, graphOptions, function (err, msg) {
-            console.log(msg);
-        });
-    }
+//             for(var xaxis = 1; xaxis < 20; xaxis++){
+//                 xside[xaxis]  = xaxis;
+//             }
 
 
 
-    //reset the data array
+//         var data = [
+//           {
+//             x: xside,
+//             y: datagraph,
+//             type: "bar"
+//           }
+//         ];
+
+//         var graphOptions = {title: searchCourse, filename: "GRADES", fileopt: "overwrite"};
+//         plotly.plot(data, graphOptions, function (err, msg) {
+//             console.log(msg);
+//         });
+//     }
+
+
+
+//     //reset the data array
     
 
 
-    //find all grades for the course code
-    // function findGrades(givenstudent, course){
-    //     StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-    //         //lookup a test
-    //         for (var i = 0; i < grades.length;  i++) {
+//     //find all grades for the course code
+//     // function findGrades(givenstudent, course){
+//     //     StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+//     //         //lookup a test
+//     //         for (var i = 0; i < grades.length;  i++) {
                 
-    //             for (var c = 0; c < grades[i].student.courses.length; c++){
+//     //             for (var c = 0; c < grades[i].student.courses.length; c++){
 
                     
-    //                 //see if the test has a category that the teacher is looking for
-    //                 if(grades[i].category === searchCourse){
+//     //                 //see if the test has a category that the teacher is looking for
+//     //                 if(grades[i].category === searchCourse){
                         
 
-    //                     //see if test has a course code that matches the teachers 
-    //                    if(grades[i].student.courses[c] === course){
-    //                     console.log("COURSES: "+ grades[i].student.courses);
+//     //                     //see if test has a course code that matches the teachers 
+//     //                    if(grades[i].student.courses[c] === course){
+//     //                     console.log("COURSES: "+ grades[i].student.courses);
 
-    //                     //iterate through analytics and see if attempt = 1
-    //                        for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
-    //                             //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
-    //                             //if it is equal to one add it to the correct array 
-    //                             if(grades[i].analytics[analytics].attempts === 1){
-    //                                 console.log("you got it right");
-    //                                 grade[analytics] = grade[analytics]+1;
-    //                             }
-    //                         }
-    //                    }
-    //                 }
-    //             }                
-    //         }
+//     //                     //iterate through analytics and see if attempt = 1
+//     //                        for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+//     //                             //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
+//     //                             //if it is equal to one add it to the correct array 
+//     //                             if(grades[i].analytics[analytics].attempts === 1){
+//     //                                 console.log("you got it right");
+//     //                                 grade[analytics] = grade[analytics]+1;
+//     //                             }
+//     //                         }
+//     //                    }
+//     //                 }
+//     //             }                
+//     //         }
         
 
-    //          for(var results = 0; results < grade.length ; results++){
-    //             console.log("RESULTS: " + grade[results]);
-    //         } 
+//     //          for(var results = 0; results < grade.length ; results++){
+//     //             console.log("RESULTS: " + grade[results]);
+//     //         } 
 
-    //         return res.end(JSON.stringify(grades));
-    //     });
-    // }
+//     //         return res.end(JSON.stringify(grades));
+//     //     });
+//     // }
 
-    // var datagraph=[12,13,14,13,12,11];
+//     // var datagraph=[12,13,14,13,12,11];
 
 
 
@@ -241,36 +235,179 @@ exports.plot = function(req,res){
    
 
 
-    // console.log("GRADES: ");
-    //in each student that matches go to the other database studentgrades and see their scores.
-    // function findGrades(student, course){
-    //     StudentGrades.find({'student.studentName' : student.userName }).lean().exec(function(err, grades) { 
-    //         console.log("AMOUNT: "+ grades.length);  
-    //         for (var i = 0; i < grades.length;  i++) { 
-    //             for (var c = 0; c< grades[i].student.courses.length; c++){
-    //                 if (grades[i].student.courses[c] === course){       
-    //                 // var size = Object.keys(grades[i].student.analytics).length;
-    //                 // console.log("Size: "+ size); 
-    //                 //     for(var j=0; j < size; j++){
-    //                 //         console.log("Name: "+ grades[i].student.studentName);  
-    //                 //         console.log("analytics: "+ grades[i].student.analytics); 
-    //                 //     } 
-    //                 }
+//     // console.log("GRADES: ");
+//     //in each student that matches go to the other database studentgrades and see their scores.
+//     // function findGrades(student, course){
+//     //     StudentGrades.find({'student.studentName' : student.userName }).lean().exec(function(err, grades) { 
+//     //         console.log("AMOUNT: "+ grades.length);  
+//     //         for (var i = 0; i < grades.length;  i++) { 
+//     //             for (var c = 0; c< grades[i].student.courses.length; c++){
+//     //                 if (grades[i].student.courses[c] === course){       
+//     //                 // var size = Object.keys(grades[i].student.analytics).length;
+//     //                 // console.log("Size: "+ size); 
+//     //                 //     for(var j=0; j < size; j++){
+//     //                 //         console.log("Name: "+ grades[i].student.studentName);  
+//     //                 //         console.log("analytics: "+ grades[i].student.analytics); 
+//     //                 //     } 
+//     //                 }
 
-    //             }                
-    //         }
-    //         return res.end(JSON.stringify(grades));
-    //     });
-    // }
+//     //             }                
+//     //         }
+//     //         return res.end(JSON.stringify(grades));
+//     //     });
+//     // }
 
-    //find the students in each class
-    //check if their attempt for each question is 1
-        //if so add 1 to that location in array
-    //if not move to next question
+//     //find the students in each class
+//     //check if their attempt for each question is 1
+//         //if so add 1 to that location in array
+//     //if not move to next question
 
     
            
-};
+// };
+
+exports.plot = function(req,res){
+            // Chart.js Stuff
+            var ctx = $("#myChart").get(0).getContext("2d");
+            // // This will get the first returned node in the jQuery collection.
+            // var myNewChart = new Chart(ctx);
+            
+               // var data = {
+               //      labels: ["January", "February", "March", "April", "May", "June", "July"],
+               //      datasets: [
+               //          {
+               //              label: "My First dataset",
+               //              fillColor: "rgba(220,220,220,0.5)",
+               //              strokeColor: "rgba(220,220,220,0.8)",
+               //              highlightFill: "rgba(220,220,220,0.75)",
+               //              highlightStroke: "rgba(220,220,220,1)",
+               //              data: [65, 59, 80, 81, 56, 55, 40]
+               //          },
+               //          {
+               //              label: "My Second dataset",
+               //              fillColor: "rgba(151,187,205,0.5)",
+               //              strokeColor: "rgba(151,187,205,0.8)",
+               //              highlightFill: "rgba(151,187,205,0.75)",
+               //              highlightStroke: "rgba(151,187,205,1)",
+               //              data: [28, 48, 40, 19, 86, 27, 90]
+               //          }
+               //      ]
+               //  };
+            var searchCourse = req.param('given');
+            var num = [];
+            var classes = [];
+            var grade = [];
+            var xside = [];
+            // var datagraph = [];
+               
+            //find all the courses   
+            for(var i = 0; i < req.user.courses.length ; i++){
+                num.push(req.user.courses[i].number);
+            }  
+
+            //find all the students in that course
+            var findcount = false; 
+            console.log("AMOUNT:" + req.user.courses.length);
+            for(var s = 0; s < req.user.courses.length ; s++){
+                
+                findStudents(num[s]);
+            }
+
+            for(var gradesize = 0; gradesize < 20 ; gradesize++){
+                grade[gradesize] = 0;
+            }
+
+            //find all grades for the course code
+            function findGrades(givenstudent, course){
+                StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+                    //lookup a test
+                    
+                    for (var i = 0; i < grades.length;  i++) {
+                        
+                        for (var c = 0; c < grades[i].student.courses.length; c++){
+
+                            
+                            //see if the test has a category that the teacher is looking for
+                            if(grades[i].category === searchCourse){
+                                
+
+                                //see if test has a course code that matches the teachers 
+                               if(grades[i].student.courses[c] === course){
+                                console.log("COURSES: "+ grades[i].student.courses);
+
+                                //iterate through analytics and see if attempt = 1
+                                   for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+                                        //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
+                                        //if it is equal to one add it to the correct array 
+                                        if(grades[i].analytics[analytics].attempts === 1){
+                                            // console.log("you got it right");
+                                            grade[analytics] = grade[analytics]+1;
+                                        }
+                                    }
+                               }
+                            }
+                        }   
+                        datagraph = grade;        
+                    }
+
+                    if(findcount === true ){
+                        callgraph(datagraph);
+                    }    
+                    return res.end(JSON.stringify(grades));
+                });
+            }
+
+            function findStudents(stud){
+                User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
+                    
+                    for (var i = 0; i < users.length; i++) {           
+                        // console.log("STUDENTS: " +users[i].userName);  
+                        if (i === users.length -1 ) {
+                                findcount = true;
+                        } 
+                        findGrades(users[i], stud);
+                    }
+
+                    return res.end(JSON.stringify(users));
+                });
+            }
+                function callgraph(datagraph){
+                     console.log("DATAGRAPH");
+                       for(var size = 0; size < 20 ; size++){
+                           console.log(datagraph[size]);
+                        }
+
+                        for(var xaxis = 1; xaxis < 20; xaxis++){
+                            xside[xaxis]  = xaxis;
+                        }
+
+
+
+                var data = {
+                    // labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [
+                        {
+                            label: "My First dataset",
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: datagraph
+                        },
+                        
+                    ]
+                };
+
+
+                    // var graphOptions = {title: searchCourse, filename: "GRADES", fileopt: "overwrite"};
+                    // plotly.plot(data, graphOptions, function (err, msg) {
+                    //     console.log(msg);
+                    // });
+                }
+
+            var myBarChart = new Chart(ctx).Bar(data);
+           
+        };
 
 exports.email = function(req,res){
    console.log("EMAILS");
@@ -301,7 +438,9 @@ exports.email = function(req,res){
           return;
       }
       console.log('Message sent successfully!');
-      $("#myModal").modal();
+      // $("#myModal").modal("show");
+      // $("#myModal").modal('show');
+
     
 
       // if you don't want to use this transport object anymore, uncomment following line

@@ -10,6 +10,8 @@ module.exports = {
           ],
       js: [
         'public/lib/angular/angular.js',
+        'public/lib/Chart.js/Chart.js',
+        'public/lib/angular-chart.js/angular-chart.js',
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-messages/angular-messages.js',
