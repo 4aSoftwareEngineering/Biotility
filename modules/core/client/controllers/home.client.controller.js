@@ -644,16 +644,23 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             $http.get(route, {params:{"person": $scope.user, "given": course}}).then(function(res) {
                 // your data
-                console.log(res.data);
                 console.log("ploting");
+                console.log(res.data);
+                
+                //get correct number of questions for X axis
+                var label =[];
+                for(var i = 1; i < res.data.length; i++){
+                    label[i-1] = "Question " + i; 
+                }
+
                 // console.log(res);
                 var ctx = $("#myChart").get(0).getContext("2d");
 
                   var data = {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    labels: label,
                     datasets: [
                         {
-                            label: "My First dataset",
+                            label: "Course Settings",
                             fillColor: "rgba(220,220,220,0.5)",
                             strokeColor: "rgba(220,220,220,0.8)",
                             highlightFill: "rgba(220,220,220,0.75)",
@@ -666,35 +673,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                   var myBarChart = new Chart(ctx).Bar(data);
             }).then(function(error) {
-                console.log(error);
+                console.log("Plot eror" + error);
             })
-
-            // $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
-            //     console.log("ploting");
-            //     console.log(res);
-            //     var ctx = $("#myChart").get(0).getContext("2d");
-
-            //       var data = {
-            //         labels: ["January", "February", "March", "April", "May", "June", "July"],
-            //         datasets: [
-            //             {
-            //                 label: "My First dataset",
-            //                 fillColor: "rgba(220,220,220,0.5)",
-            //                 strokeColor: "rgba(220,220,220,0.8)",
-            //                 highlightFill: "rgba(220,220,220,0.75)",
-            //                 highlightStroke: "rgba(220,220,220,1)",
-            //                 data: res
-            //             },
-                       
-            //         ]
-            //       };
-
-            //       var myBarChart = new Chart(ctx).Bar(data);    
-            // }); 
-
-            
-
-            // location.reload();
         };
 
         //reset all the teachers code

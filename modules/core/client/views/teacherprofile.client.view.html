@@ -33,7 +33,7 @@
           <ul class="nav" id="section-tabs">
             <!-- <li class="section"><a class="home" href="/" tabindex="0">Home</a></li> -->
 
-            <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Profile</a></li>
+            <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Classes</a></li>
 
             <li class="section"><a ng-click="toShow='settingsVisible'" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
 
@@ -90,7 +90,6 @@
          <select ng-model="ClassStats" style="height: 30px;">
                    <option  ng-repeat="name in classNames">{{name}}</option>
           </select>
-          <div></div>
          <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassStats)">
             Update Stats
         </button>

@@ -167,16 +167,96 @@ exports.sendMail = function(req, res) {
 //   }
 // };
 
-// Isabel - sample data plot for Chart.js
+// Isabel - plot for statistics on teachers page 
 exports.plot = function(req,res){
   console.log("IN PLOT");
   
+  var searchCourse = req.param('given');
+  console.log(searchCourse);
+  var num = [];
+  var classes = [];
+  var grade = [];
+  
+     
+  //find all the courses   
+  for(var i = 0; i < req.user.courses.length ; i++){
+    num.push(req.user.courses[i].number);
+  }  
+
+  
+  var findcount = false; 
+  //find all the students in that course 
+  console.log("AMOUNT:" + req.user.courses.length);
+  for(var s = 0; s < req.user.courses.length ; s++){  
+    findStudents(num[s]);
+  }
+
+  for(var gradesize = 0; gradesize < 20 ; gradesize++){
+    grade[gradesize] = 0;
+  }
+
+   function findStudents(stud){
+      User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {  
+        for (var i = 0; i < users.length; i++) {           
+            // console.log("STUDENTS: " +users[i].userName);  
+            if (i === users.length -1 ) {
+              findcount = true;
+            } 
+            findGrades(users[i], stud);
+        }
+      });
+  }
+
+   //find all grades for the course code
+  function findGrades(givenstudent, course){
+    StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+        //lookup a test
+
+        for (var i = 0; i < grades.length;  i++) {
+            
+            for (var c = 0; c < grades[i].student.courses.length; c++){
+                
+                //see if the test has a category that the teacher is looking for
+                if(grades[i].category === searchCourse){
+                    
+                    //see if test has a course code that matches the teachers 
+                   if(grades[i].student.courses[c] === course){
+                    console.log("COURSES: "+ grades[i].student.courses);
+
+                    //iterate through analytics and see if attempt = 1
+                       for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+                            if(grades[i].analytics[analytics].attempts === 1){
+                                // console.log("you got it right");
+                                grade[analytics] = grade[analytics]+1;
+                            }
+                        }
+                   }
+                }
+            }   
+            datagraph = grade;        
+        }
+
+        if(findcount === true ){
+            callgraph(datagraph);
+        }    
+    });
+  }
+
+ 
+
+  //output data
+  function callgraph(datagraph){
+    console.log("DATAGRAPH");
+
+    for(var size = 0; size < 20 ; size++){
+      console.log(datagraph[size]);
+    }
+  }
 
 
-
-  var data = [65, 59, 80, 81, 56, 55, 40];
-  return res.send(data);
-
+  console.log("DATA" + datagraph);
+  // var data = [65, 59, 80, 81, 56, 55];
+  return res.send(datagraph);
 };
 
 //Isabel
