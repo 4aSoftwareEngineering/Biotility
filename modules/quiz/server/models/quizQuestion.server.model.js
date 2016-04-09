@@ -58,7 +58,7 @@ var gradeSchema = new Schema({
     }
 
 
-});
+}); 
 
 mongoose.model('QuizQuestion', questionSchema);
 mongoose.model('StudentGrades', gradeSchema);
