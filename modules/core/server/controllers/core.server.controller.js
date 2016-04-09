@@ -59,6 +59,11 @@ exports.sendMail = function(req, res) {
     res.json(data);
 };
 
+exports.getGradesForAdmin = function(req, res) {
+    StudentGrades.find({}).lean().exec(function(err, grades) {
+        return res.end(JSON.stringify(grades));
+    });
+};
 
 exports.plot = function(req,res){
     console.log("PLOTLY "+req.user.courses.length );

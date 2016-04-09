@@ -205,8 +205,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 }]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades) {
 
 
 
@@ -234,6 +234,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.input = {};
         //courseNums array
         $scope.input.courseNums = [];
+
+        Grades.loadGrades().then(function(response) {
+            $scope.Grades = response.data;
+        });
 
 
         //for each course in their schema
@@ -631,8 +635,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 }]
             };
 
-
-
+            
             //Plotly Stuff
             // console.log("Passing: "+ course);
             // var route = '/api/data/plotly';

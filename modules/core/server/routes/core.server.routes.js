@@ -48,6 +48,7 @@ module.exports = function(app) {
     app.route('/api/data/email').post(core.email);
     app.route('/ap/data/cron').get(core.cron);
 
+    app.route('/api/data/adminGrades').get(core.getGradesForAdmin);
 
     // Fetch question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
