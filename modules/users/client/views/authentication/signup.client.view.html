@@ -104,6 +104,9 @@
                     <select ng-model="toAdd" class="col-md-3 col-md-offset-5 " style="width: 175px; height: 30px;">
                         <option ng-repeat="name in newclassNames track by $index">{{name}}</option>
                     </select>
+                    <div class="col-sm-4">
+                    <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" ng-value="{{user.firstName}}">
+                    </div>
                     <select ng-model="periodtoAdd" class="col-md-3 " style="width: 175px; height: 30px;">
                         <option  ng-repeat="period in Periods">{{period}}</option>
                     </select>

@@ -216,6 +216,47 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         });
 
+        // $target_dir = "/modules/users/client/img/profile/";
+        // $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        // $uploadOk = 1;
+        // $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // // Check if image file is a actual image or fake image
+        // if(isset($_POST["submit"])) {
+        //     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+        //     if($check !== false) {
+        //         echo "File is an image - " . $check["mime"] . ".";
+        //         $uploadOk = 1;
+        //     } else {
+        //         echo "File is not an image.";
+        //         $uploadOk = 0;
+        //     }
+        // }
+
+       // $(document).ready(function() {
+       //      $("#uploadPhoto").click(function() {
+       //          console.log("PHOTO UPDATES");
+                
+       //          var x = document.getElementById("uploadPhoto");
+       //          console.log(x);
+       //          var route = '/api/users/' + $scope.authentication.user._id;
+       //          $scope.authentication.user.profileImageURL = $scope.ProfilePic;
+                
+       //          $http.post(route, $scope.user).success(function(response) {
+
+       //              $scope.authentication.user = response;
+
+
+       //          }).error(function(response) {
+       //              console.log("Unable to POST.");
+       //              // console.log(response);
+       //              console.dir("RESPONSE: " + response);
+
+
+       //              $scope.error = response.message;
+       //          });
+       //      });
+       //  });
+
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
@@ -307,7 +348,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                                 "AICE Biology",
                                 "IB Biology",
                                 "Genetics",
-                                "Forensics"];
+                                "Forensics", 
+                                "Other"];
 
         //Isabel- Upload New Profile Photo
 
@@ -317,6 +359,31 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.user.courseCode.push(hello);
         };
 
+        //Isabel
+        $scope.photoupdate = function(){
+            console.log("PHOTO UPDATES");
+            var x = document.getElementById("uploadPhoto").files[0];;
+            console.log(x);
+
+            // var route = '/api/users/' + $scope.authentication.user._id;
+            // $scope.authentication.user.profileImageURL = x;
+            
+            // $http.post(route, $scope.user).success(function(response) {
+
+            //     $scope.authentication.user = response;
+
+
+            // }).error(function(response) {
+            //     console.log("Unable to POST.");
+            //     // console.log(response);
+            //     console.dir("RESPONSE: " + response);
+
+            //     $scope.error = response.message;
+            // });
+
+        }
+
+        //Isabel
         $scope.add = function(course,period) {
             if (course !== '') {
 
@@ -642,7 +709,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 given: course 
             });
 
-            $http.get(route, {params:{"person": $scope.user, "given": course}}).then(function(res) {
+            $http.get(route, {params:{"person": $scope.user, "given": course}}).then(function(res) { 
                 // your data
                 console.log("ploting");
                 console.log(res.data);
@@ -667,7 +734,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                             highlightStroke: "rgba(220,220,220,1)",
                             data: res.data
                         },
-                       
                     ]
                   };
 
@@ -675,6 +741,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }).then(function(error) {
                 console.log("Plot eror" + error);
             })
+
+
         };
 
         //reset all the teachers code

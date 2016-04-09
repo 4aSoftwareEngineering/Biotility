@@ -25,9 +25,16 @@
     <div class="col-md-3">
       <div class="text-center">
         <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
-        <h6>Upload a different photo...</h6>
-
-        <input type="file" class="form-control">
+        <form role="form" ng-submit="photoupdate()" >
+          <h6>Upload a different photo...</h6>
+          <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
+          <input type="submit" value="Upload Image">
+        </form>
+        <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
+            Select image to upload:
+            <input type="file" name="fileToUpload" id="fileToUpload">
+            <input type="submit" value="Upload Image" name="submit">
+        </form> -->
         <!--profile menu-->
         <nav aria-label="context" role="navigation">
           <ul class="nav" id="section-tabs">
@@ -90,6 +97,9 @@
          <select ng-model="ClassStats" style="height: 30px;">
                    <option  ng-repeat="name in classNames">{{name}}</option>
           </select>
+          <div class="col-sm-4">
+                <input class="form-control"  ng-model="ClassStats" ng-init= "ClassStats" type="text" ng-value="{{user.firstName}}">
+                </div>
          <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassStats)">
             Update Stats
         </button>
@@ -181,6 +191,10 @@
                 <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
                    <option  ng-repeat="name in newclassNames">{{name}}</option>
                 </select>
+
+                <div class="col-sm-4">
+                <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" ng-value="{{user.firstName}}">
+                </div>
 
                 <select ng-model="periodtoAdd" class="col-md-3 " style="height: 30px;">
                    <option  ng-repeat="period in Periods">{{period}}</option>

@@ -222,7 +222,8 @@ exports.plot = function(req,res){
                     //see if test has a course code that matches the teachers 
                    if(grades[i].student.courses[c] === course){
                     console.log("COURSES: "+ grades[i].student.courses);
-
+                    datagraph.size = grades[i].analytics.length; 
+                    
                     //iterate through analytics and see if attempt = 1
                        for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
                             if(grades[i].analytics[analytics].attempts === 1){
