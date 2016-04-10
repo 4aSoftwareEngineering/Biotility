@@ -6,6 +6,9 @@ html, body {
     margin-bottom: -20px;
     position: relative;
 }
+section{    
+    margin-top: 20px;
+}
 #footer {
     height: 20px;
     position: relative;

@@ -26,7 +26,6 @@ var mongoose = require('mongoose'),
     });
 
  // var Email = require('email').Email;
- var CronJob = require('cron').CronJob;
  var datagraph = [];
 
 exports.renderIndex = function(req, res) {
@@ -400,14 +399,6 @@ exports.email = function(req,res){
       //transport.close(); // close the connection pool
     });
 
-};
-
-exports.cron = function(req,res){
-   console.log("CRON");
-    
-    new CronJob('* * * * * *', function() {
-      console.log('You will see this message every second');
-    }, null, true, 'America/Los_Angeles');
 };
 
 
