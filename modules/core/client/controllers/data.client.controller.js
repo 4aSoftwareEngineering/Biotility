@@ -44,7 +44,51 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 		$scope.findOne = function(){
 			var id = ;	//id of current question
 			
+			$http.get('/api/data/questions/' + id)
+				.then(function(response){
+					//redirect to list if successful
+				}, function(error){
+          			$scope.error = 'Unable to save question!\n' + error;
+				});
+		};
+		
+		// add a new question
+		$scope.create = function(isValid){
+			if(!isValid){
+				return false;
+			}
 			
+			// Create question object
+			var question = {
+				
+			};
+			
+			// Save the question to DB
+			$http.post('/api/data/questions', question)
+				.then(function(response){
+					//redirect to list if successful
+				}, function(error){
+          			$scope.error = 'Unable to save question!\n' + error;
+				});
+		};
+		
+		$scope.update = function(isValid){
+			if (!isValid){
+				return false;
+			}
+			
+			var id = ;	// id of current question 
+			
+			var question = {
+			
+			};
+			
+			$http.put('/api/data/questions/' + id, question)
+				.then(function(response){
+					//redirect to list if successful
+				}, function(error){
+          			$scope.error = 'Unable to update question!\n' + error;
+				});
 		};
 		
 		// remove a question from DB
@@ -54,7 +98,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 			//Questions.delete(id)
 			$http.delete('/api/data/questions/' + id)
 				.then(function(response){
-					
+					//redirect to list if successful
 				}, function(error){
           			$scope.error = 'Unable to delete question!\n' + error;
 				});
