@@ -423,6 +423,13 @@ exports.addSubHead = function(req, res) {
 };
 exports.deleteSubHead = function(req, res) {
     var subHead_to_delete = req.subHead;
+    Resource.find({subject: subHead_to_delete._id}).remove(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.end();
+        }
+    });
     subHead_to_delete.remove(function(err) {
         if (err) {
             res.status(400).send(err);
