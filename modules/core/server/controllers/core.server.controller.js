@@ -9,7 +9,6 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource'),
-
     StudentGrades = mongoose.model('StudentGrades'),
     SubHead = mongoose.model('SubHead');
 
@@ -60,9 +59,99 @@ exports.sendMail = function(req, res) {
 };
 
 exports.getGradesForAdmin = function(req, res) {
-    StudentGrades.find({}).lean().exec(function(err, grades) {
-        return res.end(JSON.stringify(grades));
-    });
+    Subject.find({},{'name':1}).lean().exec(function(err, courses) {
+		for(var place=0; place<courses.length; place++){
+		
+		getAttempts(courses[place].name);
+		
+		}
+		return res.end(JSON.stringify(courses));
+	});
+			//console.log("Quiz: "+ courses[place].name);
+	function getAttempts(cat){
+			StudentGrades.find({'analytics.question.type':'SC','category':cat},{'analytics':1,'category':1}).lean().exec(function(err, aData) {
+				var sizeOfQuiz=0;
+				for(var g=0;g<aData.length;g++){
+					if(aData[g].analytics.length>sizeOfQuiz)sizeOfQuiz=aData[g].analytics.length;
+				}
+				var avgs = [0];
+				var modes = [0];
+				//make array of averages
+				//make arrar of modes
+				for(var ez=1;ez<sizeOfQuiz;ez++){
+					avgs[avgs.length] =0;
+					modes[modes.length]=0;
+				}
+				
+				for(var j = 0 ; j<sizeOfQuiz;j++){
+					var choice = 0;
+					var total=0;
+					var counter=0;
+					var ans = [0,0,0,0,0,0];
+					for(var i=0;i<aData.length;i++){
+						
+						if(j>=aData[i].analytics.length)var z=5;
+						else{
+							if(aData[i].analytics[j].attempts==1){
+								choice=parseInt(aData[i].analytics[j].question.answers.correct);
+								//console.log("answer: "+choice);
+								
+							}
+							else{
+								for(var wrong=0;wrong<aData[i].analytics[j].question.answers.MCTF.length;wrong++){
+									if(aData[i].analytics[j].firstIncorrect==aData[i].analytics[j].question.answers.MCTF[wrong]){
+										choice=wrong;
+										break;
+									}
+								}
+								choice++;
+								//console.log("answer: "+choice);
+								
+							}
+							total+=aData[i].analytics[j].attempts;
+							ans[choice]+=1;
+							counter++;
+							
+						}
+					}
+					var average=total/counter;
+					var amount = 0;
+					var mode = 0;
+					avgs[j]=average;
+					 for(var ayy=1; ayy< ans.length; ayy++){
+						 
+                        if(ans[ayy] > amount){
+                                amount = ans[ayy];
+								mode = ayy;
+						}
+								 
+					}
+					modes[j]=mode;	
+						
+					
+					
+				}
+				
+				
+				//////////////////////////////////////////////////////////// 
+				
+				
+				
+				
+				//loop again
+				//get data
+				//somehow save it?
+				//console.log("Quiz: "+cat);
+			for(var pr = 0;pr<avgs.length;pr++){
+				//console.log("Question: "+pr+"   Average: "+ avgs[pr]+ "    Mode: "+ modes[pr]);
+				}
+				
+				
+				return res.end(JSON.stringify(aData));
+			});
+		}
+
+	
 };
 
 exports.plot = function(req,res){
