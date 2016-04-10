@@ -85,8 +85,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
         //Used to delete a Resource from the database
         $scope.deleteResource = function(resource_obj) {
-            var id = resource_obj._id;
-            var name = resource_obj.title;
+            var id = $scope.deleteResourceObj._id;
+            var name = $scope.deleteResourceObj.title;
             $http.delete('api/data/resources/' + id).success(function(response) {
                 Resources.loadResources().then(function(response) {
                     $scope.resources = response.data;
@@ -98,7 +98,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
             $scope.newResource = null;
         };
-
+        $scope.getDeleteResource = function(resource_obj) {
+            $scope.deleteResourceObj = resource_obj;
+        };
         //Used to update a Resource from the database
         $scope.updateResource = function(resource_obj) {
             var id = resource_obj._id;
@@ -126,9 +128,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
             $scope.newSubHead = null;
         };
+
         $scope.deleteSubHead = function(subHead_obj) {
-            var id = subHead_obj._id;
-            var name = subHead_obj.title;
+            var id = $scope.deleteSubHeadObj._id;
+            var name = $scope.deleteSubHeadObj.title;
             $http.delete('api/data/subheads/' + id).success(function(response) {
                 SubHeads.loadSubHeads().then(function(response) {
                     $scope.subHeads = response.data;
@@ -139,6 +142,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             });
 
             $scope.newResource = null;
+        };
+        $scope.getDeleteSubHead = function(subHead_obj) {
+            $scope.deleteSubHeadObj = subHead_obj;
         };
         $scope.updateSubHead = function(subHead_obj) {
             var id = subHead_obj._id;
