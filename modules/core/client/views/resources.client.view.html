@@ -200,7 +200,7 @@
         <div ng-repeat="resource in resources | filter:{subject: subHead._id}:strict" class="container head con">
             <br>
             <tr>
-                <td><a ng-href="{{resource.url}}">{{resource.title}}</a></td>
+                <td><a ng-mousedown="recordClick(resource,resources.indexOf(resource),resource.url)">{{resource.title}}</a></td>
                 <td><span style="color: blue;" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editResource(resource)"></span></td>
                 <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="getDeleteResource(resource)" data-toggle="modal" data-target="#myModal"></span></td>
             </tr>

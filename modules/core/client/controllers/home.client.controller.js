@@ -36,8 +36,8 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 ]);
 
 
-angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 'SubHeads',
-    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects, SubHeads) {
+angular.module('core').controller('SubjectController', ['$scope', '$http', '$state', '$location', 'Authentication', '$stateParams', 'Resources', 'Subjects', 'SubHeads', '$window',
+    function($scope, $http, $state, $location, Authentication, $stateParams, Resources, Subjects, SubHeads, $window) {
 
         // This provides Authentication context.
         $scope.authentication = Authentication;
@@ -70,7 +70,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
         //Used to create a new Resource on database
         $scope.addResource = function() {
+            $scope.newResource.clicks = 0;
             var name = $scope.newResource.title;
+
             $http.post('api/data/resources', $scope.newResource).success(function(response) {
                 Resources.loadResources().then(function(response) {
                     $scope.resources = response.data;
@@ -188,6 +190,21 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $location.path('/' + $scope.subject + '/quiz');
         };
 
+        $scope.recordClick = function(resource_obj,index,link_url) {
+            var id = resource_obj._id;
+            var name = resource_obj.title;
+            console.log($scope.resources[index]);
+            console.log("Resource_Obj");
+            console.log(resource_obj);
+            $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
+            
+            }).error(function(response) {
+
+            });
+            $scope.resources[index].clicks = $scope.resources[index].clicks + 1;
+            console.log($scope.resources[index]);
+            $window.open(link_url, '_blank');
+        }
 
     }
 ]);
@@ -211,8 +228,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 }]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks) {
 
 
 
@@ -241,6 +258,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         //courseNums array
         $scope.input.courseNums = [];
 
+        ResourceClicks.loadClicks().then(function(response) {
+            $scope.resources = response.data;
+        });
 
         //for each course in their schema
         $scope.authentication.user.courses.forEach(

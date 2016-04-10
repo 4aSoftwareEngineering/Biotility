@@ -356,6 +356,12 @@ exports.parseResources = function(req, res) {
         return res.end(JSON.stringify(subs));
     });
 };
+exports.parseClicks = function(req, res) {
+
+    Resource.find({}).sort({clicks: -1}).exec(function(err, subs) {
+        return res.end(JSON.stringify(subs));
+    });
+};
 
 //Retrieves all the SubHeadings from database
 exports.parseSubHeads = function(req, res) {
@@ -403,6 +409,22 @@ exports.updateResource = function(req, res) {
         if (err) {
             res.status(400).send(err);
 
+        } else {
+            res.json(resource_to_update);
+        }
+    });
+};
+
+exports.clickResource = function(req, res) {
+    var resource_to_update = req.resource;
+    resource_to_update.title = req.body.title;
+    resource_to_update.url = req.body.url;
+    resource_to_update.subject = req.body.subject;
+    resource_to_update.clicks = req.body.clicks;
+    console.log(resource_to_update);
+    resource_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
         } else {
             res.json(resource_to_update);
         }

@@ -16,6 +16,10 @@ var resourceSchema = new Schema({
 	subject: {
 		type: String,
 		required: true
+	},
+	clicks: {
+		type: Number,
+		required: false
 	}
 
 });
