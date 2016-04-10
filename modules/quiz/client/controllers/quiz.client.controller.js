@@ -298,12 +298,16 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
+            var data = {
+                file: file
+            };
             if (file) {
+                $http.post('/question_upload', data, {
+                    ignoreLoadingBar: true
+                });
                 file.upload = Upload.upload({
                     url: '/question_upload',
-                    data: {
-                        file: file
-                    }
+                    data: data
                 });
 
                 //Progress Bar
