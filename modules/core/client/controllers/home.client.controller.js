@@ -417,7 +417,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.authentication.user.courses.forEach(
                 function(element, index, array) {
                     //stores each course Name and number of the course that a teacher has
-                    $scope.input.courseNums.push(element.courseName + " : " + element.number + element.section);
+                    $scope.input.courseNums.push(element.courseName + " : " + element.number +" : "+  element.section);
                     //used for testing purposes to make sure a teacher has the correct courses
                     console.log("INPUT CLASSES: " + $scope.input.courseNums);
                 });
