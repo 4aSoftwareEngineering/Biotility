@@ -42,7 +42,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 		
 		// pull up individual question details 
 		$scope.findOne = function(){
-			var id = ;	//id of current question
+			var id = $stateParams.questionId;	//id of current question
 			
 			$http.get('/api/data/questions/' + id)
 				.then(function(response){
@@ -77,7 +77,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 				return false;
 			}
 			
-			var id = ;	// id of current question 
+			var id = $stateParams.questionId;	// id of current question 
 			
 			var question = {
 			
@@ -93,7 +93,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 		
 		// remove a question from DB
 		$scope.remove = function(){
-			var id = ;	//id of current question
+			var id = $stateParams.questionId;	//id of current question
 			//.delete map to factory
 			//Questions.delete(id)
 			$http.delete('/api/data/questions/' + id)
