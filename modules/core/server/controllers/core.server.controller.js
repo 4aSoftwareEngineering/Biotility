@@ -58,254 +58,243 @@ exports.sendMail = function(req, res) {
     res.json(data);
 };
 
+//Old Plotly Refernce
+// exports.plot = function(req,res){
+//   var ctx = $("#myChart").get(0).getContext("2d");
+//   console.log("PLOT "+req.user.courses.length );
+//   var searchCourse = req.param('given');
+//   var num = [];
+//   var classes = [];
+//   var grade = [];
+//   var xside = [];
+     
+//   //find all the courses   
+//   for(var i = 0; i < req.user.courses.length ; i++){
+//       num.push(req.user.courses[i].number);
+//   }  
 
+  
+//   var findcount = false; 
+//   //find all the students in that course 
+//   console.log("AMOUNT:" + req.user.courses.length);
+//   for(var s = 0; s < req.user.courses.length ; s++){  
+//     findStudents(num[s]);
+//   }
+
+//   for(var gradesize = 0; gradesize < 20 ; gradesize++){
+//     grade[gradesize] = 0;
+//   }
+    
+//     //find all grades for the course code
+//   function findGrades(givenstudent, course){
+//     StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+//         //lookup a test
+        
+//         for (var i = 0; i < grades.length;  i++) {
+            
+//             for (var c = 0; c < grades[i].student.courses.length; c++){
+                
+//                 //see if the test has a category that the teacher is looking for
+//                 if(grades[i].category === searchCourse){
+                    
+//                     //see if test has a course code that matches the teachers 
+//                    if(grades[i].student.courses[c] === course){
+//                     console.log("COURSES: "+ grades[i].student.courses);
+
+//                     //iterate through analytics and see if attempt = 1
+//                        for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+//                             if(grades[i].analytics[analytics].attempts === 1){
+//                                 // console.log("you got it right");
+//                                 grade[analytics] = grade[analytics]+1;
+//                             }
+//                         }
+//                    }
+//                 }
+//             }   
+//             datagraph = grade;        
+//         }
+
+//         if(findcount === true ){
+//             callgraph(datagraph);
+//         }    
+//         return res.end(JSON.stringify(grades));
+//     });
+//   }
+
+//   function findStudents(stud){
+//       User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
+          
+//           for (var i = 0; i < users.length; i++) {           
+//               // console.log("STUDENTS: " +users[i].userName);  
+//               if (i === users.length -1 ) {
+//                       findcount = true;
+//               } 
+//               findGrades(users[i], stud);
+//           }
+
+//           return res.end(JSON.stringify(users));
+//       });
+//   }
+
+//   //actual plot
+//   function callgraph(datagraph){
+//     console.log("DATAGRAPH");
+
+//     for(var size = 0; size < 20 ; size++){
+//       console.log(datagraph[size]);
+//     }
+
+//     for(var xaxis = 1; xaxis < 20; xaxis++){
+//       xside[xaxis]  = xaxis;
+//     }
+
+//     var data = [{
+//       labels: ["January", "February", "March", "April", "May", "June", "July"],
+//       datasets: [
+//         {
+//             label: "Class Statistics",
+//             fillColor: "rgba(220,220,220,0.5)",
+//             strokeColor: "rgba(220,220,220,0.8)",
+//             highlightFill: "rgba(220,220,220,0.75)",
+//             highlightStroke: "rgba(220,220,220,1)",
+//             data: xside
+//         },
+//     ]
+//     }];
+
+//     var myBarChart = new Chart(ctx).Bar(data); 
+//   }
+// };
+
+// Isabel - plot for statistics on teachers page 
 exports.plot = function(req,res){
-    console.log("PLOTLY "+req.user.courses.length );
-    // console.log("COURSE GIVEN: " + req.course);
-    // var params = req.body; 
-    // console.log("PLOTLY "+params.person.user.courses.length );
-    // console.log("COURSE GIVEN: " + req.param('given'));
-    var searchCourse = req.param('given');
-    var num = [];
-    var classes = [];
-    var grade = [];
-    var xside = [];
-    // var datagraph = [];
-       
-    //find all the courses   
-    for(var i = 0; i < req.user.courses.length ; i++){
-        num.push(req.user.courses[i].number);
-    }  
+  console.log("IN PLOT");
+  
+  var searchCourse = req.param('given');
+  console.log(searchCourse);
+  var num = [];
+  var classes = [];
+  var grade = [];
+  
+     
+  //find all the courses   
+  for(var i = 0; i < req.user.courses.length ; i++){
+    num.push(req.user.courses[i].number);
+  }  
 
-    //find all the students in that course
-    var findcount = false; 
-    console.log("AMOUNT:" + req.user.courses.length);
-    for(var s = 0; s < req.user.courses.length ; s++){
-        
-        findStudents(num[s]);
-    }
+  
+  var findcount = false; 
+  //find all the students in that course 
+  console.log("AMOUNT:" + req.user.courses.length);
+  for(var s = 0; s < req.user.courses.length ; s++){  
+    findStudents(num[s]);
+  }
 
-    for(var gradesize = 0; gradesize < 20 ; gradesize++){
-        grade[gradesize] = 0;
-    }
-    
-    //find all grades for the course code
-    function findGrades(givenstudent, course){
-        StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-            //lookup a test
+  for(var gradesize = 0; gradesize < 20 ; gradesize++){
+    grade[gradesize] = 0;
+  }
+
+   function findStudents(stud){
+      User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {  
+        for (var i = 0; i < users.length; i++) {           
+            // console.log("STUDENTS: " +users[i].userName);  
+            if (i === users.length -1 ) {
+              findcount = true;
+            } 
+            findGrades(users[i], stud);
+        }
+      });
+  }
+
+   //find all grades for the course code
+  function findGrades(givenstudent, course){
+    StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
+        //lookup a test
+
+        for (var i = 0; i < grades.length;  i++) {
             
-            for (var i = 0; i < grades.length;  i++) {
+            for (var c = 0; c < grades[i].student.courses.length; c++){
                 
-                for (var c = 0; c < grades[i].student.courses.length; c++){
-
+                //see if the test has a category that the teacher is looking for
+                if(grades[i].category === searchCourse){
                     
-                    //see if the test has a category that the teacher is looking for
-                    if(grades[i].category === searchCourse){
-                        
-
-                        //see if test has a course code that matches the teachers 
-                       if(grades[i].student.courses[c] === course){
-                        console.log("COURSES: "+ grades[i].student.courses);
-
-                        //iterate through analytics and see if attempt = 1
-                           for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
-                                //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
-                                //if it is equal to one add it to the correct array 
-                                if(grades[i].analytics[analytics].attempts === 1){
-                                    // console.log("you got it right");
-                                    grade[analytics] = grade[analytics]+1;
-                                }
+                    //see if test has a course code that matches the teachers 
+                   if(grades[i].student.courses[c] === course){
+                    console.log("COURSES: "+ grades[i].student.courses);
+                    datagraph.size = grades[i].analytics.length; 
+                    
+                    //iterate through analytics and see if attempt = 1
+                       for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+                            if(grades[i].analytics[analytics].attempts === 1){
+                                // console.log("you got it right");
+                                grade[analytics] = grade[analytics]+1;
                             }
-                       }
-                    }
-                }   
-                datagraph = grade;        
-            }
+                        }
+                   }
+                }
+            }   
+            datagraph = grade;        
+        }
 
-            if(findcount === true ){
-                callgraph(datagraph);
-            }    
-            // console.log("FINDCOUNT: " + findcount);
+        if(findcount === true ){
+            callgraph(datagraph);
+        }    
+    });
+  }
 
-             
-             
+ 
 
+  //output data
+  function callgraph(datagraph){
+    console.log("DATAGRAPH");
 
-
-            // for(var results = 0; results < grade.length ; results++){
-                // console.log("RESULTS: " + grade[results]);
-            // } 
-
-            return res.end(JSON.stringify(grades));
-        });
-
+    for(var size = 0; size < 20 ; size++){
+      console.log(datagraph[size]);
     }
+  }
 
 
-
-    function findStudents(stud){
-        User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
-            
-            for (var i = 0; i < users.length; i++) {           
-                // console.log("STUDENTS: " +users[i].userName);  
-                if (i === users.length -1 ) {
-                        findcount = true;
-                } 
-                findGrades(users[i], stud);
-            }
-
-            return res.end(JSON.stringify(users));
-        });
-    }
-
-    //actual plot
-    function callgraph(datagraph){
-         console.log("DATAGRAPH");
-           for(var size = 0; size < 20 ; size++){
-               console.log(datagraph[size]);
-            }
-
-            for(var xaxis = 1; xaxis < 20; xaxis++){
-                xside[xaxis]  = xaxis;
-            }
-
-
-
-        var data = [
-          {
-            x: xside,
-            y: datagraph,
-            type: "bar"
-          }
-        ];
-
-        var graphOptions = {title: searchCourse, filename: "GRADES", fileopt: "overwrite"};
-        plotly.plot(data, graphOptions, function (err, msg) {
-            console.log(msg);
-        });
-    }
-
-
-
-    //reset the data array
-    
-
-
-    //find all grades for the course code
-    // function findGrades(givenstudent, course){
-    //     StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-    //         //lookup a test
-    //         for (var i = 0; i < grades.length;  i++) {
-                
-    //             for (var c = 0; c < grades[i].student.courses.length; c++){
-
-                    
-    //                 //see if the test has a category that the teacher is looking for
-    //                 if(grades[i].category === searchCourse){
-                        
-
-    //                     //see if test has a course code that matches the teachers 
-    //                    if(grades[i].student.courses[c] === course){
-    //                     console.log("COURSES: "+ grades[i].student.courses);
-
-    //                     //iterate through analytics and see if attempt = 1
-    //                        for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
-    //                             //console.log("firstIncorrect: "+ grades[i].analytics[0].firstIncorrect);
-    //                             //if it is equal to one add it to the correct array 
-    //                             if(grades[i].analytics[analytics].attempts === 1){
-    //                                 console.log("you got it right");
-    //                                 grade[analytics] = grade[analytics]+1;
-    //                             }
-    //                         }
-    //                    }
-    //                 }
-    //             }                
-    //         }
-        
-
-    //          for(var results = 0; results < grade.length ; results++){
-    //             console.log("RESULTS: " + grade[results]);
-    //         } 
-
-    //         return res.end(JSON.stringify(grades));
-    //     });
-    // }
-
-    // var datagraph=[12,13,14,13,12,11];
-
-
-
-
-
-   
-
-
-    // console.log("GRADES: ");
-    //in each student that matches go to the other database studentgrades and see their scores.
-    // function findGrades(student, course){
-    //     StudentGrades.find({'student.studentName' : student.userName }).lean().exec(function(err, grades) { 
-    //         console.log("AMOUNT: "+ grades.length);  
-    //         for (var i = 0; i < grades.length;  i++) { 
-    //             for (var c = 0; c< grades[i].student.courses.length; c++){
-    //                 if (grades[i].student.courses[c] === course){       
-    //                 // var size = Object.keys(grades[i].student.analytics).length;
-    //                 // console.log("Size: "+ size); 
-    //                 //     for(var j=0; j < size; j++){
-    //                 //         console.log("Name: "+ grades[i].student.studentName);  
-    //                 //         console.log("analytics: "+ grades[i].student.analytics); 
-    //                 //     } 
-    //                 }
-
-    //             }                
-    //         }
-    //         return res.end(JSON.stringify(grades));
-    //     });
-    // }
-
-    //find the students in each class
-    //check if their attempt for each question is 1
-        //if so add 1 to that location in array
-    //if not move to next question
-
-    
-           
+  console.log("DATA" + datagraph);
+  // var data = [65, 59, 80, 81, 56, 55];
+  return res.send(datagraph);
 };
 
+//Isabel
 exports.email = function(req,res){
    console.log("EMAILS");
 
    // var transporter = nodemailer.createTransport();
    var data = req.body;
-  var message = {
+    var message = {
 
-// sender info
-    from: data.email,
+    // sender info
+      from: data.email,
 
-    // Comma separated list of recipients
-    to: 'biotilitysp18@gmail.com',
+      // Comma separated list of recipients
+      to: 'biotilitysp18@gmail.com',
 
-    // Subject of the message
-    subject: 'Resource Request', 
+      // Subject of the message
+      subject: 'Resource Request', 
 
-    //text
-    text: 'Subject: '+ data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link  + '\nComments: ' + data.comments
+      //text
+      text: 'Subject: '+ data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link  + '\nComments: ' + data.comments
 
+      };
+
+      console.log('Sending Mail');
+      transport.sendMail(message, function(error){
+        if(error){
+            console.log('Error occured');
+            console.log(error.message);
+            return;
+        }
+        console.log('Message sent successfully!');
+        // $("#myModal").modal("show");
+        // $("#myModal").modal('show');
+        });
     };
+      
 
-    console.log('Sending Mail');
-    transport.sendMail(message, function(error){
-      if(error){
-          console.log('Error occured');
-          console.log(error.message);
-          return;
-      }
-      console.log('Message sent successfully!');
-
-      // if you don't want to use this transport object anymore, uncomment following line
-      //transport.close(); // close the connection pool
-    });
-
-};
 
 
 
@@ -466,6 +455,7 @@ exports.findStudents = function(req, res) {
     });
 };
 
+//Isabel
 exports.update = function(req, res) {
     console.log("UPDATES");
     var User = req.User;
