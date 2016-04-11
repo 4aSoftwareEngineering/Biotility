@@ -187,11 +187,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 ]);
 
 
-angular.module('core').controller('authController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', function($scope, $state, $location, Users, Authentication, $http) {
+angular.module('core').controller('authController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 
+    function($scope, $state, $location, Users, Authentication, $http) {
     //This is a min config for authenticating admin features
     $scope.authentication = Authentication;
     $scope.user = $scope.authentication.user;
-<<<<<<< HEAD
+
 
     $scope.isTeacher = false;
     $scope.isAdmin = false;
@@ -206,23 +207,7 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 }]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
 
-=======
-
-    $scope.isTeacher = false;
-    $scope.isAdmin = false;
-
-    //Set flags to true if admin or teacher 
-    if ($scope.authentication.user.profileType === "Admin") {
-        console.log("I am a admin");
-        $scope.isAdmin = true;
-    } else if ($scope.authentication.user.profileType === "Teacher") {
-        console.log("I am a teacher");
-        $scope.isTeacher = true;
-    }
-}]);
 
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
     function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
@@ -235,7 +220,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $("#myModal").modal();
             });
         });
->>>>>>> Sprint3_Isabel
+
 
 
 
@@ -272,15 +257,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.authentication.user.courses.forEach(
             function(element, index, array) {
                 //stores each course Name and number of the course that a teacher has
-<<<<<<< HEAD
-                $scope.input.courseNums.push(element.courseName + " : " + element.number + " " + element.section);
-=======
                 
                 $scope.input.courseNames.push(element.courseName);  
                 $scope.input.courseNums.push(element.number); 
                 $scope.input.coursePeriods.push(element.section);
 
->>>>>>> Sprint3_Isabel
+
 
                 //used for testing purposes to make sure a teacher has the correct courses
                 // console.log($scope.input.courseNums);
@@ -318,13 +300,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         });
 
-<<<<<<< HEAD
-        $scope.myFunction = function(hello) {
-            $scope.user.courseCode.push(hello);
-        };
 
-        $scope.add = function(course, period) {
-=======
 
         //Isabel- New Course Names
         $scope.newclassNames = ["Biotechnology 1",
@@ -347,15 +323,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         //Isabel- Upload New Profile Photo
 
 
-        
-        $scope.myFunction = function(hello){
-            $scope.user.courseCode.push(hello);
-        };
 
         //Isabel
         $scope.photoupdate = function(){
             console.log("PHOTO UPDATES");
-            var x = document.getElementById("uploadPhoto").files[0];;
+            var x = document.getElementById("uploadPhoto").files[0];
             console.log(x);
 
             // var route = '/api/users/' + $scope.authentication.user._id;
@@ -374,12 +346,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             //     $scope.error = response.message;
             // });
 
-        }
+        };
 
         //Isabel
         $scope.add = function(course,period) {
 
->>>>>>> Sprint3_Isabel
             if (course !== '') {
 
                 //Creates a new object to be used for user course schema
@@ -524,16 +495,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
-<<<<<<< HEAD
-        $scope.sendEmail = function(isValid) {
-
-=======
 
         //Isabel
         $scope.sendEmail = function(isValid){
 
-
->>>>>>> Sprint3_Isabel
             console.log("sending email for resources");
             console.log("Subject: " + $scope.resource.subject);
             console.log("Subject Details: " + $scope.resource.subjectdetails);
@@ -554,25 +519,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $http.post(route, data).success(function(req, res) {
                 console.log("sending email");
             });
-
-
-<<<<<<< HEAD
-
-
-            //  var email = "isalau@me.com" ;
-            //  // separate addresses by commas, no spaces //
-            //  var subject = "Biotility" ;
-            //  var body = "Testing" ;
-
-            // var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
-            // window.location.href = link;
-        };
-
-
-
-=======
-
->>>>>>> Sprint3_Isabel
 
             //  var email = "isalau@me.com" ;
             //  // separate addresses by commas, no spaces //
@@ -656,30 +602,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.groups[0].progress *= 25;
         };
 
-<<<<<<< HEAD
-        //reset a single teachers code
-        $scope.resetCodes = function() {
-
-            var d = new Date();
-            var dlog = d.getDate();
-            console.log("Date: " + dlog);
-
-            var m = new Date();
-            var mlog = d.getMonth();
-            console.log("Month: " + mlog);
-
-            var h = new Date();
-            var hlog = d.getHours();
-            console.log("Hour: " + hlog);
-
-            var mi = new Date();
-            var milog = mi.getMinutes();
-            console.log("Miniute: " + milog);
-
-            var s = new Date();
-            var slog = s.getSeconds();
-            console.log("TODAY AND NOW");
-=======
 
         // Isabel- reset a single teachers code
         $scope.resetCodes = function(){
@@ -705,7 +627,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             // console.log("TODAY AND NOW"); 
 
 
->>>>>>> Sprint3_Isabel
+
 
             //if so change all course arrays to empty
             if (dlog === 1 && mlog === 7 && hlog === 0 && milog === 0 && s === 0) {
@@ -724,29 +646,14 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         updateresetCodes($scope.users[i]);
                     }
 
-<<<<<<< HEAD
-                    function updateresetCodes(newuser) {
 
-
-                        // var route = '/api/users/' + newuser._id;
-                        var route = '/api/users/no';
-
-                        $scope.put(route, newuser.courses).success(function(response) {
-                            // console.log(newuser.firstName + newuser.courses);
-
-                            // If successful we assign the response to the global user model
-                            // newuser = response;
-
-                            // And redirect to the home page
-                            //$location.url('/');
-=======
                     function updateresetCodes(newuser){
                         
                         var route = '/api/users/no';
 
                         $scope.put(route, newuser.courses).success(function(response) {
 
->>>>>>> Sprint3_Isabel
+
 
                         }).error(function(response) {
                             console.log("Unable to PUT.");
@@ -760,33 +667,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
 
-<<<<<<< HEAD
-        $scope.viewStats = function(course) {
-            // Chart.js Stuff
-            var ctx = $("#myChart").get(0).getContext("2d");
-            // // This will get the first returned node in the jQuery collection.
-            // var myNewChart = new Chart(ctx);
-            var myBarChart = new Chart(ctx).Bar(data);
-            var data = {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [{
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "rgba(220,220,220,0.8)",
-                    highlightFill: "rgba(220,220,220,0.75)",
-                    highlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                }, {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.5)",
-                    strokeColor: "rgba(151,187,205,0.8)",
-                    highlightFill: "rgba(151,187,205,0.75)",
-                    highlightStroke: "rgba(151,187,205,1)",
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                }]
-            };
 
-=======
         //Isabel - bar graph
         $scope.viewStats = function(course){
            
@@ -826,13 +707,13 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         },
                     ]
                   };
->>>>>>> Sprint3_Isabel
+
 
 
                   var myBarChart = new Chart(ctx).Bar(data);
             }).then(function(error) {
                 console.log("Plot eror" + error);
-            })
+            });
 
 
         };
@@ -853,15 +734,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
             //if so change all course arrays to empty
-<<<<<<< HEAD
-            if (dlog === 1 && mlog === 7) {
-                console.log("It's August 1st, time for a reset!");
-=======
+
 
             if(dlog === 1 && mlog === 7){
                 // console.log("It's August 1st, time for a reset!");
 
->>>>>>> Sprint3_Isabel
 
                 while ($scope.authentication.user.courses.length > 0) {
                     $scope.authentication.user.courses.pop();

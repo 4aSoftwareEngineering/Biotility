@@ -291,17 +291,11 @@ exports.email = function(req,res){
         console.log('Message sent successfully!');
         // $("#myModal").modal("show");
         // $("#myModal").modal('show');
-
+        });
+    };
       
 
-<<<<<<< HEAD
-=======
-        // if you don't want to use this transport object anymore, uncomment following line
-        //transport.close(); // close the connection pool
-      });
-};
 
->>>>>>> Sprint3_Isabel
 
 
 /**
