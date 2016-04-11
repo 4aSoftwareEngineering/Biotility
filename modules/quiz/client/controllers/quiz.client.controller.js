@@ -1,8 +1,8 @@
 'use strict';
 
 // Quiz main controller
-angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$location', '$stateParams', '$state', 'Authentication', '$http',
-    function($rootScope, $scope, $location, $stateParams, $state, Authentication, $http) {
+angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$location', '$stateParams', '$state', 'Authentication', '$http', '$window',
+    function($rootScope, $scope, $location, $stateParams, $state, Authentication, $http, $window) {
         //
         console.log("Loading Qs:", $stateParams.courseName);
         var courseName = $stateParams.courseName;
@@ -44,18 +44,19 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.analytics = [];
         $scope.numQuestion = 0;
         $scope.hasError = false;
+        $scope.hasHint = false;
         $scope.hasStart = true;
         $scope.loggedIn = $scope.authentication.user ? true : false;
         $scope.currCategory = $stateParams.courseName;
         $scope.progress = 0;
         $scope.numOpts = 0;
         $scope.ansMA = [];
+        $scope.answer = { val: -1 };
 
         $scope.changehappened = function(data) {
             $rootScope.$emit('radioSel', data);
         };
         $rootScope.$on('radioSel', function(evt, data) {
-            console.log(data);
             $scope.answer = data;
         });
 
@@ -73,9 +74,21 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             }
         };
 
+
         $scope.checkAnswer = function(answer) {
             //Check answer, log analytics.
             console.log("Checking answer...");
+
+            var TF_NoSel = $scope.isTF && $scope.answer.val === -1;
+            var MC_NoSel = $scope.isMultipleChoice && $scope.answer === -1;
+            var MA_NoSel = $scope.isMA && $scope.ansMA.length < $scope.question.answers.MCTF.length;
+
+            if (TF_NoSel || MC_NoSel || MA_NoSel) {
+                $scope.hasError = true;
+                $scope.error = "Please select a valid option.";
+                return;
+            }
+
             //Create analytics obj.
             if (!$scope.analytics[$scope.index]) {
                 console.log("Creating analytics...");
@@ -83,36 +96,54 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 $scope.analytics[$scope.index] = {};
                 $scope.analytics[$scope.index].question = $scope.question;
                 $scope.analytics[$scope.index].attempts = 1;
+                $scope.hasHint = true;
             }
 
-            //Check based off question type.
-            console.log('answer', answer);
-
+            console.log('answer');
+            console.log(answer);
             var correct = $scope.question.answers.correct;
             var expected;
+
+            //Check answer
             if ($scope.isMultipleChoice)
                 expected = $scope.question.answers.MCTF[correct - 1];
-            else if ($scope.isTF)
+            else if ($scope.isTF) {
+                answer = answer.val;
                 expected = correct;
-            else if ($scope.isMA) {
+            } else if ($scope.isMA) {
                 expected = $scope.question.answers.MA.correct;
                 answer = [];
+
+                console.log($scope.ansMA); //Letter array before conversion.
                 for (var i = 0; i < $scope.ansMA.length; i++) {
-                    var ansDesc = $scope.question.answers.MA.present[parseInt($scope.ansMA[i]) - 1];
-                    answer[i] = ansDesc;
+                    var letterIdx = $scope.ansMA[i];
+                    var idx = $scope.charToNum(letterIdx.toLowerCase()) - 1;
+                    var ansDesc = $scope.question.answers.MA.present[i];
+                    answer[idx] = ansDesc;
                 }
+
+                for (var i = 0; i < answer.length; i++) {
+                    if (!answer[i]) {
+                        $scope.hasError = true;
+                        $scope.error = "Make sure to make unique selections."
+                        return;
+                    }
+                }
+
                 console.log('expected');
                 console.log(expected);
                 console.log('answer');
                 console.log(answer);
             }
+
+
             if (expected === answer || $scope.isMA && arraysEqual(expected, answer)) {
                 console.log("Correct!");
                 console.dir($scope.analytics[$scope.index]);
                 $scope.increment();
             } else {
                 console.log("Incorrect!");
-                $scope.hasError = true;
+                $scope.hasError = true && $scope.questions[$scope.index].hint.length;
                 $scope.error = "Incorrect. Please try again.";
                 if (!$scope.analytics[$scope.index].firstIncorrect)
                     $scope.analytics[$scope.index].firstIncorrect = answer;
@@ -128,7 +159,8 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.increment = function() {
             //Determines question type and if quiz is finished.
             $scope.hasError = false;
-            $scope.answer = -1;
+            $scope.hasHint = false;
+            //Set question info.
             if ($scope.index === max) {
                 console.log("Quiz finished.");
                 $scope.isDone = true;
@@ -147,7 +179,10 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                             $scope.numOpts--;
                     }
                 }
+
+                //Set new question type.
                 if ($scope.question.type === "TF") {
+                    $scope.answer = { val: -1 }; //Resets for TF
                     $scope.isMA = false;
                     $scope.isTF = true;
                     $scope.isMultipleChoice = false;
@@ -155,7 +190,9 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.isMA = false;
                     $scope.isMultipleChoice = true;
                     $scope.isTF = false;
+                    $scope.answer = -1; //Resets for MC
                 } else if ($scope.question.type === "MA") {
+                    $scope.ansMA = []; //Resets for MA
                     $scope.isMA = true;
                     $scope.isMultipleChoice = false;
                     $scope.isTF = false;
@@ -165,12 +202,16 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     $scope.isMultipleChoice = false;
                     $scope.isTF = false;
                 }
+
+                //Set progress.
                 $scope.numQuestion++;
                 $scope.progress = Math.round(100 * ($scope.numQuestion - 1) / $scope.questions.length);
-                // console.log("Max index is " + max);
-                // console.log("Index is " + $scope.index);
-                // console.log("Score is " + $scope.score);
             }
+        };
+
+        //In controller
+        $scope.openTab = function(link_url) {
+            $window.open(link_url, '_blank');
         };
 
         var byCategory = function(listOfQuestions) {
@@ -186,11 +227,22 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             console.log($scope.questions);
             $scope.canStart = $scope.questions.length && $scope.loggedIn;
         };
-
         $scope.getNumber = function(num) {
             return new Array(num);
-        }
-
+        };
+        $scope.numToChar = function(n) {
+            return String.fromCharCode(96 + parseInt(n)).toUpperCase();
+        };
+        $scope.numToCharArr = function(arr) {
+            var ltrArr = [];
+            for (var num in arr) {
+                ltrArr.push($scope.numToChar(num));
+            }
+            return ltrArr.join(", ");
+        };
+        $scope.charToNum = function(c) {
+            return c.charCodeAt(0) - 96;
+        };
         $scope.gotoResource = function(subjectName) {
             $location.path('/' + subjectName + '/resources');
         };
@@ -210,8 +262,8 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
     function($http, $scope, $stateParams, Authentication) {
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-		$(document).ready(function(){
-            $("#myBtn").click(function(){
+        $(document).ready(function() {
+            $("#myBtn").click(function() {
                 $("#myModal").modal();
             });
         });
@@ -246,22 +298,32 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
+            var data = {
+                file: file
+            };
             if (file) {
+                $http.post('/question_upload', data, {
+                    ignoreLoadingBar: true
+                });
                 file.upload = Upload.upload({
                     url: '/question_upload',
-                    data: { file: file }
+                    data: data
                 });
 
+                //Progress Bar
                 file.upload.then(function(response) {
                     $timeout(function() {
                         file.result = response.data;
                     });
                 }, function(response) {
-                    if (response.status > 0)
-                        $scope.errorMsg = response.status + ': ' + response.data;
+                    if (response.status > 0) {
+                        $scope.hasError = true;
+                        $scope.error = response.status + ': ' + response.data;
+                    }
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));
+                    if (file.progress === 100 || file.progress === 100.00) return;
 
                 });
             }
@@ -271,8 +333,8 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
 
 function arraysEqual(a, b) {
     if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length != b.length) return false;
+    if (a === null || b === null) return false;
+    if (a.length !== b.length) return false;
 
     // If you don't care about the order of the elements inside
     // the array, you should sort both arrays here.

@@ -207,7 +207,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            // $scope.credentials.courses = [parseInt($scope.credentials.courseCode)];
+            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)];
             console.log($scope.credentials);
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
@@ -215,7 +215,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 console.log("Is a student");
             } else if($scope.credentials.profileType === "Admin") {
                 route = '/api/auth/signup/admin';
-                console.log("Is a Admin");
+                console.log("Is an Admin");
             } else if($scope.credentials.profileType === "Teacher") {
                 route = '/api/auth/signup/teacher';
                 console.log("Is a Teacher");

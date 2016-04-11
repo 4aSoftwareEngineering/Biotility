@@ -6,6 +6,9 @@ html, body {
     margin-bottom: -20px;
     position: relative;
 }
+section{    
+    margin-top: 20px;
+}
 #footer {
     height: 20px;
     position: relative;
@@ -44,6 +47,16 @@ html, body {
     opacity: 0;
 }
 /*----header----*/
+
+
+#mainNavBar > ul li > div > a {
+    color: white;
+}
+
+.user-pic{
+position: relative;
+    bottom: 10px;
+}
 
 body {
     font-family: AwesomeFont, Verdana, Geneva, sans-serif;
@@ -299,7 +312,6 @@ img.resource {
     padding-left: 40px;
 }
 ul.navbar-nav {
-    margin-top: -15px;
     margin-right: -8px;
 }
 ul.nav li.dropdown:hover ul.dropdown-menu {
