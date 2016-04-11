@@ -7,6 +7,12 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
 
     function($scope, $state, $location, Authentication, $http, Subjects, Users) {
 
+        $scope.ready  = function() {
+            $scope.carousel({
+                interval: 1200
+            })
+        };
+
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -22,6 +28,8 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
         $scope.gotoResource = function(subjectObj) {
             $location.path('/' + subjectObj.name + '/resources');
         };
+
+
 
         // $scope.codeReset = function(){
         //      console.log("cron go");
