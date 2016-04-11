@@ -36,7 +36,9 @@
 <body>
   <div id="contain">
     <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-
+    <script type="text/javascript">
+     var user = {{user | json | safe}};
+     </script>
     {% block content %}{% endblock %}
     <div class="clearfooter"></div>
   </div><!--End Container-->
