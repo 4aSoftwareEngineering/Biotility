@@ -29,16 +29,17 @@
                         {{progress}}%
                     </div>
                 </div>
-                <p ng-show="questions[index].hint.length">Hint: {{questions[index].hint}}</p>
-                <a ng-show="questions[index].link.length" href="{{questions[index].link}}">Supplementary Reading</a>
+                <p ng-show="hasHint">Hint: {{questions[index].hint}}</p>
+                <a ng-show="questions[index].link.length" style="cursor: pointer" ng-mousedown="openTab(questions[index].link)">Supplementary Reading</a>
                 <p id="quizError" ng-show="hasError" class="alert alert-danger" role="alert"> {{error}} </p>
                 <br>
-                <form class="col-md-offset-1">
+                <form class="col-md-offset-1" ng-submit="">
+                    <!--Used for MCTF-->
                     <div class="row" ng-show="isMultipleChoice">
                         <div>
                             <li style="list-style: none" ng-repeat="a in questions[index].answers.MCTF track by $index">
                                 <label ng-show="a.length">
-                                    <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-change="$parent.changehappened(a)" required />{{a}}
+                                    <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-click="$parent.changehappened(a)" />{{a}}
                                 </label>
                             </li>
                         </div>
@@ -48,11 +49,17 @@
                     <!--Used for True/False-->
                     <br>
                     <div class="row" ng-show="isTF">
-                        <input type="radio" ng-model="answer" value="T">True</label>
                         <br>
-                        <input type="radio" ng-model="answer" value="F">False</label>
+                        <label>
+                            <input type="radio" ng-model="answer.val" name="option1" value="T">
+                            <span>True</span>
+                        </label>
                         <br>
-                        <!--input style="" type="radio" ng-model="answer" value="X">Hidden</label-->
+                        <label>
+                            <input type="radio" ng-model="answer.val" name="option2" value="F">
+                            <span>False</span>
+                        </label>
+                        <br>
                     </div>
                     <br/>
                     <br/>
@@ -61,7 +68,7 @@
                         <div class="col-xs-5">
                             <ul>
                                 <li style="list-style: none" ng-repeat="txt in questions[index].answers.MCTF track by $index">
-                                    <p ng-show="txt.length">{{$index + 1}}. {{txt}}</p>
+                                    <p ng-show="txt.length">{{numToChar($index + 1)}}. {{txt}}</p>
                                 </li>
                             </ul>
                         </div>
@@ -70,7 +77,7 @@
                                 <li class="row" style="list-style: none; margin-bottom: 20px" ng-repeat="txt in questions[index].answers.MA.present track by $index">
                                     <select class="form-control" ng-model="ansMA[$index]" ng-show="txt.length" style="list-style: none; width: auto !important; display: inline-block;">
                                         <option selected disabled hidden style='display: none' value=''></option>
-                                        <option ng-repeat="i in getNumber(numOpts) track by $index">{{$index + 1}}</option>
+                                        <option ng-repeat="i in getNumber(numOpts) track by $index">{{numToChar($index + 1)}}</option>
                                     </select>
                                     <span class="" ng-show="txt.length">{{txt}}</span>
                                 </li>
@@ -78,7 +85,6 @@
                         </div>
                         <br>
                     </div>
-                    <!--ng-click="increment()"-->
                     <button id="next" class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
                 </form>
             </div>
@@ -88,3 +94,8 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+<!--footer-->
+<div class="text-center footer" style="margin-top: 100px;">&copy; Biotility, 2015.</div>
+>>>>>>> master

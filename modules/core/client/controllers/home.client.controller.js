@@ -3,7 +3,7 @@
 /** SEE core.server.routes.js  */
 
 
-angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication','$http', 'Subjects', 'Users',
+angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', '$http', 'Subjects', 'Users',
 
     function($scope, $state, $location, Authentication, $http, Subjects, Users) {
 
@@ -35,7 +35,7 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
         //      console.log("cron go");
         //     var route = '/api/data/cron';
         //     $http.get(route).success(function (req, res) {
-               
+
         //     });
         // };
 
@@ -75,17 +75,17 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         SubHeads.loadSubHeads().then(function(response) {
             $scope.subHeads = response.data;
         });
-        
+
         //Used to create a new Resource on database
         $scope.addResource = function() {
             var name = $scope.newResource.title;
             $http.post('api/data/resources', $scope.newResource).success(function(response) {
                 Resources.loadResources().then(function(response) {
                     $scope.resources = response.data;
-                    $scope.success =  name+' Successfully Added.';
+                    $scope.success = name + ' Successfully Added.';
                 });
             }).error(function(response) {
-                $scope.error = name+' Unsuccessfully added.';
+                $scope.error = name + ' Unsuccessfully added.';
             });
 
             $scope.newResource = null;
@@ -99,9 +99,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
                 Resources.loadResources().then(function(response) {
                     $scope.resources = response.data;
                 });
-                $scope.success =  name+' Successfully Deleted.';
+                $scope.success = name + ' Successfully Deleted.';
             }).error(function(response) {
-                $scope.error = name+' Unsuccessfully Deleted.';
+                $scope.error = name + ' Unsuccessfully Deleted.';
             });
 
             $scope.newResource = null;
@@ -111,12 +111,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.updateResource = function(resource_obj) {
             var id = resource_obj._id;
             var name = resource_obj.title;
-            $http.put('api/data/resources/' + id,$scope.newResource).success(function(response) {
+            $http.put('api/data/resources/' + id, $scope.newResource).success(function(response) {
                 $scope.newResource = {};
                 $scope.updateMode = false;
-                $scope.success =  name+' Successfully Edited.';
+                $scope.success = name + ' Successfully Edited.';
             }).error(function(response) {
-                $scope.error = name+' Unsuccessfully Edited.';
+                $scope.error = name + ' Unsuccessfully Edited.';
             });
         };
 
@@ -127,11 +127,11 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
                 SubHeads.loadSubHeads().then(function(response) {
                     $scope.subHeads = response.data;
                 });
-                $scope.success =  name+' Successfully Added.';
+                $scope.success = name + ' Successfully Added.';
             }).error(function(response) {
-                $scope.error =  $scope.newSubHead.title+' Unsuccessfully Added.';
+                $scope.error = $scope.newSubHead.title + ' Unsuccessfully Added.';
             });
-            
+
             $scope.newSubHead = null;
         };
         $scope.deleteSubHead = function(subHead_obj) {
@@ -141,21 +141,21 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
                 SubHeads.loadSubHeads().then(function(response) {
                     $scope.subHeads = response.data;
                 });
-                $scope.success =  name+' Successfully Deleted.';
+                $scope.success = name + ' Successfully Deleted.';
             }).error(function(response) {
-                $scope.error =  name+' Unsuccessfully Deleted.';
+                $scope.error = name + ' Unsuccessfully Deleted.';
             });
-            
+
             $scope.newResource = null;
         };
         $scope.updateSubHead = function(subHead_obj) {
             var id = subHead_obj._id;
-            $http.put('api/data/subheads/' + id,$scope.newSubHead).success(function(response) {
-                $scope.success =  $scope.newSubHead.title+' Successfully Edited.';
+            $http.put('api/data/subheads/' + id, $scope.newSubHead).success(function(response) {
+                $scope.success = $scope.newSubHead.title + ' Successfully Edited.';
                 $scope.newSubHead = {};
                 $scope.updateMode = false;
             }).error(function(response) {
-                $scope.error =  $scope.newSubHead.title+' Unsuccessfully Edited.';
+                $scope.error = $scope.newSubHead.title + ' Unsuccessfully Edited.';
             });
         };
 
@@ -195,29 +195,28 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 ]);
 
 
-angular.module('core').controller('authController',['$scope', '$state', '$location', 'Users', 'Authentication', '$http',function($scope, $state, $location, Users, Authentication, $http) {
-		//This is a min config for authenticating admin features
-        $scope.authentication = Authentication;
-        $scope.user = $scope.authentication.user;
-        
-        $scope.isTeacher = false;
-        $scope.isAdmin = false;
-        
-        //Set flags to true if admin or teacher 
-        if ($scope.authentication.user.profileType === "Admin") {
-            console.log("I am a admin");
-            $scope.isAdmin = true;
-        } else if ($scope.authentication.user.profileType === "Teacher") {
-            console.log("I am a teacher");
-            $scope.isTeacher = true;
-        }
-	}
-]);
+angular.module('core').controller('authController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', function($scope, $state, $location, Users, Authentication, $http) {
+    //This is a min config for authenticating admin features
+    $scope.authentication = Authentication;
+    $scope.user = $scope.authentication.user;
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects','Temp', 'plotly',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp,  plotly) {
+    $scope.isTeacher = false;
+    $scope.isAdmin = false;
 
-       
+    //Set flags to true if admin or teacher 
+    if ($scope.authentication.user.profileType === "Admin") {
+        console.log("I am a admin");
+        $scope.isAdmin = true;
+    } else if ($scope.authentication.user.profileType === "Teacher") {
+        console.log("I am a teacher");
+        $scope.isTeacher = true;
+    }
+}]);
+
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+
+
 
 
         $scope.authentication = Authentication;
@@ -249,7 +248,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.authentication.user.courses.forEach(
             function(element, index, array) {
                 //stores each course Name and number of the course that a teacher has
-                $scope.input.courseNums.push(element.courseName + " : " + element.number+" "+  element.section);
+                $scope.input.courseNums.push(element.courseName + " : " + element.number + " " + element.section);
 
                 //used for testing purposes to make sure a teacher has the correct courses
                 console.log($scope.input.courseNums);
@@ -276,16 +275,16 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
 
             for (var j = 1; j < $scope.subjects.length; j++) {
-                $scope.Periods.push("Period "+ j);
+                $scope.Periods.push("Period " + j);
             }
 
         });
 
-        $scope.myFunction = function(hello){
+        $scope.myFunction = function(hello) {
             $scope.user.courseCode.push(hello);
         };
 
-        $scope.add = function(course,period) {
+        $scope.add = function(course, period) {
             if (course !== '') {
 
                 //Creates a new object to be used for user course schema
@@ -435,12 +434,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
-        $scope.sendEmail = function(isValid){
+        $scope.sendEmail = function(isValid) {
 
-            console.log("sending email for resources" );
-            console.log("Subject: " + $scope.resource.subject );
-            console.log("Subject Details: "+ $scope.resource.subjectdetails );
-            console.log("Link: "+ $scope.resource.resourcelink);
+            console.log("sending email for resources");
+            console.log("Subject: " + $scope.resource.subject);
+            console.log("Subject Details: " + $scope.resource.subjectdetails);
+            console.log("Link: " + $scope.resource.resourcelink);
             console.log("Comments: " + $scope.resource.comments);
 
             var data = ({
@@ -454,24 +453,24 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
 
             var route = '/api/data/email';
-            $http.post(route, data).success(function (req, res) {
+            $http.post(route, data).success(function(req, res) {
                 console.log("sending email");
             });
 
 
-           
 
-           //  var email = "isalau@me.com" ;
-           //  // separate addresses by commas, no spaces //
-           //  var subject = "Biotility" ;
-           //  var body = "Testing" ;
 
-           // var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
-           // window.location.href = link;
+            //  var email = "isalau@me.com" ;
+            //  // separate addresses by commas, no spaces //
+            //  var subject = "Biotility" ;
+            //  var body = "Testing" ;
+
+            // var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
+            // window.location.href = link;
         };
 
 
-       
+
 
 
 
@@ -507,14 +506,14 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log($scope.section);
 
         });
-        
+
         //gets student grades
         $scope.studentGrades = [];
         $http.get('/api/quiz_result')
             .success(function(res) {
                 // console.log("quiz result: ", res);
                 byStudent(res);
-        });
+            });
 
         //gets student  grades by student and stores them
         var byStudent = function(allStudentGrades) {
@@ -549,38 +548,38 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
         //reset a single teachers code
-        $scope.resetCodes = function(){
+        $scope.resetCodes = function() {
 
             var d = new Date();
             var dlog = d.getDate();
-            console.log("Date: "+dlog);
+            console.log("Date: " + dlog);
 
             var m = new Date();
             var mlog = d.getMonth();
-            console.log("Month: "+mlog);
+            console.log("Month: " + mlog);
 
             var h = new Date();
             var hlog = d.getHours();
-            console.log("Hour: "+ hlog);
+            console.log("Hour: " + hlog);
 
             var mi = new Date();
             var milog = mi.getMinutes();
-            console.log("Miniute: "+milog);
+            console.log("Miniute: " + milog);
 
             var s = new Date();
             var slog = s.getSeconds();
-            console.log("TODAY AND NOW"); 
+            console.log("TODAY AND NOW");
 
             //if so change all course arrays to empty
-            if(dlog === 1 && mlog === 7 && hlog===0 && milog === 0 && s === 0){
-            // if(dlog === 18 && mlog === 2 && hlog === 18 && milog === 22){
-                  
+            if (dlog === 1 && mlog === 7 && hlog === 0 && milog === 0 && s === 0) {
+                // if(dlog === 18 && mlog === 2 && hlog === 18 && milog === 22){
+
 
                 Temp.parseUsers().then(function(response) {
                     $scope.users = response.data;
                     //dowload all current course codes
                     for (var i = 0; i < $scope.users.length; i++) {
-                        
+
                         while ($scope.users[i].courses.length > 0) {
                             $scope.users[i].courses.pop();
                         }
@@ -588,60 +587,57 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         updateresetCodes($scope.users[i]);
                     }
 
-                    function updateresetCodes(newuser){
-                        
+                    function updateresetCodes(newuser) {
+
 
                         // var route = '/api/users/' + newuser._id;
                         var route = '/api/users/no';
 
                         $scope.put(route, newuser.courses).success(function(response) {
                             // console.log(newuser.firstName + newuser.courses);
-                            
+
                             // If successful we assign the response to the global user model
                             // newuser = response;
 
                             // And redirect to the home page
                             //$location.url('/');
 
-                            }).error(function(response) {
-                                console.log("Unable to PUT.");
-                                console.dir(response);
-                                $scope.error = response.message;
+                        }).error(function(response) {
+                            console.log("Unable to PUT.");
+                            console.dir(response);
+                            $scope.error = response.message;
                         });
-                      
+
                     }
                 });
             }
         };
 
 
-        $scope.viewStats = function(course){
+        $scope.viewStats = function(course) {
             // Chart.js Stuff
             var ctx = $("#myChart").get(0).getContext("2d");
             // // This will get the first returned node in the jQuery collection.
             // var myNewChart = new Chart(ctx);
             var myBarChart = new Chart(ctx).Bar(data);
-               var data = {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                    datasets: [
-                        {
-                            label: "My First dataset",
-                            fillColor: "rgba(220,220,220,0.5)",
-                            strokeColor: "rgba(220,220,220,0.8)",
-                            highlightFill: "rgba(220,220,220,0.75)",
-                            highlightStroke: "rgba(220,220,220,1)",
-                            data: [65, 59, 80, 81, 56, 55, 40]
-                        },
-                        {
-                            label: "My Second dataset",
-                            fillColor: "rgba(151,187,205,0.5)",
-                            strokeColor: "rgba(151,187,205,0.8)",
-                            highlightFill: "rgba(151,187,205,0.75)",
-                            highlightStroke: "rgba(151,187,205,1)",
-                            data: [28, 48, 40, 19, 86, 27, 90]
-                        }
-                    ]
-                };
+            var data = {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                }, {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,0.8)",
+                    highlightFill: "rgba(151,187,205,0.75)",
+                    highlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }]
+            };
 
 
 
@@ -664,11 +660,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
         //reset all the teachers code
-        $scope.resetAllCodes = function(){
+        $scope.resetAllCodes = function() {
             //get all teachers
-           
-            
-             //check to see if date is August 1st
+
+
+            //check to see if date is August 1st
             var d = new Date();
             var dlog = d.getDate();
             console.log(dlog);
@@ -679,30 +675,30 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
             //if so change all course arrays to empty
-            if(dlog === 1 && mlog === 7){
+            if (dlog === 1 && mlog === 7) {
                 console.log("It's August 1st, time for a reset!");
 
                 while ($scope.authentication.user.courses.length > 0) {
-                $scope.authentication.user.courses.pop();
-            }
+                    $scope.authentication.user.courses.pop();
+                }
 
-            
-            var route = '/api/users/' + $scope.authentication.user._id;
 
-            $http.put(route, $scope.user.courses).success(function(response) {
+                var route = '/api/users/' + $scope.authentication.user._id;
 
-                // If successful we assign the response to the global user model
-                $scope.authentication.user = response;
+                $http.put(route, $scope.user.courses).success(function(response) {
 
-                // And redirect to the home page
-                $location.url('/');
+                    // If successful we assign the response to the global user model
+                    $scope.authentication.user = response;
+
+                    // And redirect to the home page
+                    $location.url('/');
 
                 }).error(function(response) {
                     console.log("Unable to PUT.");
                     console.dir(response);
                     $scope.error = response.message;
                 });
-            }    
+            }
         };
 
     }

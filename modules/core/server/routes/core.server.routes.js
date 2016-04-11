@@ -9,7 +9,6 @@ module.exports = function(app) {
     var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
     var schedule = require('node-schedule');
     var Email = require('email').Email;
-    var CronJob = require('cron').CronJob;
 
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
@@ -46,7 +45,6 @@ module.exports = function(app) {
     //Isabel's Work Sprint2
     app.route('/api/data/plotly').get(core.plot);
     app.route('/api/data/email').post(core.email);
-    app.route('/ap/data/cron').get(core.cron);
 
 
     // Fetch question data from database
