@@ -122,10 +122,10 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     answer[idx] = ansDesc;
                 }
 
-                for (var i = 0; i < answer.length; i++) {
+                for (i = 0; i < answer.length; i++) {
                     if (!answer[i]) {
                         $scope.hasError = true;
-                        $scope.error = "Make sure to make unique selections."
+                        $scope.error = "Make sure to make unique selections.";
                         return;
                     }
                 }

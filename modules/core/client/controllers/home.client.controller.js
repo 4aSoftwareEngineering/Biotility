@@ -10,7 +10,7 @@ angular.module('core').controller('MainController', ['$scope', '$state', '$locat
         $scope.ready  = function() {
             $scope.carousel({
                 interval: 1200
-            })
+            });
         };
 
         // This provides Authentication context.
@@ -212,7 +212,7 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.resources[index].clicks = $scope.resources[index].clicks + 1;
             console.log($scope.resources[index]);
             $window.open(link_url, '_blank');
-        }
+        };
 
     }
 ]);
