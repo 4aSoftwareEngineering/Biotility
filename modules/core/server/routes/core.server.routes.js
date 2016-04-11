@@ -6,7 +6,7 @@ module.exports = function(app) {
     var core = require('../controllers/core.server.controller');
     var users = require('../controllers/core.server.controller');
 
-    var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
+    // var plotly = require('plotly')("biotilitysp18","tmplea9qm7");
     var schedule = require('node-schedule');
     var Email = require('email').Email;
 
@@ -42,8 +42,8 @@ module.exports = function(app) {
     app.route('/api/data/students').post(core.findStudents);
 
 
-    //Isabel's Work Sprint2
-    app.route('/api/data/plotly').get(core.plot);
+    //Isabel's Work Sprint2/Sprint3
+    app.route('/api/data/plot').get(core.plot);
     app.route('/api/data/email').post(core.email);
 
 

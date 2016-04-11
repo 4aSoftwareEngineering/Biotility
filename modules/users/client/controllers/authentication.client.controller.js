@@ -30,7 +30,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         //array of saved codes
         var savedCodes = [];
-        var test = "HI ISABEL";
+        
 
         // load subjects
         Subjects.loadSubjects().then(function(response) {
@@ -46,6 +46,22 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }
 
         });
+
+            $scope.newclassNames = ["Biotechnology 1",
+                                "Biotechnology 2",
+                                "Biotechnology 3",
+                                "PLTW Principles of Biomedical Science",
+                                "PLTW Human Body Systems",
+                                "PLTW Medical Interventions",
+                                "PLTW Biomedical Innovation",
+                                "Agricultural Biotechnology",
+                                "Biology",
+                                "Honors Biology",
+                                "AP Biology",
+                                "AICE Biology",
+                                "IB Biology",
+                                "Genetics",
+                                "Forensics"];
 
 
 

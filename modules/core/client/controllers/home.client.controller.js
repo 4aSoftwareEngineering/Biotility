@@ -191,6 +191,25 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     //This is a min config for authenticating admin features
     $scope.authentication = Authentication;
     $scope.user = $scope.authentication.user;
+<<<<<<< HEAD
+
+    $scope.isTeacher = false;
+    $scope.isAdmin = false;
+
+    //Set flags to true if admin or teacher 
+    if ($scope.authentication.user.profileType === "Admin") {
+        console.log("I am a admin");
+        $scope.isAdmin = true;
+    } else if ($scope.authentication.user.profileType === "Teacher") {
+        console.log("I am a teacher");
+        $scope.isTeacher = true;
+    }
+}]);
+
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly) {
+
+=======
 
     $scope.isTeacher = false;
     $scope.isAdmin = false;
@@ -210,17 +229,27 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
 
+       //Isabel- modal for resource request 
+       $(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal();
+            });
+        });
+>>>>>>> Sprint3_Isabel
+
+
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         // console.log("ProfileController");
         console.log($scope.credentials);
-        console.log("CHECK" + $scope.user);
+        console.log("User: " + $scope.user);
 
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
         $scope.isAdmin = false;
         $scope.profileVisible = true;
+
         //checks if teacher
         if ($scope.authentication.user.profileType === "Teacher") {
             console.log("I am a teacher");
@@ -232,31 +261,48 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         //input to put courseNames
         $scope.input = {};
+
         //courseNums array
         $scope.input.courseNums = [];
+        $scope.input.courseNames = [];
+        $scope.input.coursePeriods= [];
 
 
         //for each course in their schema
         $scope.authentication.user.courses.forEach(
             function(element, index, array) {
                 //stores each course Name and number of the course that a teacher has
+<<<<<<< HEAD
                 $scope.input.courseNums.push(element.courseName + " : " + element.number + " " + element.section);
+=======
+                
+                $scope.input.courseNames.push(element.courseName);  
+                $scope.input.courseNums.push(element.number); 
+                $scope.input.coursePeriods.push(element.section);
+
+>>>>>>> Sprint3_Isabel
 
                 //used for testing purposes to make sure a teacher has the correct courses
-                console.log($scope.input.courseNums);
+                // console.log($scope.input.courseNums);
             }
         );
+
+        //Isabel- how I actuall populate the classes shown
+        $scope.input.coursesComplete = $scope.authentication.user.courses; 
+      
 
         // credentials object
         $scope.credentials = {};
         $scope.credentials.courses = [];
         $scope.hello = 0;
 
-        //get course names
+       
         // array of class names
+
         $scope.classNames = [];
         $scope.Periods = [];
 
+        //get course names
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
 
@@ -272,11 +318,68 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         });
 
+<<<<<<< HEAD
         $scope.myFunction = function(hello) {
             $scope.user.courseCode.push(hello);
         };
 
         $scope.add = function(course, period) {
+=======
+
+        //Isabel- New Course Names
+        $scope.newclassNames = ["Biotechnology 1",
+                                "Biotechnology 2",
+                                "Biotechnology 3",
+                                "PLTW Principles of Biomedical Science",
+                                "PLTW Human Body Systems",
+                                "PLTW Medical Interventions",
+                                "PLTW Biomedical Innovation",
+                                "Agricultural Biotechnology",
+                                "Biology",
+                                "Honors Biology",
+                                "AP Biology",
+                                "AICE Biology",
+                                "IB Biology",
+                                "Genetics",
+                                "Forensics", 
+                                "Other"];
+
+        //Isabel- Upload New Profile Photo
+
+
+        
+        $scope.myFunction = function(hello){
+            $scope.user.courseCode.push(hello);
+        };
+
+        //Isabel
+        $scope.photoupdate = function(){
+            console.log("PHOTO UPDATES");
+            var x = document.getElementById("uploadPhoto").files[0];;
+            console.log(x);
+
+            // var route = '/api/users/' + $scope.authentication.user._id;
+            // $scope.authentication.user.profileImageURL = x;
+            
+            // $http.post(route, $scope.user).success(function(response) {
+
+            //     $scope.authentication.user = response;
+
+
+            // }).error(function(response) {
+            //     console.log("Unable to POST.");
+            //     // console.log(response);
+            //     console.dir("RESPONSE: " + response);
+
+            //     $scope.error = response.message;
+            // });
+
+        }
+
+        //Isabel
+        $scope.add = function(course,period) {
+
+>>>>>>> Sprint3_Isabel
             if (course !== '') {
 
                 //Creates a new object to be used for user course schema
@@ -337,17 +440,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.toAdd = '';
         };
 
+        //Isabel
         $scope.settingsupdate = function(isValid) {
 
             console.log("Changing Settings");
             $scope.error = null;
-
-            // if (!isValid) {
-            //     $scope.$broadcast('show-errors-check-validity', 'userForm');
-
-            //     return false;
-            // }
-
 
             console.dir("SCOPE: " + $scope);
             console.log($scope.credentials.firstName);
@@ -413,6 +510,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
+        //Isabel
         $scope.update = function() {
             $scope.error = null;
 
@@ -426,8 +524,16 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
         };
 
+<<<<<<< HEAD
         $scope.sendEmail = function(isValid) {
 
+=======
+
+        //Isabel
+        $scope.sendEmail = function(isValid){
+
+
+>>>>>>> Sprint3_Isabel
             console.log("sending email for resources");
             console.log("Subject: " + $scope.resource.subject);
             console.log("Subject Details: " + $scope.resource.subjectdetails);
@@ -450,6 +556,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
 
 
+<<<<<<< HEAD
 
 
             //  var email = "isalau@me.com" ;
@@ -463,8 +570,18 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
 
+=======
 
+>>>>>>> Sprint3_Isabel
 
+            //  var email = "isalau@me.com" ;
+            //  // separate addresses by commas, no spaces //
+            //  var subject = "Biotility" ;
+            //  var body = "Testing" ;
+
+            // var link = 'mailto:isalau@me.com? subject=Resource Update Request from me &body= Subject:' + $scope.resource.subject ;
+            // window.location.href = link;
+        };
 
 
         //creates groups
@@ -539,6 +656,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.groups[0].progress *= 25;
         };
 
+<<<<<<< HEAD
         //reset a single teachers code
         $scope.resetCodes = function() {
 
@@ -561,6 +679,33 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             var s = new Date();
             var slog = s.getSeconds();
             console.log("TODAY AND NOW");
+=======
+
+        // Isabel- reset a single teachers code
+        $scope.resetCodes = function(){
+
+            var d = new Date();
+            var dlog = d.getDate();
+            // console.log("Date: "+dlog);
+
+            var m = new Date();
+            var mlog = d.getMonth();
+            // console.log("Month: "+mlog);
+
+            var h = new Date();
+            var hlog = d.getHours();
+            // console.log("Hour: "+ hlog);
+
+            var mi = new Date();
+            var milog = mi.getMinutes();
+            // console.log("Miniute: "+milog);
+
+            var s = new Date();
+            var slog = s.getSeconds();
+            // console.log("TODAY AND NOW"); 
+
+
+>>>>>>> Sprint3_Isabel
 
             //if so change all course arrays to empty
             if (dlog === 1 && mlog === 7 && hlog === 0 && milog === 0 && s === 0) {
@@ -579,6 +724,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         updateresetCodes($scope.users[i]);
                     }
 
+<<<<<<< HEAD
                     function updateresetCodes(newuser) {
 
 
@@ -593,6 +739,14 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                             // And redirect to the home page
                             //$location.url('/');
+=======
+                    function updateresetCodes(newuser){
+                        
+                        var route = '/api/users/no';
+
+                        $scope.put(route, newuser.courses).success(function(response) {
+
+>>>>>>> Sprint3_Isabel
 
                         }).error(function(response) {
                             console.log("Unable to PUT.");
@@ -606,6 +760,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
 
+<<<<<<< HEAD
         $scope.viewStats = function(course) {
             // Chart.js Stuff
             var ctx = $("#myChart").get(0).getContext("2d");
@@ -631,24 +786,55 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 }]
             };
 
+=======
+        //Isabel - bar graph
+        $scope.viewStats = function(course){
+           
+            // Plotly Stuff
+            console.log("Passing: "+ course);
+            var route = '/api/data/plot';
+
+            var params = ({
+                person: $scope.user, 
+                given: course 
+            });
+
+            $http.get(route, {params:{"person": $scope.user, "given": course}}).then(function(res) { 
+                // your data
+                console.log("ploting");
+                console.log(res.data);
+                
+                //get correct number of questions for X axis
+                var label =[];
+                for(var i = 1; i < res.data.length; i++){
+                    label[i-1] = "Question " + i; 
+                }
+
+                // console.log(res);
+                var ctx = $("#myChart").get(0).getContext("2d");
+
+                  var data = {
+                    labels: label,
+                    datasets: [
+                        {
+                            label: "Course Settings",
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: res.data
+                        },
+                    ]
+                  };
+>>>>>>> Sprint3_Isabel
 
 
-            //Plotly Stuff
-            // console.log("Passing: "+ course);
-            // var route = '/api/data/plotly';
-
-            // // var params = ({
-            // //     person: $scope.user, 
-            // //     given: course 
-            // // });
-
-            // $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
-            // // $http.get(route, params).success(function (req, res) {
-            //     console.log("plotly go");
-            // }); 
+                  var myBarChart = new Chart(ctx).Bar(data);
+            }).then(function(error) {
+                console.log("Plot eror" + error);
+            })
 
 
-            // location.reload();
         };
 
         //reset all the teachers code
@@ -659,16 +845,23 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             //check to see if date is August 1st
             var d = new Date();
             var dlog = d.getDate();
-            console.log(dlog);
+            // console.log(dlog);
 
             var m = new Date();
             var mlog = d.getMonth();
-            console.log(mlog);
+            // console.log(mlog);
 
 
             //if so change all course arrays to empty
+<<<<<<< HEAD
             if (dlog === 1 && mlog === 7) {
                 console.log("It's August 1st, time for a reset!");
+=======
+
+            if(dlog === 1 && mlog === 7){
+                // console.log("It's August 1st, time for a reset!");
+
+>>>>>>> Sprint3_Isabel
 
                 while ($scope.authentication.user.courses.length > 0) {
                     $scope.authentication.user.courses.pop();
