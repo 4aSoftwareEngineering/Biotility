@@ -25,13 +25,13 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
 ]);
 
 //quiz question CRUD functions
-angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questions',
-	function($scope, $http, Questions){
-		$scope.find = function(){
+angular.module('core').controller('QuestionControl',['$scope', '$http', '$stateParams', 'Questions',
+	function($scope, $http, $stateParams, Questions){
+		$scope.findQuestions = function(){
 			$http.get('/api/data/questions').success(function(res){
 				$scope.data = res;
 				Questions = res; 
-			}
+			});
 			// Split it into separate questions
 			Questions.then(function(response) {
 				$scope.questions = response.data;
@@ -41,7 +41,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 		};
 		
 		// pull up individual question details 
-		$scope.findOne = function(){
+		$scope.findOneQuestion = function(){
 			var id = $stateParams.questionId;	//id of current question
 			
 			$http.get('/api/data/questions/' + id)
@@ -53,7 +53,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 		};
 		
 		// add a new question
-		$scope.create = function(isValid){
+		$scope.createQuestion = function(isValid){
 			if(!isValid){
 				return false;
 			}
@@ -72,7 +72,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 				});
 		};
 		
-		$scope.update = function(isValid){
+		$scope.updateQuestion = function(isValid){
 			if (!isValid){
 				return false;
 			}
@@ -92,7 +92,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', 'Questio
 		};
 		
 		// remove a question from DB
-		$scope.remove = function(){
+		$scope.removeQuestion = function(){
 			var id = $stateParams.questionId;	//id of current question
 			//.delete map to factory
 			//Questions.delete(id)
