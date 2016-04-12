@@ -2,30 +2,53 @@
     font-family: AwesomeFont;
     src: url('/modules/core/client/img/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'), url('/modules/core/client/img/fonts/fontawesome-webfont.woff') format('woff'), url('/modules/core/client/img/fonts/fontawesome-webfont.ttf') format('truetype'), url('/modules/core/client/img/fonts/fontawesome-webfont.svg#svgFontName') format('svg');
 }
+
 body {
     font-family: AwesomeFont, Verdana, Geneva, sans-serif;
 }
+
 .startButton {
     color: black;
     margin-top: 100px;
     text-align: center;
     border-style: solid;
 }
+
 .results-h {
     font-size: 80px;
     text-align: center;
     margin-top: -50px;
 }
+
 .results-s {
     margin-top: 30px;
     font-size: 30px;
 }
 
-results-s ul{
+results-s ul {
     font-size: 20px;
 }
+
 .results-property {
     list-style: none;
     margin-left: 10px;
     font-size: 14px;
+}
+
+.qSupp {
+    cursor: pointer;
+}
+
+.qText {
+    font-size: 20px;
+}
+
+.qForm {
+    margin-top: 25px;
+}
+.qForm li > label{
+    margin-left: 5px;
+}
+.qButton{
+    width: 100%;
 }
