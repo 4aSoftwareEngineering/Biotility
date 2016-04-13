@@ -16,13 +16,25 @@
 	        <p ng-hide="question.answers.MA" ng-show="question.answers.MCTF[2]"> CORRECT ANSWER: {{question.answers.MCTF[question.answers.correct-1]}}</p>
 	        <p> HINT: {{question.hint}}</p>
 	        <p> RESOURCE LINKS: {{question.link}}</p>
-	        <a class="btn btn-primary" ui-sref="question.edit({ questionId: question._id })">
+	        <a ng-hide="editMode" class="btn btn-primary" ng-click="editMode=1">
 	          <i class="glyphicon glyphicon-edit"></i>
 	          Edit
 	        </a>
-	        <a class="btn btn-danger" ng-click="removeQuestion(question);">
+	        <a ng-hide="editMode" class="btn btn-primary" ui-sref="question_edit">
+	          <i class="glyphicon glyphicon-cancel"></i>
+	          Cancel
+	        </a>
+	        <a ng-hide="editMode" class="btn btn-danger" ng-click="removeQuestion(question)">
 	          <i class="glyphicon glyphicon-trash"></i>
 	          Remove
+	        </a>
+	        <a ng-show="editMode" class="btn btn-primary" ng-click="updateQuestion()">
+	          <i class="glyphicon glyphicon-submit"></i>
+	          Submit
+	        </a>
+	        <a ng-show="editMode" class="btn btn-primary" ui-sref="question_edit">
+	          <i class="glyphicon glyphicon-cancel"></i>
+	          Cancel
 	        </a>
 	      </div>
 	    </div>

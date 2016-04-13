@@ -44,6 +44,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         url: '/admin/question_edit/:questionId',
         templateUrl: '/modules/core/client/views/view-question.client.view.html'
       })
+      .state('question_create', {
+        url: '/admin/question_edit/new',
+        templateUrl: '/modules/core/client/views/create-question.client.view.html'
+      })
       .state('studentprofile', {
         url: '/student/{userName:.+}',
         templateUrl: 'modules/core/client/views/profile.client.view.html'
