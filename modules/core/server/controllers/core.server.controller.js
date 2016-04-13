@@ -9,9 +9,10 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource'),
-
     StudentGrades = mongoose.model('StudentGrades'),
+	Comments = mongoose.model('Comments'),
     SubHead = mongoose.model('SubHead');
+	
 
 /**
  * Render the main application page
@@ -44,7 +45,17 @@ exports.renderServerError = function(req, res) {
     });
 };
 
-
+//for the comments
+exports.getComments = function(req, res) {
+    Comments.find({}).lean().exec(function(err, comments) {
+		for(var i=0;i<comments.length;i++){
+			console.log(i+": "+comments[i].comment);
+			
+		}
+		
+        return res.end(JSON.stringify(comments));
+    });
+};
 exports.sendMail = function(req, res) {
     console.log("EMAILS");
     var data = req.body;
@@ -75,6 +86,132 @@ exports.sendMail = function(req, res) {
     });
 };
 
+exports.getGradesForAdmin = function(req, res) {
+    Subject.find({},{'name':1}).lean().exec(function(err, courses) {
+		for(var place=0; place<courses.length; place++){
+		
+		getAttempts(courses[place].name);
+		
+		}
+		return res.end(JSON.stringify(courses));
+	});
+			//console.log("Quiz: "+ courses[place].name);
+	function getAttempts(cat){
+			StudentGrades.find({'analytics.question.type':'SC','category':cat},{'analytics':1,'category':1}).lean().exec(function(err, aData) {
+				var sizeOfQuiz=0;
+				for(var g=0;g<aData.length;g++){
+					if(aData[g].analytics.length>sizeOfQuiz)sizeOfQuiz=aData[g].analytics.length;
+				}
+				var avgs = [0];
+				var modes = [0];
+				//make array of averages
+				//make arrar of modes0
+				for(var ez=1;ez<sizeOfQuiz;ez++){
+					avgs[avgs.length] =0;
+					modes[modes.length]=0;
+				}
+				
+				for(var j = 0 ; j<sizeOfQuiz;j++){
+					var choice = 0;
+					var total=0;
+					var counter=0;
+					var ans = [0,0,0,0,0,0];
+					for(var i=0;i<aData.length;i++){
+						
+						if(j>=aData[i].analytics.length)var z=5;
+						else{
+							if(aData[i].analytics[j].attempts==1){
+								choice=parseInt(aData[i].analytics[j].question.answers.correct);
+								//console.log("answer: "+choice);
+								
+							}
+							else{
+								for(var wrong=0;wrong<aData[i].analytics[j].question.answers.MCTF.length;wrong++){
+									if(aData[i].analytics[j].firstIncorrect==aData[i].analytics[j].question.answers.MCTF[wrong]){
+										choice=wrong;
+										break;
+									}
+								}
+								choice++;
+								//console.log("answer: "+choice);
+								
+							}
+							total+=aData[i].analytics[j].attempts;
+							ans[choice]+=1;
+							counter++;
+							
+						}
+					}
+					var average=total/counter;
+					var amount = 0;
+					var mode = 0;
+					avgs[j]=average;
+					 for(var ayy=1; ayy< ans.length; ayy++){
+						 
+                        if(ans[ayy] > amount){
+                                amount = ans[ayy];
+								mode = ayy;
+						}
+								 
+					}
+					modes[j]=mode;	
+						
+					
+					
+				}
+				
+				
+				//////////////////////////////////////////////////////////// 
+				
+				
+				
+				
+				//loop again
+				//get data
+				//somehow save it?
+				//console.log("Quiz: "+cat);
+			for(var pr = 0;pr<avgs.length;pr++){
+				//console.log("Question: "+pr+"   Average: "+ avgs[pr]+ "    Mode: "+ modes[pr]);
+				}
+				
+				
+				return res.end(JSON.stringify(aData));
+			});
+		}
+
+	
+};
+
+//exports.plot = function(req,res){
+//    console.log("PLOTLY "+req.user.courses.length );
+    // console.log("COURSE GIVEN: " + req.course);
+    // var params = req.body; 
+    // console.log("PLOTLY "+params.person.user.courses.length );
+    // console.log("COURSE GIVEN: " + req.param('given'));
+//    var searchCourse = req.param('given');
+//    var num = [];
+//    var classes = [];
+//    var grade = [];
+//    var xside = [];
+    // var datagraph = [];
+       
+    //find all the courses   
+//    for(var i = 0; i < req.user.courses.length ; i++){
+//        num.push(req.user.courses[i].number);
+//    }  
+
+    //find all the students in that course
+//    var findcount = false; 
+//    console.log("AMOUNT:" + req.user.courses.length);
+//    for(var s = 0; s < req.user.courses.length ; s++){
+        
+//        findStudents(num[s]);
+//    }
+
+    //for(var gradesize = 0; gradesize < 20 ; gradesize++){
+     //   grade[gradesize] = 0;
+    //}
+//=======
 //Old Plotly Refernce
 // exports.plot = function(req,res){
 //   var ctx = $("#myChart").get(0).getContext("2d");
@@ -101,6 +238,7 @@ exports.sendMail = function(req, res) {
 //   for(var gradesize = 0; gradesize < 20 ; gradesize++){
 //     grade[gradesize] = 0;
 //   }
+//>>>>>>> master
     
 //     //find all grades for the course code
 //   function findGrades(givenstudent, course){
@@ -479,7 +617,6 @@ exports.parseUsers = function(req, res) {
         return res.end(JSON.stringify(users));
     });
 };
-
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
     QuizQuestion.find({}, function(err, docs) {

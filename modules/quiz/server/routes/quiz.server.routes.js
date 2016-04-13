@@ -19,6 +19,9 @@ module.exports = function(app) {
     app.route('/api/quiz_result')
         .get(quiz.getGrades)
         .post(quiz.updateGrades);
-
+	
+	app.route('/api/leave_comment')
+		.post(quiz.uploadComments);
+	
     app.param('quizID', quiz.quizQuestionByID);
 };

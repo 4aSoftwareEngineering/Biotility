@@ -240,10 +240,14 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 }]);
 
+//<<<<<<< HEAD
+//angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 
+//    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades) {
+//=======
 
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments) {
 
 
 
@@ -252,6 +256,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $("#myBtn").click(function(){
                 $("#myModal").modal();
             });
+        });
+		
+		$scope.getComs = function() {
+			
+
+			$http.get('/api/leave_comment')
+            .success(function(res) {
+                console.log(res);
+            });		
+			
+		}
+		Comments.loadComments().then(function(response) {
+            $scope.Comments = response.data;
         });
 
 
@@ -276,7 +293,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log("I am a admin");
             $scope.isAdmin = true;
         }
-
+		
         //input to put courseNames
         $scope.input = {};
 
@@ -285,9 +302,16 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.input.courseNames = [];
         $scope.input.coursePeriods= [];
 
+
+        Grades.loadGrades().then(function(response) {
+            $scope.Grades = response.data;
+        });
+
+
         ResourceClicks.loadClicks().then(function(response) {
             $scope.resources = response.data;
         });
+
 
         //for each course in their schema
         $scope.authentication.user.courses.forEach(
@@ -384,8 +408,66 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         };
 
-        //Isabel
-        $scope.add = function(course,period) {
+		
+		$scope.exportToCSV = function() {
+			var arrData = ["Saab", "Volvo", "BMW"];
+				console.log("we got it motherfucker");
+				var CSV = '';    
+				//Set Report title in first row or line
+				
+				CSV += "Statistics" + '\r\n\n';
+				
+				//This condition will generate the Label/Header
+				
+				//1st loop is to extract each row
+				for (var i = 0; i < arrData.length; i++) {
+					var row = "";
+					
+					//2nd loop will extract each column and convert it in string comma-seprated
+					for (var index in arrData[i]) {
+						row += '"' + arrData[i][index] + '",';
+					}
+
+					row.slice(0, row.length - 1);
+					
+					//add a line break after each row
+					CSV += row + '\r\n';
+				}
+			
+				if (CSV == '') {        
+					alert("Invalid data");
+					return;
+				}   
+				
+				//Generate a file name
+				var fileName = "Statistics";
+				var ReportTitle = "Quiz Statistics";
+				//this will remove the blank-spaces from the title and replace it with an underscore
+				fileName += ReportTitle.replace(/ /g,"_");   
+				
+				//Initialize file format you want csv or xls
+				var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+				
+				// Now the little tricky part.
+				// you can use either>> window.open(uri);
+				// but this will not work in some browsers
+				// or you will not get the correct file extension    
+				
+				//this trick will generate a temp <a /> tag
+				var link = document.createElement("a");    
+				link.href = uri;
+				
+				//set the visibility hidden so it will not effect on your web-layout
+				link.style = "visibility:hidden";
+				link.download = fileName + ".csv";
+				
+				//this part will append the anchor tag and remove it after automatic click
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+		};
+		
+        $scope.add = function(course, period) {
 
             if (course !== '') {
 
@@ -702,7 +784,51 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
         };
 
+/*
+<<<<<<< HEAD
+        $scope.viewStats = function(course) {
+            // Chart.js Stuff
+            var ctx = $("#myChart").get(0).getContext("2d");
+            // // This will get the first returned node in the jQuery collection.
+            // var myNewChart = new Chart(ctx);
+            var myBarChart = new Chart(ctx).Bar(data);
+            var data = {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                }, {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,0.8)",
+                    highlightFill: "rgba(151,187,205,0.75)",
+                    highlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }]
+            };
+*/
+            
+            //Plotly Stuff
+            // console.log("Passing: "+ course);
+            // var route = '/api/data/plotly';
 
+            // // var params = ({
+            // //     person: $scope.user, 
+            // //     given: course 
+            // // });
+
+            // $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
+            // // $http.get(route, params).success(function (req, res) {
+            //     console.log("plotly go");
+            // }); 
+
+
+            // location.reload();
+//=======
 
         //Isabel - bar graph
         $scope.viewStats = function(course){
@@ -750,6 +876,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }).then(function(error) {
                 console.log("Plot eror" + error);
             });
+
 
 
         };

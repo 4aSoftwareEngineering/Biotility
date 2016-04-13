@@ -34,6 +34,16 @@ var questionSchema = new Schema({
     }
 
 });
+var commentSchema = new Schema({
+    category: {
+        type: String,
+        required: true
+    },
+    comment: {
+        type: String,
+        required: false
+    }
+});
 
 
 var gradeSchema = new Schema({
@@ -62,3 +72,4 @@ var gradeSchema = new Schema({
 
 mongoose.model('QuizQuestion', questionSchema);
 mongoose.model('StudentGrades', gradeSchema);
+mongoose.model('Comments' , commentSchema);
