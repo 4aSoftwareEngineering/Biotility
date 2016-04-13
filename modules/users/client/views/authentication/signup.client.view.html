@@ -42,34 +42,32 @@
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 
 
-
+  <!-- Michael Arboleda: Added Lables, Fixed form on mobile/smaller Screen>
 	<!--submit form-->
     <form ng-submit="signup(true)">
    		 <div class="container topmargin-50" align="center">
 
-         <label>First Name</label>
+
          <div class="inputs">
-           <input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
+           <label>First Name &nbsp;</label><input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
          </div>
 
-         <label>Last Name</label>
          <div class="inputs">
-           <input type="text" ng-model="credentials.lastName" required placeholder="Last Name" required style="height:40px;">
+           <label>Last Name &nbsp;</label><input type="text" ng-model="credentials.lastName" required placeholder="Last Name" required style="height:40px;">
          </div>
 
-         <label>E-Mail</label>
+
          <div class="inputs">
-           <input type="email" ng-model="credentials.email" required placeholder="E-mail" required style="height:40px;">
+           <label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;E-Mail &nbsp;</label><input type="email" ng-model="credentials.email" required placeholder="E-mail" required style="height:40px;">
          </div>
 
-         <label>Username</label>
+
          <div class="inputs">
-           <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
+           <label>Username &nbsp;</label><input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
          </div>
 
-         <label>Password</label>
          <div class="inputs">
-            <input type="password" ng-model="credentials.password" required placeholder="Password" required style="height:40px;">
+           <label>Password &nbsp;</label><input type="password" ng-model="credentials.password" required placeholder="Password" required style="height:40px;">
          </div>
 
        </div>
