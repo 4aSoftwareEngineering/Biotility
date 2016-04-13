@@ -246,8 +246,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
 //=======
 
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Greades, ResourceClicks) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments) {
 
 
 
@@ -257,7 +257,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $("#myModal").modal();
             });
         });
+		
+		$scope.getComs = function() {
+			
 
+			$http.get('/api/leave_comment')
+            .success(function(res) {
+                console.log(res);
+            });		
+			
+		}
+		Comments.loadComments().then(function(response) {
+            $scope.Comments = response.data;
+        });
 
 
 

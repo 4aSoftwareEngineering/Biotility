@@ -46,12 +46,16 @@ exports.renderServerError = function(req, res) {
 };
 
 //for the comments
-exports.retrieveComments = function(req, res) {
+exports.getComments = function(req, res) {
     Comments.find({}).lean().exec(function(err, comments) {
+		for(var i=0;i<comments.length;i++){
+			console.log(i+": "+comments[i].comment);
+			
+		}
+		
         return res.end(JSON.stringify(comments));
     });
 };
-
 exports.sendMail = function(req, res) {
 
     var data = req.body;

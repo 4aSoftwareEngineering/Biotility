@@ -270,7 +270,7 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
 
 		var sub = document.getElementsByClassName("btn btn-default btn-success btn-block")[0];
 		sub.onclick = function() {
-			console.log("clicked");
+	
 			$scope.uploadUserComment();
 		}		
 
@@ -287,9 +287,9 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
         console.log("User", $scope.user);
 		
 		$scope.uploadUserComment = function() {
-			console.log("clicked upload");
+			
 			$scope.comment = $('input[id="comment"]').val();
-			console.log("comment"+$scope.comment);
+			
 			var commentToUpload = {
 			category: $stateParams.category,
 			comment: $scope.comment,

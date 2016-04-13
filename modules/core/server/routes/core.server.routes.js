@@ -47,7 +47,10 @@ module.exports = function(app) {
     //Isabel's Work Sprint2/Sprint3
     app.route('/api/data/plot').get(core.plot);
     app.route('/api/data/email').post(core.email);
-
+	//for the comments
+	app.route('/api/get_Comments')
+		.get(core.getComments);
+		
     app.route('/api/data/adminGrades').get(core.getGradesForAdmin);
 
     // Fetch question data from database
