@@ -503,6 +503,21 @@ exports.addQuestion = function(req, res) {
 exports.updateQuestion = function(req, res) {
     var question_to_update = req.quizQuestion;
     
+    question_to_update.category = req.body.category;
+    question_to_update.type = req.body.type;
+    question_to_update.text = req.body.text;
+    question_to_update.answers = req.body.answers;
+    question_to_update.hint = req.body.hint;
+    question_to_update.link = req.body.link;
+    
+    question_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+
+        } else {
+            res.json(question_to_update);
+        }
+    });
 };
 
 // Delete quiz question 

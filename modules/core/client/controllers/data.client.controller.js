@@ -27,16 +27,11 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
 //quiz question CRUD functions
 angular.module('core').controller('QuestionControl',['$scope', '$http', '$state', '$location', '$stateParams', 'QuizQuestions',
 	function($scope, $http, $state, $location, $stateParams, QuizQuestions){
+		// get full list of questions from DB 
 		$scope.findQuestions = function(){
 			QuizQuestions.loadQuestions().then(function(response) {
             	$scope.questions = response.data;
         	});
-			// // Split it into separate questions
-			// Questions.then(function(response) {
-			// 	$scope.questions = response.data;
-			// }, function(error){
-			// 	$scope.error = 'Unable to retrieve individual questions.\n'+error;
-			// });
 		};
 		
 		// pull up individual question details 
@@ -58,7 +53,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 			if(!isValid){
 				return false;
 			}
-			if($scope.type == 'MA'){
+			if($scope.type === 'MA'){
 				var quizQuestion = {
 					category: $scope.category,
 				    type: $scope.type,
@@ -91,7 +86,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				    hint: $scope.hint,
 				    link: $scope.link
 				};
-			} else if($scope.type == 'TF') {
+			} else if($scope.type === 'TF') {
 				var quizQuestion = {
 					category: $scope.category,
 				    type: $scope.type,
@@ -122,8 +117,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				    link: $scope.link
 				};
 			}
-
-			$scope.newQuestion = quizQuestion;	
+	
 			// Save the question to DB
 			$http.post('/api/data/questions', quizQuestion)
 				.then(function(response){
@@ -135,25 +129,84 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				});
 		};
 		
-		$scope.updateQuestion = function(isValid){
+		$scope.updateQuestion = function(question_obj, isValid){
+			var id = question_obj._id;	//id of current question
 			if (!isValid){
 				return false;
 			}
+			if($scope.type === 'MA'){
+				var quizQuestion = {
+					category: $scope.category,
+				    type: $scope.type,
+				    text: $scope.qtext,
+				    answers: {
+				        MA: {
+				        	present: [
+				        		$scope.ma3,
+				        		$scope.ma1,
+				        		$scope.ma5,
+				        		$scope.ma2,
+				        		$scope.ma4
+				        	],
+				        	correct: [
+				        		$scope.ma1,
+				        		$scope.ma2,
+				        		$scope.ma3,
+				        		$scope.ma4,
+				        		$scope.ma5
+				        	],
+				        },
+				        MCTF: [
+				        	$scope.mc1,
+				        	$scope.mc2,
+				        	$scope.mc3,
+				        	$scope.mc4,
+				        	$scope.mc5
+				        ]
+				    },
+				    hint: $scope.hint,
+				    link: $scope.link
+				};
+			} else if($scope.type === 'TF') {
+				var quizQuestion = {
+					category: $scope.category,
+				    type: $scope.type,
+				    text: $scope.qtext,
+				    answers: {
+				        MCTF: [],
+				        correct: $scope.correct
+				    },
+				    hint: $scope.hint,
+				    link: $scope.link
+				};
+			} else {
+				var quizQuestion = {
+					category: $scope.category,
+				    type: $scope.type,
+				    text: $scope.qtext,
+				    answers: {
+				        MCTF: [
+				        	$scope.mc1,
+				        	$scope.mc2,
+				        	$scope.mc3,
+				        	$scope.mc4,
+				        	$scope.mc5
+				        ],
+				        correct: $scope.correct
+				    },
+				    hint: $scope.hint,
+				    link: $scope.link
+				};
+			} 
 			
-			var id = $stateParams.questionId;	// id of current question 
-			
-			var question = {
-			
-			};
-			
-			$http.put('/api/data/questions/' + id, question)
-				.success(function(response){
+			// save it in the DB 
+			$http.put('/api/data/questions/' + id, quizQuestion)
+				.then(function(response){
 					//redirect to list if successful
 					$scope.findQuestions();	// refresh the list 
-          			$state.go('question_edit', { successMessage: 'Question succesfully updated!' });
-				}).error( function(response){
-          			$scope.error = 'Unable to update question!\n' + response;
-					console.log(response);
+          			$state.go('question_edit', { successMessage: 'Question succesfully added!' });
+				}, function(error){
+          			$scope.error = 'Unable to save question!\n' + error;
 				});
 		};
 		
