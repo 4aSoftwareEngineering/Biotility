@@ -40,14 +40,16 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 		};
 		
 		// pull up individual question details 
-		$scope.findOneQuestion = function(){
+		$scope.findOneQuestion = function(question_obj){
 			var id = $stateParams.questionId;	//id of current question
-			
+			//$stateParams.questionId = id;
+			console.log("id is " + id);
 			$http.get('/api/data/questions/' + id)
 				.then(function(response){
-					//redirect to list if successful
+				//	$state.go('question_view', { successMessage: 'Question found!' });
+					$scope.question = response.data;
 				}, function(error){
-          			$scope.error = 'Unable to save question!\n' + error;
+          			$scope.error = 'Unable to get question!\n' + error;
 				});
 		};
 		

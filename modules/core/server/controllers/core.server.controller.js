@@ -480,6 +480,12 @@ exports.parseQuestions = function(req, res) {
     });
 };
 
+// Read current question
+exports.readQuestion = function(req, res) {
+  /* send back the question as json from the request */
+  res.json(req.quizQuestion);
+};
+
 // Create new quiz question 
 exports.addQuestion = function(req, res) {
     var question_to_add = req.quizQuestion;

@@ -1,0 +1,31 @@
+<!-- This view is for viewing an individual question by the admin. -->
+<div ng-controller="authController" ng-show="isAdmin">
+	<div class="row" ng-controller="QuestionControl" ng-init="findOneQuestion()">
+	  <div class="col-md-offset-1 col-md-10">
+	    <div ng-show="error" class="text-danger">
+	      <strong ng-bind="error"></strong>
+	    </div ng-show="question"><br><br>
+	    <div class="jumbotron">
+	      <div >
+	        <p> COURSE CATEGORY: {{question.category}}</p>
+	        <p> QUESTION TYPE: {{question.type}}</p>
+	        <p> QUESTION: {{question.text}}</p>
+	        <p> ANSWERS: {{question.answers.MCTF}}</p>
+	        <p ng-show="question.answers.MA"> MATCHING ANSWERS: {{question.answers.MA.correct}}</p>
+	        <p ng-hide="question.answers.MA"> CORRECT ANSWER CHOICE: {{question.answers.correct}}</p>
+	        <p ng-hide="question.answers.MA" ng-show="question.answers.MCTF[2]"> CORRECT ANSWER: {{question.answers.MCTF[question.answers.correct-1]}}</p>
+	        <p> HINT: {{question.hint}}</p>
+	        <p> RESOURCE LINKS: {{question.link}}</p>
+	        <a class="btn btn-primary" ui-sref="question.edit({ questionId: question._id })">
+	          <i class="glyphicon glyphicon-edit"></i>
+	          Edit
+	        </a>
+	        <a class="btn btn-danger" ng-click="removeQuestion(question);">
+	          <i class="glyphicon glyphicon-trash"></i>
+	          Remove
+	        </a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
