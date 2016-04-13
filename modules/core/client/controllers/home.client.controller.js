@@ -1,9 +1,9 @@
 'use strict';
 
 /** SEE core.server.routes.js  */
-function Chart(nonsense){
-    this.nothing = nonsense;
-}
+// function Chart(nonsense){
+//     this.nothing = nonsense;
+// }
 
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', '$http', 'Subjects', 'Users',
 
