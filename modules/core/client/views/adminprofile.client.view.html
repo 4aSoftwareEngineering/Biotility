@@ -52,6 +52,7 @@
         <div ng-show="editVisible"> <!--begin display question edit buttons-->
         	<br><a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
         	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a>
+			<a class="btn btn-primary" ng-click="exportToCSV()">DownloadStatistics</a>
         </div>
         <div ng-show="statsVisible">
             <div ng-repeat="grade in Grades">

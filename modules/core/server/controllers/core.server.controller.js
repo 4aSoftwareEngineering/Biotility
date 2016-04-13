@@ -10,7 +10,9 @@ var mongoose = require('mongoose'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource'),
     StudentGrades = mongoose.model('StudentGrades'),
+	Comments = mongoose.model('Comments'),
     SubHead = mongoose.model('SubHead');
+	
 
 /**
  * Render the main application page
@@ -43,6 +45,12 @@ exports.renderServerError = function(req, res) {
     });
 };
 
+//for the comments
+exports.retrieveComments = function(req, res) {
+    Comments.find({}).lean().exec(function(err, comments) {
+        return res.end(JSON.stringify(comments));
+    });
+};
 
 exports.sendMail = function(req, res) {
 
@@ -76,7 +84,7 @@ exports.getGradesForAdmin = function(req, res) {
 				var avgs = [0];
 				var modes = [0];
 				//make array of averages
-				//make arrar of modes
+				//make arrar of modes0
 				for(var ez=1;ez<sizeOfQuiz;ez++){
 					avgs[avgs.length] =0;
 					modes[modes.length]=0;
@@ -538,7 +546,6 @@ exports.parseUsers = function(req, res) {
         return res.end(JSON.stringify(users));
     });
 };
-
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
     QuizQuestion.find({}, function(err, docs) {

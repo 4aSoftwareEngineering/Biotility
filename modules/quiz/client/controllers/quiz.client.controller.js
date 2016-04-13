@@ -260,6 +260,7 @@ Controller for the finished quiz results
 
 angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$stateParams', 'Authentication',
     function($http, $scope, $stateParams, Authentication) {
+		$scope.comment=null;
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
         $(document).ready(function() {
@@ -267,7 +268,11 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
                 $("#myModal").modal();
             });
         });
-
+		var sub = document.getElementsByClassName("btn btn-default btn-success btn-block")[0];
+		sub.onclick = function() {
+			console.log("clicked");
+			$scope.uploadUserComment();
+		}		
 
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
@@ -278,9 +283,23 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
             },
             analytics: $scope.analytics,
         };
-
         console.log("User", $scope.user);
-
+		
+		$scope.uploadUserComment = function() {
+			console.log("clicked upload");
+			var commentToUpload = {
+			category: $stateParams.category,
+			comment: $scope.comment,
+		};
+			
+			
+			$http.post('/api/leave_comment', commentToUpload)
+            .success(function(res) {
+                console.log(res);
+            });		
+		}
+		
+		
         $http.post('/api/quiz_result', studentGrades)
             .success(function(res) {
                 console.log(res);

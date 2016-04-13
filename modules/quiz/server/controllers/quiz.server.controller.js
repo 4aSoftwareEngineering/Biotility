@@ -12,6 +12,7 @@ var path = require('path'),
     questionBank = [],
     StudentGrades = mongoose.model('StudentGrades'),
     User = mongoose.model('User'),
+	Comments = mongoose.model('Comments'),
     xlsxj = require("xlsx-to-json"),
     _ = require("underscore"),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
@@ -55,7 +56,21 @@ exports.getGrades = function(req, res) {
 /*
 Inserts the quiz results to the Student profile
 */
-
+exports.uploadComments = function(req, res) {
+	console.log("it is in the upload export func");
+    var comment = new Comments(req.body);
+	console.log(comment.category);
+	console.log(comment.comment);
+	comment.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(comment);
+        }
+    });
+};
 exports.updateGrades = function(req, res) {
     var studentGrade = new StudentGrades(req.body);
 

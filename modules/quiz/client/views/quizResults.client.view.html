@@ -61,10 +61,10 @@
             <div class="modal-body">
                 <p>Please Leave A Comment Pertaining To The Quiz.
                 </p>
-                <form name="contactForm" ng-submit="sendMail()">
+                <form name="contactForm" ng-submit="uploadUserComment()">
                     <div class="form-group">
                         <label for="usrname"><span class="glyphicon glyphicon-user"></span> Comment</label>
-                        <input type="text" class="form-control" ng-model="emText" id="usrname" placeholder="Comment">
+                        <input type="text" class="form-control" ng-model="comment" id="usrname" placeholder="Comment">
                     </div>
                     <button type="submit" id="submit" class="btn btn-default btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Confirm</button>
                 </form>
