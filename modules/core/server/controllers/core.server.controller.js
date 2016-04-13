@@ -488,8 +488,15 @@ exports.readQuestion = function(req, res) {
 
 // Create new quiz question 
 exports.addQuestion = function(req, res) {
-    var question_to_add = req.quizQuestion;
-
+    var newQuestion = new QuizQuestion(req.body);
+    newQuestion.save(function(err) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        } else {
+            res.json(newQuestion);
+        }
+    });
 };
 
 // Update quiz question 

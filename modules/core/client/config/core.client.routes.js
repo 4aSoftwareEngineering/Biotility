@@ -45,7 +45,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         templateUrl: '/modules/core/client/views/view-question.client.view.html'
       })
       .state('question_create', {
-        url: '/admin/question_edit/new',
+        url: '/admin/question_add/new',
         templateUrl: '/modules/core/client/views/create-question.client.view.html'
       })
       .state('studentprofile', {
