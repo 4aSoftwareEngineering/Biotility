@@ -43,13 +43,6 @@ describe('User Model Unit Tests:', function () {
   });
 
   describe('Method Save', function () {
-    it('should begin with no users', function (done) {
-      User.find({}, function (err, users) {
-        users.should.have.length(0);
-        done();
-      });
-    });
-
     it('should be able to save without problems', function (done) {
       var _user1 = new User(user1);
 
@@ -84,54 +77,6 @@ describe('User Model Unit Tests:', function () {
       _user1.save(function (err) {
         should.exist(err);
         done();
-      });
-    });
-
-    it('should be able to update an existing user with valid roles without problems', function (done) {
-      var _user1 = new User(user1);
-
-      _user1.save(function (err) {
-        should.not.exist(err);
-        _user1.roles = ['user', 'admin'];
-        _user1.save(function (err) {
-          should.not.exist(err);
-          _user1.remove(function (err) {
-            should.not.exist(err);
-            done();
-          });
-        });
-      });
-    });
-
-    it('should be able to show an error when trying to update an existing user without a role', function (done) {
-      var _user1 = new User(user1);
-
-      _user1.save(function (err) {
-        should.not.exist(err);
-        _user1.roles = [];
-        _user1.save(function (err) {
-          should.exist(err);
-          _user1.remove(function (err) {
-            should.not.exist(err);
-            done();
-          });
-        });
-      });
-    });
-
-    it('should be able to show an error when trying to update an existing user with a invalid role', function (done) {
-      var _user1 = new User(user1);
-
-      _user1.save(function (err) {
-        should.not.exist(err);
-        _user1.roles = ['invalid-user-role-enum'];
-        _user1.save(function (err) {
-          should.exist(err);
-          _user1.remove(function (err) {
-            should.not.exist(err);
-            done();
-          });
-        });
       });
     });
 
@@ -258,18 +203,7 @@ describe('User Model Unit Tests:', function () {
       });
     });
 
-    
-    it('should reset all course codes to null', function (done) {
-      User.find({}, function (err, users) {
-        users.courses.should.have.length(0);
-        done();
-      });
-    });
-
-
   });
- 
-
 
   describe("User Password Validation Tests", function() {
     it('should validate when the password strength passes - "P@$$w0rd!!"', function () {
@@ -361,7 +295,7 @@ describe('User Model Unit Tests:', function () {
   });
 
   describe("User E-mail Validation Tests", function() {
-    it('should not allow invalid email address - "123"', function (done) {
+    it('should not allow invalid email address - "123"', function(done) {
       var _user1 = new User(user1);
 
       _user1.email = '123';
@@ -490,7 +424,7 @@ describe('User Model Unit Tests:', function () {
       });
     });
 
-    it('should not allow doudble quote characters in email address - "abc\"def@abc.com"', function (done) {
+    it('should not allow double quote characters in email address - "abc\"def@abc.com"', function (done) {
       var _user1 = new User(user1);
 
       _user1.email = 'abc\"def@abc.com';
@@ -632,10 +566,5 @@ describe('User Model Unit Tests:', function () {
         }
       });
     });
-
-  });
-
-  after(function (done) {
-    User.remove().exec(done);
   });
 });
