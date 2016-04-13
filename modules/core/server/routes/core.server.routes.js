@@ -49,7 +49,7 @@ module.exports = function(app) {
     app.route('/api/data/email').post(core.email);
 
 
-    // Fetch question data from database
+    // Routes for question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
     app.route('/api/data/questions').post(core.addQuestion);
     app.route('/api/data/questions/:questionId').put(core.updateQuestion);

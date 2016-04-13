@@ -8,7 +8,7 @@
 
 	      	<form name="questionForm" class="form-horizontal" ng-submit="createQuestion(questionForm.$valid)">
 	        <fieldset>
-
+	        	<!-- Select question category from drop down list -->
 	            <div class="form-group">
 	                <label for="category"> Select Question Category: </label>
 	                <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="category">
@@ -23,13 +23,13 @@
 	                    <option >Laboratory Equipment</option>
 	                    <option >Laboratory Skills/Applications</option>
 	                    <option >Preparing Solutions</option>
-	                    <option >Research/Scientific Method</option>
+	                    <option >Research & Scientific Method</option>
 	                </select>
 				    <div ng-messages="questionForm.category.$error" role="alert">
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
 	            </div>
-
+	            <!-- Select question type and alter form based on selection -->
 	            <div class="form-group" show-errors>
 				   	<label for="type">Select Question Type: </label>
                     <label class="radio-inline">
@@ -45,7 +45,7 @@
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
                 </div>
-
+                <!-- Question Text -->
 				<div class="form-group" show-errors>
 				    <label for="qtext">Question Text: </label>
 				    <input name="qtext" type="text" ng-model="qtext" id="qtext" class="form-control" placeholder="Insert text of the question" required>
@@ -53,7 +53,7 @@
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
 				</div>
-
+				<!-- Correct answer for MC/TF-->
 				<div ng-show="type!='MA'" class="form-group" show-errors >
 					<div class="form-group" show-errors>
 					    <label for="correct">Correct Answer Choice: </label>

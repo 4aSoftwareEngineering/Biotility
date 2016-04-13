@@ -24,7 +24,7 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
   	}
 ]);
 
-//quiz question CRUD functions
+//quiz question CRUD functions -RB
 angular.module('core').controller('QuestionControl',['$scope', '$http', '$state', '$location', '$stateParams', 'QuizQuestions',
 	function($scope, $http, $state, $location, $stateParams, QuizQuestions){
 		// get full list of questions from DB 
@@ -37,11 +37,9 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 		// pull up individual question details 
 		$scope.findOneQuestion = function(question_obj){
 			var id = $stateParams.questionId;	//id of current question
-			//$stateParams.questionId = id;
 			console.log("id is " + id);
 			$http.get('/api/data/questions/' + id)
 				.then(function(response){
-				//	$state.go('question_view', { successMessage: 'Question found!' });
 					$scope.question = response.data;
 				}, function(error){
           			$scope.error = 'Unable to get question!\n' + error;
