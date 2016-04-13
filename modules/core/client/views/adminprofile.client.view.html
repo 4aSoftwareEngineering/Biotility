@@ -48,7 +48,22 @@
 		  </div>
 
 		</div> <!-- end show profile -->
-        
+        <div ng-show="statsVisible">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Resource</th>
+                        <th># of Clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="resource in resources">
+                        <td>{{resource.title}}</td>
+                        <td>{{resource.clicks}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div ng-show="editVisible"> <!--begin display question edit buttons-->
         	<br><a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
         	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a>

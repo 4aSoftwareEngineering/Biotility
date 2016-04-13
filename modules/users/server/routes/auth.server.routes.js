@@ -16,7 +16,7 @@ module.exports = function(app) {
     app.route('/api/auth/reset/:token').post(users.reset);
 
     // Setting up the users authentication api
-     app.route('/api/auth/signup/teacher').post(users.signup);
+    app.route('/api/auth/signup/teacher').post(users.signup);
     app.route('/api/auth/signup').post(users.signup).get(users.parseTeachers);
     app.route('/api/auth/signup/student').post(users.signupStudent);
     app.route('/api/auth/signin').post(users.signin);

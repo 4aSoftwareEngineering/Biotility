@@ -26,6 +26,7 @@ describe('User Model Unit Tests:', function () {
       courses: ["course 1"],
       password: 'M3@n.jsI$Aw3$0m3',
       provider: 'local'
+
     };
     // user2 is a clone of user1
     user2 = user1;

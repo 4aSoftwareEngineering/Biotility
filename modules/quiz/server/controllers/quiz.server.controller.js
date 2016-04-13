@@ -40,11 +40,9 @@ function questionExists(question) {
     _.find(questionBank, function(item) {
         isMatch = item.text === question.text && item.link === question.link && item.hint === question.hint;
         if (isMatch) {
-            console.log(item.text, question.text);
             return true;
         }
     });
-    console.log("Return", isMatch);
     return isMatch;
 }
 
@@ -125,11 +123,12 @@ exports.CSVtoJSON = function(req, res) {
                     console.error("Error Parsing XLSX", err);
                 } else {
                     console.log("Successfully parsed XLSX.");
-                    uploadQuizQuestions(data);
+                    uploadQuizQuestions(data, res);
                 }
             });
         }
     });
+    //res.end("hello lol");
 };
 
 function uploadQuizQuestions(result, res) {
@@ -138,23 +137,28 @@ function uploadQuizQuestions(result, res) {
         if (!err) {
             //Load Quiz Bank and then parse to check for dupes.
             questionBank = questions;
-            parseQuizQuestions(result);
-        } else
+            parseQuizQuestions(result, res);
+        } else {
             console.log("Error getting all questions:", err);
+        }
     });
+
 }
 
-function parseQuizQuestions(result) {
+function parseQuizQuestions(result, res) {
     var dupeCount = 0;
     var itrCount = -1;
-
+    var out = null;
     for (var key in result) {
         itrCount++;
         var item = result[key];
         if (itrCount === 0) {
             if (!item.Category && !item['Question Type'] && !item.Question) {
-                console.log("Excel file does not match expected template!");
-                return;
+                out = {
+                    error: true,
+                    errorMsg: "Excel file does not match expected template!"
+                };
+                return res.end(JSON.stringify(out));
             }
         }
 
@@ -211,8 +215,14 @@ function parseQuizQuestions(result) {
 
         saveQuestion(question);
     }
+    out = {
+        error: false,
+        numDuplicates: dupeCount,
+        numSaved: itrCount - dupeCount
+    };
     console.log(itrCount - dupeCount, "questions saved.");
     console.log(dupeCount, "duplicates found.");
+    return res.end(JSON.stringify(out));
 }
 
 function saveQuestion(question) {

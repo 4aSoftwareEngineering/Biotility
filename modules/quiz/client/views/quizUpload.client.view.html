@@ -1,32 +1,36 @@
 <div ng-controller="authController">
-
     <div ui-view class="margin-top-50" ng-controller="QuizCreate">
-
         <div class="header-space">
             <!-- Using this for space -->
         </div>
         <br>
         <br>
         <br>
-
         <div ng-show="isAdmin" class="container">
             <h2>Quiz Upload</h2>
             <p>Uploads are restricted to Microsoft Excel (.xlsx) types only.</p>
             <p>The file will be uploaded upon selection.</p>
-
             <br>
+            <div class="alert alert-success" ng-show="success">
+                <strong>Upload Complete!</strong>
+                <br>There were {{numSave}} questions saved.
+                <br>{{numDupe}} duplicate questions were found and not uploaded.
+            </div>
+            <div class="alert alert-danger" ng-show="error">
+                <strong>Upload canceled!</strong>
+                <br>{{errorMsg}}
+            </div>
             <br>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{f.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{f.progress}}%;">
                     {{f.progress}}%
                 </div>
             </div>
-            <button type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ngf-max-height="1000" ngf-max-size="1MB">
+            <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ngf-pattern="'.xlsx'" ngf-max-height="1000" ngf-max-size="1MB">
                 Select File
             </button>
-            <p>File Name: {{f.name || "N/A"}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}} {{errorMsg}}</p>
+            <p style="display: inline-block"><b>File Selection:</b> {{f.name || "N/A"}}</p>
         </div>
-
         <div ng-hide="isAdmin">
             <br>
             <br>
@@ -34,25 +38,4 @@
             <br>
         </div>
     </div>
-
-
-
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <!--footer-->
-    <div class="text-center footer" style="margin-top: 100px;">&#9400; Biotility </div>
 </div>

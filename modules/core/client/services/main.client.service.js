@@ -56,9 +56,18 @@ angular.module('core').service('Resources', ['$http', function($http) {
       });
     }
   };
-
 }]);
 
+angular.module('core').service('ResourceClicks', ['$http', function($http) {
+  return {
+    loadClicks: function() {
+      return $http({
+        method: 'GET',
+        url: '/api/parse/resources/clicks'
+      });
+    }
+  };
+}]);
 //passes in function to load subheadings from database
 angular.module('core').service('SubHeads', ['$http', function($http) {
 

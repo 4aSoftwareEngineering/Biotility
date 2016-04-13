@@ -19,7 +19,7 @@
 
         <nav aria-label="context" role="navigation">
           <ul class="nav" id="section-tabs">
-            <li class="section"><a class="home" href="/" tabindex="0">Home</a></li>
+            <!-- <li class="section"><a class="home" href="/" tabindex="0">Home</a></li> -->
             <li class="section"><a ng-click="profileVisible = true" class="profile" href="#" tabindex="0">Profile</a></li>
             <li class="section"><a ng-click="profileVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
           </ul>
@@ -49,7 +49,7 @@
 
   <div class="row" ng-hide="isTeacher">
     <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
-      <h1>Biotility</h1>
+     <!-- <h1>Biotility</h1>
       <h3>Course Progress</h3>
       <script type="text/ng-template" id="group-template.html">
         <div class="panel {{panelClass || 'panel-default'}}">
@@ -63,7 +63,7 @@
             <div class="panel-body" style="text-align: right" ng-transclude></div>
           </div>
         </div>
-      </script>
+      </script> 
 
       <uib-accordion close-others="oneAtATime">
         <uib-accordion-group heading="{{group.title}}" ng-repeat="group in groups">
@@ -73,7 +73,7 @@
               {{group.progress}}% Complete
             </div>
           </div>
-        </uib-accordion-group>
+        </uib-accordion-group> -->
 
     </div>
 
@@ -166,10 +166,19 @@
 
 
         <div class = "col-xs-offset-1 row">
-          <h1>Currest Course Codes</h1>
+          <h1>Current Course Codes: </h1>
           <ul ng-repeat="num in user.courseCode">
             <li>{{user.courseCode}}</li>
           </ul>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 col-xs-offset-1 control-label"></label>
+          <div class="col-md-8 col-xs-offset-1 col-xs-10">
+            <input type="button" class="btn btn-primary" value="Save Changes">
+            <span></span>
+            <input type="reset" class="btn btn-default" value="Cancel">
+          </div>
         </div>
 
 
@@ -221,21 +230,14 @@
 
 
 
-        <div class="form-group">
-          <label class="col-md-3 col-xs-offset-1 control-label"></label>
-          <div class="col-md-8 col-xs-offset-1 col-xs-10">
-            <input type="button" class="btn btn-primary" value="Save Changes">
-            <span></span>
-            <input type="reset" class="btn btn-default" value="Cancel">
-          </div>
-        </div>
+        
       </form>
 
 
     </div>
   </div>
 
-    <div class="row" ng-show="isTeacher">
+<!--     <div class="row" ng-show="isTeacher">
       <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
         <h1>Biotility</h1>
         <h3>Course Progress</h3>
@@ -264,90 +266,8 @@
           </uib-accordion-group>
 
       </div>
-
-      <div class="col-md-9 col-md-offset-3" ng-hide="profileVisible">
-        <!-- change for to just a list or table or something -->
-        <form class="form-horizontal" role="form">
-          <div class="form-group">
-
-            <label class="col-lg-3 control-label">First name:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" disabled value="{{user.firstName}}" >
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Last name:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="{{user.lastName}}" disabled></div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">School:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="" >
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Email:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="{{user.email}}">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Time Zone:</label>
-            <div class="col-lg-8">
-              <div class="ui-select">
-                <select id="user_time_zone" class="form-control">
-                  <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                  <option value="Alaska">(GMT-09:00) Alaska</option>
-                  <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                  <option value="Arizona">(GMT-07:00) Arizona</option>
-                  <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                  <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                  <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                  <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Username:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="text" value="{{user.userName}}">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Change Password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" value="">
-            </div>
-          </div>
-
-
-          <div class="form-group">
-            <label class="col-md-3 control-label">Confirm Password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" value="">
-            </div>
-          </div>
-
-
-
-
-
-
-
-
-
-          <div class="form-group">
-            <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
-              <input type="button" class="btn btn-primary" value="Save Changes">
-              <span></span>
-              <input type="reset" class="btn btn-default" value="Cancel">
-            </div>
-          </div>
-        </form>
-
+ -->
+  
 
 
       </div>
@@ -355,16 +275,13 @@
 
   </div>
 
-  <div class = "col-xs-offset-1 row">
+<!--   <div class = "col-xs-offset-1 row">
     <h1>Grades</h1>
     <ul ng-repeat="grade in studentGrades">
       <li> {{grade.category}} : {{grade.score}} </li>
     </ul>
-  </div>
+  </div> -->
 
 
   <hr>
 </div>
-
-<!--footer-->
-<div class="text-center footer" style="margin-top: 100px;">Biotility <i class="glyphicon glyphicon-copyright-mark"></i></div>
