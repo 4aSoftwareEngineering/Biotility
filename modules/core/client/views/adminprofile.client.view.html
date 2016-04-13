@@ -21,10 +21,11 @@
                 <!--profile menu-->
                 <nav aria-label="context" role="navigation">
                     <ul class="nav" id="section-tabs">
-                        <li class="section"><a ng-click="profileVisible = true; settingsVisible=false; statsVisible=false; editVisible=false" class="profile" href="#" tabindex="0">Profile</a></li>
-                        <li class="section"><a ng-click="settingsVisible = true" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
-                        <li class="section"><a ng-click="statsVisible = true; profileVisible=false; settingsVisible=false; editVisible=false" class="profile_settings active" href="#" tabindex="0">Statistics</a></li>
-                        <li class="section"><a ng-click="editVisible = true; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Question Control</a></li>
+                        <li class="section"><a ng-click="qc = false; quizComment = false;profileVisible = true; settingsVisible=false; statsVisible=false; editVisible=false" class="profile" href="#" tabindex="0">Profile</a></li>
+                        <li class="section"><a ng-click="qc = false; quizComment = false;settingsVisible = true; statsVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+                        <li class="section"><a ng-click="qc = false; quizComment = false;statsVisible = true; profileVisible=false; settingsVisible=false; editVisible=false" class="profile_settings active" href="#" tabindex="0">Statistics</a></li>
+                        <li class="section"><a ng-click="qc = true; quizComment = false; editVisible = false; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Question Control</a></li>
+						<li class="section"><a ng-click="qc = false; quizComment = true; editVisible = false; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Quiz Comments</a></li>
                     </ul>
                 </nav>
             </div>
@@ -64,11 +65,41 @@
                 </tbody>
             </table>
         </div>
-        <div ng-show="editVisible"> <!--begin display question edit buttons-->
+        <div ng-show="qc"> <!--begin display question edit buttons-->
         	<br><a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
-        	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a>
+        	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a><br><br>
+			<a class="btn btn-primary" ng-click="exportToCSV()">DownloadStatistics</a>
         </div>
-        
+        <div ng-show="statsVisible">
+            <div ng-repeat="grade in Grades">
+                <tr>
+                    <td>Student : {{grade.student.studentName}}</td>
+                </tr>
+                <div ng-repeat="q in grade.analytics track by $index">
+                    <tr>
+                        <td>{{q.attempts}}</td>
+                        <td>{{q.question.text}}</td>
+                    </tr>
+                </div>
+                
+            </div>
+        </div>
+		<div ng-show="quizComment">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Quiz</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="comments in Comments">
+                        <td>{{comments.category}}</td>
+                        <td>{{comments.comment}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="row"> <!-- begin settings display -->
             <!--profile info-->
             <div class="col-md-9 col-md-offset-3" ng-show="settingsVisible">
