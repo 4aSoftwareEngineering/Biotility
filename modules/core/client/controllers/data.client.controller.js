@@ -83,22 +83,24 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 			};
 			
 			$http.put('/api/data/questions/' + id, question)
-				.then(function(response){
+				.success(function(response){
 					//redirect to list if successful
-				}, function(error){
-          			$scope.error = 'Unable to update question!\n' + error;
+					$scope.findQuestions();	// refresh the list 
+          			$state.go('question_edit', { successMessage: 'Question succesfully updated!' });
+				}).error( function(response){
+          			$scope.error = 'Unable to update question!\n' + response;
+					console.log(response);
 				});
 		};
 		
 		// remove a question from DB
 		$scope.removeQuestion = function(question_obj){
 			var id = question_obj._id;	//id of current question
-			console.log("id is " + id);
 			//.delete map to service
 			$http.delete('api/data/questions/' + id)
 				.success(function(response){
 					//redirect to list if successful
-					console.log(response);
+					$scope.findQuestions();	// refresh the list 
           			$state.go('question_edit', { successMessage: 'Question succesfully deleted!' });
 				}).error( function(response){
           			$scope.error = 'Unable to delete question!\n' + response;
