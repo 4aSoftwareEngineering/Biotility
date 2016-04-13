@@ -25,20 +25,19 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
 ]);
 
 //quiz question CRUD functions
-angular.module('core').controller('QuestionControl',['$scope', '$http', '$stateParams', 'Questions',
-	function($scope, $http, $stateParams, Questions){
-		$scope.findQuestions = function(){
-			$http.get('/api/data/questions').success(function(res){
-				$scope.data = res;
-				Questions = res; 
-			});
-			// Split it into separate questions
-			Questions.then(function(response) {
-				$scope.questions = response.data;
-			}, function(error){
-				$scope.error = 'Unable to retrieve individual questions.\n'+error;
-			});
-		};
+angular.module('core').controller('QuestionControl',['$scope', '$http', '$stateParams', 'QuizQuestions',
+	function($scope, $http, $stateParams, QuizQuestions){
+		//$scope.findQuestions = function(){
+			QuizQuestions.loadQuestions().then(function(response) {
+            	$scope.questions = response.data;
+        	});
+			// // Split it into separate questions
+			// Questions.then(function(response) {
+			// 	$scope.questions = response.data;
+			// }, function(error){
+			// 	$scope.error = 'Unable to retrieve individual questions.\n'+error;
+			// });
+		//};
 		
 		// pull up individual question details 
 		$scope.findOneQuestion = function(){

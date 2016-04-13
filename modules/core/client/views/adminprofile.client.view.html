@@ -48,6 +48,8 @@
 		  </div>
 
 		</div> <!-- end show profile -->
+        <!-- Statistics Page -->
+        <!-- will require subpages for different types of statistics. eg: clicks, quizzes, etc -->
         <div ng-show="statsVisible">
             <table class="table table-striped">
                 <thead>
@@ -66,7 +68,7 @@
         </div>
         <div ng-show="editVisible"> <!--begin display question edit buttons-->
         	<br><a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
-        	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a>
+        	<a href="http://localhost:3000/admin/question_edit" class="btn btn-primary" value=""> Edit Questions</a>
         </div>
         
         <div class="row"> <!-- begin settings display -->

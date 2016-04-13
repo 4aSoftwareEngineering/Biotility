@@ -38,7 +38,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       })
       .state('question_edit', {
         url: '/admin/question_edit',
-        templateUrl: 'modules/quiz/client/views/quizEdit.client.view.html'
+        templateUrl: 'modules/core/client/views/data.questions.client.view.html'
       })
       .state('studentprofile', {
         url: '/student/{userName:.+}',
@@ -56,10 +56,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         url: '/data/users',
         templateUrl: 'modules/core/client/views/data.users.client.view.html'
       })
-      .state('questionData', {
-        url: '/data/questions',
-        templateUrl: 'modules/core/client/views/data.questions.client.view.html'
-      })
+      // .state('questionData', {
+      //   url: '/data/questions',
+      //   templateUrl: 'modules/core/client/views/data.questions.client.view.html'
+      // })
       .state('about', {
         url: '/about',
         templateUrl: 'modules/core/client/views/about.client.view.html'

@@ -3,8 +3,8 @@
 </div>
 <div ng-controller="authController">
 
-<div ng-controller="QuestionControl">
-
+<div ng-controller="QuestionControl"><!-- ng-init="findQuestions"> -->
+	<br>
 	<h2 class="text-center" style="font-size: 60px;">Question Data</h2>
 	<div ng-show="isAdmin" class="container" style="padding-left: 70px">
 	
@@ -25,13 +25,13 @@
 			<th>Category</th>
 			<th>Question Type</th>
 			<th>Description</th>
-			<th>Answers</th>
+		<!--	<th>Answers</th> -->
 		</thead>
 		<tbody>
-			<tr ng-repeat="d in data | filter: query" ui-sref="questions.view({ questionId: question._id })">
-				<td>{{d.category}}</td>
-				<td>{{d.type}}</td>
-				<td>{{d.text}}</td> 
+			<tr ng-repeat="question in questions"> <!-- | filter: query" ui-sref="questions.view({ questionId: question._id })"> 	<!-- -->
+				<td>{{question.category}}</td>
+				<td>{{question.type}}</td>
+				<td>{{question.text}}</td> 
 			<!--	<td>{{d.answers}}</td>	-->
 				<td ng-show="editMode" ng-click="remove()"><span class="glyphicon glyphicon-remove"></span></td> <!--deleteQuestion($index)-->
 			</tr>
@@ -41,7 +41,7 @@
 	<div ng-hide="isAdmin" >
 		<br><br>
 		<p> Access unauthorized. </p>
-		<br><br><br><br><br><br><br><br><br><br><br><br>
+		<br><br><br><br><br><br><br><br><br><br><br>
 	</div>
 
 

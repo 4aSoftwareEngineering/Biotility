@@ -465,13 +465,16 @@ exports.parseUsers = function(req, res) {
 
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
-    QuizQuestion.find({}, null, {sort: {category: 1}}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
+    // QuizQuestion.find({}, null, {sort: {category: 1}}, function(err, docs) {
+    //     if (!err) {
+    //         console.log(docs);
+    //     } else {
+    //         throw err;
+    //     }
+    // });
+    // QuizQuestion.find({}, function(err, subs) {
+    //     return res.end(JSON.stringify(subs));
+    // });
     QuizQuestion.find({}).lean().exec(function(err, users) {
         return res.end(JSON.stringify(users));
     });
@@ -551,6 +554,18 @@ exports.subHeadByID = function(req, res, next, id) {
             res.status(400).send(err);
         } else {
             req.subHead = subHead;
+            next();
+        }
+    });
+};
+
+//middleware for quizQuestions
+exports.questionByID = function(req, res, next, id) {
+    QuizQuestion.findById(id).exec(function(err, quizQuestion) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            req.quizQuestion = quizQuestion;
             next();
         }
     });

@@ -45,6 +45,19 @@ angular.module('core').service('Subjects',  ['$http', function($http) {
 
 }]);
 
+//passes in function to load questions from database
+angular.module('core').service('QuizQuestions', ['$http', function($http) {
+
+  return {
+    loadQuestions: function() {
+      return $http({
+        method: 'GET',
+        url: '/api/data/questions'
+      });
+    }
+  };
+}]);
+
 //passes in function to load resources from database
 angular.module('core').service('Resources', ['$http', function($http) {
 
