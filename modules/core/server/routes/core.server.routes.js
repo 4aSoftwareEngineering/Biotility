@@ -29,9 +29,11 @@ module.exports = function(app) {
     //Eric's Work
 
     app.route('/api/parse/resources').get(core.parseResources);
+    app.route('/api/parse/resources/clicks').get(core.parseClicks);
     app.route('/api/data/resources').post(core.addResource);
     app.route('/api/data/resources/:resourceId').delete(core.deleteResource);
     app.route('/api/data/resources/:resourceId').put(core.updateResource);
+    app.route('/api/data/resources/click/:resourceId').put(core.clickResource);
 
     //Routes for subheadings
     app.route('/api/parse/subheads').get(core.parseSubHeads);

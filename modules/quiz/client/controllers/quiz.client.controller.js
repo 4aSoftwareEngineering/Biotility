@@ -122,10 +122,10 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                     answer[idx] = ansDesc;
                 }
 
-                for (var i = 0; i < answer.length; i++) {
+                for (i = 0; i < answer.length; i++) {
                     if (!answer[i]) {
                         $scope.hasError = true;
-                        $scope.error = "Make sure to make unique selections."
+                        $scope.error = "Make sure to make unique selections.";
                         return;
                     }
                 }
@@ -150,7 +150,6 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
                 console.log('First Incorrect', $scope.analytics[$scope.index].firstIncorrect);
                 $scope.analytics[$scope.index].attempts++;
                 console.dir($scope.analytics[$scope.index]);
-
             }
 
             //Load next question.
@@ -268,7 +267,6 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
             });
         });
 
-
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
             category: $stateParams.category,
@@ -278,8 +276,6 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
             },
             analytics: $scope.analytics,
         };
-
-        console.log("User", $scope.user);
 
         $http.post('/api/quiz_result', studentGrades)
             .success(function(res) {
@@ -295,6 +291,9 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
  */
 angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$timeout',
     function($scope, $http, Upload, $timeout) {
+        $scope.success = false;
+        $scope.numSave = 0;
+        $scope.numDupe = 0;
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
@@ -302,9 +301,6 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
                 file: file
             };
             if (file) {
-                $http.post('/question_upload', data, {
-                    ignoreLoadingBar: true
-                });
                 file.upload = Upload.upload({
                     url: '/question_upload',
                     data: data
@@ -312,19 +308,30 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
 
                 //Progress Bar
                 file.upload.then(function(response) {
+                    $scope.numSave = response.data.numSaved;
+                    $scope.numDupe = response.data.numDuplicates;
+                    $scope.success = $scope.numSave > 0 || $scope.numDupe > 0;
+                    $scope.error = response.data.error;
+                    $scope.errorMsg = $scope.error ? response.data.errorMsg : null;
+                    console.log($scope.success);
+                    if ($scope.error){
+                        file.progress = 0;
+                        return;
+                    }
                     $timeout(function() {
-                        file.result = response.data;
+                        file.result = response.config.data.file.progress;
                     });
                 }, function(response) {
                     if (response.status > 0) {
-                        $scope.hasError = true;
-                        $scope.error = response.status + ': ' + response.data;
+                        $scope.error = true;
+                        $scope.errorMsg = response.status + ': ' + response.data;
                     }
-                }, function(evt) {
+                }, function(evt) {                    
                     file.progress = Math.min(100, parseInt(100.0 *
                         evt.loaded / evt.total));
-                    if (file.progress === 100 || file.progress === 100.00) return;
-
+                    if (file.progress === 100 || file.progress === 100.00) {
+                        return;
+                    }
                 });
             }
         };
@@ -335,9 +342,6 @@ function arraysEqual(a, b) {
     if (a === b) return true;
     if (a === null || b === null) return false;
     if (a.length !== b.length) return false;
-
-    // If you don't care about the order of the elements inside
-    // the array, you should sort both arrays here.
 
     for (var i = 0; i < a.length; ++i) {
         if (a[i] !== b[i]) return false;

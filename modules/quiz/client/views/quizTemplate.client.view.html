@@ -22,24 +22,26 @@
                 <button class="btn btn-primary btn-block" ng-click="gotoResource(currCategory)" ng-show="hasStart"> Review Resources </button>
             </div>
             <div id="quizContent" ng-show="quizStarted">
-                <h5>Question {{numQuestion}} <br>{{questions[index].text}}</h5>
-                <p>{{questions.length - numQuestion}} question(s) remaining.</p>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
                         {{progress}}%
                     </div>
                 </div>
+                <!--p class="qLeft">{{questions.length - numQuestion}} question(s) remaining.</p-->
+                <p class="qNum">Question {{numQuestion}} </p>
+                <p class="qText">{{questions[index].text}}</p>
                 <p ng-show="hasHint">Hint: {{questions[index].hint}}</p>
-                <a ng-show="questions[index].link.length" style="cursor: pointer" ng-mousedown="openTab(questions[index].link)">Supplementary Reading</a>
+                <a ng-show="questions[index].link.length" class="qSupp" ng-mousedown="openTab(questions[index].link)">Supplementary Reading</a>
                 <p id="quizError" ng-show="hasError" class="alert alert-danger" role="alert"> {{error}} </p>
                 <br>
-                <form class="col-md-offset-1" ng-submit="">
+                <form class="col-md-offset-1 qForm" ng-submit="">
                     <!--Used for MCTF-->
                     <div class="row" ng-show="isMultipleChoice">
                         <div>
                             <li style="list-style: none" ng-repeat="a in questions[index].answers.MCTF track by $index">
+                                <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-click="$parent.changehappened(a)" />
                                 <label ng-show="a.length">
-                                    <input type="radio" ng-model="$parent.name" name="name" ng-value="{{$index}}" ng-click="$parent.changehappened(a)" />{{a}}
+                                    {{a}}
                                 </label>
                             </li>
                         </div>
@@ -85,7 +87,7 @@
                         </div>
                         <br>
                     </div>
-                    <button id="next" class="btn" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
+                    <button id="next" class="qButton btn btn-primary" value="next" ng-hide="isDone" ng-click="checkAnswer(answer)"> Next</button>
                 </form>
             </div>
             <div id="startButton" ng-show="isDone">
@@ -94,8 +96,3 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
-<!--footer-->
-<div class="text-center footer" style="margin-top: 100px;">&copy; Biotility, 2015.</div>
->>>>>>> master

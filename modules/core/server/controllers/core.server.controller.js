@@ -353,6 +353,12 @@ exports.parseResources = function(req, res) {
         return res.end(JSON.stringify(subs));
     });
 };
+exports.parseClicks = function(req, res) {
+
+    Resource.find({}).sort({clicks: -1}).exec(function(err, subs) {
+        return res.end(JSON.stringify(subs));
+    });
+};
 
 //Retrieves all the SubHeadings from database
 exports.parseSubHeads = function(req, res) {
@@ -406,6 +412,22 @@ exports.updateResource = function(req, res) {
     });
 };
 
+exports.clickResource = function(req, res) {
+    var resource_to_update = req.resource;
+    resource_to_update.title = req.body.title;
+    resource_to_update.url = req.body.url;
+    resource_to_update.subject = req.body.subject;
+    resource_to_update.clicks = req.body.clicks;
+    console.log(resource_to_update);
+    resource_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.json(resource_to_update);
+        }
+    });
+};
+
 //Server side mongoose functions for SubHeadings
 exports.addSubHead = function(req, res) {
     var newSubHead = new SubHead(req.body);
@@ -420,6 +442,13 @@ exports.addSubHead = function(req, res) {
 };
 exports.deleteSubHead = function(req, res) {
     var subHead_to_delete = req.subHead;
+    Resource.find({subject: subHead_to_delete._id}).remove(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.end();
+        }
+    });
     subHead_to_delete.remove(function(err) {
         if (err) {
             res.status(400).send(err);

@@ -4,11 +4,11 @@
  * Module dependencies.
  */
 var path = require('path'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  mongoose = require('mongoose'),
-  passport = require('passport'),
-  User = mongoose.model('User');
-  //reCAPTCHA=require('recaptcha2');
+    errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    User = mongoose.model('User');
+//reCAPTCHA=require('recaptcha2');
 
 
 // URLs for which user can't be redirected on signin
@@ -25,7 +25,7 @@ var noReturnUrls = [
  * Signup
  */
 exports.loadTeachers = function(req, res) {
-    
+
     User.find({}, function(err, docs) {
         if (!err) {
             console.log(docs);
@@ -135,13 +135,12 @@ exports.signin = function(req, res) {
         function(err, user) {
             if (user) { // if exists, authenticate with provided password.
                 req.login(user, function(err) {
-                    if (err) {
+                    if (err || !user.authenticate(req.body.password)) {
                         return res.status(403).send({
                             message: errorHandler.getErrorMessage(err)
                         });
                     } else {
                         //No Error
-                        console.log(user);
                         res.json(user);
                     }
                 });

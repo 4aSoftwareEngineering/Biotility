@@ -1,22 +1,35 @@
-html, body {
+html,
+body {
     height: 100%;
 }
 
-#contain{
+#contain {
     min-height: 100%;
     margin-bottom: -90px;
     position: relative;
 }
+
+section {
+    margin-top: 20px;
+}
+
+.error-only{
+    margin-top: 34px;
+}
+
 #foot {
     height: 90px;
     position: relative;
 }
+
 .clearfooter {
     height: 90px;
     clear: both;
 }
 
+
 /* fix carousel text*/
+
 .full-width {
     width: 100%;
 }
@@ -37,13 +50,25 @@ html, body {
     height: 100%;
 }
 
+#mainNavBar > ul li > div > a {
+    color: white;
+}
+
+.user-pic {
+    position: relative;
+    bottom: 10px;
+}
+
+
 /* Font */
 
 @font-face {
     font-family: AwesomeFont;
     src: url('/modules/core/client/img/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'), url('/modules/core/client/img/fonts/fontawesome-webfont.woff') format('woff'), url('/modules/core/client/img/fonts/fontawesome-webfont.ttf') format('truetype'), url('/modules/core/client/img/fonts/fontawesome-webfont.svg#svgFontName') format('svg');
 }
-[ui-view].ng-enter, [ui-view].ng-leave {
+
+[ui-view].ng-enter,
+[ui-view].ng-leave {
     position: absolute;
     left: 0;
     right: 0;
@@ -52,23 +77,31 @@ html, body {
     -moz-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
 }
+
 [ui-view].ng-enter {
     opacity: 0;
 }
+
 [ui-view].ng-enter-active {
     opacity: 1;
 }
+
 [ui-view].ng-leave {
     opacity: 1;
 }
+
 [ui-view].ng-leave-active {
     opacity: 0;
 }
+
+
 /*----header----*/
 
 body {
     font-family: AwesomeFont, Verdana, Geneva, sans-serif;
 }
+
+
 /*
 .navbar {
   height: 75px;
@@ -85,16 +118,22 @@ body {
   background-color: white;
 }
 */
-
+.navbar-brand.admin-menu ul{
+    margin: 0;
+    padding: 0;
+}
 .glyphicon-chevron-right {
     margin-left: 12px;
 }
+
 .carousel.slide {
     box-shadow: 2px 2px 10px black;
 }
+
 .carousel-indicators>li {
     box-shadow: 1px 1px 6px black;
 }
+
 @media only screen and (max-width: 720px) {
     h1 {
         font-size: 30px;
@@ -106,6 +145,8 @@ body {
         font-size: 30px;
     }
 }
+
+
 /* MAIN PAGE BUTTONS */
 
 .hover-box {
@@ -115,6 +156,7 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+
 .center-block.center-button {
     border: 2px solid #252525;
     font-size: 24px;
@@ -127,38 +169,50 @@ body {
     -moz-transition: all .25s ease;
     -o-transition: all .25s ease;
 }
+
 .center-block.center-button:hover {
     background: #252525;
     color: white;
 }
+
+
 /* Addition for text on pic */
+
+
 /* HOME PAGE */
 
 .content-main {
     background: white;
     height: 100%;
 }
+
 .user-pic {
     height: 40px;
     width: 40px;
     cursor: pointer;
 }
+
 .logo {
     width: 30%;
     height: 60%;
     margin-right: 50%;
 }
+
 .container>h6 {
     font-size: 66px;
     text-align: center;
     text-shadow: 1px 1px 8px grey;
 }
+
 .margin-top-75 {
     margin-top: 75px;
 }
+
 .subjects {
     background: #EFEFEF;
 }
+
+
 /* Subject boxes */
 
 .hovereffect {
@@ -166,6 +220,7 @@ body {
     background: rgb(0, 0, 0);
     background: rgba(255, 255, 255, .7);
 }
+
 .under {
     position: relative;
     z-index: 9;
@@ -175,6 +230,7 @@ body {
     border-radius: 10px;
     margin: 10px;
 }
+
 .overlay {
     position: absolute;
     top: 0;
@@ -187,13 +243,16 @@ body {
     -moz-transition: all .25s ease;
     -o-transition: all .25s ease;
 }
+
 .thumbnail.prequiz-thumb {
     height: 361px;
     width: 638px;
 }
+
 .text-center {
     text-align: center;
 }
+
 .button {
     background-color: #000000;
     color: grey;
@@ -202,22 +261,29 @@ body {
     -webkit-border-radius: 10px;
     border-radius: 15px;
 }
+
 .caption {
     font-size: 14px;
 }
+
+
 /* buttons*/
 
 .big-btn {
     width: 361px;
     height: 250px;
 }
+
 .big-btn > a:hover {
     text-decoration: none;
     color: white;
 }
+
 .big-btn > a {
     color: inherit;
 }
+
+
 /* home page content*/
 
 .main-head {
@@ -225,6 +291,7 @@ body {
     border-radius: 25px;
     padding: 40px;
 }
+
 .m {
     font-size: 40px;
     color: white;
@@ -233,9 +300,11 @@ body {
     margin-bottom: 4px;
     text-shadow: 2px 2px 5px #787878;
 }
+
 .red {
     color: #FDC8C1;
 }
+
 .mh {
     font-size: 15px;
     font-color: white;
@@ -244,12 +313,15 @@ body {
     color: white;
     text-shadow: 1px 1px 8px #787878;
 }
+
 .sh {
     font-size: 30px;
     margin-bottom: 20px;
     color: #11023C;
     margin-left: 50px;
 }
+
+
 /* about and contact page content */
 
 .about-sub {
@@ -257,16 +329,20 @@ body {
     margin-bottom: 20px;
     color: #11023C;
 }
+
 .about-ssub {
     font-size: 20px;
     margin-bottom: 20px;
     color: #11023C;
 }
+
 .con {
     font-size: 12px;
     color: black;
     margin-bottom: 10px;
 }
+
+
 /* footer */
 
 .footer {
@@ -275,6 +351,8 @@ body {
     background: #252525;
     color: #B9B9B9;
 }
+
+
 /*image css */
 
 img.center {
@@ -282,14 +360,18 @@ img.center {
     margin-left: auto;
     margin-right: auto
 }
+
 img.circle {
     border-radius: 50%;
 }
+
 img.bord {
     border: solid;
     border-color: #D4D4D4;
     border-width: 4px;
 }
+
+
 /*contact page */
 
 .contact {
@@ -298,14 +380,18 @@ img.bord {
     color: #11023C;
     text-align: center;
 }
+
 .contact-name {
     font-size: 12px;
     color: black;
     text-align: center;
 }
+
 .bold {
     font-weight: bold;
 }
+
+
 /* resource page */
 
 img.resource {
@@ -313,23 +399,29 @@ img.resource {
     margin: 0 0 30px 30px;
     border-radius: 5px;
 }
+
 .res-sub {
     font-size: 20px;
     margin-bottom: 20px;
     color: #FF2F2F;
     padding-left: 40px;
 }
+
 ul.navbar-nav {
-    margin-top: -15px;
     margin-right: -8px;
 }
-ul.nav li.dropdown:hover ul.dropdown-menu {
-    display: block;
-}
+
 li.nav-collapse {
     list-style-type: none;
 }
+ .admin-menu:hover ul.dropdown-menu {
+      display: block;
+ }
+
+
 /*Site-wide Loading Bar*/
-#loading-bar .bar, #loading-bar .peg {
+
+#loading-bar .bar,
+#loading-bar .peg {
     height: 5px;
 }
