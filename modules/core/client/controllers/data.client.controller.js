@@ -25,9 +25,9 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
 ]);
 
 //quiz question CRUD functions
-angular.module('core').controller('QuestionControl',['$scope', '$http', '$stateParams', 'QuizQuestions',
-	function($scope, $http, $stateParams, QuizQuestions){
-		//$scope.findQuestions = function(){
+angular.module('core').controller('QuestionControl',['$scope', '$http', '$state', '$location', '$stateParams', 'QuizQuestions',
+	function($scope, $http, $state, $location, $stateParams, QuizQuestions){
+		$scope.findQuestions = function(){
 			QuizQuestions.loadQuestions().then(function(response) {
             	$scope.questions = response.data;
         	});
@@ -37,7 +37,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$stateP
 			// }, function(error){
 			// 	$scope.error = 'Unable to retrieve individual questions.\n'+error;
 			// });
-		//};
+		};
 		
 		// pull up individual question details 
 		$scope.findOneQuestion = function(){
@@ -91,15 +91,18 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$stateP
 		};
 		
 		// remove a question from DB
-		$scope.removeQuestion = function(){
-			var id = $stateParams.questionId;	//id of current question
-			//.delete map to factory
-			//Questions.delete(id)
-			$http.delete('/api/data/questions/' + id)
-				.then(function(response){
+		$scope.removeQuestion = function(question_obj){
+			var id = question_obj._id;	//id of current question
+			console.log("id is " + id);
+			//.delete map to service
+			$http.delete('api/data/questions/' + id)
+				.success(function(response){
 					//redirect to list if successful
-				}, function(error){
-          			$scope.error = 'Unable to delete question!\n' + error;
+					console.log(response);
+          			$state.go('question_edit', { successMessage: 'Question succesfully deleted!' });
+				}).error( function(response){
+          			$scope.error = 'Unable to delete question!\n' + response;
+					console.log(response);
 				});
 		};
 	}

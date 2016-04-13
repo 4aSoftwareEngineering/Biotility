@@ -475,8 +475,32 @@ exports.parseQuestions = function(req, res) {
     // QuizQuestion.find({}, function(err, subs) {
     //     return res.end(JSON.stringify(subs));
     // });
-    QuizQuestion.find({}).lean().exec(function(err, users) {
-        return res.end(JSON.stringify(users));
+    QuizQuestion.find({}).lean().exec(function(err, questions) {
+        return res.end(JSON.stringify(questions));
+    });
+};
+
+// Create new quiz question 
+exports.addQuestion = function(req, res) {
+    var question_to_add = req.quizQuestion;
+
+};
+
+// Update quiz question 
+exports.updateQuestion = function(req, res) {
+    var question_to_update = req.quizQuestion;
+    
+};
+
+// Delete quiz question 
+exports.deleteQuestion = function(req, res) {
+    var question_to_delete = req.quizQuestion;
+    question_to_delete.remove(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.end();
+        }
     });
 };
 

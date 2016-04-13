@@ -51,6 +51,10 @@ module.exports = function(app) {
 
     // Fetch question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
+    app.route('/api/data/questions').post(core.addQuestion);
+    app.route('/api/data/questions/:questionId').put(core.updateQuestion);
+    app.route('/api/data/questions/:questionId').delete(core.deleteQuestion);
+    app.route('/api/data/questions/:questionId').get(core.questionByID);
 
     //app.route('api/users/:userId').put(core.update);
 
@@ -62,6 +66,7 @@ module.exports = function(app) {
     app.param('@id', core.userByID);
     app.param('resourceId', core.resourceByID);
     app.param('subHeadId', core.subHeadByID);
+    app.param('questionId', core.questionByID);
 
     // Define application route
     app.route('/*').get(core.renderIndex);
