@@ -1,5 +1,6 @@
 <div class="margin-top-75 content-main" ng-controller="MainController" ng-init= "codeReset()">
-
+<!-- modules/core/client/views/home.client.view/html-->
+    <!-- Michael Arboleda Begin>
     <!-- Carousel -->
     <div id="myCarousel" class="carousel slide" data-ride="carousel" style="max-height: 1477px; min-height: 100%; max-width: 3000px; min-width: 100%;">
       <!-- Indicators -->
@@ -63,13 +64,17 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-
+    <!-- END -->
 
     <!-- Subjects -->
     <div class="container-fluid subjects">
         <div class="margin-top-75">
             <div class="row">
+
+                <!-- Michael Arboleda -->
                 <div class="col-xs-12 col-md-3 col-sm-6" ng-repeat="subject in subjects track by $index" ng-click="onClicked(subject)">
+                <!-- END -->
+
                     <div class="thumbnail under">
                         <div ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-class="{hovereffect: hover}" class="overlay">
                             <div class="hover-box">
