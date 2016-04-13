@@ -46,16 +46,33 @@ exports.renderServerError = function(req, res) {
 
 
 exports.sendMail = function(req, res) {
-
+    console.log("EMAILS");
     var data = req.body;
+    var message= {
+        // sender info
+        from: 'biotilitysp18@gmail.com',
 
-    transporter.sendMail({
-        from: 'bio@biotility.com',
-        to: data.contactEmail,
+        // Comma separated list of recipients
+        to: data.email,
+
+        // Subject of the message
         subject: 'Biotility: Course code ',
+
+        //text
         text: 'The course code for you to use is 1234'
+
+    };
+    console.log('Sending Mail');
+    transport.sendMail(message, function(error){
+        if(error){
+            console.log('Error occured');
+            console.log(error.message);
+            return;
+        }
+        console.log('Message sent successfully!');
+        // $("#myModal").modal("show");
+        // $("#myModal").modal('show');
     });
-    res.json(data);
 };
 
 //Old Plotly Refernce

@@ -72,24 +72,14 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             var data = ({
                 contactEmail : $scope.emText
             });
+            var route = '/api/data/emailV';
 
             // Simple POST request example (passing data) :
-            $http.post('/contact-form', data).
-            success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
-
-            }).
-            error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+            $http.post(route, data).success(function(req, res) {
+                console.log("sending email");
             });
+
         };
-
-
-
-
-
 
         $scope.add = function(course,period) {
 

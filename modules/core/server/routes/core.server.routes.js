@@ -10,6 +10,7 @@ module.exports = function(app) {
     var schedule = require('node-schedule');
     var Email = require('email').Email;
 
+
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 
@@ -46,6 +47,8 @@ module.exports = function(app) {
     app.route('/api/data/plot').get(core.plot);
     app.route('/api/data/email').post(core.email);
 
+
+    app.route('/api/data/emailV').post(core.sendMail);
 
     // Fetch question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
