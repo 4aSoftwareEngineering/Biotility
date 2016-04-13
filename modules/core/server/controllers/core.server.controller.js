@@ -619,15 +619,61 @@ exports.parseUsers = function(req, res) {
 };
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
-    QuizQuestion.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
+    // get a;; questions and sort by category 
+    QuizQuestion.find({}).lean().sort({category:1}).exec(function(err, questions) {
+        return res.end(JSON.stringify(questions));
+    });
+};
+
+// Read current question
+exports.readQuestion = function(req, res) {
+  /* send back the question as json from the request */
+  res.json(req.quizQuestion);
+};
+
+// Create new quiz question 
+exports.addQuestion = function(req, res) {
+    var newQuestion = new QuizQuestion(req.body);
+    newQuestion.save(function(err) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
         } else {
-            throw err;
+            res.json(newQuestion);
         }
     });
-    QuizQuestion.find({}).lean().exec(function(err, users) {
-        return res.end(JSON.stringify(users));
+};
+
+// Update quiz question 
+exports.updateQuestion = function(req, res) {
+    var question_to_update = req.quizQuestion;
+    
+    question_to_update.category = req.body.category;
+    question_to_update.type = req.body.type;
+    question_to_update.text = req.body.text;
+    question_to_update.answers = req.body.answers;
+    question_to_update.hint = req.body.hint;
+    question_to_update.link = req.body.link;
+    
+    question_to_update.save(function(err) {
+        if (err) {
+            res.status(400).send(err);
+
+        } else {
+            res.json(question_to_update);
+        }
+    });
+};
+
+// Delete quiz question 
+exports.deleteQuestion = function(req, res) {
+    var question_to_delete = req.quizQuestion;
+    question_to_delete.remove(function(err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.end();
+        }
     });
 };
 
@@ -705,6 +751,18 @@ exports.subHeadByID = function(req, res, next, id) {
             res.status(400).send(err);
         } else {
             req.subHead = subHead;
+            next();
+        }
+    });
+};
+
+//middleware for quizQuestions
+exports.questionByID = function(req, res, next, id) {
+    QuizQuestion.findById(id).exec(function(err, quizQuestion) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            req.quizQuestion = quizQuestion;
             next();
         }
     });
