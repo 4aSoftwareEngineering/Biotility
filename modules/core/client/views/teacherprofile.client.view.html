@@ -27,8 +27,11 @@
         <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
         <form role="form" ng-submit="photoupdate()" >
           <h6>Upload a different photo...</h6>
-          <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
-          <input type="submit" value="Upload Image">
+         <!--  <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
+          <input type="submit" value="Upload Image"> -->
+           <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)"  ngf-max-size="1MB">
+                Select File
+            </button>
         </form>
         <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
             Select image to upload:
@@ -54,11 +57,6 @@
 
     <!-- edit form column -->
     <div class="col-md-9 personal-info">
-      <!--       <div class="alert alert-info alert-dismissable">
-        <a class="panel-close close" data-dismiss="alert">×</a>
-        <i class="fa fa-coffee"></i>
-        This is an <strong>.alert</strong>. Use this to show important messages to the user.
-      </div> -->
 
       <!--teacher info-->
       <h3>Personal info</h3>
@@ -71,7 +69,7 @@
             <span>{{user.email}}</span>
           </div>
         </div>
-       </div>
+    </div>
 
     <!--</div>-->
     <!--class codes-->
@@ -104,14 +102,8 @@
             Update Statistics
         </button>
 
-          <!-- <div ng-repeat="d in input.courseNums"> -->
-      
-          <!-- <a href="https://plot.ly/~isalau/0/" target="_blank" title="" style="display: block; text-align: center;"><img src="https://plot.ly/~isalau/8.png" alt="" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-          <script data-plotly="isalau:0"  src="https://plot.ly/embed.js" async></script>
-            <script data-plotly="biotilitysp18:0"  src="https://plot.ly/embed.js" async></script>
-          -->
           <div>
-            <canvas id="myChart" width="600px" height="600px"></canvas>
+            <canvas id="myChart" width="400px" height="400px"></canvas>
           </div>
 
 
@@ -189,6 +181,7 @@
           <div>
               <label class="col-lg-3 col-lg-offset-1 control-label">Classes Selected to Add:</label>
           
+              <!-- 
                 <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
                    <option  ng-repeat="name in newclassNames">{{name}}</option>
                 </select>
@@ -200,13 +193,36 @@
                
                 <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
                    <option  ng-repeat="period in Periods">{{period}}</option>
-                </select>
+                </select> -->
+
+                
+
+                  <select ng-model="toAdd" class="col-md-3 " style="height: 30px;" onchange="showfield(this.options[this.selectedIndex].value)">
+                  <option  ng-repeat="name in newclassNames">{{name}}</option>
+                  </select>
+
+                  <script type="text/javascript">
+                  function showfield(name){
+                    if(name!='Other')document.getElementById('classs').style.visibility = "hidden";
+                    else document.getElementById('classs').style.visibility = "visible";
+                  }
+                  </script>
+
+                  <div id="classs" class="col-sm-3" style="visibility: hidden">
+                      <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
+                  </div>
+
+                  <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
+                   <option  ng-repeat="period in Periods">{{period}}</option>
+                </select> 
+  
              
 
                 <!--button for adding more than one course-->
                  <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd, periodtoAdd)">
                       +
                   </button>
+
                 <!--   <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()">
                       -
                   </button> -->
