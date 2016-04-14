@@ -426,7 +426,7 @@ exports.email = function(req,res){
       from: data.email,
 
       // Comma separated list of recipients
-      to: 'biotilitysp18@gmail.com',
+      to: 'lwojo@ufl.edu',
 
       // Subject of the message
       subject: 'Resource Request', 
