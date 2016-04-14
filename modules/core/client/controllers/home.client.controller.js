@@ -855,7 +855,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                 // console.log(res);
                 var ctx = $("#myChart").get(0).getContext("2d");
-
+                // ctx.canvas.width = 5;
+                // ctx.canvas.height = 5;
                   var data = {
                     labels: label,
                     datasets: [
@@ -870,14 +871,16 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     ]
                   };
 
+                  var options = { 
+                        responsive: true,
+                        maintainAspectRatio: true
+                    }
 
-
-                  var myBarChart = new Chart(ctx).Bar(data);
+                  var myBarChart = new Chart(ctx).Bar(data,options);
             }).then(function(error) {
                 console.log("Plot eror" + error);
             });
-
-
+            Chart.defaults.global.responsive = true;
 
         };
 

@@ -99,9 +99,9 @@
           </select>
           <div class="col-sm-4">
                 <input class="form-control"  ng-model="ClassStats" ng-init= "ClassStats" type="text" ng-value="{{user.firstName}}">
-                </div>
+          </div>
          <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassStats)">
-            Update Stats
+            Update Statistics
         </button>
 
           <!-- <div ng-repeat="d in input.courseNums"> -->
@@ -110,8 +110,9 @@
           <script data-plotly="isalau:0"  src="https://plot.ly/embed.js" async></script>
             <script data-plotly="biotilitysp18:0"  src="https://plot.ly/embed.js" async></script>
           -->
-
-            <canvas id="myChart" width="400" height="400"></canvas>
+          <div>
+            <canvas id="myChart" width="600px" height="600px"></canvas>
+          </div>
 
 
           <!-- </div> -->
@@ -192,13 +193,15 @@
                    <option  ng-repeat="name in newclassNames">{{name}}</option>
                 </select>
 
-                <div class="col-sm-4">
-                <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" ng-value="{{user.firstName}}">
+                <div class="col-sm-3">
+                <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
                 </div>
 
-                <select ng-model="periodtoAdd" class="col-md-3 " style="height: 30px;">
+               
+                <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
                    <option  ng-repeat="period in Periods">{{period}}</option>
                 </select>
+             
 
                 <!--button for adding more than one course-->
                  <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd, periodtoAdd)">
