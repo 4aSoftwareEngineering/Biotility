@@ -61,7 +61,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                                 "AICE Biology",
                                 "IB Biology",
                                 "Genetics",
-                                "Forensics"];
+                                "Forensics",
+                                "Other"];
 
 
 

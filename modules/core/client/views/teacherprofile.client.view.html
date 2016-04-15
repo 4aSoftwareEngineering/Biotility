@@ -1,118 +1,102 @@
-
-
 <!--teacher profile page-->
 <div class="container" ng-controller="ProfileController" ng-init= "resetCodes()">
   <script src="Chart.js"></script>
-  <!-- <link href ="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.css"> -->
-<!-- <script src ="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" ></script> -->
- <!-- <script src = "//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"> </script> -->
 
   <div style="margin-top: 45px;">
   </div>
+
   <hr>
-  <div class="row">
-    <div id="left-side" class="list-view ">
-      <h1 id="section-tabs-header">
-        <!--teacher name-->
-        {{user.firstName}} {{user.lastName}}
-
-
-      </h1>
-
-
-    </div>
-    <!-- left column -->
-    <div class="col-md-3">
-      <div class="text-center">
-        <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
-        <form role="form" ng-submit="photoupdate()" >
-          <h6>Upload a different photo...</h6>
-         <!--  <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
-          <input type="submit" value="Upload Image"> -->
-           <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)"  ngf-max-size="1MB">
-                Select File
-            </button>
-        </form>
-        <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
-            Select image to upload:
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Upload Image" name="submit">
-        </form> -->
-        <!--profile menu-->
-        <nav aria-label="context" role="navigation">
-          <ul class="nav" id="section-tabs">
-            <!-- <li class="section"><a class="home" href="/" tabindex="0">Home</a></li> -->
-
-            <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Classes</a></li>
-
-            <li class="section"><a ng-click="toShow='settingsVisible'" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
-
-            <li class="section"><a ng-click="toShow='statsicsVisible'" class="profile_settings active" href="#" tabindex="0">Statsitics</a></li>
-
-             <li class="section"><a ng-click="toShow='resourceVisible'" class="resource active" href="#" tabindex="0">Request a Resource</a></li>
-          </ul>
-        </nav>
+    <div class="row">
+      <div id="left-side" class="list-view">
+         <!--teacher name-->
+        <h1 id="section-tabs-header">
+          {{user.firstName}} {{user.lastName}}
+        </h1>
       </div>
-    </div>
 
-    <!-- edit form column -->
-    <div class="col-md-9 personal-info">
+      <!-- left navigation bar -->
+      <div class="col-md-3">
+        <div class="text-center">
+          <label>Username: </label>
+          <span>{{user.userName}}</span>
+          <br>
+          <label>Email: </label>
+          <span>{{user.email}}</span>
+          <br>
+          <br>  
+          
+          <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+          <form role="form" ng-submit="photoupdate()" >
+            <h6>Upload a different photo</h6>
+            <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
+            <input type="submit" value="Upload Image">
+             <!-- <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)"  ngf-max-size="1MB">
+                  Select File
+              </button> -->
+          </form>
+          <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
+              Select image to upload:
+              <input type="file" name="fileToUpload" id="fileToUpload">
+              <input type="submit" value="Upload Image" name="submit">
+          </form> -->
 
-      <!--teacher info-->
-      <h3>Personal info</h3>
-        <div class="col-lg-3">
-          <div class="col-lg-8">
-            <label>Username</label>
-            <span>{{user.userName}}</span>
-            <br>
-            <label>Email</label>
-            <span>{{user.email}}</span>
-          </div>
+          <!--navigation menu-->
+          <nav aria-label="context" role="navigation">
+            <ul class="nav" id="section-tabs">
+
+              <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Classes</a></li>
+
+              <li class="section"><a ng-click="toShow='settingsVisible'" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+
+              <li class="section"><a ng-click="toShow='statsicsVisible'" class="profile_settings active" href="#" tabindex="0">Statsitics</a></li>
+
+              <li class="section"><a ng-click="toShow='resourceVisible'" class="resource active" href="#" tabindex="0">Request a Resource</a></li>
+            </ul>
+          </nav>
+
         </div>
-    </div>
-
-    <!--</div>-->
-    <!--class codes-->
-   
+      </div>
+    
+      <!-- Course Codes -->
       <div class="col-md-9" ng-show="toShow=='profileVisible'">
-        <!--table to put in class codes-->
+        <!--table of current teachers class codes-->
         <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
           <caption>Please give course codes to students </caption>
           <thead>
             <h2>Classes</h2>
             <th>Codes</th>
           </thead>
-          <tbody>
-            <!--gets class codes from controller-->
-            <tr ng-repeat="d in input.coursesComplete ">
-              <td>{{d.courseName}} </br>{{d.section}}</br>Course Code: {{d.number}} </td>
-            </tr>
-          </tbody>
+            <tbody>
+              <!--gets class codes from controller-->
+              <tr ng-repeat="d in input.coursesComplete ">
+                <td>{{d.courseName}} </br>{{d.section}}</br>Course Code: {{d.number}} </td>
+              </tr>
+            </tbody>
         </table>
       </div>
 
+      <!--Show Statistics -->
       <div class="col-md-9 " ng-show="toShow=='statsicsVisible'">
          <select ng-model="ClassStats" style="height: 30px;">
                    <option  ng-repeat="name in classNames">{{name}}</option>
           </select>
           <div class="col-sm-4">
                 <input class="form-control"  ng-model="ClassStats" ng-init= "ClassStats" type="text" ng-value="{{user.firstName}}">
-          </div>
-         <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassStats)">
-            Update Statistics
-        </button>
+            </div>
+           <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassStats)">
+              Update Statistics
+          </button>
 
-          <div>
-            <canvas id="myChart" width="400px" height="400px"></canvas>
-          </div>
+            <div>
+              <canvas id="myChart" width="400px" height="400px"></canvas>
+            </div>
 
 
           <!-- </div> -->
 
       </div>
-
-       
-      <!--profile info-->
+         
+      <!--Update Settings-->
       <div class="col-md-9" ng-show="toShow=='settingsVisible'">
         <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
           <div class="form-group">
@@ -156,184 +140,175 @@
           <div class="form-group">
             <label class="col-md-3 control-label">Change Password:</label>
             <div class="col-md-8">
-              <input class="form-control" type="password" value="">
+              <input class="form-control" type="password" value="" ng-model="credentials.password">
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Confirm Password:</label>
             <div class="col-md-8">
-              <input class="form-control" type="password" value="" ng-model="credentials.password">
+              <input class="form-control" type="password" value="" ng-model="confirmpassword">
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-offset-9">
               <input class="btn btn-primary" type="submit" value="Save Changes">
-              <span></span>
-              <input type="reset" class="btn btn-default" value="Cancel">
+              <!-- <span></span>
+              <input type="reset" class="btn btn-default" value="Cancel"> -->
             </div>
           </div>
         </form>
 
-
-        <!--select course-->
-        <div class="account-pick">
-          <div>
-              <label class="col-lg-3 col-lg-offset-1 control-label">Classes Selected to Add:</label>
-          
-              <!-- 
-                <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
-                   <option  ng-repeat="name in newclassNames">{{name}}</option>
-                </select>
-
-                <div class="col-sm-3">
-                <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
+          <!-- Modal for settings update failure -->
+          <div class="modal fade" id="settingsMoodal" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:10px 10px;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4><span class="glyphicon glyphicon-remove"></span> Settings Not Updated </h4>
                 </div>
+                <div class="modal-body" style="padding:10px 10px;">
+                  <p>Passwords do not match!</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
+                 
+                </div>
+            </div>
+              
+            </div>
+          </div> 
 
-               
-                <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
-                   <option  ng-repeat="period in Periods">{{period}}</option>
-                </select> -->
 
-                
-
-                  <select ng-model="toAdd" class="col-md-3 " style="height: 30px;" onchange="showfield(this.options[this.selectedIndex].value)">
-                  <option  ng-repeat="name in newclassNames">{{name}}</option>
+              <!--select course-->
+              <!--view for teachers to see courses they currently have created -->
+              <div class="account-pick">
+                <label class="col-lg-3 col-md-offset-1 control-label">Add New Classes:</label>
+                <!-- 
+                  <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
+                     <option  ng-repeat="name in newclassNames">{{name}}</option>
                   </select>
 
-                  <script type="text/javascript">
+                  <div class="col-sm-3">
+                  <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
+                  </div>
+                 
+                  <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
+                     <option  ng-repeat="period in Periods">{{period}}</option>
+                  </select> 
+                -->
+
+                <select ng-model="toAdd" class="col-md-3 " style="height: 30px;" onchange="showfield(this.options[this.selectedIndex].value)">
+                  <option  ng-repeat="name in newclassNames">{{name}}</option>
+                </select>
+
+                <script type="text/javascript">
                   function showfield(name){
                     if(name!='Other')document.getElementById('classs').style.visibility = "hidden";
                     else document.getElementById('classs').style.visibility = "visible";
                   }
-                  </script>
+                </script>
 
-                  <div id="classs" class="col-sm-3" style="visibility: hidden">
-                      <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
-                  </div>
+                <div id="classs" class="col-sm-3" style="visibility: hidden">
+                    <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
+                </div>
 
-                  <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
-                   <option  ng-repeat="period in Periods">{{period}}</option>
+                <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
+                  <option  ng-repeat="period in Periods">{{period}}</option>
                 </select> 
-  
-             
 
-                <!--button for adding more than one course-->
-                 <button type="button" class="btn btn-default col-md-offset-1" ng-click="add(toAdd, periodtoAdd)">
-                      +
-                  </button>
+                 <!--button for adding more than one course-->
+                 <button type="button" class="btn btn-primary" ng-click="add(toAdd, periodtoAdd)"> Add Class </button>
 
-                <!--   <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()">
-                      -
-                  </button> -->
-                  
-          </div>
-        </div>
+                 <!-- commented code can be uncommented to manually reset ALL of the course codes for EVERY teacher --> 
+                  <!--   <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()"> - </button> -->
+              </div>
 
-        <!--Classes already seleted-->
-        <div class="picked">
-            <div class="col-md-2 col-lg-offset-4 text-right">
-                <ul class="list-inline">
-                    <li ng-repeat="x in credentials.courses track by $index">
-                        <button type="button" class="btn btn-info">{{x.courseName}}</button>
-                        <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
-                        </button> -->
-                    </li>
-                    
-                </ul>
-            </div>
-        </div>
-        <!--class scores-->
-      </div>
-   
+              <!--Classes already seleted-->
+                <div class="picked">
+                    <div class="col-md-2 col-lg-offset-4 text-right">
+                        <ul class="list-inline">
+                            <li ng-repeat="x in credentials.courses track by $index">
+                                <button type="button" class="btn btn-info">{{x.courseName}}</button>
+                                <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
+                                </button> -->
+                            </li> 
+                        </ul>
+                    </div>
+                </div>
+         </div>
+     
 
-    <!-- Request a resource -->
+      <!-- Request a resource -->
       <div class="col-md-9 " ng-show="toShow=='resourceVisible'">
-          <h3 > Please fill out form to request a resource </h3>
-         <!--  <form action="" method="get">
-          First Name: <input type="text" name="first_name"><br>
-          Last Name: <input type="text" name="last_name"><br>
-          Email: <input type="text" name="email"><br>
-          Message:<br><textarea rows="5" name="message" cols="30"></textarea><br>
-          <input type="submit" name="submit" value="Submit">
-          </form> -->
-          
-          <form class="form-horizontal" role="form" ng-submit="sendEmail(true)">
+        <h3 > Please fill out form to request a resource </h3>
+        <!-- input form for teachers to submit resource requests to admins via email --> 
+        <form class="form-horizontal" role="form" ng-submit="sendEmail(true)">
           
           <div class="form-group">
-              <label class="col-lg-3 control-label">Email:</label>
+              <label class="col-lg-3 control-label">Your Email:</label>
               <div class="col-lg-8">
                 <input class="form-control"  type="text" ng-model="resource.email">
               </div>
           </div>
 
-            <div class="form-group">
-              <label class="col-lg-3 control-label">Subject:</label>
-              <div class="col-lg-8">
-                <input class="form-control"  type="text" ng-model="resource.subject">
-              </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Subject:</label>
+            <div class="col-lg-8">
+              <input class="form-control"  type="text" ng-model="resource.subject">
             </div>
-
-            <div class="form-group">
-              <label class="col-lg-3 control-label" >
-                Subject Detail:
-              </label>
-              <div class="col-lg-8">
-                  <input class="form-control" type="text" ng-model= "resource.subjectdetails" >
-                </div>
-              </div>
-
-              
-            <div class="form-group">
-              <label class="col-md-3 control-label" >
-                Link:
-              </label>
-              <div class="col-md-8">
-                <input class="form-control" type="text" ng-model= "resource.resourcelink">
-              </div>
-
-            </div>
-
-            <div class="form-group">
-              <label class="col-md-3 control-label">
-                Comments:
-              </label>
-              <div class="col-md-8">
-                <input class="form-control" type="password" value="" ng-model = "resource.comments">
-              </div>
-            </div>
-
-            <div class="col-md-8">
-                <input class="btn btn-primary" type="submit" id="myBtn" value="Send Request">
-                <span></span>
-                <input type="reset" class="btn btn-default" value="Cancel">
-            </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="padding:10px 10px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4><span class="glyphicon glyphicon-send"></span> Recieved</h4>
-        </div>
-        <div class="modal-body" style="padding:10px 10px;">
-          <p>Resource Request Succesfully Sent!</p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
-         
-        </div>
-      </div>
-      
-    </div>
-  </div> 
-
-
           </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label" > Subject Detail: </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text" ng-model= "resource.subjectdetails" >
+            </div>
+          </div>
+            
+          <div class="form-group">
+            <label class="col-md-3 control-label" > Link: </label>
+            <div class="col-md-8">
+              <input class="form-control" type="text" ng-model= "resource.resourcelink">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-3 control-label"> Comments: </label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" value="" ng-model = "resource.comments">
+            </div>
+          </div>
+
+          <div class="col-md-8 col-md-offset-9">
+              <input class="btn btn-primary" type="submit" id="myBtn" value="Send Request">
+              <!-- <span></span>
+              <input type="reset" class="btn btn-default" value="Cancel"> -->
+          </div>
+
+          <!-- Modal for succesful resource request -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="padding:10px 10px;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4><span class="glyphicon glyphicon-send"></span> Recieved</h4>
+                </div>
+                <div class="modal-body" style="padding:10px 10px;">
+                  <p>Resource Request Succesfully Sent!</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
+                </div>
+              </div>    
+            </div>
+          </div> 
+        </div>
         </form>
-      </div>
-    <hr>
-  </div>
+
+    </div>
+  <hr>
+</div>

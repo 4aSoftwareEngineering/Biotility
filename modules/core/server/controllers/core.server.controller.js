@@ -414,40 +414,38 @@ exports.plot = function(req,res){
   return res.send(datagraph);
 };
 
-//Isabel
+//Isabel- send emails to Admins for resource request
 exports.email = function(req,res){
-   console.log("EMAILS");
+ 
+  var data = req.body;
+  var message = {
 
-   // var transporter = nodemailer.createTransport();
-   var data = req.body;
-    var message = {
+    //sender info
+    from: data.email,
 
-    // sender info
-      from: data.email,
+    // Send to Admin
+    to: 'lwojo@ufl.edu',
 
-      // Comma separated list of recipients
-      to: 'lwojo@ufl.edu',
+    // Subject of the message
+    subject: 'Resource Request', 
 
-      // Subject of the message
-      subject: 'Resource Request', 
+    //text
+    text: 'Subject: '+ data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link  + '\nComments: ' + data.comments
 
-      //text
-      text: 'Subject: '+ data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link  + '\nComments: ' + data.comments
-
-      };
-
-      console.log('Sending Mail');
-      transport.sendMail(message, function(error){
-        if(error){
-            console.log('Error occured');
-            console.log(error.message);
-            return;
-        }
-        console.log('Message sent successfully!');
-        // $("#myModal").modal("show");
-        // $("#myModal").modal('show');
-        });
     };
+
+    // console.log('Sending Mail');
+    // Sending Mail
+    transport.sendMail(message, function(error){
+      if(error){
+          console.log('Error occured');
+          console.log(error.message);
+          return;
+      }
+      //Message sent successully!
+      // console.log('Message sent successfully!');
+      });
+};
       
 
 

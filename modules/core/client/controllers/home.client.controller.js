@@ -531,7 +531,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
 
 
-
             if ($scope.credentials.lastName !== undefined) {
                 $scope.authentication.user.lastName = $scope.credentials.lastName;
             } else {
@@ -560,29 +559,34 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
             $scope.authentication.user.displayName = $scope.authentication.user.lastName + ', ' + $scope.authentication.user.firstName;
-            // $scope.authentication.user.lastName = $scope.credentials.lastName;
-            // $scope.authentication.user.email = $scope.credentials.email;
-            // $scope.authentication.user.userName = $scope.credentials.userName;
-            // $scope.authentication.user.password = $scope.credentials.password;
-            // console.log("NEW NAME " + $scope.user.firstName);
-
-            $http.post(route, $scope.user).success(function(response) {
+           
+            //check to make sure passwords match
+            if( $scope.credentials.password == $scope.confirmpassword){
+                console.log("Passwords match");
+                $http.post(route, $scope.user).success(function(response) {
 
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
 
                 //redirect to the home page
                 //$location.url('/');
+                }).error(function(response) {
+                    console.log("Unable to POST.");
+                    // console.log(response);
+                    console.dir("RESPONSE: " + response);
+                    //sets error if invalid info
+                    //alert("Not updating.");
 
-            }).error(function(response) {
-                console.log("Unable to POST.");
-                // console.log(response);
-                console.dir("RESPONSE: " + response);
-                //sets error if invalid info
-                //alert("Not updating.");
+                    $scope.error = response.message;
+                });   
+            }
+            else{
+                console.log("Passwords do not match");
 
-                $scope.error = response.message;
-            });
+                $("#settingsMoodal").modal();
+                    
+            }
+            
         };
 
         //Isabel
@@ -600,15 +604,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
 
-        //Isabel
+        //Isabel- send email to Admin for request resource
         $scope.sendEmail = function(isValid){
+            // console.log("sending email for resources");
+            // console.log("Subject: " + $scope.resource.subject);
+            // console.log("Subject Details: " + $scope.resource.subjectdetails);
+            // console.log("Link: " + $scope.resource.resourcelink);
+            // console.log("Comments: " + $scope.resource.comments);
 
-            console.log("sending email for resources");
-            console.log("Subject: " + $scope.resource.subject);
-            console.log("Subject Details: " + $scope.resource.subjectdetails);
-            console.log("Link: " + $scope.resource.resourcelink);
-            console.log("Comments: " + $scope.resource.comments);
-
+            //information from the form 
             var data = ({
 
                 subject: $scope.resource.subject,
@@ -616,9 +620,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 link: $scope.resource.resourcelink,
                 comments: $scope.resource.comments,
                 email: $scope.resource.email
-
             });
 
+            //send the actual data
             var route = '/api/data/email';
             $http.post(route, data).success(function(req, res) {
                 console.log("sending email");
