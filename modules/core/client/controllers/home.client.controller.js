@@ -240,15 +240,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 }]);
 
-//<<<<<<< HEAD
-//angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 
-//    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades) {
-//=======
-
-
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments',
     function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments) {
-
 
 
        //Isabel- modal for resource request 
@@ -276,9 +269,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
+
+        //checks to see if current user information and location
         // console.log("ProfileController");
-        console.log($scope.credentials);
-        console.log("User: " + $scope.user);
+        // console.log($scope.credentials);
+        // console.log("User: " + $scope.user);
 
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
@@ -287,10 +282,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         //checks if teacher
         if ($scope.authentication.user.profileType === "Teacher") {
-            console.log("I am a teacher");
+            // console.log("I am a teacher");
             $scope.isTeacher = true;
         } else if ($scope.authentication.user.profileType === "Admin") {
-            console.log("I am a admin");
+            // console.log("I am an admin");
             $scope.isAdmin = true;
         }
 		
@@ -322,8 +317,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $scope.input.courseNums.push(element.number); 
                 $scope.input.coursePeriods.push(element.section);
 
-
-
                 //used for testing purposes to make sure a teacher has the correct courses
                 // console.log($scope.input.courseNums);
             }
@@ -340,7 +333,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
        
         // array of class names
-
         $scope.classNames = [];
         $scope.Periods = [];
 
@@ -359,7 +351,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }
 
         });
-
 
 
         //Isabel- New Course Names
@@ -381,10 +372,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                                 "Other"];
 
         //Isabel- Upload New Profile Photo
-
-
-
-        //Isabel
         $scope.photoupdate = function(){
             console.log("PHOTO UPDATES");
             var x = document.getElementById("uploadPhoto").files[0];
@@ -450,7 +437,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             // }
         };
 
-		
 	
 		//Isabel- add a course 
         $scope.add = function(course, period) {
@@ -468,13 +454,13 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 courseObj.number = Math.floor((Math.random() * 1000) + 1);
                 //$scope.credentials.courses.push(courseObj);
                 $scope.authentication.user.courses.push(courseObj);
-                console.log("I AM ADDING A CLASS " + courseObj.courseName);
+                // console.log("new class " + courseObj.courseName);
             }
 
             $scope.authentication.user.courses.forEach(
                 function(element, index, array) {
                     //$scope.authentication.user.courses.push(courseObj);
-                    console.log("CURRENT CLASSES: " + element.courseName);
+                    // console.log("current classes: " + element.courseName);
                 });
 
             //to display on profile view
@@ -487,7 +473,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     //stores each course Name and number of the course that a teacher has
                     $scope.input.courseNums.push(element.courseName + " : " + element.number +" : "+  element.section);
                     //used for testing purposes to make sure a teacher has the correct courses
-                    console.log("INPUT CLASSES: " + $scope.input.courseNums);
+                    // console.log("input class: " + $scope.input.courseNums);
                 });
 
             // $scope.tester();
@@ -504,7 +490,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $location.url('/');
 
             }).error(function(response) {
-                console.log("Unable to PUT.");
+                // console.log("Unable to PUT.");
                 console.dir(response);
                 //sets error if invalid info
                 //alert("Not updating.");
@@ -512,49 +498,53 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $scope.error = response.message;
             });
 
+            //reset what they see to empty
             $scope.toAdd = '';
         };
 
         //Isabel- teachers can update their settings
         $scope.settingsupdate = function(isValid) {
 
-            console.log("Changing Settings");
+            // console.log("Changing Settings");
             $scope.error = null;
 
-            console.dir("SCOPE: " + $scope);
-            console.log($scope.credentials.firstName);
+            // console.dir("scope: " + $scope);
+            // console.log($scope.credentials.firstName);
+
             var route = '/api/users/' + $scope.authentication.user._id;
+
+            //do if statements to allow users to not have to edit every single element and just pull from database what they did not change
             if ($scope.credentials.firstName !== undefined) {
                 $scope.authentication.user.firstName = $scope.credentials.firstName;
             } else {
-                console.log("no first");
+                // console.log("no first name");
             }
 
 
             if ($scope.credentials.lastName !== undefined) {
                 $scope.authentication.user.lastName = $scope.credentials.lastName;
             } else {
-                console.log("no last");
+                // console.log("no last name");
             }
 
 
             if ($scope.credentials.userName !== undefined) {
                 $scope.authentication.user.userName = $scope.credentials.userName;
             } else {
-                console.log("no username");
+                // console.log("no username");
             }
 
             if ($scope.credentials.email !== undefined) {
                 $scope.authentication.user.email = $scope.credentials.email;
             } else {
-                console.log("no email");
+                // console.log("no email");
             }
 
 
             if ($scope.credentials.password !== undefined) {
                 $scope.authentication.user.password = $scope.credentials.password;
             } else {
-                console.log("no password");
+                // console.log("no password");
             }
 
 
@@ -562,7 +552,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
            
             //check to make sure passwords match
             if( $scope.credentials.password == $scope.confirmpassword){
-                console.log("Passwords match");
+                // console.log("Passwords match");
                 $http.post(route, $scope.user).success(function(response) {
 
                 // If successful we assign the response to the global user model
@@ -571,9 +561,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 //redirect to the home page
                 //$location.url('/');
                 }).error(function(response) {
-                    console.log("Unable to POST.");
+                    // console.log("Unable to POST.");
                     // console.log(response);
-                    console.dir("RESPONSE: " + response);
+                    console.dir("response: " + response);
                     //sets error if invalid info
                     //alert("Not updating.");
 
@@ -581,22 +571,20 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 });   
             }
             else{
-                console.log("Passwords do not match");
-
-                $("#settingsMoodal").modal();
-                    
+                // console.log("Passwords do not match");
+                //do not save, tell user to create matching passwords
+                $("#settingsMoodal").modal();          
             }
-            
         };
 
-        //Isabel
+        //Isabel- update function
         $scope.update = function() {
             $scope.error = null;
 
             var user = $scope.user;
-            console.log("USER= " + user.email);
+            console.log("user= " + user.email);
             user.$update(function() {
-                console.log("HOME CONTROLLER UPDATE");
+                console.log("home controller update");
                 // $location.path('/teacher/' + user._id);
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
@@ -655,7 +643,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.$on('creation', function(event, args) {
             console.log(args);
             //console.log("controller2");
-            $scope.test = "TESTING";
+            $scope.test = "testing";
             console.log($scope.section);
             $scope.section = args.firstName;
             console.log($scope.section);
@@ -703,68 +691,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
 
-        // Isabel- reset a single teachers code
-        $scope.resetCodes = function(){
-
-            var d = new Date();
-            var dlog = d.getDate();
-            // console.log("Date: "+dlog);
-
-            var m = new Date();
-            var mlog = d.getMonth();
-            // console.log("Month: "+mlog);
-
-            var h = new Date();
-            var hlog = d.getHours();
-            // console.log("Hour: "+ hlog);
-
-            var mi = new Date();
-            var milog = mi.getMinutes();
-            // console.log("Miniute: "+milog);
-
-            var s = new Date();
-            var slog = s.getSeconds();
-            // console.log("TODAY AND NOW"); 
-
-
-
-
-            //if so change all course arrays to empty
-            if (dlog === 1 && mlog === 7 && hlog === 0 && milog === 0 && s === 0) {
-                // if(dlog === 18 && mlog === 2 && hlog === 18 && milog === 22){
-
-
-                Temp.parseUsers().then(function(response) {
-                    $scope.users = response.data;
-                    //dowload all current course codes
-                    for (var i = 0; i < $scope.users.length; i++) {
-
-                        while ($scope.users[i].courses.length > 0) {
-                            $scope.users[i].courses.pop();
-                        }
-
-                        updateresetCodes($scope.users[i]);
-                    }
-
-
-                    function updateresetCodes(newuser){
-                        
-                        var route = '/api/users/no';
-
-                        $scope.put(route, newuser.courses).success(function(response) {
-
-
-
-                        }).error(function(response) {
-                            console.log("Unable to PUT.");
-                            console.dir(response);
-                            $scope.error = response.message;
-                        });
-
-                    }
-                });
-            }
-        };
+        
 
 /*
 <<<<<<< HEAD
@@ -866,10 +793,66 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         };
 
+        // Isabel- reset a single teachers code
+        $scope.resetCodes = function(){
+
+            var d = new Date();
+            var dlog = d.getDate();
+            // console.log("Date: "+dlog);
+
+            var m = new Date();
+            var mlog = d.getMonth();
+            // console.log("Month: "+mlog);
+
+            var h = new Date();
+            var hlog = d.getHours();
+            // console.log("Hour: "+ hlog);
+
+            var mi = new Date();
+            var milog = mi.getMinutes();
+            // console.log("Miniute: "+milog);
+
+            var s = new Date();
+            var slog = s.getSeconds();
+            
+
+            //if so change all course arrays to empty
+            if (dlog === 1 && mlog === 7 && hlog === 0 && milog === 0 && s === 0) {
+                // if(dlog === 18 && mlog === 2 && hlog === 18 && milog === 22){
+
+                Temp.parseUsers().then(function(response) {
+                    $scope.users = response.data;
+                    //dowload all current course codes
+                    for (var i = 0; i < $scope.users.length; i++) {
+
+                        while ($scope.users[i].courses.length > 0) {
+                            $scope.users[i].courses.pop();
+                        }
+
+                        updateresetCodes($scope.users[i]);
+                    }
+
+
+                    function updateresetCodes(newuser){
+                        
+                        var route = '/api/users/no';
+
+                        $scope.put(route, newuser.courses).success(function(response) {
+
+                        }).error(function(response) {
+                            console.log("Unable to PUT.");
+                            console.dir(response);
+                            $scope.error = response.message;
+                        });
+
+                    }
+                });
+            }
+        };
+
         //Isabel - reset all the teachers code
         $scope.resetAllCodes = function() {
             //get all teachers
-
 
             //check to see if date is August 1st
             var d = new Date();
@@ -880,13 +863,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             var mlog = d.getMonth();
             // console.log(mlog);
 
-
             //if so change all course arrays to empty
-
 
             if(dlog === 1 && mlog === 7){
                 // console.log("It's August 1st, time for a reset!");
-
 
                 while ($scope.authentication.user.courses.length > 0) {
                     $scope.authentication.user.courses.pop();

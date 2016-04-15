@@ -5,27 +5,29 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport();
 var mongoose = require('mongoose'),
 
-    QuizQuestion = mongoose.model('QuizQuestion'),
-    User = mongoose.model('User'),
-    Subject = mongoose.model('Subject'),
-    Resource = mongoose.model('Resource'),
-    StudentGrades = mongoose.model('StudentGrades'),
-	Comments = mongoose.model('Comments'),
-    SubHead = mongoose.model('SubHead');
+  QuizQuestion = mongoose.model('QuizQuestion'),
+  User = mongoose.model('User'),
+  Subject = mongoose.model('Subject'),
+  Resource = mongoose.model('Resource'),
+  StudentGrades = mongoose.model('StudentGrades'),
+  Comments = mongoose.model('Comments'),
+  SubHead = mongoose.model('SubHead');
 	
+
+
+ var nodemailer = require('nodemailer');
+ var transport = nodemailer.createTransport("SMTP", {
+    service: 'Gmail',
+    auth: {
+      user: "biotilitysp18@gmail.com",
+      pass: "team4asp18"
+    }
+  });
+
 
 /**
  * Render the main application page
  */
- var plotly = require('plotly')("isalau","qezih8jic7");
- var nodemailer = require('nodemailer');
- var transport = nodemailer.createTransport("SMTP", {
-        service: 'Gmail',
-        auth: {
-            user: "biotilitysp18@gmail.com",
-            pass: "team4asp18"
-        }
-    });
 
  // var Email = require('email').Email;
  var datagraph = [];
@@ -56,6 +58,7 @@ exports.getComments = function(req, res) {
         return res.end(JSON.stringify(comments));
     });
 };
+
 exports.sendMail = function(req, res) {
     console.log("EMAILS");
     var data = req.body;
@@ -321,9 +324,10 @@ exports.getGradesForAdmin = function(req, res) {
 //   }
 // };
 
+
 // Isabel - plot for statistics on teachers page 
 exports.plot = function(req,res){
-  console.log("IN PLOT");
+  console.log("plotting statistics");
   
   var searchCourse = req.param('given');
   console.log(searchCourse);
@@ -682,17 +686,16 @@ exports.findStudents = function(req, res) {
     });
 };
 
-//Isabel
+//Isabel- update teacher's courses
 exports.update = function(req, res) {
-    console.log("UPDATES");
+    // console.log("update");
     var User = req.User;
 
     User.courses = req.body.courses;
 
-
     User.save(function(err) {
         if (err) {
-            console.log("NOOOOO");
+            // console.log("did not complete update");
             return res.status(400).send({
                 message: err
             });
