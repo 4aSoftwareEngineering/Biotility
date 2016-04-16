@@ -457,6 +457,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 // console.log("new class " + courseObj.courseName);
             }
 
+
             $scope.authentication.user.courses.forEach(
                 function(element, index, array) {
                     //$scope.authentication.user.courses.push(courseObj);
