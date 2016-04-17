@@ -240,8 +240,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 }]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments','multipartForm', 
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, multipartForm) {
 
 
        //Isabel- modal for resource request 
@@ -372,6 +372,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                                 "Other"];
 
         //Isabel- Upload New Profile Photo
+        $scope.photos = {};
+        $scope.Submit = function(){
+            var uploadUrl = '/upload';
+            multipartForm.post(uploadUrl, $scope.photos);
+        }
+
         $scope.photoupdate = function(){
             console.log("PHOTO UPDATES");
             var x = document.getElementById("uploadPhoto").files[0];
