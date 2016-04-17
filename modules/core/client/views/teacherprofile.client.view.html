@@ -100,21 +100,33 @@
 
       <!--Show Statistics -->
       <div class="col-md-9 " ng-show="toShow=='statsicsVisible'">
+         <label>Class:</label>
+         <select ng-model="ClassNames" style="height: 30px;">
+                   <option  ng-repeat="quiz in classQuiz">{{quiz}}</option>
+          </select>
+           <label>Code:</label>
+         <select ng-model="ClassCodes" style="height: 30px;">
+                   <option  ng-repeat="periods in classCodes">{{periods}}</option>
+          </select>
+           <label >Quiz:</label>
          <select ng-model="ClassStats" style="height: 30px;">
                    <option  ng-repeat="name in classNames">{{name}}</option>
           </select>
-          <div class="col-sm-4">
+        <!--   <div class="col-sm-4">
                 <input class="form-control"  ng-model="ClassStats" ng-init= "ClassStats" type="text" ng-value="{{user.firstName}}">
-            </div>
-           <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassStats)">
+            </div> -->
+           <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassNames, ClassCodes,  ClassStats)">
               Update Statistics
           </button>
+
+            <div id ="nograpdata">
+                <p>No one has taken an exam for this course code. </p>
+            </div>
 
             <div>
               <canvas id="myChart" width="400px" height="400px"></canvas>
             </div>
-
-
+            
           <!-- </div> -->
 
       </div>

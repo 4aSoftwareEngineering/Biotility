@@ -329,8 +329,12 @@ exports.getGradesForAdmin = function(req, res) {
 exports.plot = function(req,res){
   console.log("plotting statistics");
   
-  var searchCourse = req.param('given');
-  console.log(searchCourse);
+  var nameofClass = req.param('classname');
+  var searchQuiz = req.param('quiz');
+  var courseCodes = req.param('code');
+  console.log(nameofClass +" "+  searchQuiz);
+
+  //array of courses for the teacher
   var num = [];
   var classes = [];
   var grade = [];
@@ -341,28 +345,27 @@ exports.plot = function(req,res){
     num.push(req.user.courses[i].number);
   }  
 
-  
   var findcount = false; 
   //find all the students in that course 
   console.log("AMOUNT:" + req.user.courses.length);
   for(var s = 0; s < req.user.courses.length ; s++){  
-    findStudents(num[s]);
+    findStudents();
   }
 
   for(var gradesize = 0; gradesize < 20 ; gradesize++){
     grade[gradesize] = 0;
   }
 
-   function findStudents(stud){
-      User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {  
-        for (var i = 0; i < users.length; i++) {           
-            // console.log("STUDENTS: " +users[i].userName);  
-            if (i === users.length -1 ) {
-              findcount = true;
-            } 
-            findGrades(users[i], stud);
-        }
-      });
+  function findStudents(){
+    User.find({ 'profileType': 'Student', 'courseCode': courseCodes}).lean().exec(function(err, users) {  
+      for (var i = 0; i < users.length; i++) {           
+          console.log("STUDENTS: " +users[i].userName);  
+          if (i === users.length -1 ) {
+            findcount = true;
+          } 
+          findGrades(users[i], courseCodes);
+      }
+    });
   }
 
    //find all grades for the course code
@@ -371,19 +374,23 @@ exports.plot = function(req,res){
         //lookup a test
 
         for (var i = 0; i < grades.length;  i++) {
-            
+            // console.log(grades[i].category);
             for (var c = 0; c < grades[i].student.courses.length; c++){
-                
                 //see if the test has a category that the teacher is looking for
-                if(grades[i].category === searchCourse){
-                    
+                if(grades[i].category === searchQuiz){
+                  // console.log("Current course code: "+ courseCodes);
                     //see if test has a course code that matches the teachers 
-                   if(grades[i].student.courses[c] === course){
-                    console.log("COURSES: "+ grades[i].student.courses);
-                    datagraph.size = grades[i].analytics.length; 
+                  console.log(grades[i].student.courses[c]);
+                   if(grades[i].student.courses[c] == courseCodes){                    
+                    console.log("COURSES: "+ grades[i].student.courses[0]);
+
+                    //Get the amount of questions in the quiz
+                    datagraph.size = grades[i].analytics.length;
+                    var questionSize =  grades[i].analytics.length;
+                    console.log("Question size:" + grades[i].analytics.length); 
                     
                     //iterate through analytics and see if attempt = 1
-                       for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
+                       for (var analytics = 0; analytics< questionSize; analytics++){
                             if(grades[i].analytics[analytics].attempts === 1){
                                 // console.log("you got it right");
                                 grade[analytics] = grade[analytics]+1;

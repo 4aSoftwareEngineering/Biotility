@@ -11,7 +11,7 @@ module.exports = function(app) {
     var Email = require('email').Email;
 
     var multer = require('multer');
-    app.use(multer({dest:'./uploads/'}));
+    app.use(multer({storage:'./uploads/'}));
     app.post('/upload', function(req,res){
         console.log(req.body);
         console.log(req.files);

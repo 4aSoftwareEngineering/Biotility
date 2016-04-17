@@ -335,8 +335,22 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         // array of class names
         $scope.classNames = [];
         $scope.Periods = [];
+        $scope.classCodes = [];
+        $scope.classQuiz=[];
+        $scope.classPeriods = []
 
         //get course names
+        var teachersCurrentClasses = $scope.authentication.user.courses;
+        console.log(teachersCurrentClasses);
+        for (var k= 0; k < teachersCurrentClasses.length; k++){
+            var label = teachersCurrentClasses[k].courseName;
+            // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
+            $scope.classQuiz.push(label);
+            $scope.classCodes.push(teachersCurrentClasses[k].number);
+            // console.log(teachersCurrentClasses[k].courseName);
+        }
+
+        //get quiz names
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
 
@@ -348,6 +362,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             for (var j = 1; j < $scope.subjects.length; j++) {
                 $scope.Periods.push("Period " + j);
+                $scope.classPeriods.push("Period " + j);
             }
 
         });
@@ -747,18 +762,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 //=======
 
         //Isabel - bar graph
-        $scope.viewStats = function(course){
+        $scope.viewStats = function(classname, code, quiz){
            
             // Plotly Stuff
-            console.log("Passing: "+ course);
+            console.log("Passing: "+ classname);
             var route = '/api/data/plot';
 
             var params = ({
                 person: $scope.user, 
-                given: course 
+                quiz: quiz 
+
             });
 
-            $http.get(route, {params:{"person": $scope.user, "given": course}}).then(function(res) { 
+            $http.get(route, {params:{"person": $scope.user, "quiz": quiz, "classname": classname, "code": code}}).then(function(res) { 
                 // your data
                 console.log("ploting");
                 console.log(res.data);
@@ -796,9 +812,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             }).then(function(error) {
                 console.log("Plot eror" + error);
             });
+
+            // if (parsedData.Item1 != "") {
+            //     $("#nograpdata").show();
+            // }
+
+                  
+
             // Chart.defaults.global.responsive = true;
 
         };
+
+      
+
 
         // Isabel- reset a single teachers code
         $scope.resetCodes = function(){
