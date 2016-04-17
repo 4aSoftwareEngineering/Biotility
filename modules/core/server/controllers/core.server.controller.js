@@ -337,7 +337,7 @@ exports.plot = function(req,res){
   //array of courses for the teacher
   var num = [];
   var classes = [];
-  var grade = [];
+  var grade = [0];
   var students = [];
   
      
@@ -353,9 +353,11 @@ exports.plot = function(req,res){
     findStudents();
   // }
 
-  for(var gradesize = 0; gradesize < 20 ; gradesize++){
+  for(var gradesize = 0; gradesize < 5 ; gradesize++){
     grade[gradesize] = 0;
   }
+
+
 
   function findStudents(){
     User.find({ 'profileType': 'Student', 'courseCode': courseCodes}).lean().exec(function(err, users) {  
@@ -386,9 +388,10 @@ exports.plot = function(req,res){
                     // console.log("COURSES: "+ grades[i].student.courses[0]);
 
                     //Get the amount of questions in the quiz
-                    datagraph.size = grades[i].analytics.length;
+                    datagraph.length = grades[i].analytics.length;
                     var questionSize =  grades[i].analytics.length;
-                    console.log("Question size:" + grades[i].analytics.length); 
+                    // console.log("Question size:" + grades[i].analytics.length); 
+                    console.log("Question size:" + datagraph.length); 
                     
                     //iterate through analytics and see if attempt = 1
                        for (var analytics = 0; analytics< questionSize; analytics++){
@@ -399,30 +402,29 @@ exports.plot = function(req,res){
                         }
                    }
                 }
-            }        
+            }         
         }
-         datagraph = grade; 
-        if(findcount === true ){
-            callgraph(datagraph);
-        }    
+         datagraph = grade;
+          return res.send(datagraph);     
     });
+
   }
 
  
 
-  //output data
-  function callgraph(datagraph){
-    console.log("DATAGRAPH");
+  // //output data
+  // function callgraph(datagraph){
+  //   console.log("DATAGRAPH");
 
-    for(var size = 0; size < 3 ; size++){
-      console.log(datagraph[size]);
-    }
-  }
+  //   // for(var size = 0; size < 20 ; size++){
+  //     console.log(datagraph.size);
+  //   // }
+  // }
 
 
   console.log("DATA" + datagraph);
   // var data = [65, 59, 80, 81, 56, 55];
-  return res.send(datagraph);
+ 
 };
 
 //Isabel- send emails to Admins for resource request

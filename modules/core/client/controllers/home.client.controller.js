@@ -789,6 +789,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                 // console.log(res);
                 var ctx = $("#myChart").get(0).getContext("2d");
+                // ctx.destroy();
                 // ctx.canvas.width = 5;
                 // ctx.canvas.height = 5;
                   var data = {
@@ -807,7 +808,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                   var options = { 
                         responsive: false,
-                        maintainAspectRatio: true
+                        maintainAspectRatio: true,
+                        barShowStroke : false
                     }
 
                   var myBarChart = new Chart(ctx).Bar(data,options);
