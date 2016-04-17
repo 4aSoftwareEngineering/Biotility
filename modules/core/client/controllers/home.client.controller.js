@@ -58,8 +58,17 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //some variables for the resource view
         $scope.success = null;
         $scope.error = null;
-        $scope.editMode = false;
+        if($scope.authentication.user == null) {
+            $scope.editMode = false;
+        }
+        else {
+            if($scope.authentication.user.profileType === 'Admin') {
+                $scope.editMode = true;
+            }
+        }
+
         $scope.updateMode = false;
+
         $scope.ResourceField = true;
         $scope.isAdmin = false;
 
@@ -175,12 +184,15 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.newResource = resource_obj;
             $scope.updateID = resource_obj._id;
             $scope.ResourceField = true;
+            $scope.setEditHeading();
+
         };
         $scope.editSubHead = function(subHead_obj) {
             $scope.updateMode = true;
             $scope.newSubHead = subHead_obj;
             $scope.updateSubHeadID = subHead_obj._id;
             $scope.ResourceField = false;
+            $scope.setEditHeading();
         };
 
         //Clears all fields, including the SubHead field        
@@ -188,7 +200,18 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.newResource = {};
             $scope.newSubHead = {};
             $scope.updateMode = false;
+            $scope.setEditHeading();
         };
+        $scope.setEditHeading = function() {
+            if($scope.updateMode === false) {
+                $scope.editHeading = "Create A New Heading / Link";
+            }
+            else {
+                $scope.editHeading = "Edit An Existing Heading / Link";
+            }
+        };
+        $scope.setEditHeading();
+
         $scope.clearSuccessMessage = function() {
             $scope.success = null;
         };
@@ -203,14 +226,19 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.recordClick = function(resource_obj,index,link_url) {
             var id = resource_obj._id;
             var name = resource_obj.title;
-            console.log($scope.resources[index]);
-            console.log("Resource_Obj");
-            console.log(resource_obj);
-            $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
-            
-            }).error(function(response) {
+            if($scope.authentication.user === null) {
 
-            });
+            }
+            else {
+                if($scope.authentication.user.profileType === 'Student') {
+                    $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
+                    
+                    }).error(function(response) {
+
+                    });
+                }
+            }
+            
             $scope.resources[index].clicks = $scope.resources[index].clicks + 1;
             console.log($scope.resources[index]);
             $window.open(link_url, '_blank');
@@ -266,7 +294,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 console.log(res);
             });		
 			
-		}
+		};
 		Comments.loadComments().then(function(response) {
             $scope.Comments = response.data;
         });
@@ -308,10 +336,48 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         });
 
 
-        ResourceClicks.loadClicks().then(function(response) {
-            $scope.resources = response.data;
+        Subjects.loadSubjects().then(function(response) {
+            $scope.subjects = response.data;
         });
 
+        $scope.viewClicks = function(subject){
+           
+            console.log("Passing: "+ subject);
+            var route = '/api/data/resources/clicks';
+
+            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
+                console.log(res.data);
+                var clicks = res.data;
+                var click_labels = [];
+                var click_data = [];
+                for(var i = 0; i < clicks.length; i++) {
+                    click_labels.push(clicks[i].name);
+                    click_data.push(clicks[i].clicks);
+                }
+        //         // console.log(res);
+                var ctx = $("#myClicksChart").get(0).getContext("2d");
+
+                  var data = {
+                    labels: click_labels,
+                    datasets: [
+                        {
+                            label: "Course Settings",
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: click_data
+                        },
+                    ]
+                  };
+
+
+
+                  var myClicksChart = new Chart(ctx).Bar(data);
+        //     }).then(function(error) {
+        //         console.log("Plot eror" + error);
+            });
+        };
 
         //for each course in their schema
         $scope.authentication.user.courses.forEach(

@@ -1,5 +1,6 @@
 <!--admin profile page-->
 <div class="container" ng-controller="ProfileController">
+    <script src="Chart.js"></script>
     <div style="margin-top: 45px;">
     </div>
     <hr>
@@ -21,11 +22,11 @@
                 <!--profile menu-->
                  <nav aria-label="context" role="navigation">
                     <ul class="nav" id="section-tabs">
-                        <li class="section"><a ng-click="qc = false; quizComment = false;profileVisible = true; settingsVisible=false; statsVisible=false; editVisible=false" class="profile" href="#" tabindex="0">Profile</a></li>
-                        <li class="section"><a ng-click="qc = false; quizComment = false;settingsVisible = true; statsVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
-                        <li class="section"><a ng-click="qc = false; quizComment = false;statsVisible = true; profileVisible=false; settingsVisible=false; editVisible=false" class="profile_settings active" href="#" tabindex="0">Statistics</a></li>
-                        <li class="section"><a ng-click="qc = true; quizComment = false; editVisible = false; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Question Control</a></li>
-						<li class="section"><a ng-click="qc = false; quizComment = true; editVisible = false; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Quiz Comments</a></li>
+                        <li class="section"><a ng-click="qc = false; quizComment = false;profileVisible = true; settingsVisible=false; clicksVisible=false; editVisible=false" class="profile" href="#" tabindex="0">Profile</a></li>
+                        <li class="section"><a ng-click="qc = false; quizComment = false;settingsVisible = true; clicksVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
+                        <li class="section"><a ng-click="qc = false; quizComment = false;clicksVisible = true; profileVisible=false; settingsVisible=false; editVisible=false" class="profile_settings active" href="#" tabindex="0">Resource Clicks</a></li>
+                        <li class="section"><a ng-click="qc = true; quizComment = false; editVisible = false; profileVisible=false; settingsVisible=false; clicksVisible=false" class="profile_settings active" href="#" tabindex="0">Question Control</a></li>
+						<li class="section"><a ng-click="qc = false; quizComment = true; editVisible = false; profileVisible=false; settingsVisible=false; clicksVisible=false" class="profile_settings active" href="#" tabindex="0">Quiz Comments</a></li>
                     </ul>
                 </nav>
             </div>
@@ -49,25 +50,28 @@
 		  </div>
 
 		</div> <!-- end show profile -->
+
         <!-- Statistics Page -->
-        <!-- will require subpages for different types of statistics. eg: clicks, quizzes, etc -->
-        <div ng-show="statsVisible">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Resource</th>
-                        <th># of Clicks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="resource in resources">
-                        <td>{{resource.title}}</td>
-                        <td>{{resource.clicks}}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div ng-show="clicksVisible" class="col-lg-8">
+            <!-- Resource Clicks Chart -->
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="SubjectForClicks">
+                        <option ng-repeat="subjectOption in subjects" value="{{subjectOption.name}}">{{subjectOption.name}}</option>
+                    </select>
+                </div>
+                <div calss="col-md-4">
+                    <button type="button" class="btn btn-default" ng-click="viewClicks(SubjectForClicks)">See Clicks</button> 
+                </div>
+            </div>
+            <!-- Chart itself -->
+            <div class="row">
+                <div>
+                    <canvas id="myClicksChart" width="400" height="200"></canvas>
+                </div>
+            </div>
 			</div>
-         <div ng-show="quizComment">
+         <div class="col-md-8" ng-show="quizComment">
             <table class="table table-striped">
                 <thead>
                     <tr>

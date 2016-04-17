@@ -1,10 +1,8 @@
 'use strict';
-
-
+var Q = require('q');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport();
 var mongoose = require('mongoose'),
-
     QuizQuestion = mongoose.model('QuizQuestion'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
@@ -12,7 +10,7 @@ var mongoose = require('mongoose'),
     StudentGrades = mongoose.model('StudentGrades'),
 	Comments = mongoose.model('Comments'),
     SubHead = mongoose.model('SubHead');
-	
+mongoose.Promise = require('q').Promise;
 
 /**
  * Render the main application page
@@ -492,10 +490,49 @@ exports.parseResources = function(req, res) {
     });
 };
 exports.parseClicks = function(req, res) {
-
-    Resource.find({}).sort({clicks: -1}).exec(function(err, subs) {
-        return res.end(JSON.stringify(subs));
-    });
+    var searchSubject = req.param('subject');
+    var promises = [];
+    console.log("Got:" + searchSubject);
+    console.log("Calling Subhead.find");
+    SubHead.find({'subject': searchSubject}).exec().then(function(SubHead_Return) {
+      console.log("SubHead_Return");
+      console.log(SubHead_Return);
+      var SubHead_ids = [];
+      for(var i = 0; i < SubHead_Return.length; i++) {
+        SubHead_ids.push(SubHead_Return[i]._id);
+      }
+      return SubHead_ids;
+    }).then(function(SubHead_ids){
+      console.log("SubHead_ids");
+      console.log(SubHead_ids);
+      Resource.find({}).sort({clicks: -1}).exec().then(function(clicks){
+        var data = [];
+        for(var i = 0; i < clicks.length; i++) {
+          console.log(clicks[i].title);
+          for(var j = 0; j < SubHead_ids.length; j++) {
+            if(clicks[i].subject == SubHead_ids[j]) {
+              data.push({'name': clicks[i].title, 'clicks': clicks[i].clicks});
+              console.log("success");
+            }  
+            console.log(clicks[i].subject);
+            console.log(SubHead_ids[j]);
+          }
+        }
+        console.log("DATA");
+        console.log(data);
+        return data;
+      }).then(function(data){
+        return res.end(JSON.stringify(data));
+      });
+      // console.log("Promises when Q called");
+      // console.log(promises);
+      // Q.all(promises).then(function(){
+      // console.log("Responding after forEach");
+      // console.log(data);
+      // return res.end(JSON.stringify(data));
+      // }); 
+    });  
+      
 };
 
 //Retrieves all the SubHeadings from database
