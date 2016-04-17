@@ -768,21 +768,23 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             console.log("Passing: "+ classname);
             var route = '/api/data/plot';
 
-            var params = ({
-                person: $scope.user, 
-                quiz: quiz 
+            // var params = ({
+            //     person: $scope.user, 
+            //     quiz: quiz 
 
-            });
+            // });
 
             $http.get(route, {params:{"person": $scope.user, "quiz": quiz, "classname": classname, "code": code}}).then(function(res) { 
                 // your data
-                console.log("ploting");
-                console.log(res.data);
+               //  console.log("ploting");
+               //  console.log(res.data);
+               // console.log(res.data.length);
                 
                 //get correct number of questions for X axis
                 var label =[];
-                for(var i = 1; i < res.data.length; i++){
-                    label[i-1] = "Question " + i; 
+                for(var i = 0; i < res.data.length; i++){
+                    var number = i+1;
+                    label[i] = "Question " + number; 
                 }
 
                 // console.log(res);
@@ -794,10 +796,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     datasets: [
                         {
                             label: "Course Settings",
-                            fillColor: "rgba(220,220,220,0.5)",
+                            fillColor: "blue",
                             strokeColor: "rgba(220,220,220,0.8)",
-                            highlightFill: "rgba(220,220,220,0.75)",
-                            highlightStroke: "rgba(220,220,220,1)",
+                            // highlightFill: "rgba(220,220,220,0.75)",
+                            // highlightStroke: "rgba(220,220,220,1)",
                             data: res.data
                         },
                     ]
@@ -809,9 +811,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     }
 
                   var myBarChart = new Chart(ctx).Bar(data,options);
-            }).then(function(error) {
-                console.log("Plot eror" + error);
-            });
+                    }).then(function(error) {
+                        console.log("Plot eror" + error);
+                    });
 
             // if (parsedData.Item1 != "") {
             //     $("#nograpdata").show();
