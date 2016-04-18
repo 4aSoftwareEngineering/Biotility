@@ -7,23 +7,21 @@
 	<br>
 	<h2 class="text-center" style="font-size: 60px;">Question Data</h2>
 	<div class="text-center" >
-		<h3> Click on a question for more options. </h3>
+
 		<a class="btn btn-primary" ui-sref="question_create">
 	        <i class="glyphicon glyphicon-submit"></i>
 	        Add a New Question
-	    </a>
-	<!--	<div class="input-group" id="searchBar">
+	    </a> <br><br>
+
+		<div class="input-group" id="searchBar">
 		  <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>
-		  <input type="text" class="form-control" placeholder="Search" ng-model="query">
-		</div> <!-- -->
-	
-    <!--    <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-model="editMode">Edit?
-                <p ng-show="editMode"> Click any black "x" to remove a question. </p>
-            </label>
-        </div> <!-- -->
+		  <input type="text" class="form-control" placeholder="Search questions" ng-model="query">
+		</div><br> <!-- -->
+
+		<h4> Click on a question for more details. </h4>
     </div>
+
+    <!-- Begin table of questions. -->
 	<table ng-show="isAdmin" class="table table-striped table-hover" ng-init="findQuestions()">
 		<thead>
 			<th>Category</th>
