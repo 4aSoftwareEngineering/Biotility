@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource'),
     StudentGrades = mongoose.model('StudentGrades'),
-	Comments = mongoose.model('Comments'),
+  	Comments = mongoose.model('Comments'),
     SubHead = mongoose.model('SubHead');
 mongoose.Promise = require('q').Promise;
 
@@ -85,99 +85,81 @@ exports.sendMail = function(req, res) {
 };
 
 exports.getGradesForAdmin = function(req, res) {
-    Subject.find({},{'name':1}).lean().exec(function(err, courses) {
-		for(var place=0; place<courses.length; place++){
-		
-		getAttempts(courses[place].name);
-		
-		}
-		return res.end(JSON.stringify(courses));
-	});
-			//console.log("Quiz: "+ courses[place].name);
-	function getAttempts(cat){
-			StudentGrades.find({'analytics.question.type':'SC','category':cat},{'analytics':1,'category':1}).lean().exec(function(err, aData) {
-				var sizeOfQuiz=0;
-				for(var g=0;g<aData.length;g++){
-					if(aData[g].analytics.length>sizeOfQuiz)sizeOfQuiz=aData[g].analytics.length;
-				}
-				var avgs = [0];
-				var modes = [0];
-				//make array of averages
-				//make arrar of modes0
-				for(var ez=1;ez<sizeOfQuiz;ez++){
-					avgs[avgs.length] =0;
-					modes[modes.length]=0;
-				}
-				
-				for(var j = 0 ; j<sizeOfQuiz;j++){
-					var choice = 0;
-					var total=0;
-					var counter=0;
-					var ans = [0,0,0,0,0,0];
-					for(var i=0;i<aData.length;i++){
-						
-						if(j>=aData[i].analytics.length)var z=5;
-						else{
-							if(aData[i].analytics[j].attempts==1){
-								choice=parseInt(aData[i].analytics[j].question.answers.correct);
-								//console.log("answer: "+choice);
-								
-							}
-							else{
-								for(var wrong=0;wrong<aData[i].analytics[j].question.answers.MCTF.length;wrong++){
-									if(aData[i].analytics[j].firstIncorrect==aData[i].analytics[j].question.answers.MCTF[wrong]){
-										choice=wrong;
-										break;
-									}
-								}
-								choice++;
-								//console.log("answer: "+choice);
-								
-							}
-							total+=aData[i].analytics[j].attempts;
-							ans[choice]+=1;
-							counter++;
-							
-						}
-					}
-					var average=total/counter;
-					var amount = 0;
-					var mode = 0;
-					avgs[j]=average;
-					 for(var ayy=1; ayy< ans.length; ayy++){
-						 
-                        if(ans[ayy] > amount){
-                                amount = ans[ayy];
-								mode = ayy;
-						}
-								 
-					}
-					modes[j]=mode;	
-						
-					
-					
-				}
-				
-				
-				//////////////////////////////////////////////////////////// 
-				
-				
-				
-				
-				//loop again
-				//get data
-				//somehow save it?
-				//console.log("Quiz: "+cat);
-			for(var pr = 0;pr<avgs.length;pr++){
-				//console.log("Question: "+pr+"   Average: "+ avgs[pr]+ "    Mode: "+ modes[pr]);
-				}
-				
-				
-				return res.end(JSON.stringify(aData));
-			});
-		}
+    var searchSubject = req.param('subject');
+    
+    QuizQuestion.find({'category': searchSubject}).exec().then(function(questions){
+      var question_ids = [];
+      for(var i = 0; i < questions.length; i++) {
+        question_ids.push(questions[i]._id);
+      }
+      console.log("question_ids:");
+      console.log(question_ids);
+      return question_ids;
+    }).then(function(ids){
+      StudentGrades.find({'category':searchSubject}).exec().then(function(grades){
+        var correct_instances = [];
+        //for each assesment
+        for(var i = 0; i <grades.length; i++){
+          console.log("ASSESMENT : "+i);
+          var use_assesment = true;
+          //for each id found above
+          if(grades[i].analytics.length === ids.length) {
+            for(var j = 0; j<ids.length; j++){
+              console.log("QUESTION : "+j);
+              console.log(ids[j]);
+              console.log(grades[i].analytics[j].question._id);
+              //KEEP AS != NEVER CHANGE TO !==
+              if(grades[i].analytics[j].question._id != ids[j]) {
+                use_assesment = false;
+                console.log("DON'T USE!");
+              }
+            }
+          }
+          else {
+            use_assesment = false;
+            console.log("DON'T USE!");
+          }
+          if(use_assesment === true) {
+            console.log("ASSESMENT ADDED");
+            correct_instances.push(grades[i]);
+          }
+        }
 
-	
+        return correct_instances;
+      }).then(function(aData){
+        var question_names = [];
+        for (var ques = 0;ques<aData[0].analytics.length; ques++) {
+          console.log("QUESTION NAMES : "+aData[0].analytics[ques].question.text.substring(0,20));
+          question_names.push(aData[0].analytics[ques].question.text.substring(0,20));
+        }
+        var perc_correct = [];
+        var avgs = [];
+        var modes = [];
+        //for each question
+        for (var perc = 0; perc < aData[0].analytics.length; perc++) {
+          var perc_add = 0;
+          var average_sum = 0;
+          var mode_start = 0;
+          //for each assessment
+          for(var corr = 0; corr < aData.length;corr++) {
+            if(aData[corr].analytics[perc].attempts === 1) {
+              perc_add++;
+            }
+            average_sum = average_sum + aData[corr].analytics[perc].attempts;
+            if(aData[corr].analytics[perc].attempts > mode_start) {
+              mode_start = aData[corr].analytics[perc].attempts;
+            }
+          }
+          perc_correct.push(perc_add/aData.length);
+          avgs.push(average_sum/aData.length);
+          modes.push(mode_start);
+        }
+
+        return {'question_names': question_names, 'avgs':avgs, 'modes':modes, 'perc_correct':perc_correct};
+    }).then(function(data){
+        return res.end(JSON.stringify(data));
+    });
+  });
 };
 
 //exports.plot = function(req,res){

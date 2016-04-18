@@ -274,8 +274,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
 //=======
 
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks', 'Comments',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks, Comments) {
 
 
 
@@ -331,11 +331,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.input.coursePeriods= [];
 
 
-        Grades.loadGrades().then(function(response) {
-            $scope.Grades = response.data;
-        });
-
-
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
         });
@@ -354,7 +349,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     click_labels.push(clicks[i].name);
                     click_data.push(clicks[i].clicks);
                 }
-        //         // console.log(res);
                 var ctx = $("#myClicksChart").get(0).getContext("2d");
 
                   var data = {
@@ -376,6 +370,48 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                   var myClicksChart = new Chart(ctx).Bar(data);
         //     }).then(function(error) {
         //         console.log("Plot eror" + error);
+            });
+        };
+
+        $scope.viewQuizStats = function(subject){
+           
+            console.log("Passing: "+ subject);
+            var route = '/api/data/adminGrades';
+
+
+            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
+                console.log(res.data);
+                var data = {
+                        labels: res.data.question_names,
+                        datasets: [
+                            {
+                                label: "Average Attemps",
+                                fillColor: "rgba(220,220,220,0.5)",
+                                strokeColor: "rgba(220,220,220,0.8)",
+                                highlightFill: "rgba(220,220,220,0.75)",
+                                highlightStroke: "rgba(220,220,220,1)",
+                                data: res.data.avgs
+                            },
+                            {
+                                label: "Most Attempts",
+                                fillColor: "rgba(151,187,205,0.5)",
+                                strokeColor: "rgba(151,187,205,0.8)",
+                                highlightFill: "rgba(151,187,205,0.75)",
+                                highlightStroke: "rgba(151,187,205,1)",
+                                data: res.data.modes
+                            },
+                            {
+                                label: "Percent Correct",
+                                fillColor: "rgba(204, 167, 148,0.5)",
+                                strokeColor: "rgba(204, 167, 148,0.8)",
+                                highlightFill: "rgba(204, 167, 148,0.75)",
+                                highlightStroke: "rgba(204, 167, 148,1)",
+                                data: res.data.perc_correct
+                            }
+                        ]
+                    };
+                var ctx = $("#myQuizStatsChart").get(0).getContext("2d");
+                var myQuizStatsChart = new Chart(ctx).Bar(data);
             });
         };
 

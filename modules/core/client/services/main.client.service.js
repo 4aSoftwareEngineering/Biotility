@@ -106,18 +106,6 @@ angular.module('core').service('Comments', ['$http', function($http) {
   };
 
 }]);
-angular.module('core').service('Grades', ['$http', function($http) {
-
-  return {
-    loadGrades: function() {
-      return $http({
-        method: 'GET',
-        url: '/api/data/adminGrades'
-      });
-    }
-  };
-
-}]);
 
 
 angular.module('core').service('Temp', ['$http', function($http) {

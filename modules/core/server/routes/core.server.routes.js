@@ -51,7 +51,7 @@ module.exports = function(app) {
 	//for the comments
 	app.route('/api/get_Comments')
 		.get(core.getComments);
-		
+	//for Quiz stats
     app.route('/api/data/adminGrades').get(core.getGradesForAdmin);
 
     app.route('/api/data/emailV').post(core.sendMail);
