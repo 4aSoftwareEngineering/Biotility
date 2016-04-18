@@ -534,8 +534,10 @@ exports.parseClicks = function(req, res) {
 //       then send back statistics about the results.
 exports.getGradesForAdmin = function(req, res) {
     var searchSubject = req.param('subject');
+    console.log("SUBJECT: "+searchSubject);
     //Get question from requested subject, then get their id's
     QuizQuestion.find({'category': searchSubject}).exec().then(function(questions){
+      console.log("QUESTIONSSSS: "+questions);
       var question_ids = [];
       for(var i = 0; i < questions.length; i++) {
         question_ids.push(questions[i]._id);
@@ -578,25 +580,82 @@ exports.getGradesForAdmin = function(req, res) {
           }
           var perc_correct = [];
           var avgs = [];
-          var modes = [];
           //for each question
           for (var perc = 0; perc < aData[0].analytics.length; perc++) {
             var perc_add = 0;
             var average_sum = 0;
-            var mode_start = 0;
             //for each assessment
             for(var corr = 0; corr < aData.length;corr++) {
               if(aData[corr].analytics[perc].attempts === 1) {
                 perc_add++;
               }
               average_sum = average_sum + aData[corr].analytics[perc].attempts;
-              if(aData[corr].analytics[perc].attempts > mode_start) {
-                mode_start = aData[corr].analytics[perc].attempts;
-              }
             }
             perc_correct.push(perc_add/aData.length);
             avgs.push(average_sum/aData.length);
-            modes.push(mode_start);
+          }
+
+          //Finding Most common wrong first pick
+          var modes = [];
+          //for each question
+          console.log("QUEST LENGTH: " + aData[0].analytics.length);
+          for (var quest = 0; quest < aData[0].analytics.length; quest++) {
+            console.log("QUEST LOOP: " + quest);
+            var possible_answers = [];
+            var tally_up = [];
+            //if single choice
+            console.log("QUESTION TYPE: " + aData[0].analytics[quest].question.type);
+            if(aData[0].analytics[quest].question.type === "SC") {
+              //populate possible_answers and tally
+              for(var choice = 0; choice < aData[0].analytics[quest].question.answers.MCTF.length;choice++){
+                console.log("CHOICE LOOP: " + choice);
+                possible_answers.push(aData[0].analytics[quest].question.answers.MCTF[choice]);
+                tally_up.push(0);
+              }
+              console.log("possible_answers: " + possible_answers);
+              console.log("tally_up: " + tally_up);
+              //for each grade
+              console.log("GRADE LENGTH: " + aData.length);
+              for(var grade = 0; grade < aData.length;grade++) {
+                console.log("GRADE LOOP: " + grade);
+                //if more than 1 attempt
+                console.log("ATTEMPS: " + aData[grade].analytics[quest].attempts);
+                if(aData[grade].analytics[quest].attempts !== 1) {
+                  //find which answer first incorrect corresponds to, then inc tally
+                  for(var poss = 0; poss < possible_answers.length; poss++) {
+                    console.log("POSS LOOP: " + poss);
+                    console.log("IF VALUE1: " + aData[grade].analytics[quest].firstIncorrect);
+                    console.log("IF VALUE2: " + possible_answers[poss]);
+                    if(aData[grade].analytics[quest].firstIncorrect === possible_answers[poss]) {
+                      tally_up[poss]++;
+                    }
+                  }
+                }
+              }
+              console.log("tally_up: " + tally_up);
+              var most_chosen = 0;
+              //for each tally slot
+              for(var tal = 0; tal < possible_answers.length; tal++) {
+                console.log("TAL LOOP: " + tal);
+                console.log("TAL VALUE1: " + tally_up[tal]);
+                //if its value is greater than the one with the greatest so far
+                if(tally_up[tal] > tally_up[most_chosen]) {
+                  //set this index to most_chosen
+                  most_chosen = tal;
+                }
+                console.log("MOST CHOSEN: "+most_chosen);
+              }
+              if(tally_up[most_chosen] === 0) {
+                modes.push("N/A");
+              }
+              else {
+                modes.push(possible_answers[most_chosen]);
+              }
+            }
+            else {
+              modes.push(aData[quest].analytics[0].question.type);
+            }
+              
           }
           console.log("STATS");
           console.log({'question_names': question_names, 'avgs':avgs, 'modes':modes, 'perc_correct':perc_correct});

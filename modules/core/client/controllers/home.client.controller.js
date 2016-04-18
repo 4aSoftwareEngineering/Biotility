@@ -365,22 +365,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         labels: res.data.question_names,
                         datasets: [
                             {
-                                label: "Average Attemps",
-                                fillColor: "rgba(220,220,220,0.5)",
-                                strokeColor: "rgba(220,220,220,0.8)",
-                                highlightFill: "rgba(220,220,220,0.75)",
-                                highlightStroke: "rgba(220,220,220,1)",
-                                data: res.data.avgs
-                            },
-                            {
-                                label: "Most Attempts",
-                                fillColor: "rgba(151,187,205,0.5)",
-                                strokeColor: "rgba(151,187,205,0.8)",
-                                highlightFill: "rgba(151,187,205,0.75)",
-                                highlightStroke: "rgba(151,187,205,1)",
-                                data: res.data.modes
-                            },
-                            {
                                 label: "Percent Correct",
                                 fillColor: "rgba(204, 167, 148,0.5)",
                                 strokeColor: "rgba(204, 167, 148,0.8)",
@@ -390,8 +374,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                             }
                         ]
                     };
-                myQuizStatsChart = new Chart(ctx2).Bar(data);
+                myQuizStatsChart = new Chart(ctx2).Bar(data,{scaleOverride: true, scaleStartValue: 0, scaleStepWidth: 0.1, scaleSteps: 10});
+                $scope.questNames = res.data.question_names;
+                $scope.averageAttempts = res.data.avgs;
+                $scope.firstIncorrect = res.data.modes;
             });
+
         };
 
         //for each course in their schema
