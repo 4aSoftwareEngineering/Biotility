@@ -46,12 +46,7 @@ exports.renderServerError = function(req, res) {
 //for the comments
 exports.getComments = function(req, res) {
     Comments.find({}).lean().exec(function(err, comments) {
-		for(var i=0;i<comments.length;i++){
-			console.log(i+": "+comments[i].comment);
-			
-		}
-		
-        return res.end(JSON.stringify(comments));
+	    return res.end(JSON.stringify(comments));
     });
 };
 exports.sendMail = function(req, res) {
@@ -84,83 +79,6 @@ exports.sendMail = function(req, res) {
     });
 };
 
-exports.getGradesForAdmin = function(req, res) {
-    var searchSubject = req.param('subject');
-    
-    QuizQuestion.find({'category': searchSubject}).exec().then(function(questions){
-      var question_ids = [];
-      for(var i = 0; i < questions.length; i++) {
-        question_ids.push(questions[i]._id);
-      }
-      console.log("question_ids:");
-      console.log(question_ids);
-      return question_ids;
-    }).then(function(ids){
-      StudentGrades.find({'category':searchSubject}).exec().then(function(grades){
-        var correct_instances = [];
-        //for each assesment
-        for(var i = 0; i <grades.length; i++){
-          console.log("ASSESMENT : "+i);
-          var use_assesment = true;
-          //for each id found above
-          if(grades[i].analytics.length === ids.length) {
-            for(var j = 0; j<ids.length; j++){
-              console.log("QUESTION : "+j);
-              console.log(ids[j]);
-              console.log(grades[i].analytics[j].question._id);
-              //KEEP AS != NEVER CHANGE TO !==
-              if(grades[i].analytics[j].question._id != ids[j]) {
-                use_assesment = false;
-                console.log("DON'T USE!");
-              }
-            }
-          }
-          else {
-            use_assesment = false;
-            console.log("DON'T USE!");
-          }
-          if(use_assesment === true) {
-            console.log("ASSESMENT ADDED");
-            correct_instances.push(grades[i]);
-          }
-        }
-
-        return correct_instances;
-      }).then(function(aData){
-        var question_names = [];
-        for (var ques = 0;ques<aData[0].analytics.length; ques++) {
-          console.log("QUESTION NAMES : "+aData[0].analytics[ques].question.text.substring(0,20));
-          question_names.push(aData[0].analytics[ques].question.text.substring(0,20));
-        }
-        var perc_correct = [];
-        var avgs = [];
-        var modes = [];
-        //for each question
-        for (var perc = 0; perc < aData[0].analytics.length; perc++) {
-          var perc_add = 0;
-          var average_sum = 0;
-          var mode_start = 0;
-          //for each assessment
-          for(var corr = 0; corr < aData.length;corr++) {
-            if(aData[corr].analytics[perc].attempts === 1) {
-              perc_add++;
-            }
-            average_sum = average_sum + aData[corr].analytics[perc].attempts;
-            if(aData[corr].analytics[perc].attempts > mode_start) {
-              mode_start = aData[corr].analytics[perc].attempts;
-            }
-          }
-          perc_correct.push(perc_add/aData.length);
-          avgs.push(average_sum/aData.length);
-          modes.push(mode_start);
-        }
-
-        return {'question_names': question_names, 'avgs':avgs, 'modes':modes, 'perc_correct':perc_correct};
-    }).then(function(data){
-        return res.end(JSON.stringify(data));
-    });
-  });
-};
 
 //exports.plot = function(req,res){
 //    console.log("PLOTLY "+req.user.courses.length );
@@ -471,51 +389,6 @@ exports.parseResources = function(req, res) {
         return res.end(JSON.stringify(subs));
     });
 };
-exports.parseClicks = function(req, res) {
-    var searchSubject = req.param('subject');
-    var promises = [];
-    console.log("Got:" + searchSubject);
-    console.log("Calling Subhead.find");
-    SubHead.find({'subject': searchSubject}).exec().then(function(SubHead_Return) {
-      console.log("SubHead_Return");
-      console.log(SubHead_Return);
-      var SubHead_ids = [];
-      for(var i = 0; i < SubHead_Return.length; i++) {
-        SubHead_ids.push(SubHead_Return[i]._id);
-      }
-      return SubHead_ids;
-    }).then(function(SubHead_ids){
-      console.log("SubHead_ids");
-      console.log(SubHead_ids);
-      Resource.find({}).sort({clicks: -1}).exec().then(function(clicks){
-        var data = [];
-        for(var i = 0; i < clicks.length; i++) {
-          console.log(clicks[i].title);
-          for(var j = 0; j < SubHead_ids.length; j++) {
-            if(clicks[i].subject == SubHead_ids[j]) {
-              data.push({'name': clicks[i].title, 'clicks': clicks[i].clicks});
-              console.log("success");
-            }  
-            console.log(clicks[i].subject);
-            console.log(SubHead_ids[j]);
-          }
-        }
-        console.log("DATA");
-        console.log(data);
-        return data;
-      }).then(function(data){
-        return res.end(JSON.stringify(data));
-      });
-      // console.log("Promises when Q called");
-      // console.log(promises);
-      // Q.all(promises).then(function(){
-      // console.log("Responding after forEach");
-      // console.log(data);
-      // return res.end(JSON.stringify(data));
-      // }); 
-    });  
-      
-};
 
 //Retrieves all the SubHeadings from database
 exports.parseSubHeads = function(req, res) {
@@ -628,6 +501,114 @@ exports.updateSubHead = function(req, res) {
             res.json(subHead_to_update);
         }
     });
+};
+
+//Eric - Get clicks from certin subject, sort by highest click total
+exports.parseClicks = function(req, res) {
+    var searchSubject = req.param('subject');
+    var promises = [];
+    SubHead.find({'subject': searchSubject}).exec().then(function(SubHead_Return) {
+      var SubHead_ids = [];
+      for(var i = 0; i < SubHead_Return.length; i++) {
+        SubHead_ids.push(SubHead_Return[i]._id);
+      }
+      return SubHead_ids;
+    }).then(function(SubHead_ids){
+      Resource.find({}).sort({clicks: -1}).exec().then(function(clicks){
+        var data = [];
+        for(var i = 0; i < clicks.length; i++) {
+          for(var j = 0; j < SubHead_ids.length; j++) {
+            if(clicks[i].subject == SubHead_ids[j]) {
+              data.push({'name': clicks[i].title, 'clicks': clicks[i].clicks});
+            }  
+          }
+        }
+        return data;
+      }).then(function(data){
+        return res.end(JSON.stringify(data));
+      });
+    });  
+};
+
+//Eric - Find questions for subject, match grades with same question id's,
+//       then send back statistics about the results.
+exports.getGradesForAdmin = function(req, res) {
+    var searchSubject = req.param('subject');
+    //Get question from requested subject, then get their id's
+    QuizQuestion.find({'category': searchSubject}).exec().then(function(questions){
+      var question_ids = [];
+      for(var i = 0; i < questions.length; i++) {
+        question_ids.push(questions[i]._id);
+      }
+      console.log("Question_Ids");
+      console.log(question_ids);
+      return question_ids;
+    }).then(function(ids){
+      //Find grades when questions used match questions found above
+      StudentGrades.find({'category':searchSubject}).exec().then(function(grades){
+        var correct_instances = [];
+        //for each assesment
+        for(var i = 0; i <grades.length; i++){
+          var use_assesment = true;
+          //for each id found above
+          if(grades[i].analytics.length === ids.length) {
+            for(var j = 0; j<ids.length; j++){
+              //KEEP AS != NEVER CHANGE TO !==
+              if(grades[i].analytics[j].question._id != ids[j]) {
+                use_assesment = false;
+              }
+            }
+          }
+          else {
+            use_assesment = false;
+          }
+          if(use_assesment === true) {
+            correct_instances.push(grades[i]);
+          }
+        }
+        console.log("correct_instances");
+        console.log(correct_instances);
+        return correct_instances;
+      }).then(function(aData){
+        //Get Question names, calculate average,mode,percent correct
+        if(aData.length !== 0) {
+          var question_names = [];
+          for (var ques = 0;ques<aData[0].analytics.length; ques++) {
+            question_names.push(aData[0].analytics[ques].question.text.substring(0,20));
+          }
+          var perc_correct = [];
+          var avgs = [];
+          var modes = [];
+          //for each question
+          for (var perc = 0; perc < aData[0].analytics.length; perc++) {
+            var perc_add = 0;
+            var average_sum = 0;
+            var mode_start = 0;
+            //for each assessment
+            for(var corr = 0; corr < aData.length;corr++) {
+              if(aData[corr].analytics[perc].attempts === 1) {
+                perc_add++;
+              }
+              average_sum = average_sum + aData[corr].analytics[perc].attempts;
+              if(aData[corr].analytics[perc].attempts > mode_start) {
+                mode_start = aData[corr].analytics[perc].attempts;
+              }
+            }
+            perc_correct.push(perc_add/aData.length);
+            avgs.push(average_sum/aData.length);
+            modes.push(mode_start);
+          }
+          console.log("STATS");
+          console.log({'question_names': question_names, 'avgs':avgs, 'modes':modes, 'perc_correct':perc_correct});
+          return {'question_names': question_names, 'avgs':avgs, 'modes':modes, 'perc_correct':perc_correct};
+        }
+        else {
+          return {'question_names': [], 'avgs':[], 'modes':[], 'perc_correct':[]};
+        }
+    }).then(function(data){
+        return res.end(JSON.stringify(data));
+    });
+  });
 };
 
 // Retrieve user data, send as response.

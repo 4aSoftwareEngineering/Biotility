@@ -1,10 +1,5 @@
 'use strict';
 
-/** SEE core.server.routes.js  */
-// function Chart(nonsense){
-//     this.nothing = nonsense;
-// }
-
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', '$http', 'Subjects', 'Users',
 
     function($scope, $state, $location, Authentication, $http, Subjects, Users) {
@@ -58,6 +53,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //some variables for the resource view
         $scope.success = null;
         $scope.error = null;
+
+        //Checks wheter or not user is admin to allow edit controls
         if($scope.authentication.user == null) {
             $scope.editMode = false;
         }
@@ -67,8 +64,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             }
         }
 
+        //Flags used when editing
         $scope.updateMode = false;
-
         $scope.ResourceField = true;
         $scope.isAdmin = false;
 
@@ -77,12 +74,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.subjects = response.data;
         });
 
-        //load all the resources from the database
+        //Load all the resources from the database
         Resources.loadResources().then(function(response) {
             $scope.resources = response.data;
         });
 
-        //load all the subheadings from the database
+        //Load all the subheadings from the database
         SubHeads.loadSubHeads().then(function(response) {
             $scope.subHeads = response.data;
         });
@@ -119,9 +116,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
             $scope.newResource = null;
         };
+
+        //Preps Modal with data of resource to delete
         $scope.getDeleteResource = function(resource_obj) {
             $scope.deleteResourceObj = resource_obj;
         };
+
         //Used to update a Resource from the database
         $scope.updateResource = function(resource_obj) {
             var id = resource_obj._id;
@@ -149,7 +149,6 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
             $scope.newSubHead = null;
         };
-
         $scope.deleteSubHead = function(subHead_obj) {
             var id = $scope.deleteSubHeadObj._id;
             var name = $scope.deleteSubHeadObj.title;
@@ -202,6 +201,8 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.updateMode = false;
             $scope.setEditHeading();
         };
+
+        //Sets text for edit panel heading
         $scope.setEditHeading = function() {
             if($scope.updateMode === false) {
                 $scope.editHeading = "Create A New Heading / Link";
@@ -210,8 +211,11 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
                 $scope.editHeading = "Edit An Existing Heading / Link";
             }
         };
+
+        //Intilized EditHeading for inital setting
         $scope.setEditHeading();
 
+        //Clocks pop-up messages
         $scope.clearSuccessMessage = function() {
             $scope.success = null;
         };
@@ -219,31 +223,23 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.error = null;
         };
 
-        $scope.startQuiz = function() {
-            $location.path('/' + $scope.subject + '/quiz');
-        };
-
+        //Whenever student account clicks link, resource's click param incremented
         $scope.recordClick = function(resource_obj,index,link_url) {
             var id = resource_obj._id;
             var name = resource_obj.title;
-            if($scope.authentication.user === null) {
-
-            }
-            else {
+            if($scope.authentication.user !== null) {
                 if($scope.authentication.user.profileType === 'Student') {
                     $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
-                    
-                    }).error(function(response) {
-
-                    });
+                    }).error(function(response) {});
                 }
             }
-            
             $scope.resources[index].clicks = $scope.resources[index].clicks + 1;
-            console.log($scope.resources[index]);
             $window.open(link_url, '_blank');
-        };
+        };//End Resource editing functions and vars
 
+        $scope.startQuiz = function() {
+            $location.path('/' + $scope.subject + '/quiz');
+        };
     }
 ]);
 
@@ -260,19 +256,11 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
 
     //Set flags to true if admin or teacher 
     if ($scope.authentication.user.profileType === "Admin") {
-        console.log("I am a admin");
         $scope.isAdmin = true;
     } else if ($scope.authentication.user.profileType === "Teacher") {
-        console.log("I am a teacher");
         $scope.isTeacher = true;
     }
 }]);
-
-//<<<<<<< HEAD
-//angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 
-//    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades) {
-//=======
-
 
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks', 'Comments',
     function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks, Comments) {
@@ -304,10 +292,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-        // console.log("ProfileController");
-        console.log($scope.credentials);
-        console.log("User: " + $scope.user);
-
+        
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
         $scope.isAdmin = false;
@@ -315,10 +300,8 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         //checks if teacher
         if ($scope.authentication.user.profileType === "Teacher") {
-            console.log("I am a teacher");
             $scope.isTeacher = true;
         } else if ($scope.authentication.user.profileType === "Admin") {
-            console.log("I am a admin");
             $scope.isAdmin = true;
         }
 		
@@ -330,18 +313,20 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.input.courseNames = [];
         $scope.input.coursePeriods= [];
 
-
+        //Load subjects for admin chart selection
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
         });
 
+        //setup chart and function for view clicks
+        var ctx1 = $("#myClicksChart").get(0).getContext("2d");
+        var myClicksChart;
         $scope.viewClicks = function(subject){
-           
-            console.log("Passing: "+ subject);
             var route = '/api/data/resources/clicks';
-
             $http.get(route, {params:{"subject": subject}}).then(function(res) { 
-                console.log(res.data);
+                if(myClicksChart !==  undefined){
+                    myClicksChart.destroy()
+                }
                 var clicks = res.data;
                 var click_labels = [];
                 var click_data = [];
@@ -350,12 +335,11 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     click_data.push(clicks[i].clicks);
                 }
                 var ctx = $("#myClicksChart").get(0).getContext("2d");
-
                   var data = {
                     labels: click_labels,
                     datasets: [
                         {
-                            label: "Course Settings",
+                            label: "Number of Clicks",
                             fillColor: "rgba(220,220,220,0.5)",
                             strokeColor: "rgba(220,220,220,0.8)",
                             highlightFill: "rgba(220,220,220,0.75)",
@@ -364,23 +348,19 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         },
                     ]
                   };
-
-
-
-                  var myClicksChart = new Chart(ctx).Bar(data);
-        //     }).then(function(error) {
-        //         console.log("Plot eror" + error);
+                myClicksChart = new Chart(ctx1).Bar(data);
             });
         };
-
+        
+        //setup chart and function for quiz statistics
+        var ctx2 = $("#myQuizStatsChart").get(0).getContext("2d");
+        var myQuizStatsChart;
         $scope.viewQuizStats = function(subject){
-           
-            console.log("Passing: "+ subject);
             var route = '/api/data/adminGrades';
-
-
             $http.get(route, {params:{"subject": subject}}).then(function(res) { 
-                console.log(res.data);
+                if(myQuizStatsChart !==  undefined){
+                    myQuizStatsChart.destroy()
+                }
                 var data = {
                         labels: res.data.question_names,
                         datasets: [
@@ -410,8 +390,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                             }
                         ]
                     };
-                var ctx = $("#myQuizStatsChart").get(0).getContext("2d");
-                var myQuizStatsChart = new Chart(ctx).Bar(data);
+                myQuizStatsChart = new Chart(ctx2).Bar(data);
             });
         };
 
