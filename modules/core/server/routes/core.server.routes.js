@@ -10,7 +10,13 @@ module.exports = function(app) {
     var schedule = require('node-schedule');
     var Email = require('email').Email;
 
-
+    var multer = require('multer');
+    app.use(multer({storage:'./uploads/'}));
+    app.post('/upload', function(req,res){
+        console.log(req.body);
+        console.log(req.files);
+        res.json({success:true});
+    });
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 

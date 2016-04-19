@@ -5,6 +5,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         //Pop for email varification - MA
         $(document).ready(function(){
+            console.log('Hello');
             $("#myBtn").click(function(){
                 $("#myModal").modal();
             });
@@ -47,53 +48,53 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         });
 
-            $scope.newclassNames = ["Biotechnology 1",
-                                "Biotechnology 2",
-                                "Biotechnology 3",
-                                "PLTW Principles of Biomedical Science",
-                                "PLTW Human Body Systems",
-                                "PLTW Medical Interventions",
-                                "PLTW Biomedical Innovation",
-                                "Agricultural Biotechnology",
-                                "Biology",
-                                "Honors Biology",
-                                "AP Biology",
-                                "AICE Biology",
-                                "IB Biology",
-                                "Genetics",
-                                "Forensics"];
-
-
-
+        $scope.newclassNames = ["Biotechnology 1",
+                            "Biotechnology 2",
+                            "Biotechnology 3",
+                            "PLTW Principles of Biomedical Science",
+                            "PLTW Human Body Systems",
+                            "PLTW Medical Interventions",
+                            "PLTW Biomedical Innovation",
+                            "Agricultural Biotechnology",
+                            "Biology",
+                            "Honors Biology",
+                            "AP Biology",
+                            "AICE Biology",
+                            "IB Biology",
+                            "Genetics",
+                            "Forensics",
+                            "Other"];
 
         //Send email if code needed.
         $scope.sendMail = function () {
 
+            console.log('HELLO!!!!');
             var data = ({
                 contactEmail : $scope.emText
             });
+
+
+            console.log(data.contactEmail);
             var route = '/api/data/emailV';
 
             // Simple POST request example (passing data) :
             $http.post(route, data).success(function(req, res) {
                 console.log("sending email");
             });
-
         };
 
+        //Isabel- check if course code already existis before adding new course
         $scope.add = function(course,period) {
-
+            console.log("Found course:" + course);
             if (course !== '') {
                 //Creates a new object to be used for user course schema
-                    var courseObj = {};
-                    courseObj.courseName = course;
-                    courseObj.content = "";
-                    courseObj.progress = "";
-                    courseObj.section = period;
+                var courseObj = {};
+                courseObj.courseName = course;
+                courseObj.content = "";
+                courseObj.progress = "";
+                courseObj.section = period;
 
-                    //Generate number when you add the course
-                   
-
+                //Generate number when you add the course
                 //get all the coursecodes
                 Teachers.loadTeachers().then(function(response) {
                     $scope.teachers = response.data;
@@ -112,37 +113,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                         // }  
                     }
 
-                    
-                    // var num = 8;
-                    // var matching = false;
-                    // var posted = false;
-
-                    // console.log("Checking course codes:");
-                    //see if num already exists in the savedCodes array
-                    // while (posted === false) {
-                    //     //make random number
-                    //     var num =  Math.floor((Math.random() * 1000) + 1);
-                    //     //reset matching to false
-                    //     matching = false;
-                    //     //check if there is a mtch
-                    //     while (matching === false){
-                    //         for (var s = 0; s < savedCodes.length; s++) {
-                    //         // console.log(savedCodes[s]);
-                    //             //if there is go back to beginning of loop
-                    //             if (num === savedCodes[s]) {
-                    //                 matching = true;
-                    //                 console.log("Duplicate Code");
-                    //                 break;
-                    //             }
-                    //         }
-                    //     //if there is not save items
-                    //     console.log("New Course Code Created");
-                    //     courseObj.number = num;
-                    //     $scope.credentials.courses.push(courseObj);
-                    //     posted = true 
-                    //     }   
-                    // }
-                     var posted = false;
+                    var posted = false;
                     var match = false;
                     var num =  Math.floor((Math.random() * 1000) + 1);
                     while (posted === false){
@@ -166,6 +137,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                         console.log("New Course Code Created");
                         courseObj.number = num;
                         $scope.credentials.courses.push(courseObj);
+                        console.log($scope.credentials.courses[0]);
                         posted = true; 
                     }
                 });
@@ -197,8 +169,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)];
-            console.log($scope.credentials);
+            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)].length? [parseInt($scope.credentials.courseCode)] : [];
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
                 route = '/api/auth/signup/student';
@@ -219,14 +190,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
                 // And redirect to the home page
                 $location.url('/');
-
-                //if( === ) {
-//
-  //              }
-
-
-
-
             }).error(function(response) {
                 console.log("Invalid (Sign up)", response);
                 //sets error if invalid info
@@ -236,7 +199,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             });
 
         };
+// 
 
+      
         $scope.signin = function(isValid) {
 
             $scope.error = null;

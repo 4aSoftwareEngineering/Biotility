@@ -8,9 +8,17 @@ body {
     margin-bottom: -90px;
     position: relative;
 }
-
+.badAuth{
+    margin-top: 50px;
+}
 section {
     margin-top: 20px;
+}
+form.signup label{
+    margin-right: 10px;
+}
+form.signin label{
+    margin-right: 15px;
 }
 
 .error-only{
@@ -59,6 +67,13 @@ section {
     bottom: 10px;
 }
 
+.addClassBtn{
+    height: 30px;
+    margin-left: 16px;
+}
+.stuSettings label{
+    display: block;
+}
 
 /* Font */
 
