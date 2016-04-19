@@ -1,16 +1,15 @@
 <!--admin profile page-->
 <div class="container" ng-controller="ProfileController">
+    <script src="Chart.js"></script>
     <div style="margin-top: 45px;">
-    </div>
     <hr>
+    </div>
     <div class="row">
+        <!--admin name-->
         <div id="left-side" class="list-view ">
             <h1 id="section-tabs-header">
-        <!--admin name-->
-        {{user.firstName}} {{user.lastName}}
-
-
-      </h1>
+                {{user.firstName}} {{user.lastName}}
+            </h1>
         </div>
         <!-- left column -->
         <div class="col-md-3">
@@ -19,166 +18,223 @@
                 <h6>Upload a different photo...</h6>
                 <input type="file" class="form-control">
                 <!--profile menu-->
-                 <nav aria-label="context" role="navigation">
-                    <ul class="nav" id="section-tabs">
-                        <li class="section"><a ng-click="qc = false; quizComment = false;profileVisible = true; settingsVisible=false; statsVisible=false; editVisible=false" class="profile" href="#" tabindex="0">Profile</a></li>
-                        <li class="section"><a ng-click="qc = false; quizComment = false;settingsVisible = true; statsVisible = false" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
-                        <li class="section"><a ng-click="qc = false; quizComment = false;statsVisible = true; profileVisible=false; settingsVisible=false; editVisible=false" class="profile_settings active" href="#" tabindex="0">Statistics</a></li>
-                        <li class="section"><a ng-click="qc = true; quizComment = false; editVisible = false; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Question Control</a></li>
-						<li class="section"><a ng-click="qc = false; quizComment = true; editVisible = false; profileVisible=false; settingsVisible=false; statsVisible=false" class="profile_settings active" href="#" tabindex="0">Quiz Comments</a></li>
+                <nav aria-label="context" role="navigation">
+                    <ul class="nav nav-pills nav-stacked" role="tablist">
+                        <li role="presentation" class="active"><a href="#profile"        aria-controls="profile"        role="tab" data-toggle="tab">Profile</a></li>
+                        <li role="presentation">               <a href="#settings"       aria-controls="settings"       role="tab" data-toggle="tab">Settings</a></li>
+                        <li role="presentation">               <a href="#resourceClicks" aria-controls="resourceClicks" role="tab" data-toggle="tab">Resource Clicks</a></li>
+                        <li role="presentation">               <a href="#quizControl"    aria-controls="quizControl"    role="tab" data-toggle="tab">Question Control</a></li>
+                        <li role="presentation">               <a href="#QuizStats"      aria-controls="QuizStats"      role="tab" data-toggle="tab">Quiz Stats</a></li>
+                        <li role="presentation">               <a href="#quizComments"   aria-controls="quizComments"   role="tab" data-toggle="tab">Quiz Comments</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
-        <!--</div>-->
-        <!-- edit form column -->
-		<div ng-show="profileVisible" class="col-md-9 personal-info">
-	<!--       <div class="alert alert-info alert-dismissable">
-		    <a class="panel-close close" data-dismiss="alert">×</a>
-		    <i class="fa fa-coffee"></i>
-		    This is an <strong>.alert</strong>. Use this to show important messages to the user.
-		  </div> -->
-		  <h3>Account Information</h3>
-		  <div class="col-lg-3">
-		    <div class = "col-lg-8">
-		      <label>Email</label>
-		      <span>{{user.email}}</span><br>
-		      <label>Username</label>
-		      <span>{{user.userName}}</span>
-		    </div>
-		  </div>
-
-		</div> <!-- end show profile -->
-        <!-- Statistics Page -->
-        <!-- will require subpages for different types of statistics. eg: clicks, quizzes, etc -->
-        <div ng-show="statsVisible">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Resource</th>
-                        <th># of Clicks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="resource in resources">
-                        <td>{{resource.title}}</td>
-                        <td>{{resource.clicks}}</td>
-                    </tr>
-                </tbody>
-            </table>
-			</div>
-         <div ng-show="quizComment">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Quiz</th>
-                        <th>Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="comments in Comments">
-                        <td>{{comments.category}}</td>
-                        <td>{{comments.comment}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div ng-show="qc"> <!--begin display question edit buttons-->
-        	<br><a ui-sref="question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
-        	<a ui-sref="question_edit" class="btn btn-primary" value=""> Edit Questions</a><br><br>
-			<a class="btn btn-primary" ng-click="exportToCSV()">DownloadStatistics</a>
-        </div>
-        
-        <div class="row"> <!-- begin settings display -->
-            <!--profile info-->
-            <div class="col-md-9 col-md-offset-3" ng-show="settingsVisible">
-                <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
-                    <h3> Personal Info </h3>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">First name:</label>
-                        <!--   <div class="inputs">
-          <input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
-            </div> -->
-                        <div class="col-lg-8">
-                            <input class="form-control" type="text" ng-model="credentials.firstName" ng-value="user.firstName">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">Last name:</label>
-                        <div class="col-lg-8">
-                            <input class="form-control" type="text" ng-model="credentials.lastName" ng-value="user.lastName">
-                        </div>
-                    </div>
-                    <!-- <div class="form-group">
-            <label class="col-lg-3 control-label">School:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="">
-            </div>
-          </div> -->
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">Email:</label>
-                        <div class="col-lg-8">
-                            <input class="form-control" type="text" ng-model="credentials.email" ng-value="user.email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <!--time zone-->
-                        <label class="col-lg-3 control-label">Time Zone:</label>
-                        <div class="col-lg-8">
-                            <div class="ui-select">
-                                <select id="user_time_zone" class="form-control">
-                                    <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                                    <option value="Alaska">(GMT-09:00) Alaska</option>
-                                    <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                                    <option value="Arizona">(GMT-07:00) Arizona</option>
-                                    <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                                    <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                                    <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                                    <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!--account info-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Username:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" ng-model="credentials.userName" ng-value="user.userName">
-                        </div>
-                        <!-- <div class="inputs">
-            <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
-            </div> -->
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">New Password:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="password" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Confirm Password:</label>
-                        <div class="col-md-8">
-                            <input class="form-control" type="password" value="" ng-model="credentials.password">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-8">
-                            <input class="btn btn-primary" type="submit" value="Save Changes">
-                            <span></span>
-                            <input type="reset" class="btn btn-default" value="Cancel">
-                        </div>
-                    </div>
-                </form>
-                >
-                <!--class scores-->
-                <!--apply new courses -->
-                <!--  <div class = "col-md-9 col-md-offset-9">
-        <button type="button" class="btn btn-success" ng-click="classupdates()">Add</button>
-         </div>   
-      </div>
- -->
-            </div>
-        </div>
         <hr>
+        <!-- Tab Panes -->
+        <div class="tab-content" class="col-md-9">
+            <!-- Profile Page -->
+    		<div role="tabpanel" class="tab-pane active" id="profile" class="personal-info">
+        	    <!-- <div class="alert alert-info alert-dismissable">
+        		    <a class="panel-close close" data-dismiss="alert">×</a>
+        		    <i class="fa fa-coffee"></i>
+        		    This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        		</div> -->
+    		    <h3>Account Information</h3>
+    		    <div class="col-lg-8">
+        		    <div class = "col-lg-8">
+        		      <label>Email</label>
+        		      <span>{{user.email}}</span><br>
+        		      <label>Username</label>
+        		      <span>{{user.userName}}</span>
+        		    </div>
+    		    </div>
+    		</div> <!-- end show profile -->
+
+            <!-- Settings -->
+            <div role="tabpanel" class="tab-pane" id="settings">
+                <div class="row"> <!-- begin settings display -->
+                    <!--profile info-->
+                    <div class="col-md-8">
+
+                        <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
+                            <h3> Personal Info </h3>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">First name:</label>
+                                <!--   <div class="inputs">
+                                <input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
+                                </div> -->
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" ng-model="credentials.firstName" ng-value="user.firstName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Last name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" ng-model="credentials.lastName" ng-value="user.lastName">
+                                </div>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label class="col-lg-3 control-label">School:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" value="">
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Email:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" ng-model="credentials.email" ng-value="user.email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <!--time zone-->
+                                <label class="col-lg-3 control-label">Time Zone:</label>
+                                <div class="col-lg-8">
+                                    <div class="ui-select">
+                                        <select id="user_time_zone" class="form-control">
+                                            <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                                            <option value="Alaska">(GMT-09:00) Alaska</option>
+                                            <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                                            <option value="Arizona">(GMT-07:00) Arizona</option>
+                                            <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                                            <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                                            <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                                            <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--account info-->
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Username:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="text" ng-model="credentials.userName" ng-value="user.userName">
+                                </div>
+                                <!-- <div class="inputs">
+                                    <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
+                                </div> -->
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">New Password:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="password" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Confirm Password:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="password" value="" ng-model="credentials.password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <input class="btn btn-primary" type="submit" value="Save Changes">
+                                    <span></span>
+                                    <input type="reset" class="btn btn-default" value="Cancel">
+                                </div>
+                            </div>
+                        </form>
+                        <!--class scores-->
+                        <!--apply new courses -->
+                        <!--  <div class = "col-md-9 col-md-offset-9">
+                            <button type="button" class="btn btn-success" ng-click="classupdates()">Add</button>   
+                        </div> -->
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Resource Clicks Page -->
+            <div role="tabpanel" class="tab-pane" id="resourceClicks">
+                <!-- Resource Clicks Chart -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="SubjectForClicks">
+                            <option ng-repeat="subjectOption in subjects" value="{{subjectOption.name}}">{{subjectOption.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-default" ng-click="viewClicks(SubjectForClicks)">See Clicks</button> 
+                    </div>
+                
+                    <!-- Chart itself -->
+                    <div class="col-md-6">
+                        <canvas id="myClicksChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+    		</div>
+
+            <!-- Quiz Control -->
+            <div role="tabpanel" class="tab-pane" id="quizControl">
+                <br>
+                <a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
+                <a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a><br><br>
+            </div>
+
+            <!-- Quiz Stats -->
+            <div role="tabpanel" class="tab-pane" id="QuizStats">
+                <!-- Quiz Stats Chart -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="SubjectForQuizStats">
+                            <option ng-repeat="subjectOption in subjects" value="{{subjectOption.name}}">{{subjectOption.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-default" ng-click="viewQuizStats(SubjectForQuizStats)">See Quiz Stats</button> 
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-primary" ng-click="exportToCSV(SubjectForQuizStats)">DownloadStatistics</a>
+                    </div>
+                    <!-- Chart itself -->
+                    <div class="col-md-6">
+                        <canvas id="myQuizStatsChart" width="100" height="100"></canvas>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr> 
+                                        <th>Question Text</th>
+                                        <th>Average # of Attempts</th>
+                                        <th>Most Common Wrong Choice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="questName in questNames track by $index">
+                                        <td>{{questName}}</td>
+                                        <td>{{averageAttempts[$index]}}</td>
+                                        <td>{{firstIncorrect[$index]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Quiz Comments -->
+            <div role="tabpanel" class="tab-pane" id="quizComments">
+                <div class="col-md-6">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Quiz</th>
+                                <th>Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="comments in Comments">
+                                <td>{{comments.category}}</td>
+                                <td>{{comments.comment}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
