@@ -78,7 +78,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $http.post(route, data).success(function(req, res) {
                 console.log("sending email");
             });
-
         };
 
         $scope.add = function(course,period) {
