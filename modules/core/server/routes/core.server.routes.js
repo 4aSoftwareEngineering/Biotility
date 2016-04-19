@@ -10,6 +10,7 @@ module.exports = function(app) {
     var schedule = require('node-schedule');
     var Email = require('email').Email;
 
+    //Matt
     //Change user photos
     app.route('/photo_upload')
         .post(users.photoUpload);
@@ -59,6 +60,7 @@ module.exports = function(app) {
 
     app.route('/api/data/emailV').post(core.sendMail);
 
+    //Matt
     // Routes for question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
     app.route('/api/data/questions').post(core.addQuestion);

@@ -1,11 +1,12 @@
 'use strict';
 
-// Quiz main controller
+// Quiz main controller - this work is a combination of Matt (4a)'s work and the old groupm 5c's work.
+//The quiz feedback/comments are Spencer's.
 angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$location', '$stateParams', '$state', 'Authentication', '$http', '$window',
     function($rootScope, $scope, $location, $stateParams, $state, Authentication, $http, $window) {
         //Get questions for each category.
         console.log("Loading Qs:", $stateParams.courseName);
-
+        //Matt
         //Account for slight variations in excel file course name differences.
         var courseName = $stateParams.courseName;
         switch (courseName) {
@@ -33,7 +34,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
 
 
         $scope.authentication = Authentication;
-
+        //Matt
         //Init variables.
         var max = 0;
         $scope.isDone = false; //checks if the quiz is finished ->switches models to done state
@@ -53,7 +54,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         $scope.numOpts = 0;
         $scope.ansMA = [];
         $scope.answer = { val: -1 };
-
+        //Matt
         //Used for when radio selection happens in MC questions.
         $scope.changehappened = function(data) {
             $rootScope.$emit('radioSel', data);
@@ -62,7 +63,7 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             $scope.answer = data;
         });
         //
-
+        //Matt
         //Start quiz
         $scope.start = function() {
             if (max === 0) {
@@ -79,8 +80,9 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
         };
 
 
+        //Matt
+        //Check answer, log analytics.
         $scope.checkAnswer = function(answer) {
-            //Check answer, log analytics.
             console.log("Checking answer...");
 
             //Boolean values to see if there is no selection for true/false, multi. choice, and matching answer.
@@ -171,9 +173,9 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
 
             //Load next question.
         };
-
+        //Matt
+        //Determines question type and if quiz is finished.
         $scope.increment = function() {
-            //Determines question type and if quiz is finished.
             $scope.hasError = false;
             $scope.hasHint = false;
             //Set question info.
@@ -226,10 +228,12 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             }
         };
 
+        //Matt - used Eric's function.
         //Open link in new tab.
         $scope.openTab = function(link_url) {
             $window.open(link_url, '_blank');
         };
+
 
         //Get question by category.
         var byCategory = function(listOfQuestions) {
@@ -239,20 +243,26 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             for (var i = 0; i < listOfQuestions.length; i++) {
                 $scope.questions.push(listOfQuestions[i]);
             }
+
+            //Matt
+            //Added # questions found to inform user BEFORE they start their quiz that there are x # of questions.
             max = $scope.questions.length;
             $scope.loadedQ = true;
             console.log($scope.questions.length + " question(s) found.");
             console.log($scope.questions);
             $scope.canStart = $scope.questions.length && $scope.loggedIn;
         };
+        //Matt
         //Create array of numbers.
         $scope.getNumber = function(num) {
             return new Array(num);
         };
+        //Matt
         //Num -> Char, 1->A, ...
         $scope.numToChar = function(n) {
             return String.fromCharCode(96 + parseInt(n)).toUpperCase();
         };
+        //Matt
         //Num -> Char, arr, [1,2,3] -> [A,B,C]
         $scope.numToCharArr = function(arr) {
             var ltrArr = [];
@@ -261,14 +271,17 @@ angular.module('quiz').controller('QuizController', ['$rootScope', '$scope', '$l
             }
             return ltrArr.join(", ");
         };
+        //Matt
         //A->1,...
         $scope.charToNum = function(c) {
             return c.charCodeAt(0) - 96;
         };
+        //Matt
         //Load resource from quiz start page.
         $scope.gotoResource = function(subjectName) {
             $location.path('/' + subjectName + '/resources');
         };
+        //Matt
         //Load quiz from quiz start page.
         $scope.gotoQuiz = function(subjectName) {
             $location.path('/' + subjectName + '/quiz');
@@ -337,9 +350,8 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
 ]);
 
 
-/*
- * Controller for storing quiz into MongoDB
- */
+//Matt
+//Controller for storing quiz into MongoDB
 angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$timeout',
     function($scope, $http, Upload, $timeout) {
         //Create quiz via file upload.
@@ -393,6 +405,7 @@ angular.module('quiz').controller('QuizCreate', ['$scope', '$http', 'Upload', '$
     }
 ]);
 
+//Matt
 //Compare two arrays.
 function arraysEqual(a, b) {
     if (a === b) return true;
@@ -405,6 +418,7 @@ function arraysEqual(a, b) {
     return true;
 }
 
+//Matt
 //Array has duplicates.
 function hasDuplicates(array) {
     return (new Set(array)).size !== array.length;
