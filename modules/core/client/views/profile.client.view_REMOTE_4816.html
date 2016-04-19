@@ -1,6 +1,4 @@
 <div class="container" ng-controller="ProfileController">
-
-    <script src="Chart.js"></script>
     <!-- modules/core/client/profile.client.view.html -->
     <h1>Edit Profile</h1>
     <hr>
@@ -9,15 +7,19 @@
             <h1>
         {{user.firstName}} {{user.lastName}}
       </h1>
+
         </div>
         <!-- left column -->
         <div class="col-md-3">
             <div class="text-center">
                 <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
                 <h6>Upload a different photo...</h6>
-                <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-pattern="'image/*'" ngf-max-height="1000" ngf-max-size="1MB">
+
+                <button style="display: inline-block" type="file" ngf-pattern="image/*"  ngf-accept="'image/*'"  ngf-resize="{width: 100, height: 100}" ngf-max-height="1000" ngf-max-size="1MB">
                     Select File
                 </button>
+
+
                 <nav aria-label="context" role="navigation">
                     <ul class="nav" id="section-tabs">
                         <!-- <li class="section"><a class="home" href="/" tabindex="0">Home</a></li> -->
@@ -29,10 +31,10 @@
                 </nav>
             </div>
         </div>
+
         <!-- edit form column -->
         <div class="col-md-9 personal-info">
             <!--       <div class="alert alert-info alert-dismissable">
->>>>>>> master
         <a class="panel-close close" data-dismiss="alert">×</a>
         <i class="fa fa-coffee"></i>
         This is an <strong>.alert</strong>. Use this to show important messages to the user.
@@ -47,8 +49,10 @@
                     <span>{{user.userName}}</span>
                 </div>
             </div>
+
         </div>
         <!--</div>-->
+
         <div class="row" ng-hide="isTeacher">
             <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
                 <!-- <h1>Biotility</h1>
@@ -65,7 +69,7 @@
             <div class="panel-body" style="text-align: right" ng-transclude></div>
           </div>
         </div>
-      </script>
+      </script> 
 
       <uib-accordion close-others="oneAtATime">
         <uib-accordion-group heading="{{group.title}}" ng-repeat="group in groups">
@@ -76,92 +80,87 @@
             </div>
           </div>
         </uib-accordion-group> -->
+
             </div>
+
             <div class="col-md-9 col-md-offset-3" ng-hide="profileVisible">
                 <form class="form-horizontal stuSettings" role="form">
                     <div class="form-group">
+
+                        <label class="control-label pull-left">First name:</label>
                         <div class="col-lg-9">
-                            <label class="control-label pull-left">First name:</label>
                             <input class="form-control" type="text" value="{{user.firstName}}">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="pull-left control-label">Last name:</label>
                         <div class="col-lg-9">
-                            <label class="pull-left control-label">Last name:</label>
                             <input class="form-control" type="text" value="{{user.lastName}}">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label pull-left">School:</label>
                         <div class="col-lg-9">
-                            <label class="control-label pull-left">School:</label>
                             <input class="form-control" type="text" value="">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label pull-left">Email:</label>
                         <div class="col-lg-9">
-                            <label class="control-label pull-left">Email:</label>
                             <input class="form-control" type="text" value="{{user.email}}">
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="pull-left control-label">Username:</label>
                         <div class="col-lg-9">
-                            <label class="pull-left control-label">Username:</label>
                             <input class="form-control" type="text" value="{{user.userName}}">
                         </div>
                     </div>
+
+
                     <div class="form-group">
+                        <label class="pull-left control-label">Change Password:</label>
                         <div class="col-lg-9">
-                            <label class="pull-left control-label">Change Password:</label>
                             <input class="form-control" type="password" value="">
                         </div>
                     </div>
+
+
                     <div class="form-group">
+                        <label class="pull-left control-label">Confirm Password:</label>
                         <div class="col-lg-9">
-                            <label class="pull-left control-label">Confirm Password:</label>
                             <input class="form-control" type="password" value="">
                         </div>
                     </div>
-                    
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-		<label class="col-md-3 col-xs-offset-1 control-label">Course Code(s):</label>
-        <div class="row">
-          <div class="col-md-8 col-xs-offset-1 col-xs-10">
-            <div class="input-group">
-                <input type="text" class="form-control" ng-model="mikes" placeholder="New course code">
-              <span class="input-group-btn">
+
+
+
+
+
+
+
+
+
+                    <label class="pull-left control-label">Course Code(s):</label>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="hello" placeholder="New course code">
+                                <span class="input-group-btn">
                 <button class="btn btn-secondary" type="button" ng-click="myFunction()">Add</button>
               </span>
-            </div>
-          </div>
-        </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-        <div class = "col-xs-offset-1 row">
-          <h1>Current Course Codes: </h1>
-          <ul ng-repeat="num in user.courseCode">
-            <li>{{user.courseCode}}</li>
-          </ul>
-        </div>
-					
-					
-					
+                    <div class="row">
+                        <h3>Current Course Codes: </h3>
+                        <ul ng-repeat="num in user.courseCode">
+                            <li>{{user.courseCode}}</li>
+                        </ul>
+                    </div>
+
                     <div class="form-group">
                         <label class="col-md-3 col-xs-offset-1 control-label"></label>
                         <div class="col-md-8 col-xs-offset-1 col-xs-10">
@@ -170,18 +169,29 @@
                             <input type="reset" class="btn btn-default" value="Cancel">
                         </div>
                     </div>
+
+
                     <!--<input class="form-control" type="password" value="">-->
+
+
+
                     <!--
               <select ng-model="toAdd" style="width: 175px; height: 30px;">
                 <option ng-repeat="name in classNames track by $index">{{name}}</option>
               </select>
               -->
 
+
+
+
+
                     <!--button for adding more than one course-->
                     <!--<button type="button" class="btn btn-default" ng-click="add(toAdd)">
                 +
               </button>-->
             </div>
+
+
             <!--Classes already seleted-->
             <div class="row" align="center">
                 <div class="col-md-2 col-md-offset-5 col-sm-offset-5 col-xs-2 col-xs-offset-4">
@@ -192,30 +202,11 @@
                     </ul>
                 </div>
             </div>
-          </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </form>
-
-
+        </form>
     </div>
 </div>
+
 <!--     <div class="row" ng-show="isTeacher">
       <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
         <h1>Biotility</h1>
@@ -246,3 +237,21 @@
 
       </div>
  -->
+
+
+
+</div>
+</div>
+
+</div>
+
+<!--   <div class = "col-xs-offset-1 row">
+    <h1>Grades</h1>
+    <ul ng-repeat="grade in studentGrades">
+      <li> {{grade.category}} : {{grade.score}} </li>
+    </ul>
+  </div> -->
+
+
+<hr>
+</div>

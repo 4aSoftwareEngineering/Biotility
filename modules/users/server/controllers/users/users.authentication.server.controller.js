@@ -96,11 +96,10 @@ exports.signupStudent = function(req, res) {
                 res.status(500).send("No teacher code found.");
             }
         });
-
-
 };
 
-exports.signup = function(req, res) {
+exports.signup = function(req, res){
+
     ///////Previous Code/////
     // Init Schema
     var newUser = new User(req.body);
