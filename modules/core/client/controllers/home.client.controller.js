@@ -307,20 +307,21 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.resources = response.data;
         });
 
+        if($scope.authentication.user.profileType !== "Admin") {
+            //for each course in their schema
+            $scope.authentication.user.courses.forEach(
+                function(element, index, array) {
+                    //stores each course Name and number of the course that a teacher has
+                    
+                    $scope.input.courseNames.push(element.courseName);  
+                    $scope.input.courseNums.push(element.number); 
+                    $scope.input.coursePeriods.push(element.section);
 
-        //for each course in their schema
-        $scope.authentication.user.courses.forEach(
-            function(element, index, array) {
-                //stores each course Name and number of the course that a teacher has
-                
-                $scope.input.courseNames.push(element.courseName);  
-                $scope.input.courseNums.push(element.number); 
-                $scope.input.coursePeriods.push(element.section);
-
-                //used for testing purposes to make sure a teacher has the correct courses
-                // console.log($scope.input.courseNums);
-            }
-        );
+                    //used for testing purposes to make sure a teacher has the correct courses
+                    // console.log($scope.input.courseNums);
+                }
+            );
+        }
 
         //Isabel- how I actuall populate the classes shown
         $scope.input.coursesComplete = $scope.authentication.user.courses; 

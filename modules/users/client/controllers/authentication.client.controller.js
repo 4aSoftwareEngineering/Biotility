@@ -171,8 +171,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 route = '/api/auth/signup/student';
                 console.log("Is a student");
             } else if($scope.credentials.profileType === "Admin") {
-                //$scope.credentials.courseCode = 'AAA';
-                route = '/api/auth/signup/admin';
+                //$scope.credentials.courseCode = [160];
+                route = '/api/auth/signup/teacher';
                 console.log("Is an Admin");
             } else if($scope.credentials.profileType === "Teacher") {
                 route = '/api/auth/signup/teacher';

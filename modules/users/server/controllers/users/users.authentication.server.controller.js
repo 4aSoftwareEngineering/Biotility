@@ -161,6 +161,7 @@ exports.signupAdmin = function(req, res) {
     ///////Previous Code/////
     // Init Schema
     var newUser = new User(req.body);
+    //newUser.courseCode = [160];
 
     // potential error message
     var message = null;
