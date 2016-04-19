@@ -15,9 +15,11 @@
         <!-- left column -->
         <div class="col-md-3">
             <div class="text-center">
-                <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+                 <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
                 <h6>Upload a different photo...</h6>
-                <input type="file" class="form-control">
+                <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-pattern="'image/*'" ngf-max-height="1000" ngf-max-size="1MB">
+                    Select File
+                </button>
                 <!--profile menu-->
                  <nav aria-label="context" role="navigation">
                     <ul class="nav" id="section-tabs">
@@ -84,8 +86,8 @@
             </table>
         </div>
         <div ng-show="qc"> <!--begin display question edit buttons-->
-        	<br><a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
-        	<a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a><br><br>
+        	<br><a ui-sref="question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
+        	<a ui-sref="question_edit" class="btn btn-primary" value=""> Edit Questions</a><br><br>
 			<a class="btn btn-primary" ng-click="exportToCSV()">DownloadStatistics</a>
         </div>
         
