@@ -1,0 +1,157 @@
+<!-- This view is for creating new quiz questions --> 
+<div ng-controller="authController" ng-show="isAdmin">
+	<div class="row" ng-controller="QuestionControl">
+	  <div class="col-md-offset-1 col-md-10 formWrapper">
+	    <div class="page-header">
+	      	<br>
+			<h2 class="text-center" style="font-size: 40px;">Create New Quiz Question</h2>
+
+	      	<form name="questionForm" class="form-horizontal" ng-submit="createQuestion(questionForm.$valid)">
+	        <fieldset>
+	        	<!-- Select question category from drop down list -->
+	            <div class="form-group">
+	                <label for="category"> Select Question Category: </label>
+	                <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="category">
+	                    <option >Applications</option>
+	                    <option >Applied Mathematics</option>
+	                    <option >Biotech Careers</option>
+	                    <option >Biotechnology Skills</option>
+	                    <option >Cells</option>
+	                    <option >Chemistry/Biochemistry</option>
+	                    <option >General Topics in Biotechnology</option>
+	                    <option >Genetics</option>
+	                    <option >Laboratory Equipment</option>
+	                    <option >Laboratory Skills/Applications</option>
+	                    <option >Preparing Solutions</option>
+	                    <option >Research & Scientific Method</option>
+	                </select>
+				    <div ng-messages="questionForm.category.$error" role="alert">
+				      <p class="help-block error-text" ng-message="required">*Required</p>
+				    </div>
+	            </div>
+	            <!-- Select question type and alter form based on selection -->
+	            <div class="form-group" show-errors>
+				   	<label for="type">Select Question Type: </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" value="TF" ng-model="type"> True/False
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" value="SC" ng-model="type"> Single Choice
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" value="MA" ng-model="type"> Matching Answer
+                    </label>
+				    <div ng-messages="questionForm.type.$error" role="alert">
+				      <p class="help-block error-text" ng-message="required">*Required</p>
+				    </div>
+                </div>
+                <!-- Question Text -->
+				<div class="form-group" show-errors>
+				    <label for="qtext">Question Text: </label>
+				    <input name="qtext" type="text" ng-model="qtext" id="qtext" class="form-control" placeholder="Insert text of the question" required>
+				    <div ng-messages="questionForm.qtext.$error" role="alert">
+				      <p class="help-block error-text" ng-message="required">*Required</p>
+				    </div>
+				</div>
+				<!-- Correct answer for MC/TF-->
+				<div ng-show="type!='MA'" class="form-group" show-errors >
+					<div class="form-group" show-errors>
+					    <label for="correct">Correct Answer Choice: </label>
+	                   <label ng-show="type=='TF'" class="radio-inline">
+	                        <input type="radio" name="correct" value="T" ng-model="correct"> True
+	                   </label>
+	                   <label ng-show="type=='TF'" class="radio-inline">
+	                        <input type="radio" name="correct" value="F" ng-model="correct"> False
+	                   </label>
+	                   <label ng-show="type=='SC'" class="radio-inline">
+	                        <input type="radio" name="correct" value="1" ng-model="correct"> A
+	                   </label>
+	                   <label ng-show="type=='SC'" class="radio-inline">
+	                        <input type="radio" name="correct" value="2" ng-model="correct"> B
+	                   </label>
+	                   <label ng-show="type=='SC'" class="radio-inline">
+	                        <input type="radio" name="correct" value="3" ng-model="correct"> C
+	                   </label>
+	                   <label ng-show="type=='SC'" class="radio-inline">
+	                        <input type="radio" name="correct" value="4" ng-model="correct"> D
+	                   </label>
+	                   <label ng-show="type=='SC'" class="radio-inline">
+	                        <input type="radio" name="correct" value="5" ng-model="correct"> E
+	                   </label>
+					    <div ng-messages="questionForm.correct.$error" role="alert">
+					      <p class="help-block error-text" ng-message="required">*Required</p>
+					    </div>
+					</div>
+				</div>
+				<!-- MC answers -->
+				<div ng-hide="type=='TF'" class="form-group">
+				    <label for="mc1">Answer A: </label>
+				    <input name="mc1" type="text" ng-model="mc1" id="mc1" class="form-control" placeholder="Answer">
+				</div>
+				<div ng-hide="type=='TF'" class="form-group">
+				    <label for="mc2">Answer B: </label>
+				    <input name="mc2" type="text" ng-model="mc2" id="mc2" class="form-control" placeholder="Answer">
+				</div>
+				<div ng-hide="type=='TF'" class="form-group">
+				    <label for="mc3">Answer C: </label>
+				    <input name="mc3" type="text" ng-model="mc3" id="mc3" class="form-control" placeholder="Answer">
+				</div>
+				<div ng-hide="type=='TF'" class="form-group">
+				    <label for="mc4">Answer D: </label>
+				    <input name="mc4" type="text" ng-model="mc4" id="mc4" class="form-control" placeholder="Answer">
+				</div>
+				<div ng-hide="type=='TF'" class="form-group">
+				    <label for="mc5">Answer E: </label>
+				    <input name="mc5" type="text" ng-model="mc5" id="mc5" class="form-control" placeholder="Answer">
+				</div><br>
+				<!-- Matching answers -->
+				<div ng-show="type=='MA'" class="form-group">
+				    <label for="ma1">Match A: </label>
+				    <input name="ma1" type="text" ng-model="ma1" id="ma1" class="form-control" placeholder="Match for answer A">
+				</div>
+				<div ng-show="type=='MA'" class="form-group">
+				    <label for="ma2">Match B: </label>
+				    <input name="ma2" type="text" ng-model="ma2" id="ma2" class="form-control" placeholder="Match for answer B">
+				</div>
+				<div ng-show="type=='MA'" class="form-group">
+				    <label for="ma3">Match C: </label>
+				    <input name="ma3" type="text" ng-model="ma3" id="ma3" class="form-control" placeholder="Match for answer C">
+				</div>
+				<div ng-show="type=='MA'" class="form-group">
+				    <label for="ma4">Match D: </label>
+				    <input name="ma4" type="text" ng-model="ma4" id="ma4" class="form-control" placeholder="Match for answer D">
+				</div>
+				<div ng-show="type=='MA'" class="form-group">
+				    <label for="ma5">Match E: </label>
+				    <input name="ma5" type="text" ng-model="ma5" id="ma5" class="form-control" placeholder="Match for answer E">
+				    <br>
+				</div>
+				<!-- Hint -->
+				<div class="form-group">
+				    <label for="hint">Hint: </label>
+				    <input name="hint" type="text" ng-model="hint" id="hint" class="form-control" placeholder="Hint">
+				</div>
+				<!-- Link -->
+				<div class="form-group">
+				    <label for="link">Resource Link: </label>
+				    <input name="link" type="text" ng-model="link" id="link" class="form-control" placeholder="http://...">
+				</div>
+
+				<div class="form-group">
+				    <input type="submit" class="btn btn-default">
+				</div>
+				<div ng-show="error" class="text-danger">
+				    <strong ng-bind="error"></strong>
+				</div>
+	        </fieldset>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+<div ng-hide="isAdmin" >
+	<br><br><br><br><br><br>
+	<h3 class="text-center"> Access unauthorized. </h3>
+	<br><br><br><br><br><br><br><br><br><br><br>
+</div>

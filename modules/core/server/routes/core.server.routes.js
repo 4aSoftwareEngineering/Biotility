@@ -10,7 +10,13 @@ module.exports = function(app) {
     var schedule = require('node-schedule');
     var Email = require('email').Email;
 
-
+    var multer = require('multer');
+    app.use(multer({storage:'./uploads/'}));
+    app.post('/upload', function(req,res){
+        console.log(req.body);
+        console.log(req.files);
+        res.json({success:true});
+    });
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 
@@ -56,8 +62,12 @@ module.exports = function(app) {
 
     app.route('/api/data/emailV').post(core.sendMail);
 
-    // Fetch question data from database
+    // Routes for question data from database
     app.route('/api/data/questions').get(core.parseQuestions);
+    app.route('/api/data/questions').post(core.addQuestion);
+    app.route('/api/data/questions/:questionId').put(core.updateQuestion);
+    app.route('/api/data/questions/:questionId').delete(core.deleteQuestion);
+    app.route('/api/data/questions/:questionId').get(core.readQuestion);
 
     //app.route('api/users/:userId').put(core.update);
 
@@ -69,6 +79,7 @@ module.exports = function(app) {
     app.param('@id', core.userByID);
     app.param('resourceId', core.resourceByID);
     app.param('subHeadId', core.subHeadByID);
+    app.param('questionId', core.questionByID);
 
     // Define application route
     app.route('/*').get(core.renderIndex);

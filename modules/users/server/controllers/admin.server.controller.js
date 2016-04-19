@@ -64,7 +64,7 @@ exports.updates = function(req, res) {
 
 exports.course = function(req, res) {
     var users = User;
-   console.log("Will it update courses? ");
+   console.log("Will it clear all courses? ");
 
         User.find({}, function(err,users){
         if (err) {
