@@ -5,6 +5,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         //Pop for email varification - MA
         $(document).ready(function(){
+            console.log('Hello');
             $("#myBtn").click(function(){
                 $("#myModal").modal();
             });
@@ -69,9 +70,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         //Send email if code needed.
         $scope.sendMail = function () {
 
+            console.log('HELLO!!!!');
             var data = ({
                 contactEmail : $scope.emText
             });
+
+
+            console.log(data.contactEmail);
             var route = '/api/data/emailV';
 
             // Simple POST request example (passing data) :
