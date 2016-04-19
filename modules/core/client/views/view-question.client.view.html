@@ -5,17 +5,41 @@
 	    <div ng-show="error" class="text-danger">
 	      <strong ng-bind="error"></strong>
 	    </div ng-show="question"><br><br>
+
+
+	    <!-- Modal -->
+	    <div id="myModal" class="modal fade" role="dialog">
+	      <div class="modal-dialog">
+
+	        <!-- Modal content-->
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            <h4 class="modal-title">Delete Question</h4>
+	          </div>
+	          <div class="modal-body">
+	            <p>Are you sure you want to delete this quiz question?</p>
+	          </div>
+	          <div class="modal-footer">
+	            <button type="button" class="btn btn-danger" ng-click="removeQuestion(question)" data-dismiss="modal">Delete Question</button>
+	            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	          </div>
+	        </div>
+
+	      </div>
+	    </div>
+
 	    <div class="jumbotron">
 	      <div >
-	        <p> COURSE CATEGORY: {{question.category}}</p>
-	        <p> QUESTION TYPE: {{question.type}}</p>
-	        <p> QUESTION: {{question.text}}</p>
-	        <p> ANSWERS: {{question.answers.MCTF}}</p>
-	        <p ng-show="question.answers.MA"> MATCHING ANSWERS: {{question.answers.MA.correct}}</p>
-	        <p ng-hide="question.answers.MA"> CORRECT ANSWER CHOICE: {{question.answers.correct}}</p>
-	        <p ng-hide="question.answers.MA" ng-show="question.answers.MCTF[2]"> CORRECT ANSWER: {{question.answers.MCTF[question.answers.correct-1]}}</p>
-	        <p> HINT: {{question.hint}}</p>
-	        <p> RESOURCE LINKS: {{question.link}}</p>
+	        <p> <b>COURSE CATEGORY:</b> {{question.category}}</p>
+	        <p> <b>QUESTION TYPE:</b> {{question.type}}</p>
+	        <p> <b>QUESTION:</b> {{question.text}}</p>
+	        <p ng-hide="question.type === 'TF'"> <b>ANSWERS:</b> {{question.answers.MCTF}}</p>
+	        <p ng-show="question.type === 'MA'"> <b>MATCHING ANSWERS:</b> {{question.answers.MA.correct}}</p>
+	        <p ng-hide="question.type === 'MA'"> <b>CORRECT ANSWER CHOICE:</b> {{question.answers.correct}}</p>
+	        <p ng-show="question.type === 'SC'"> <b>CORRECT ANSWER:</b> {{question.answers.MCTF[question.answers.correct-1]}}</p>
+	        <p> <b>HINT:</b> {{question.hint}}</p>
+	        <p> <b>RESOURCE LINKS:</b> {{question.link}}</p>
 	        <a ng-hide="editMode" class="btn btn-primary" ng-click="editMode=1">
 	          <i class="glyphicon glyphicon-edit"></i>
 	          Edit
@@ -24,7 +48,7 @@
 	          <i class="glyphicon glyphicon-cancel"></i>
 	          Cancel
 	        </a>
-	        <a ng-hide="" class="btn btn-danger" ng-click="removeQuestion(question)">
+	        <a ng-hide="" class="btn btn-danger"  data-toggle="modal" data-target="#myModal">
 	          <i class="glyphicon glyphicon-trash"></i>
 	          Remove
 	        </a>
@@ -77,34 +101,34 @@
 
 				<div class="form-group" show-errors>
 				    <label for="qtext">Question Text: </label>
-				    <input name="qtext" type="text" ng-model="qtext" id="qtext" class="form-control" placeholder="{{question.text}}" value="{{question.text}}" required>
+				    <input name="qtext" type="text" ng-model="qtext" id="qtext" class="form-control" placeholder="{{question.text}}" ng-value="{{question.text}}" required>
 				    <div ng-messages="questionForm.qtext.$error" role="alert">
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
 				</div>
 
-				<div ng-show="type!='MA'" class="form-group" show-errors >
+				<div ng-show="type!=='MA'" class="form-group" show-errors >
 					<div class="form-group" show-errors>
 					    <label for="correct">Correct Answer Choice: </label>
-	                   <label ng-show="type=='TF'" class="radio-inline">
+	                   <label ng-show="type==='TF'" class="radio-inline">
 	                        <input type="radio" name="correct" value="T" ng-model="correct"> True
 	                   </label>
-	                   <label ng-show="type=='TF'" class="radio-inline">
+	                   <label ng-show="type==='TF'" class="radio-inline">
 	                        <input type="radio" name="correct" value="F" ng-model="correct"> False
 	                   </label>
-	                   <label ng-show="type=='SC'" class="radio-inline">
+	                   <label ng-show="type==='SC'" class="radio-inline">
 	                        <input type="radio" name="correct" value="1" ng-model="correct"> A
 	                   </label>
-	                   <label ng-show="type=='SC'" class="radio-inline">
+	                   <label ng-show="type==='SC'" class="radio-inline">
 	                        <input type="radio" name="correct" value="2" ng-model="correct"> B
 	                   </label>
-	                   <label ng-show="type=='SC'" class="radio-inline">
+	                   <label ng-show="type==='SC'" class="radio-inline">
 	                        <input type="radio" name="correct" value="3" ng-model="correct"> C
 	                   </label>
-	                   <label ng-show="type=='SC'" class="radio-inline">
+	                   <label ng-show="type==='SC'" class="radio-inline">
 	                        <input type="radio" name="correct" value="4" ng-model="correct"> D
 	                   </label>
-	                   <label ng-show="type=='SC'" class="radio-inline">
+	                   <label ng-show="type==='SC'" class="radio-inline">
 	                        <input type="radio" name="correct" value="5" ng-model="correct"> E
 	                   </label>
 					    <div ng-messages="questionForm.correct.$error" role="alert">
@@ -113,57 +137,57 @@
 					</div>
 				</div>
 				<!-- MC answers -->
-				<div ng-hide="type=='TF'" class="form-group">
+				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc1">Answer A: </label>
-				    <input name="mc1" type="text" ng-model="mc1" id="mc1" class="form-control" placeholder="{{question.answers.MCTF[0]}}" value="{{question.answers.MCTF[0]}}">
+				    <input name="mc1" type="text" ng-model="mc1" id="mc1" class="form-control" placeholder="{{question.answers.MCTF[0]}}" ng-value="{{question.answers.MCTF[0]}}">
 				</div>
-				<div ng-hide="type=='TF'" class="form-group">
+				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc2">Answer B: </label>
-				    <input name="mc2" type="text" ng-model="mc2" id="mc2" class="form-control" placeholder="{{question.answers.MCTF[1]}}" value="{{question.answers.MCTF[1]}}">
+				    <input name="mc2" type="text" ng-model="mc2" id="mc2" class="form-control" placeholder="{{question.answers.MCTF[1]}}" ng-value="{{question.answers.MCTF[1]}}">
 				</div>
-				<div ng-hide="type=='TF'" class="form-group">
+				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc3">Answer C: </label>
-				    <input name="mc3" type="text" ng-model="mc3" id="mc3" class="form-control" placeholder="{{question.answers.MCTF[2]}}" value="{{question.answers.MCTF[2]}}">
+				    <input name="mc3" type="text" ng-model="mc3" id="mc3" class="form-control" placeholder="{{question.answers.MCTF[2]}}" ng-value="{{question.answers.MCTF[2]}}">
 				</div>
-				<div ng-hide="type=='TF'" class="form-group">
+				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc4">Answer D: </label>
-				    <input name="mc4" type="text" ng-model="mc4" id="mc4" class="form-control" placeholder="{{question.answers.MCTF[3]}}" value="{{question.answers.MCTF[3]}}">
+				    <input name="mc4" type="text" ng-model="mc4" id="mc4" class="form-control" placeholder="{{question.answers.MCTF[3]}}" ng-value="{{question.answers.MCTF[3]}}">
 				</div>
-				<div ng-hide="type=='TF'" class="form-group">
+				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc5">Answer E: </label>
-				    <input name="mc5" type="text" ng-model="mc5" id="mc5" class="form-control" placeholder="{{question.answers.MCTF[4]}}" value="{{question.answers.MCTF[4]}}">
+				    <input name="mc5" type="text" ng-model="mc5" id="mc5" class="form-control" placeholder="{{question.answers.MCTF[4]}}" ng-value="{{question.answers.MCTF[4]}}">
 				</div><br>
 				<!-- Matching answers -->
-				<div ng-show="type=='MA'" class="form-group">
+				<div ng-show="type==='MA'" class="form-group">
 				    <label for="ma1">Match A: </label>
-				    <input name="ma1" type="text" ng-model="ma1" id="ma1" class="form-control" placeholder="{{question.answers.MA.correct[0]}}" value="{{question.answers.MA.correct[0]}}">
+				    <input name="ma1" type="text" ng-model="ma1" id="ma1" class="form-control" placeholder="{{question.answers.MA.correct[0]}}" ng-value="{{question.answers.MA.correct[0]}}">
 				</div>
-				<div ng-show="type=='MA'" class="form-group">
+				<div ng-show="type==='MA'" class="form-group">
 				    <label for="ma2">Match B: </label>
-				    <input name="ma2" type="text" ng-model="ma2" id="ma2" class="form-control" placeholder="{{question.answers.MA.correct[1]}}" value="{{question.answers.MA.correct[1]}}">
+				    <input name="ma2" type="text" ng-model="ma2" id="ma2" class="form-control" placeholder="{{question.answers.MA.correct[1]}}" ng-value="{{question.answers.MA.correct[1]}}">
 				</div>
-				<div ng-show="type=='MA'" class="form-group">
+				<div ng-show="type==='MA'" class="form-group">
 				    <label for="ma3">Match C: </label>
-				    <input name="ma3" type="text" ng-model="ma3" id="ma3" class="form-control" placeholder="{{question.answers.MA.correct[2]}}" value="{{question.answers.MA.correct[2]}}">
+				    <input name="ma3" type="text" ng-model="ma3" id="ma3" class="form-control" placeholder="{{question.answers.MA.correct[2]}}" ng-value="{{question.answers.MA.correct[2]}}">
 				</div>
-				<div ng-show="type=='MA'" class="form-group">
+				<div ng-show="type==='MA'" class="form-group">
 				    <label for="ma4">Match D: </label>
-				    <input name="ma4" type="text" ng-model="ma4" id="ma4" class="form-control" placeholder="{{question.answers.MA.correct[3]}}" value="{{question.answers.MA.correct[3]}}">
+				    <input name="ma4" type="text" ng-model="ma4" id="ma4" class="form-control" placeholder="{{question.answers.MA.correct[3]}}" ng-value="{{question.answers.MA.correct[3]}}">
 				</div>
-				<div ng-show="type=='MA'" class="form-group">
+				<div ng-show="type==='MA'" class="form-group">
 				    <label for="ma5">Match E: </label>
-				    <input name="ma5" type="text" ng-model="ma5" id="ma5" class="form-control" placeholder="{{question.answers.MA.correct[4]}}" value="{{question.answers.MA.correct[4]}}">
+				    <input name="ma5" type="text" ng-model="ma5" id="ma5" class="form-control" placeholder="{{question.answers.MA.correct[4]}}" ng-value="{{question.answers.MA.correct[4]}}">
 				    <br>
 				</div>
 				<!-- Hint -->
 				<div class="form-group">
 				    <label for="hint">Hint: </label>
-				    <input name="hint" type="text" ng-model="hint" id="hint" class="form-control" placeholder="{{question.hint}}" value="{{question.hint}}">
+				    <input name="hint" type="text" ng-model="hint" id="hint" class="form-control" placeholder="{{question.hint}}" ng-value="{{question.hint}}">
 				</div>
 				<!-- Link -->
 				<div class="form-group">
 				    <label for="link">Resource Link: </label>
-				    <input name="link" type="text" ng-model="link" id="link" class="form-control" placeholder="{{question.link}}" value="{{question.link}}">
+				    <input name="link" type="text" ng-model="link" id="link" class="form-control" placeholder="{{question.link}}" ng-value="{{question.link}}">
 				</div>
 
 				<div class="form-group">
@@ -177,4 +201,10 @@
 	    </div>
 	  </div>
 	</div>
+</div>
+
+<div ng-hide="isAdmin" >
+	<br><br><br><br><br><br>
+	<h3 class="text-center"> Access unauthorized. </h3>
+	<br><br><br><br><br><br><br><br><br><br><br>
 </div>
