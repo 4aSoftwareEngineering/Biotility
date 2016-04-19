@@ -88,13 +88,18 @@ exports.sendMail = function(req, res) {
 };
 
 
+
+
+
+
+
 // Isabel - plot for statistics on teachers page 
 exports.plot = function(req, res) {
     console.log("plotting statistics");
 
-    var nameofClass = req.query.classname;
-    var searchQuiz = req.query.quiz;
-    var courseCodes = req.query.code;
+    var nameofClass = req.param('classname');
+    var searchQuiz = req.param('quiz');
+    var courseCodes = req.param('code');
     // console.log(nameofClass +" "+  searchQuiz);
 
     //array of courses for the teacher
@@ -167,12 +172,13 @@ exports.plot = function(req, res) {
                     }
                 }
             }
-            console.log(grade)
             datagraph = grade;
             return res.send(datagraph);
         });
 
     }
+
+
 
     // //output data
     // function callgraph(datagraph){
@@ -182,6 +188,7 @@ exports.plot = function(req, res) {
     //     console.log(datagraph.size);
     //   // }
     // }
+
 
     console.log("DATA" + datagraph);
     // var data = [65, 59, 80, 81, 56, 55];
@@ -732,7 +739,7 @@ exports.photoUpload = function(req, res) {
     //Save image from photo upload.
     fs.writeFile(savePath, file.buffer, 'binary', function(err) {
         if (err) {
-            throw err;
+            throw err
         }
         //Upload Success
         User.profileImageURL = storePath;
