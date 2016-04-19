@@ -15,6 +15,7 @@ module.exports = function(app) {
     app.post('/upload', function(req,res){
         console.log(req.body);
         console.log(req.files);
+        console.log(req.file);
         res.json({success:true});
     });
     // Define error pages

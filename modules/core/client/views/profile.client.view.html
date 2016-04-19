@@ -15,7 +15,7 @@
                 <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
                 <h6>Upload a different photo...</h6>
 
-                <button style="display: inline-block" type="file" ngf-pattern="image/*"  ngf-accept="'image/*'"  ngf-resize="{width: 100, height: 100}" ngf-max-height="1000" ngf-max-size="1MB">
+                <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-pattern="'image/*'" ngf-max-height="1000" ngf-max-size="1MB">
                     Select File
                 </button>
 
