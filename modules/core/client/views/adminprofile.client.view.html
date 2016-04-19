@@ -14,9 +14,11 @@
         <!-- left column -->
         <div class="col-md-3">
             <div class="text-center">
-                <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+                 <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
                 <h6>Upload a different photo...</h6>
-                <input type="file" class="form-control">
+                <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-pattern="'image/*'" ngf-max-height="1000" ngf-max-size="1MB">
+                    Select File
+                </button>
                 <!--profile menu-->
                 <nav aria-label="context" role="navigation">
                     <ul class="nav nav-pills nav-stacked" role="tablist">

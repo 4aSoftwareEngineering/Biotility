@@ -3,32 +3,37 @@ var Q = require('q');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport();
 var mongoose = require('mongoose'),
+
+    fs = require('fs'),
+
     QuizQuestion = mongoose.model('QuizQuestion'),
     User = mongoose.model('User'),
     Subject = mongoose.model('Subject'),
     Resource = mongoose.model('Resource'),
     StudentGrades = mongoose.model('StudentGrades'),
+
   	Comments = mongoose.model('Comments'),
     SubHead = mongoose.model('SubHead');
 mongoose.Promise = require('q').Promise;
 
 
- var nodemailer = require('nodemailer');
- var transport = nodemailer.createTransport("SMTP", {
+
+var nodemailer = require('nodemailer');
+var transport = nodemailer.createTransport("SMTP", {
     service: 'Gmail',
     auth: {
-      user: "biotilitysp18@gmail.com",
-      pass: "team4asp18"
+        user: "biotilitysp18@gmail.com",
+        pass: "team4asp18"
     }
-  });
+});
 
 
 /**
  * Render the main application page
  */
 
- // var Email = require('email').Email;
- var datagraph = [];
+// var Email = require('email').Email;
+var datagraph = [];
 
 exports.renderIndex = function(req, res) {
     res.render('modules/core/server/views/index', {
@@ -55,7 +60,7 @@ exports.getComments = function(req, res) {
 exports.sendMail = function(req, res) {
     console.log("EMAILS");
     var data = req.body;
-    var message= {
+    var message = {
         // sender info
         from: 'biotilitysp18@gmail.com',
 
@@ -70,8 +75,8 @@ exports.sendMail = function(req, res) {
 
     };
     console.log('Sending Mail');
-    transport.sendMail(message, function(error){
-        if(error){
+    transport.sendMail(message, function(error) {
+        if (error) {
             console.log('Error occured');
             console.log(error.message);
             return;
@@ -83,278 +88,138 @@ exports.sendMail = function(req, res) {
 };
 
 
-//exports.plot = function(req,res){
-//    console.log("PLOTLY "+req.user.courses.length );
-    // console.log("COURSE GIVEN: " + req.course);
-    // var params = req.body; 
-    // console.log("PLOTLY "+params.person.user.courses.length );
-    // console.log("COURSE GIVEN: " + req.param('given'));
-//    var searchCourse = req.param('given');
-//    var num = [];
-//    var classes = [];
-//    var grade = [];
-//    var xside = [];
-    // var datagraph = [];
-       
-    //find all the courses   
-//    for(var i = 0; i < req.user.courses.length ; i++){
-//        num.push(req.user.courses[i].number);
-//    }  
-
-    //find all the students in that course
-//    var findcount = false; 
-//    console.log("AMOUNT:" + req.user.courses.length);
-//    for(var s = 0; s < req.user.courses.length ; s++){
-        
-//        findStudents(num[s]);
-//    }
-
-    //for(var gradesize = 0; gradesize < 20 ; gradesize++){
-     //   grade[gradesize] = 0;
-    //}
-//=======
-//Old Plotly Refernce
-// exports.plot = function(req,res){
-//   var ctx = $("#myChart").get(0).getContext("2d");
-//   console.log("PLOT "+req.user.courses.length );
-//   var searchCourse = req.param('given');
-//   var num = [];
-//   var classes = [];
-//   var grade = [];
-//   var xside = [];
-     
-//   //find all the courses   
-//   for(var i = 0; i < req.user.courses.length ; i++){
-//       num.push(req.user.courses[i].number);
-//   }  
-
-  
-//   var findcount = false; 
-//   //find all the students in that course 
-//   console.log("AMOUNT:" + req.user.courses.length);
-//   for(var s = 0; s < req.user.courses.length ; s++){  
-//     findStudents(num[s]);
-//   }
-
-//   for(var gradesize = 0; gradesize < 20 ; gradesize++){
-//     grade[gradesize] = 0;
-//   }
-//>>>>>>> master
-    
-//     //find all grades for the course code
-//   function findGrades(givenstudent, course){
-//     StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-//         //lookup a test
-        
-//         for (var i = 0; i < grades.length;  i++) {
-            
-//             for (var c = 0; c < grades[i].student.courses.length; c++){
-                
-//                 //see if the test has a category that the teacher is looking for
-//                 if(grades[i].category === searchCourse){
-                    
-//                     //see if test has a course code that matches the teachers 
-//                    if(grades[i].student.courses[c] === course){
-//                     console.log("COURSES: "+ grades[i].student.courses);
-
-//                     //iterate through analytics and see if attempt = 1
-//                        for (var analytics = 0; analytics< grades[i].analytics.length; analytics++){
-//                             if(grades[i].analytics[analytics].attempts === 1){
-//                                 // console.log("you got it right");
-//                                 grade[analytics] = grade[analytics]+1;
-//                             }
-//                         }
-//                    }
-//                 }
-//             }   
-//             datagraph = grade;        
-//         }
-
-//         if(findcount === true ){
-//             callgraph(datagraph);
-//         }    
-//         return res.end(JSON.stringify(grades));
-//     });
-//   }
-
-//   function findStudents(stud){
-//       User.find({ 'profileType': 'Student', 'courseCode': stud }).lean().exec(function(err, users) {
-          
-//           for (var i = 0; i < users.length; i++) {           
-//               // console.log("STUDENTS: " +users[i].userName);  
-//               if (i === users.length -1 ) {
-//                       findcount = true;
-//               } 
-//               findGrades(users[i], stud);
-//           }
-
-//           return res.end(JSON.stringify(users));
-//       });
-//   }
-
-//   //actual plot
-//   function callgraph(datagraph){
-//     console.log("DATAGRAPH");
-
-//     for(var size = 0; size < 20 ; size++){
-//       console.log(datagraph[size]);
-//     }
-
-//     for(var xaxis = 1; xaxis < 20; xaxis++){
-//       xside[xaxis]  = xaxis;
-//     }
-
-//     var data = [{
-//       labels: ["January", "February", "March", "April", "May", "June", "July"],
-//       datasets: [
-//         {
-//             label: "Class Statistics",
-//             fillColor: "rgba(220,220,220,0.5)",
-//             strokeColor: "rgba(220,220,220,0.8)",
-//             highlightFill: "rgba(220,220,220,0.75)",
-//             highlightStroke: "rgba(220,220,220,1)",
-//             data: xside
-//         },
-//     ]
-//     }];
-
-//     var myBarChart = new Chart(ctx).Bar(data); 
-//   }
-// };
-
-
 // Isabel - plot for statistics on teachers page 
-exports.plot = function(req,res){
-  console.log("plotting statistics");
-  
-  var nameofClass = req.param('classname');
-  var searchQuiz = req.param('quiz');
-  var courseCodes = req.param('code');
-  // console.log(nameofClass +" "+  searchQuiz);
+exports.plot = function(req, res) {
+    console.log("plotting statistics");
 
-  //array of courses for the teacher
-  var num = [];
-  var classes = [];
-  var grade = [0];
-  var students = [];
-  
-     
-  //find all the courses   
-  for(var i = 0; i < req.user.courses.length ; i++){
-    num.push(req.user.courses[i].number);
-  }  
+    var nameofClass = req.param('classname');
+    var searchQuiz = req.param('quiz');
+    var courseCodes = req.param('code');
+    // console.log(nameofClass +" "+  searchQuiz);
 
-  var findcount = false; 
-  //find all the students in that course 
-  // console.log("AMOUNT:" + req.user.courses.length);
-  // for(var s = 0; s < req.user.courses.length ; s++){  
+    //array of courses for the teacher
+    var num = [];
+    var classes = [];
+    var grade = [0];
+    var students = [];
+
+
+    //find all the courses   
+    for (var i = 0; i < req.user.courses.length; i++) {
+        num.push(req.user.courses[i].number);
+    }
+
+    var findcount = false;
+    //find all the students in that course 
+    // console.log("AMOUNT:" + req.user.courses.length);
+    // for(var s = 0; s < req.user.courses.length ; s++){  
     findStudents();
-  // }
+    // }
 
-  for(var gradesize = 0; gradesize < 5 ; gradesize++){
-    grade[gradesize] = 0;
-  }
+    for (var gradesize = 0; gradesize < 5; gradesize++) {
+        grade[gradesize] = 0;
+    }
 
 
 
-  function findStudents(){
-    User.find({ 'profileType': 'Student', 'courseCode': courseCodes}).lean().exec(function(err, users) {  
-      for (var i = 0; i < users.length; i++) {           
-          // console.log("STUDENTS: " +users[i].userName);  
-          if (i === users.length -1 ) {
-            findcount = true;
-          } 
-          findGrades(users[i], courseCodes);
-      }
-    });
-  }
+    function findStudents() {
+        User.find({ 'profileType': 'Student', 'courseCode': courseCodes }).lean().exec(function(err, users) {
+            for (var i = 0; i < users.length; i++) {
+                // console.log("STUDENTS: " +users[i].userName);  
+                if (i === users.length - 1) {
+                    findcount = true;
+                }
+                findGrades(users[i], courseCodes);
+            }
+        });
+    }
 
-   //find all grades for the course code
-  function findGrades(givenstudent, course){
-    StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-        //lookup a test
+    //find all grades for the course code
+    function findGrades(givenstudent, course) {
+        StudentGrades.find({ 'student.studentName': givenstudent.userName }).lean().exec(function(err, grades) {
+            //lookup a test
 
-        for (var i = 0; i < grades.length;  i++) {
-            // console.log(grades[i].category);
-            for (var c = 0; c < grades[i].student.courses.length; c++){
-                //see if the test has a category that the teacher is looking for
-                if(grades[i].category === searchQuiz){
-                  // console.log("Current course code: "+ courseCodes);
-                    //see if test has a course code that matches the teachers 
-                  // console.log(grades[i].student.courses[c]);
-                   if(grades[i].student.courses[c] == courseCodes){                    
-                    // console.log("COURSES: "+ grades[i].student.courses[0]);
+            for (var i = 0; i < grades.length; i++) {
+                // console.log(grades[i].category);
+                for (var c = 0; c < grades[i].student.courses.length; c++) {
+                    //see if the test has a category that the teacher is looking for
+                    if (grades[i].category === searchQuiz) {
+                        // console.log("Current course code: "+ courseCodes);
+                        //see if test has a course code that matches the teachers 
+                        // console.log(grades[i].student.courses[c]);
+                        if (grades[i].student.courses[c] === courseCodes) {
+                            // console.log("COURSES: "+ grades[i].student.courses[0]);
 
-                    //Get the amount of questions in the quiz
-                    datagraph.length = grades[i].analytics.length;
-                    var questionSize =  grades[i].analytics.length;
-                    // console.log("Question size:" + grades[i].analytics.length); 
-                    console.log("Question size:" + datagraph.length); 
-                    
-                    //iterate through analytics and see if attempt = 1
-                       for (var analytics = 0; analytics< questionSize; analytics++){
-                            if(grades[i].analytics[analytics].attempts === 1){
-                                // console.log("you got it right");
-                                grade[analytics] = grade[analytics]+1;
+                            //Get the amount of questions in the quiz
+                            datagraph.length = grades[i].analytics.length;
+                            var questionSize = grades[i].analytics.length;
+                            // console.log("Question size:" + grades[i].analytics.length); 
+                            console.log("Question size:" + datagraph.length);
+
+                            //iterate through analytics and see if attempt = 1
+                            for (var analytics = 0; analytics < questionSize; analytics++) {
+                                if (grades[i].analytics[analytics].attempts === 1) {
+                                    // console.log("you got it right");
+                                    grade[analytics] = grade[analytics] + 1;
+                                }
                             }
                         }
-                   }
+                    }
                 }
-            }         
-        }
-         datagraph = grade;
-          return res.send(datagraph);     
-    });
+            }
+            datagraph = grade;
+            return res.send(datagraph);
+        });
 
-  }
+    }
 
-  // //output data
-  // function callgraph(datagraph){
-  //   console.log("DATAGRAPH");
+    // //output data
+    // function callgraph(datagraph){
+    //   console.log("DATAGRAPH");
 
-  //   // for(var size = 0; size < 20 ; size++){
-  //     console.log(datagraph.size);
-  //   // }
-  // }
+    //   // for(var size = 0; size < 20 ; size++){
+    //     console.log(datagraph.size);
+    //   // }
+    // }
 
-  console.log("DATA" + datagraph);
-  // var data = [65, 59, 80, 81, 56, 55];
- 
+    console.log("DATA" + datagraph);
+    // var data = [65, 59, 80, 81, 56, 55];
+
 };
 
 //Isabel- send emails to Admins for resource request
-exports.email = function(req,res){
- 
-  var data = req.body;
-  var message = {
+exports.email = function(req, res) {
 
-    //sender info
-    from: data.email,
+    var data = req.body;
+    var message = {
 
-    // Send to Admin
-    to: 'lwojo@ufl.edu',
+        //sender info
+        from: data.email,
 
-    // Subject of the message
-    subject: 'Resource Request', 
+        // Send to Admin
+        to: 'lwojo@ufl.edu',
 
-    //text
-    text: 'Subject: '+ data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link  + '\nComments: ' + data.comments
+        // Subject of the message
+        subject: 'Resource Request',
+
+        //text
+        text: 'Subject: ' + data.subject + '\nSubheading: ' + data.subheading + '\nLink: ' + data.link + '\nComments: ' + data.comments
 
     };
 
     // console.log('Sending Mail');
     // Sending Mail
-    transport.sendMail(message, function(error){
-      if(error){
-          console.log('Error occured');
-          console.log(error.message);
-          return;
-      }
-      //Message sent successully!
-      // console.log('Message sent successfully!');
-      });
+    transport.sendMail(message, function(error) {
+        if (error) {
+            console.log('Error occured');
+            console.log(error.message);
+            return;
+        }
+        //Message sent successully!
+        // console.log('Message sent successfully!');
+    });
 };
-      
+
 /**
  * Render the server not found responses
  * Performs content-negotiation on the Accept HTTP header
@@ -393,6 +258,7 @@ exports.parseResources = function(req, res) {
         return res.end(JSON.stringify(subs));
     });
 };
+
 
 //Retrieves all the SubHeadings from database
 exports.parseSubHeads = function(req, res) {
@@ -475,7 +341,7 @@ exports.addSubHead = function(req, res) {
 };
 exports.deleteSubHead = function(req, res) {
     var subHead_to_delete = req.subHead;
-    Resource.find({subject: subHead_to_delete._id}).remove(function(err) {
+    Resource.find({ subject: subHead_to_delete._id }).remove(function(err) {
         if (err) {
             res.status(400).send(err);
         } else {
@@ -681,6 +547,7 @@ exports.parseUsers = function(req, res) {
 };
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
+
     // get all questions and sort by category 
     QuizQuestion.find({}).lean().sort({category:1}).exec(function(err, questions) {
         return res.end(JSON.stringify(questions));
@@ -689,8 +556,8 @@ exports.parseQuestions = function(req, res) {
 
 // Read current question -RB
 exports.readQuestion = function(req, res) {
-  /* send back the question as json from the request */
-  res.json(req.quizQuestion);
+    /* send back the question as json from the request */
+    res.json(req.quizQuestion);
 };
 
 // Create new quiz question -RB
@@ -709,14 +576,14 @@ exports.addQuestion = function(req, res) {
 // Update quiz question -RB
 exports.updateQuestion = function(req, res) {
     var question_to_update = req.quizQuestion;
-    
+
     question_to_update.category = req.body.category;
     question_to_update.type = req.body.type;
     question_to_update.text = req.body.text;
     question_to_update.answers = req.body.answers;
     question_to_update.hint = req.body.hint;
     question_to_update.link = req.body.link;
-    
+
     question_to_update.save(function(err) {
         if (err) {
             res.status(400).send(err);
@@ -826,5 +693,36 @@ exports.questionByID = function(req, res, next, id) {
             req.quizQuestion = quizQuestion;
             next();
         }
+    });
+};
+
+//Matt
+//Profile photo upload/change
+exports.photoUpload = function(req, res) {
+    var file = req.files.file,
+        storePath = "profilePics/" + file.name,
+        savePath = "public/" + storePath,
+        User = req.user;
+
+    //Save image from photo upload.
+    fs.writeFile(savePath, file.buffer, 'binary', function(err) {
+        if (err) {
+            throw err;
+        }
+        //Upload Success
+        User.profileImageURL = storePath;
+        User.save(function(err) {
+            if (err) {
+                // console.log("did not complete update");
+                return res.status(400).send({
+                    message: err
+                });
+            } else {
+                return res.status(200).send({
+                    message: "User photo updated",
+                    url: storePath
+                });
+            }
+        });
     });
 };
