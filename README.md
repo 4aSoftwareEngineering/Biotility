@@ -37,32 +37,39 @@ This repository was an inherited from a previous group whose repository can be f
 - Admins can edit resources
 
 #### Instructions for how to run the project locally
-To run Biotility locally on your machines 
-First install the following 
+To run Biotility locally on your machines, first install the following 
+
 npm install -g bower
+
 npm install -g grunt-cli
+
 npm install -g yo
+
 npm install -g generator-meanjs
 
-Clone the git repository to your computer `https://github.com/4aSoftwareEngineering/Biotility`
+Clone the git repository to your computer `https://github.com/4aSoftwareEngineering/Biotility`.
+
 Do an `npm install` and `bower install` to get the rest of the dependencies.
+
 If you experience any errors requiring dependencies from the SERVER console, simply install those using `npm install --s MODULENAME`.
+
 If you experience any errors requiring dependencies from the CLIENT console, simply install those using `bower install --s MODULENAME`.
 
 Run by using `grunt`, or `grunt --f` if you experience lint errors.
 
 On your browser, access Biotility by visiting `localhost:3000`.
+
 To stop the server, simply type `CTRL - C` on your terminal. 
 
 #### How to update database and server connections
 Updates to the database can all be done on the app or manually through the mlabs server. 
+
 Updating registered users can be done through the user registration page or the users' profile page. 
+
 Admins can update quizzes in their profile. 
 
-## To connect to the database please use: 
-`mongodb://team4a:team4a@ds041394.mlab.com:41394/biotility`
+## To connect to the database please use: `mongodb://team4a:team4a@ds041394.mlab.com:41394/biotility`.
 
-To link the site to a new database connection please use 
-/Biotility/config/env/production.js
+To link the site to a new database connection please use: `/Biotility/config/env/production.js`.
 
 
