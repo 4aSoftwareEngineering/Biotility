@@ -321,10 +321,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
         });
-
-        //setup chart and function for view clicks
-        var ctx1 = $("#myClicksChart").get(0).getContext("2d");
+        var ctx1
         var myClicksChart;
+        if($scope.authentication.user.profileType === "Admin") {
+            ctx2 = $("#myClicksChart").get(0).getContext("2d");
+        }
+        //setup chart and function for view clicks
         $scope.viewClicks = function(subject){
             var route = '/api/data/resources/clicks';
             $http.get(route, {params:{"subject": subject}}).then(function(res) { 
@@ -338,7 +340,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     click_labels.push(clicks[i].name);
                     click_data.push(clicks[i].clicks);
                 }
-                var ctx = $("#myClicksChart").get(0).getContext("2d");
                   var data = {
                     labels: click_labels,
                     datasets: [
@@ -355,10 +356,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 myClicksChart = new Chart(ctx1).Bar(data);
             });
         };
-        
-        //setup chart and function for quiz statistics
-        var ctx2 = $("#myQuizStatsChart").get(0).getContext("2d");
+        var ctx2
         var myQuizStatsChart;
+        if($scope.authentication.user.profileType === "Admin") {
+            ctx2 = $("#myQuizStatsChart").get(0).getContext("2d");
+        }
+        //setup chart and function for quiz statistics
         $scope.viewQuizStats = function(subject){
             var route = '/api/data/adminGrades';
             $http.get(route, {params:{"subject": subject}}).then(function(res) { 
