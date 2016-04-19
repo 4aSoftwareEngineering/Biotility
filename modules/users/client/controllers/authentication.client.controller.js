@@ -175,6 +175,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 route = '/api/auth/signup/student';
                 console.log("Is a student");
             } else if($scope.credentials.profileType === "Admin") {
+                // user the teacher route because it doesn't ask for course code to register
                 route = '/api/auth/signup/teacher';
                 console.log("Is an Admin");
             } else if($scope.credentials.profileType === "Teacher") {
@@ -200,8 +201,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         };
 // 
-
-      
         $scope.signin = function(isValid) {
 
             $scope.error = null;
@@ -239,8 +238,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         };
 
         if ($scope.authentication.user) {
+            // flags for determining if current user is an admin or teacher
             $scope.authentication = Authentication;
-            //Set flags to true if admin or teacher 
+            $scope.isAdmin = false;
+            $scope.isTeacher = false;
             if ($scope.authentication.user.profileType === "Admin") {
                 console.log("I am a admin");
                 $scope.isAdmin = true;

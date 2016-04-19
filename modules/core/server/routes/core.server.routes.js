@@ -27,7 +27,6 @@ module.exports = function(app) {
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);
 
-
     // Fetch user data from database
     app.route('/api/data/users/:userId').put(core.update);
     app.route('/api/parse/user').get(core.parseUsers);
@@ -52,7 +51,6 @@ module.exports = function(app) {
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);
 
-
     //Isabel's Work Sprint2/Sprint3
     app.route('/api/data/plot').get(core.plot);
     app.route('/api/data/email').post(core.email);
@@ -62,7 +60,7 @@ module.exports = function(app) {
 
     app.route('/api/data/emailV').post(core.sendMail);
 
-    // Routes for question data from database
+    // Routes for question data from database -RB
     app.route('/api/data/questions').get(core.parseQuestions);
     app.route('/api/data/questions').post(core.addQuestion);
     app.route('/api/data/questions/:questionId').put(core.updateQuestion);
@@ -74,7 +72,6 @@ module.exports = function(app) {
     // Return a 404 for all undefined api, module or lib routes
     // GOES AFTER ALL API CALLS ^^^^
     app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
-
 
     app.param('@id', core.userByID);
     app.param('resourceId', core.resourceByID);

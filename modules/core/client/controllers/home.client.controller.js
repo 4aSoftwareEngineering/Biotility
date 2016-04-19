@@ -246,10 +246,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
 angular.module('core').controller('authController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http',
     function($scope, $state, $location, Users, Authentication, $http) {
-        //This is a min config for authenticating admin features
+        //This is a min config controller for authenticating admin/teacher features only
+        // It defines $scope flags that can be used for hiding/showing admin or teacher only content
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-
 
         $scope.isTeacher = false;
         $scope.isAdmin = false;

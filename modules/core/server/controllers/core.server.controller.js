@@ -308,8 +308,6 @@ exports.plot = function(req,res){
 
   }
 
- 
-
   // //output data
   // function callgraph(datagraph){
   //   console.log("DATAGRAPH");
@@ -318,7 +316,6 @@ exports.plot = function(req,res){
   //     console.log(datagraph.size);
   //   // }
   // }
-
 
   console.log("DATA" + datagraph);
   // var data = [65, 59, 80, 81, 56, 55];
@@ -358,10 +355,6 @@ exports.email = function(req,res){
       });
 };
       
-
-
-
-
 /**
  * Render the server not found responses
  * Performs content-negotiation on the Accept HTTP header
@@ -408,7 +401,6 @@ exports.parseSubHeads = function(req, res) {
         return res.end(JSON.stringify(subs));
     });
 };
-
 
 //Creates a new resource for the database
 exports.addResource = function(req, res) {
@@ -689,19 +681,19 @@ exports.parseUsers = function(req, res) {
 };
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
-    // get a;; questions and sort by category 
+    // get all questions and sort by category 
     QuizQuestion.find({}).lean().sort({category:1}).exec(function(err, questions) {
         return res.end(JSON.stringify(questions));
     });
 };
 
-// Read current question
+// Read current question -RB
 exports.readQuestion = function(req, res) {
   /* send back the question as json from the request */
   res.json(req.quizQuestion);
 };
 
-// Create new quiz question 
+// Create new quiz question -RB
 exports.addQuestion = function(req, res) {
     var newQuestion = new QuizQuestion(req.body);
     newQuestion.save(function(err) {
@@ -714,7 +706,7 @@ exports.addQuestion = function(req, res) {
     });
 };
 
-// Update quiz question 
+// Update quiz question -RB
 exports.updateQuestion = function(req, res) {
     var question_to_update = req.quizQuestion;
     
@@ -735,7 +727,7 @@ exports.updateQuestion = function(req, res) {
     });
 };
 
-// Delete quiz question 
+// Delete quiz question -RB
 exports.deleteQuestion = function(req, res) {
     var question_to_delete = req.quizQuestion;
     question_to_delete.remove(function(err) {
@@ -825,7 +817,7 @@ exports.subHeadByID = function(req, res, next, id) {
     });
 };
 
-//middleware for quizQuestions
+//middleware for quizQuestions -RB 
 exports.questionByID = function(req, res, next, id) {
     QuizQuestion.findById(id).exec(function(err, quizQuestion) {
         if (err) {
