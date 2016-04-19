@@ -7,7 +7,7 @@ describe('Core Tests:', function() {
 	afterEach(function() {
 		browser.sleep(3000);
 	});
-	/*
+	
 	describe('Nav Bar Tests', function(){
 		//Test Contact
 		it('should send user to contact page', function() {
@@ -44,7 +44,7 @@ describe('Core Tests:', function() {
 		element(by.repeater('subject in subjects').row(1)).element(by.id('assessment')).click();
 		expect(browser.getCurrentUrl()).toBe('http://localhost:3000/Genetics/quiz');	
 	});
-	*/
+	
 	describe('Student Login and Uses', function(){
 		//Signin
 		it('should let our default/dummy student-user sign-in', function() {
@@ -54,13 +54,13 @@ describe('Core Tests:', function() {
 				element(by.css('[ng-click="open()"]')).click();
 				expect(browser.getCurrentUrl()).toBe('http://localhost:3000/');
 		});
-		/*
+		
 		//Check Profle
 		it('should let our default/dummy student-user go to its unique page', function() {
 				element(by.css('[ng-click="profile()"]')).click();
 				expect(browser.getCurrentUrl()).toBe('http://localhost:3000/student/1');
 		});
-		*/
+		
 		//Try a quiz
 		it('should start a quiz', function() {
 				element(by.repeater('subject in subjects').row(0)).element(by.id('assessment')).click();
