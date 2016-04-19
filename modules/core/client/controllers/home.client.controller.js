@@ -321,10 +321,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         Subjects.loadSubjects().then(function(response) {
             $scope.subjects = response.data;
         });
-        var ctx1
+        var ctx1;
         var myClicksChart;
         if($scope.authentication.user.profileType === "Admin") {
-            ctx2 = $("#myClicksChart").get(0).getContext("2d");
+            ctx1 = $("#myClicksChart").get(0).getContext("2d");
         }
         //setup chart and function for view clicks
         $scope.viewClicks = function(subject){
@@ -356,7 +356,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 myClicksChart = new Chart(ctx1).Bar(data);
             });
         };
-        var ctx2
+        var ctx2;
         var myQuizStatsChart;
         if($scope.authentication.user.profileType === "Admin") {
             ctx2 = $("#myQuizStatsChart").get(0).getContext("2d");
