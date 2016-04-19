@@ -241,8 +241,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 'ResourceClicks', 'Comments', 'multipartForm', 'Upload',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, multipartForm, Upload) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 'ResourceClicks', 'Comments', 'Upload',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, Upload) {
 
 
         //Isabel- modal for resource request 
@@ -260,7 +260,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     console.log(res);
                 });
 
-        }
+        };
         Comments.loadComments().then(function(response) {
             $scope.Comments = response.data;
         });
@@ -338,7 +338,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.Periods = [];
         $scope.classCodes = [];
         $scope.classQuiz = [];
-        $scope.classPeriods = []
+        $scope.classPeriods = [];
 
         //get course names
         var teachersCurrentClasses = $scope.authentication.user.courses;
@@ -408,7 +408,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 file.upload.then(function(response) {
                     //Change current picture to newly uploaded one!
                     console.log("Photo upload:", response.data.message);
-                    if (response.status == 200) {
+                    if (response.status === 200) {
                         $(".user-pic").attr("src", response.data.url);
                     }
                 });
@@ -530,7 +530,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.authentication.user.displayName = $scope.authentication.user.lastName + ', ' + $scope.authentication.user.firstName;
 
             //check to make sure passwords match
-            if ($scope.credentials.password == $scope.confirmpassword) {
+            if ($scope.credentials.password === $scope.confirmpassword) {
                 // console.log("Passwords match");
                 $http.post(route, $scope.user).success(function(response) {
 
@@ -771,7 +771,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     responsive: false,
                     maintainAspectRatio: true,
                     barShowStroke: false
-                }
+                };
 
                 var myBarChart = new Chart(ctx).Bar(data, options);
             }).then(function(error) {
