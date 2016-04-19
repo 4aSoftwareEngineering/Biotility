@@ -29,7 +29,7 @@
                 </div>
                 <!--p class="qLeft">{{questions.length - numQuestion}} question(s) remaining.</p-->
                 <p class="qNum">Question {{numQuestion}} </p>
-                <p class="qText">{{questions[index].text}}</p>
+                <p class="qText" id="P-test1">{{questions[index].text}}</p>
                 <p ng-show="hasHint">Hint: {{questions[index].hint}}</p>
                 <a ng-show="questions[index].link.length" class="qSupp" ng-mousedown="openTab(questions[index].link)">Supplementary Reading</a>
                 <p id="quizError" ng-show="hasError" class="alert alert-danger" role="alert"> {{error}} </p>

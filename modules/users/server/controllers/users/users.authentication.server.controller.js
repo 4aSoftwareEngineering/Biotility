@@ -201,9 +201,50 @@ exports.oauthCallback = function(strategy) {
     };
 };
 
+
+
+
+/*Michael CODE for email*/
+exports.sendMail = function(req, res){
+    console.log("EMAILS");
+    var data = req.body;
+    var message= {
+        // sender info
+        from: 'biotilitysp18@gmail.com',
+
+        // Comma separated list of recipients
+        to: data.email,
+
+        // Subject of the message
+        subject: 'Biotility: Course code ',
+
+        //text
+        text: 'The course code for you to use is 1234'
+
+    };
+    console.log('Sending Mail');
+    transport.sendMail(message, function(error){
+        if(error){
+            console.log('Error occured');
+            console.log(error.message);
+            return;
+        }
+        console.log('Message sent successfully!');
+        // $("#myModal").modal("show");
+        // $("#myModal").modal('show');
+    });
+};
+
+
+
+
+
+
 /**
  * Helper function to save or update a OAuth user profile
  */
+
+
 exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
     if (!req.user) {
         // Define a search query fields
