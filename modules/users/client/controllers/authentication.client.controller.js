@@ -63,10 +63,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                             "Forensics",
                             "Other"];
 
-        //Send email if code needed.
+        //Michael and Isabel- registration email
         $scope.sendMail = function (contactEmail) {
 
-            console.log('HELLO!!!!');
+            console.log('Sending registration email!');
             console.log(contactEmail);
             var data = ({
                 email : contactEmail
