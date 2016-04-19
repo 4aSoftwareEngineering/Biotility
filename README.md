@@ -44,8 +44,11 @@ npm install -g grunt-cli
 npm install -g yo
 npm install -g generator-meanjs
 
-Access our git repository and clone to your computer : https://github.com/4aSoftwareEngineering/Biotility
-In the directory where you saved Biotility do `npm install`
+Clone the git repository to your computer `https://github.com/4aSoftwareEngineering/Biotility`
+Do an `npm install` and `bower install` to get the rest of the dependencies.
+If you experience any errors requiring dependencies from the SERVER console, simply install those using `npm install --s MODULENAME`.
+If you experience any errors requiring dependencies from the CLIENT console, simply install those using `bower install --s MODULENAME`.
+
 Run by using `grunt`, or `grunt --f` if you experience lint errors.
 
 On your browser, access Biotility by visiting `localhost:3000`.
