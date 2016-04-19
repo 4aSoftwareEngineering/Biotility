@@ -383,7 +383,7 @@ exports.plot = function(req, res) {
                         // console.log("Current course code: "+ courseCodes);
                         //see if test has a course code that matches the teachers 
                         // console.log(grades[i].student.courses[c]);
-                        if (grades[i].student.courses[c] === courseCodes) {
+                        if (grades[i].student.courses[c] == courseCodes) {
                             // console.log("COURSES: "+ grades[i].student.courses[0]);
 
                             //Get the amount of questions in the quiz
@@ -786,7 +786,7 @@ exports.photoUpload = function(req, res) {
     //Save image from photo upload.
     fs.writeFile(savePath, file.buffer, 'binary', function(err) {
         if (err) {
-            throw err;
+            throw err
         }
         //Upload Success
         User.profileImageURL = storePath;

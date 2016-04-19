@@ -18,8 +18,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         // Get an eventual error defined in the URL query string:
         $scope.error = $location.search().err;
 
-        $scope.emText = ' ';
-
 
         // credentials object
         $scope.credentials = {};
@@ -66,16 +64,17 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                             "Other"];
 
         //Send email if code needed.
-        $scope.sendMail = function () {
+        $scope.sendMail = function (contactEmail) {
 
             console.log('HELLO!!!!');
+            console.log(contactEmail);
             var data = ({
-                contactEmail : $scope.emText
+                email : contactEmail
             });
+            
 
-
-            console.log(data.contactEmail);
-            var route = '/api/data/emailV';
+            console.log(data.email);
+            var route = '/api/auth/email';
 
             // Simple POST request example (passing data) :
             $http.post(route, data).success(function(req, res) {

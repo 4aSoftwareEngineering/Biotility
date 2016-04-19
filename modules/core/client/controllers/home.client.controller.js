@@ -260,7 +260,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     console.log(res);
                 });
 
-        };
+        }
         Comments.loadComments().then(function(response) {
             $scope.Comments = response.data;
         });
@@ -408,7 +408,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 file.upload.then(function(response) {
                     //Change current picture to newly uploaded one!
                     console.log("Photo upload:", response.data.message);
-                    if (response.status === 200) {
+                    if (response.status == 200) {
                         $(".user-pic").attr("src", response.data.url);
                     }
                 });
@@ -771,7 +771,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     responsive: false,
                     maintainAspectRatio: true,
                     barShowStroke: false
-                };
+                }
 
                 var myBarChart = new Chart(ctx).Bar(data, options);
             }).then(function(error) {
