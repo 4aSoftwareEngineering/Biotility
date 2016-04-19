@@ -169,7 +169,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            console.log($scope.credentials);
+            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)].length? [parseInt($scope.credentials.courseCode)] : [];
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
                 route = '/api/auth/signup/student';

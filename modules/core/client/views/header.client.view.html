@@ -48,6 +48,11 @@
                     <a data-ui-sref="authentication.signin">Login</a>
                 </div>
             </li>
+            <li>
+                <div id="register" ng-hide="authentication.user" class="navbar-brand">
+                    <a data-ui-sref="authentication.signup">Register</a>
+                </div>
+            </li>
             <!-- Username -->
             <li>
                 <div ng-show="authentication.user" class="navbar-brand ">

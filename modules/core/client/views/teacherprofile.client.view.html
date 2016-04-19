@@ -1,50 +1,50 @@
 <!--teacher profile page-->
-<div class="container" ng-controller="ProfileController" ng-init= "resetCodes()">
-  <script src="Chart.js"></script>
-      <script src="js/services/multipartForm.js"></script>
+<div class="container" ng-controller="ProfileController" ng-init="resetCodes()">
+    <script src="Chart.js"></script>
+    <script src="js/services/multipartForm.js"></script>
     <script src="js/directives/fileModel.js"></script>
-  <div style="margin-top: 45px;">
-  </div>
+    <div style="margin-top: 45px;">
+    </div>
 
-  <hr>
+    <hr>
     <div class="row">
-      <div id="left-side" class="list-view">
-         <!--teacher name-->
-        <h1 id="section-tabs-header">
+        <div id="left-side" class="list-view">
+            <!--teacher name-->
+            <h1 id="section-tabs-header">
           {{user.firstName}} {{user.lastName}}
         </h1>
-      </div>
+        </div>
 
-      <!-- left navigation bar -->
-      <div class="col-md-3">
-        <div class="text-center">
-         <!--  <label>Username: </label>
+        <!-- left navigation bar -->
+        <div class="col-md-3">
+            <div class="text-center">
+                <!--  <label>Username: </label>
           <span>{{user.userName}}</span>
           <br>
           <label>Email: </label>
           <span>{{user.email}}</span>
           <br>
           <br>   -->
-          
-          <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
-           <input type="file" id="photoinput" name="photoinput" file-model="photos.file">
-          <button type="submit" class="btn btn-defualt" ng-click="Submit()">Photo</button>
-         <!--  <form role="form" ng-submit="photoupdate()" >
+
+                <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+                <input type="file" id="photoinput" name="photoinput" file-model="photos.file">
+                <button type="submit" class="btn btn-defualt" ng-click="Submit()">Photo</button>
+                <!--  <form role="form" ng-submit="photoupdate()" >
             <h6>Upload a different photo</h6>
             <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
             <input type="submit" value="Upload Image"> -->
-             <!-- <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)"  ngf-max-size="1MB">
+                <!-- <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)"  ngf-max-size="1MB">
                   Select File
               </button> -->
-          <!-- </form> -->
-          <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
+                <!-- </form> -->
+                <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
               Select image to upload:
               <input type="file" name="fileToUpload" id="fileToUpload">
               <input type="submit" value="Upload Image" name="submit">
           </form> -->
 
-          <!--navigation menu-->
-         <!--  <nav aria-label="context" role="navigation">
+                <!--navigation menu-->
+                <!--  <nav aria-label="context" role="navigation">
             <ul class="nav" id="section-tabs">
 
               <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Classes</a></li>
@@ -57,296 +57,288 @@
             </ul>
           </nav> -->
 
-               <nav aria-label="context" role="navigation">
+                <nav aria-label="context" role="navigation">
                     <ul class="nav nav-pills nav-stacked" role="tablist">
-                        <li role="presentation" class="active"><a href="#classes"        aria-controls="classes"        role="tab" data-toggle="tab">Classes</a></li>
-                        <li role="presentation">               <a href="#settings"       aria-controls="settings"       role="tab" data-toggle="tab">Settings</a></li>
-                        <li role="presentation">               <a href="#statistics"     aria-controls="statistics"     role="tab" data-toggle="tab">Statistics</a></li>
-                        <li role="presentation">               <a href="#resource"       aria-controls="resource"       role="tab" data-toggle="tab">Request a Resource</a></li>
+                        <li role="presentation"><a href="#classes" aria-controls="classes" role="tab" data-toggle="tab">Classes</a>
+                        </li>
+                        <li role="presentation"> <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+                        </li>
+                        <li role="presentation"> <a href="#statistics" aria-controls="statistics" role="tab" data-toggle="tab">Statistics</a>
+                        </li>
+                        <li role="presentation"> <a href="#resource" aria-controls="resource" role="tab" data-toggle="tab">Request a Resource</a>
+                        </li>
                     </ul>
                 </nav>
 
+            </div>
         </div>
-      </div>
-      <div class="col-md-9 personal-info">
-      <!--       <div class="alert alert-info alert-dismissable">
+        <div class="col-md-9 personal-info">
+            <!--       <div class="alert alert-info alert-dismissable">
         <a class="panel-close close" data-dismiss="alert">×</a>
         <i class="fa fa-coffee"></i>
         This is an <strong>.alert</strong>. Use this to show important messages to the user.
       </div> -->
 
-      <!--teacher info-->
-      <h3>Personal info</h3>
-        <div class="col-lg-3">
-          <div class="col-lg-8">
-            <label>Username</label>
-            <span>{{user.userName}}</span>
-            <br>
-            <label>Email</label>
-            <span>{{user.email}}</span>
-          </div>
+            <!--teacher info-->
+            <h3>Personal info</h3>
+            <div class="col-lg-3">
+                <div class="col-lg-8">
+                    <label>Username</label>
+                    <span>{{user.userName}}</span>
+                    <br>
+                    <label>Email</label>
+                    <span>{{user.email}}</span>
+                </div>
+            </div>
         </div>
-       </div>
-    
-     <div class="tab-content" class="col-md-9">
-      <!-- Course Codes -->
-      <div role="tabpanel" class="tab-pane" id="classes">
-        <!--table of current teachers class codes-->
-        <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
-          <caption>Please give course codes to students </caption>
-          <thead>
-            <h2>Classes</h2>
-            <th>Codes</th>
-          </thead>
-            <tbody>
-              <!--gets class codes from controller-->
-              <tr ng-repeat="d in input.coursesComplete ">
-                <td>{{d.courseName}} </br>{{d.section}}</br>Course Code: {{d.number}} </td>
-              </tr>
-            </tbody>
-        </table>
-      </div>
 
-      <!--Show Statistics -->
-      <div  role="tabpanel" class="tab-pane" id="settings">
-         <label>Class:</label>
-         <select ng-model="ClassNames" style="height: 30px;">
-                   <option  ng-repeat="quiz in classQuiz">{{quiz}}</option>
-          </select>
-           <label>Course Code:</label>
-         <select ng-model="ClassCodes" style="height: 30px;">
-                   <option  ng-repeat="periods in classCodes">{{periods}}</option>
-          </select>
-           <label >Quiz:</label>
-         <select ng-model="ClassStats" style="height: 30px;">
-                   <option  ng-repeat="name in classNames">{{name}}</option>
-          </select>
-        <!--   <div class="col-sm-4">
-                <input class="form-control"  ng-model="ClassStats" ng-init= "ClassStats" type="text" ng-value="{{user.firstName}}">
-            </div> -->
-           <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassNames, ClassCodes,  ClassStats)">
-              Update Statistics
-            </button>
-            <div>
-              <canvas id="myChart" width="300px" height="300px"></canvas>
-            </div>
-        <!-- </div> -->
-      </div>
-         
-      <!--Update Settings-->
-      <div  role="tabpanel" class="tab-pane" id="statistics">
-        <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
-          <div class="form-group">
+        <div class="tab-content col-md-9">
+            <!-- Course Codes -->
+            <div role="tabpanel" class="tab-pane" id="classes">
+                <!--table of current teachers class codes-->
+                <!--select course-->
+                <!--view for teachers to see courses they currently have created -->
+                <br><br>
+                <label class="control-label">Add New Classes:</label>
+                <div class="account-pick">
+                    <div class="row">
+                        <select ng-model="toAdd" class="col-md-3" style="height: 30px;" onchange="showfield(this.options[this.selectedIndex].value)">
 
-            <label class="col-lg-3 control-label">First name:</label>
-            <div class="col-lg-8">
+                            <option ng-repeat="name in newclassNames">{{name}}</option>
+                        </select>
 
-              <input class="form-control"  ng-model="credentials.firstName" ng-init= "credentials.firstName = user.firstName" type="text" ng-value="{{user.firstName}}">
-            </div>
-          
-          </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Last name:</label>
-            <div class="col-lg-8">
-              <input class="form-control" ng-model="credentials.lastName"  ng-init= "credentials.lastName = user.lastName"type="text" value="{{user.lastName}}">
-            </div>
-          </div>
-          <!-- <div class="form-group">
-            <label class="col-lg-3 control-label">School:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="">
-            </div>
-          </div> -->
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Email:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" ng-init= "credentials.email = user.email" value="{{user.email}}" ng-model="credentials.email">
-            </div>
-          </div>
-      
-          <!--account info-->
-          <div class="form-group">
-            <label class="col-md-3 control-label">Username:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="text"  ng-init= "credentials.userName = user.userName" value="{{user.userName}}" ng-model="credentials.userName">
-            </div>
-            <!-- <div class="inputs">
-            <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
-            </div> -->
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Change Password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" value="" ng-model="credentials.password">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Confirm Password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" value="" ng-model="confirmpassword">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label"></label>
-            <div class="col-md-8 col-md-offset-9">
-              <input class="btn btn-primary" type="submit" value="Save Changes">
-              <!-- <span></span>
-              <input type="reset" class="btn btn-default" value="Cancel"> -->
-            </div>
-          </div>
-        </form>
+                        <script type="text/javascript">
+                        function showfield(name) {
+                            if (name != 'Other') document.getElementById('classs').style.visibility = "hidden";
+                            else document.getElementById('classs').style.visibility = "visible";
+                        }
+                        </script>
 
-          <!-- Modal for settings update failure -->
-          <div class="modal fade" id="settingsMoodal" role="dialog">
-            <div class="modal-dialog">
-            
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header" style="padding:10px 10px;">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4><span class="glyphicon glyphicon-remove"></span> Settings Not Updated </h4>
-                </div>
-                <div class="modal-body" style="padding:10px 10px;">
-                  <p>Passwords do not match!</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-danger btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
-                 
-                </div>
-            </div>
-              
-            </div>
-          </div> 
+                        <div id="classs" class="col-sm-3" style="visibility: hidden">
+                            <input class="form-control" ng-model="toAdd" ng-init="toAdd" type="text" placeholder="Other" ng-value="{{user.firstName}}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <select ng-model="periodtoAdd" class="col-md-3 " style="height: 30px;">
+                            <option ng-repeat="period in Periods">{{period}}</option>
+                        </select>
 
-
-              <!--select course-->
-              <!--view for teachers to see courses they currently have created -->
-              <div class="account-pick">
-                <label class="col-lg-3 col-md-offset-1 control-label">Add New Classes:</label>
-                <!-- 
-                  <select ng-model="toAdd" class="col-md-3 " style="height: 30px;">
-                     <option  ng-repeat="name in newclassNames">{{name}}</option>
-                  </select>
-
-                  <div class="col-sm-3">
-                  <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
-                  </div>
-                 
-                  <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
-                     <option  ng-repeat="period in Periods">{{period}}</option>
-                  </select> 
-                -->
-
-                <select ng-model="toAdd" class="col-md-3 " style="height: 30px;" onchange="showfield(this.options[this.selectedIndex].value)">
-                  <option  ng-repeat="name in newclassNames">{{name}}</option>
-                </select>
-
-                <script type="text/javascript">
-                  function showfield(name){
-                    if(name!='Other')document.getElementById('classs').style.visibility = "hidden";
-                    else document.getElementById('classs').style.visibility = "visible";
-                  }
-                </script>
-
-                <div id="classs" class="col-sm-3" style="visibility: hidden">
-                    <input class="form-control"  ng-model="toAdd" ng-init= "toAdd" type="text" placeholder = "Other" ng-value="{{user.firstName}}">
+                        <!--button for adding more than one course-->
+                        <button type="button" class="addClassBtn btn btn-primary col-md-3" ng-click="add(toAdd, periodtoAdd)"> Add Class </button>
+                    </div>
+                    <!-- commented code can be uncommented to manually reset ALL of the course codes for EVERY teacher -->
+                    <!--   <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()"> - </button> -->
                 </div>
 
-                <select ng-model="periodtoAdd" class="col-md-3 col-md-offset-4" style="height: 30px;">
-                  <option  ng-repeat="period in Periods">{{period}}</option>
-                </select> 
-
-                 <!--button for adding more than one course-->
-                 <button type="button" class="btn btn-primary" ng-click="add(toAdd, periodtoAdd)"> Add Class </button>
-
-                 <!-- commented code can be uncommented to manually reset ALL of the course codes for EVERY teacher --> 
-                  <!--   <button type="button" class="btn btn-default col-md-offset-1" ng-click="resetCodes()"> - </button> -->
-              </div>
-
-              <!--Classes already seleted-->
+                <!--Classes already seleted-->
                 <div class="picked">
                     <div class="col-md-2 col-lg-offset-4 text-right">
                         <ul class="list-inline">
                             <li ng-repeat="x in credentials.courses track by $index">
                                 <button type="button" class="btn btn-info">{{x.courseName}}</button>
                                 <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
-                                </button> -->
-                            </li> 
+                              </button> -->
+                            </li>
                         </ul>
                     </div>
                 </div>
-         </div>
-     
 
-      <!-- Request a resource -->
-      <div  role="tabpanel" class="tab-pane" id="resource">
-        <h3 > Please fill out form to request a resource </h3>
-        <!-- input form for teachers to submit resource requests to admins via email --> 
-        <form class="form-horizontal" role="form" ng-submit="sendEmail(true)">
-          
-          <div class="form-group">
-              <label class="col-lg-3 control-label">Your Email:</label>
-              <div class="col-lg-8">
-                <input class="form-control"  type="text" ng-model="resource.email">
-              </div>
-          </div>
+                <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
+                    <caption>Please give course codes to students </caption>
+                    <thead>
+                        <h2>Classes</h2>
+                        <th>Codes</th>
+                    </thead>
+                    <tbody>
+                        <!--gets class codes from controller-->
+                        <tr ng-repeat="d in input.coursesComplete ">
+                            <td>{{d.courseName}} </br>{{d.section}}</br>Course Code: {{d.number}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Subject:</label>
+            <!--Show Statistics -->
+            <div role="tabpanel" class="tab-pane" id="statistics">
+                <label>Course Code:</label>
+                <select ng-model="ClassCodes" style="height: 30px;">
+                    <option ng-repeat="periods in classCodes">{{periods}}</option>
+                </select>
+                <label style="margin-left: 15px">Quiz:</label>
+                <select ng-model="ClassStats" style="height: 30px;">
+                    <option ng-repeat="name in classNames">{{name}}</option>
+                </select>
+                <!--   <div class="col-sm-4">
+                <input class="form-control"  ng-model="ClassStats" ng-init= "ClassStats" type="text" ng-value="{{user.firstName}}">
+            </div> -->
+                <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats('Biology',ClassCodes,  ClassStats)">
+                    Update Statistics
+                </button>
+                <div>
+                    <canvas id="myChart" width="300px" height="300px"></canvas>
+                </div>
+                <!-- </div> -->
+            </div>
+
+            <!--Update Settings-->
+            <div role="tabpanel" class="tab-pane" id="settings">
+                <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
+                    <div class="form-group">
+
+                        <label class="col-lg-3 control-label">First name:</label>
+                        <div class="col-lg-8">
+
+                            <input class="form-control" ng-model="credentials.firstName" ng-init="credentials.firstName = user.firstName" type="text" ng-value="{{user.firstName}}">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Last name:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" ng-model="credentials.lastName" ng-init="credentials.lastName = user.lastName" type="text" value="{{user.lastName}}">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+            <label class="col-lg-3 control-label">School:</label>
             <div class="col-lg-8">
-              <input class="form-control"  type="text" ng-model="resource.subject">
+              <input class="form-control" type="text" value="">
             </div>
-          </div>
+          </div> -->
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Email:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="text" ng-init="credentials.email = user.email" value="{{user.email}}" ng-model="credentials.email">
+                        </div>
+                    </div>
 
-          <div class="form-group">
-            <label class="col-lg-3 control-label" > Subject Detail: </label>
-            <div class="col-lg-8">
-                <input class="form-control" type="text" ng-model= "resource.subjectdetails" >
-            </div>
-          </div>
-            
-          <div class="form-group">
-            <label class="col-md-3 control-label" > Link: </label>
-            <div class="col-md-8">
-              <input class="form-control" type="text" ng-model= "resource.resourcelink">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-md-3 control-label"> Comments: </label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" value="" ng-model = "resource.comments">
-            </div>
-          </div>
-
-          <div class="col-md-8 col-md-offset-9">
-              <input class="btn btn-primary" type="submit" id="myBtn" value="Send Request">
-              <!-- <span></span>
+                    <!--account info-->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Username:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" ng-init="credentials.userName = user.userName" value="{{user.userName}}" ng-model="credentials.userName">
+                        </div>
+                        <!-- <div class="inputs">
+            <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
+            </div> -->
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Change Password:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="password" value="" ng-model="credentials.password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Confirm Password:</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="password" value="" ng-model="confirmpassword">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-8 col-md-offset-9">
+                            <input class="btn btn-primary" type="submit" value="Save Changes">
+                            <!-- <span></span>
               <input type="reset" class="btn btn-default" value="Cancel"> -->
-          </div>
+                        </div>
+                    </div>
+                </form>
 
-          <!-- Modal for succesful resource request -->
-          <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header" style="padding:10px 10px;">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4><span class="glyphicon glyphicon-send"></span> Recieved</h4>
+                <!-- Modal for settings update failure -->
+                <div class="modal fade" id="settingsMoodal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding:10px 10px;">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4><span class="glyphicon glyphicon-remove"></span> Settings Not Updated </h4>
+                            </div>
+                            <div class="modal-body" style="padding:10px 10px;">
+                                <p>Passwords do not match!</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="modal-body" style="padding:10px 10px;">
-                  <p>Resource Request Succesfully Sent!</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-success btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
-                </div>
-              </div>    
+
+
+
             </div>
-          </div> 
-        </div>
-        </form>
 
+
+            <!-- Request a resource -->
+            <div role="tabpanel" class="tab-pane" id="resource">
+                <h3> Please fill out form to request a resource </h3>
+                <!-- input form for teachers to submit resource requests to admins via email -->
+                <form class="form-horizontal" role="form" ng-submit="sendEmail(true)">
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Your Email:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="text" ng-model="resource.email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Subject:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="text" ng-model="resource.subject">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"> Subject Detail: </label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="text" ng-model="resource.subjectdetails">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"> Link: </label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" ng-model="resource.resourcelink">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"> Comments: </label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="password" value="" ng-model="resource.comments">
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 col-md-offset-9">
+                        <input class="btn btn-primary" type="submit" id="myBtn" value="Send Request">
+                        <!-- <span></span>
+              <input type="reset" class="btn btn-default" value="Cancel"> -->
+                    </div>
+
+                    <!-- Modal for succesful resource request -->
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="padding:10px 10px;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4><span class="glyphicon glyphicon-send"></span> Recieved</h4>
+                                </div>
+                                <div class="modal-body" style="padding:10px 10px;">
+                                    <p>Resource Request Succesfully Sent!</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Okay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </form>
+
+        </div>
     </div>
-  </div>
-  <hr>
+    <hr>
 </div>
