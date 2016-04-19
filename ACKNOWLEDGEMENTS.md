@@ -1,7 +1,8 @@
 Code that was borrowed for the production of this website includes:
 
 -Michael Arboleda:
-  -
+  -http://www.w3schools.com/bootstrap/bootstrap_ref_js_carousel.asp
+  	-used code for fixing home page banner carousel
 
 -Ryan Blanchard:
   -Features from Bootcamp Assignment 5:
