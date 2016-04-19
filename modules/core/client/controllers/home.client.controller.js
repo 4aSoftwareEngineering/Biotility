@@ -1,10 +1,5 @@
 'use strict';
 
-/** SEE core.server.routes.js  */
-// function Chart(nonsense){
-//     this.nothing = nonsense;
-// }
-
 angular.module('core').controller('MainController', ['$scope', '$state', '$location', 'Authentication', '$http', 'Subjects', 'Users',
 
     function($scope, $state, $location, Authentication, $http, Subjects, Users) {
@@ -58,7 +53,18 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         //some variables for the resource view
         $scope.success = null;
         $scope.error = null;
-        $scope.editMode = false;
+
+        //Checks wheter or not user is admin to allow edit controls
+        if($scope.authentication.user == null) {
+            $scope.editMode = false;
+        }
+        else {
+            if($scope.authentication.user.profileType === 'Admin') {
+                $scope.editMode = true;
+            }
+        }
+
+        //Flags used when editing
         $scope.updateMode = false;
         $scope.ResourceField = true;
         $scope.isAdmin = false;
@@ -68,12 +74,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.subjects = response.data;
         });
 
-        //load all the resources from the database
+        //Load all the resources from the database
         Resources.loadResources().then(function(response) {
             $scope.resources = response.data;
         });
 
-        //load all the subheadings from the database
+        //Load all the subheadings from the database
         SubHeads.loadSubHeads().then(function(response) {
             $scope.subHeads = response.data;
         });
@@ -110,9 +116,12 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
             $scope.newResource = null;
         };
+
+        //Preps Modal with data of resource to delete
         $scope.getDeleteResource = function(resource_obj) {
             $scope.deleteResourceObj = resource_obj;
         };
+
         //Used to update a Resource from the database
         $scope.updateResource = function(resource_obj) {
             var id = resource_obj._id;
@@ -140,7 +149,6 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
             $scope.newSubHead = null;
         };
-
         $scope.deleteSubHead = function(subHead_obj) {
             var id = $scope.deleteSubHeadObj._id;
             var name = $scope.deleteSubHeadObj.title;
@@ -175,12 +183,15 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.newResource = resource_obj;
             $scope.updateID = resource_obj._id;
             $scope.ResourceField = true;
+            $scope.setEditHeading();
+
         };
         $scope.editSubHead = function(subHead_obj) {
             $scope.updateMode = true;
             $scope.newSubHead = subHead_obj;
             $scope.updateSubHeadID = subHead_obj._id;
             $scope.ResourceField = false;
+            $scope.setEditHeading();
         };
 
         //Clears all fields, including the SubHead field        
@@ -188,7 +199,23 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.newResource = {};
             $scope.newSubHead = {};
             $scope.updateMode = false;
+            $scope.setEditHeading();
         };
+
+        //Sets text for edit panel heading
+        $scope.setEditHeading = function() {
+            if($scope.updateMode === false) {
+                $scope.editHeading = "Create A New Heading / Link";
+            }
+            else {
+                $scope.editHeading = "Edit An Existing Heading / Link";
+            }
+        };
+
+        //Intilized EditHeading for inital setting
+        $scope.setEditHeading();
+
+        //Clocks pop-up messages
         $scope.clearSuccessMessage = function() {
             $scope.success = null;
         };
@@ -196,26 +223,23 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
             $scope.error = null;
         };
 
-        $scope.startQuiz = function() {
-            $location.path('/' + $scope.subject + '/quiz');
-        };
-
+        //Whenever student account clicks link, resource's click param incremented
         $scope.recordClick = function(resource_obj,index,link_url) {
             var id = resource_obj._id;
             var name = resource_obj.title;
-            console.log($scope.resources[index]);
-            console.log("Resource_Obj");
-            console.log(resource_obj);
-            $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
-            
-            }).error(function(response) {
-
-            });
+            if($scope.authentication.user !== null) {
+                if($scope.authentication.user.profileType === 'Student') {
+                    $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
+                    }).error(function(response) {});
+                }
+            }
             $scope.resources[index].clicks = $scope.resources[index].clicks + 1;
-            console.log($scope.resources[index]);
             $window.open(link_url, '_blank');
-        };
+        };//End Resource editing functions and vars
 
+        $scope.startQuiz = function() {
+            $location.path('/' + $scope.subject + '/quiz');
+        };
     }
 ]);
 
@@ -232,16 +256,14 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
 
     //Set flags to true if admin or teacher 
     if ($scope.authentication.user.profileType === "Admin") {
-        console.log("I am a admin");
         $scope.isAdmin = true;
     } else if ($scope.authentication.user.profileType === "Teacher") {
-        console.log("I am a teacher");
         $scope.isTeacher = true;
     }
 }]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments','multipartForm', 
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, multipartForm) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks', 'Comments','multipartForm', 
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks, Comments, multipartForm) {
 
 
        //Isabel- modal for resource request 
@@ -259,7 +281,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 console.log(res);
             });		
 			
-		}
+		};
 		Comments.loadComments().then(function(response) {
             $scope.Comments = response.data;
         });
@@ -269,12 +291,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-
-        //checks to see if current user information and location
-        // console.log("ProfileController");
-        // console.log($scope.credentials);
-        // console.log("User: " + $scope.user);
-
+        
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
         $scope.isAdmin = false;
@@ -297,16 +314,74 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.input.courseNames = [];
         $scope.input.coursePeriods= [];
 
-
-        Grades.loadGrades().then(function(response) {
-            $scope.Grades = response.data;
+        //Load subjects for admin chart selection
+        Subjects.loadSubjects().then(function(response) {
+            $scope.subjects = response.data;
         });
 
+        //setup chart and function for view clicks
+        var ctx1 = $("#myClicksChart").get(0).getContext("2d");
+        var myClicksChart;
+        $scope.viewClicks = function(subject){
+            var route = '/api/data/resources/clicks';
+            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
+                if(myClicksChart !==  undefined){
+                    myClicksChart.destroy()
+                }
+                var clicks = res.data;
+                var click_labels = [];
+                var click_data = [];
+                for(var i = 0; i < clicks.length; i++) {
+                    click_labels.push(clicks[i].name);
+                    click_data.push(clicks[i].clicks);
+                }
+                var ctx = $("#myClicksChart").get(0).getContext("2d");
+                  var data = {
+                    labels: click_labels,
+                    datasets: [
+                        {
+                            label: "Number of Clicks",
+                            fillColor: "rgba(220,220,220,0.5)",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            highlightFill: "rgba(220,220,220,0.75)",
+                            highlightStroke: "rgba(220,220,220,1)",
+                            data: click_data
+                        },
+                    ]
+                  };
+                myClicksChart = new Chart(ctx1).Bar(data);
+            });
+        };
+        
+        //setup chart and function for quiz statistics
+        var ctx2 = $("#myQuizStatsChart").get(0).getContext("2d");
+        var myQuizStatsChart;
+        $scope.viewQuizStats = function(subject){
+            var route = '/api/data/adminGrades';
+            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
+                if(myQuizStatsChart !==  undefined){
+                    myQuizStatsChart.destroy()
+                }
+                var data = {
+                        labels: res.data.question_names,
+                        datasets: [
+                            {
+                                label: "Percent Correct",
+                                fillColor: "rgba(204, 167, 148,0.5)",
+                                strokeColor: "rgba(204, 167, 148,0.8)",
+                                highlightFill: "rgba(204, 167, 148,0.75)",
+                                highlightStroke: "rgba(204, 167, 148,1)",
+                                data: res.data.perc_correct
+                            }
+                        ]
+                    };
+                myQuizStatsChart = new Chart(ctx2).Bar(data,{scaleOverride: true, scaleStartValue: 0, scaleStepWidth: 0.1, scaleSteps: 10});
+                $scope.questNames = res.data.question_names;
+                $scope.averageAttempts = res.data.avgs;
+                $scope.firstIncorrect = res.data.modes;
+            });
 
-        ResourceClicks.loadClicks().then(function(response) {
-            $scope.resources = response.data;
-        });
-
+        };
 
         //for each course in their schema
         $scope.authentication.user.courses.forEach(
@@ -458,6 +533,90 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             // }
         };
 
+		$scope.exportToCSV = function(subject) {
+        var arrData = ["Cells", "Genetics", "Laboratory Skills and Applications", "Research & Scientific Method","General Topics","Applied Mathematics","Biotechnology Skills","Laboratory Equipment","Preparing Solutions","Biotech Careers","Applications","Chemistry & Biochemistry"];
+        var CSV = "";
+        var route = '/api/data/adminGrades';
+        CSV+= "Statistics for "+subject + '\r\n\n';
+        //for(var v=0;v<arrData.length;v++){
+            
+                //CSV+=arrData[v];
+                //CSV+="";
+                //var subject=arrData[v];
+            //$http.get(route, {params:{"subject": subject}}).then(function(res) { 
+            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
+                
+                    for(var g=0;g<res.data.avgs.length;g++){
+                    CSV += "question: "+g+"\n\n";
+                    CSV += "averages , "+res.data.avgs[g]+" , ";
+                    CSV += "modes , "+res.data.modes[g]+" , ";
+                    CSV += "% correct , "+res.data.perc_correct[g]+"\n";
+                    console.log(g);
+                    }
+                CSV+='\r\n\n';
+                
+        //}
+            
+        
+                    
+                //Set Report title in first row or line
+                
+                //CSV += "Statistics" + '\r\n\n';
+                
+                //This condition will generate the Label/Header
+                
+                //1st loop is to extract each row
+                //for (var i = 0; i < arrData.length; i++) {
+                //  var row = "";
+            //      
+                //  //2nd loop will extract each column and convert it in string comma-seprated
+                //  for (var index in arrData[i]) {
+                //      row += '"' + arrData[i][index] + '",';
+                //  }//
+
+                //  row.slice(0, row.length - 1);
+                //  
+                    //add a line break after each row
+                //  CSV += row + '\r\n';
+                //}
+            
+                if (CSV == '') {        
+                    alert("Invalid data");
+                    return;
+                }   
+                
+                //Generate a file name
+                var fileName = "Statistics";
+                var ReportTitle = "Quiz Statistics";
+                //this will remove the blank-spaces from the title and replace it with an underscore
+                fileName += ReportTitle.replace(/ /g,"_");   
+                
+                //Initialize file format you want csv or xls
+                var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+                
+                // Now the little tricky part.
+                // you can use either>> window.open(uri);
+                // but this will not work in some browsers
+                // or you will not get the correct file extension    
+                
+                //this trick will generate a temp <a /> tag
+                var link = document.createElement("a");    
+                link.href = uri;
+                
+                //set the visibility hidden so it will not effect on your web-layout
+                link.style = "visibility:hidden";
+                link.download = fileName + ".csv";
+                
+                //this part will append the anchor tag and remove it after automatic click
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                    
+                });
+            
+                
+        };
+		
 	
 		//Isabel- add a course 
         $scope.add = function(course, period) {
