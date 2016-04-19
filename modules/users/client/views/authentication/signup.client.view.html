@@ -1,4 +1,5 @@
-<!-- modules/user/client/views/authentication-->
+<!-- modules/user/client/views/signup
+    This view defines the new user registration page -->
 <div ng-controller="AuthenticationController">
 
 <!--header-->
@@ -36,10 +37,10 @@
           $scope.expiredCallback = function expiredCallback(){
             $scope.expired = true;
           };
-        }]);
+        }]);<script src='https://www.google.com/recaptcha/api.js'></script>
   </script>-->
 
-		<script src='https://www.google.com/recaptcha/api.js'></script>
+		
 
 
   <!-- Michael Arboleda: Added Lables, Fixed form on mobile/smaller Screen>
@@ -84,7 +85,8 @@
                     <input type="radio" name="profiletype" value="Student" ng-model="credentials.profileType" required> Student
                 </label>
                 <br>
-                <label>
+                <label ng-show="isAdmin">
+                  <!-- hide this option for anyone not logged in as an admin -->
                     <input type="radio" name="profiletype" value="Admin" ng-model="credentials.profileType" required> Admin
                 </label>
                 <br>
@@ -139,7 +141,7 @@
 
 
 
-
+<!-- 
 		<style>
 		.capatcha {
 			text-align: center;
@@ -153,7 +155,7 @@
 					<div class="g-recaptcha" data-sitekey="6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo"></div>
 			</div>
 
-        <!--Registration button-->
+        Registration button-->
 		<!--Google Captcha showing, not showing for now till we put it on the site
 		<no-captcha
 			g-recaptcha-response="gRecaptchaResponse"

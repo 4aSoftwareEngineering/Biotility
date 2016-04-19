@@ -9,7 +9,7 @@ angular.module('core').controller('UserData', ['$scope', '$http',
   }
 ]);
 
-
+// This controller simply retrieves all quiz questions from the DB
 angular.module('core').controller('QuestionData', ['$scope', '$http',
     function($scope, $http) {
       $http.get('/api/data/questions')
@@ -24,17 +24,18 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
   	}
 ]);
 
-//quiz question CRUD functions -RB
+// This controller defines all of the quiz question CRUD DB functions -RB
+// Used for admin capability to add/edit/delete individual questions 
 angular.module('core').controller('QuestionControl',['$scope', '$http', '$state', '$location', '$stateParams', 'QuizQuestions',
 	function($scope, $http, $state, $location, $stateParams, QuizQuestions){
-		// get full list of questions from DB 
+		// get full list of quiz questions from DB 
 		$scope.findQuestions = function(){
 			QuizQuestions.loadQuestions().then(function(response) {
             	$scope.questions = response.data;
         	});
 		};
 		
-		// pull up individual question details 
+		// pull up individual question details for viewing/editing
 		$scope.findOneQuestion = function(question_obj){
 			var id = $stateParams.questionId;	//id of current question
 			console.log("id is " + id);
@@ -46,11 +47,12 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				});
 		};
 		
-		// add a new question
+		// add a new quiz question to the DB 
 		$scope.createQuestion = function(isValid){
 			if(!isValid){
 				return false;
 			}
+			// Multiple Answer question: 
 			if($scope.type === 'MA'){
 				var quizQuestion = {
 					category: $scope.category,
@@ -85,6 +87,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				    link: $scope.link
 				};
 			} else if($scope.type === 'TF') {
+				// True/False quiz question:
 				var quizQuestion = {
 					category: $scope.category,
 				    type: $scope.type,
@@ -97,6 +100,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				    link: $scope.link
 				};
 			} else {
+				// Single Choice quiz question: 
 				var quizQuestion = {
 					category: $scope.category,
 				    type: $scope.type,
@@ -119,7 +123,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 			// Save the question to DB
 			$http.post('/api/data/questions', quizQuestion)
 				.then(function(response){
-					//redirect to list if successful
+					//redirect back to list of all questions if successful
 					$scope.findQuestions();	// refresh the list 
           			$state.go('question_edit', { successMessage: 'Question succesfully added!' });
 				}, function(error){
@@ -127,6 +131,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				});
 		};
 		
+		// Save new details to an existing quiz question in DB 
 		$scope.updateQuestion = function(question_obj, isValid){
 			var id = question_obj._id;	//id of current question
 			if (!isValid){
@@ -208,7 +213,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				});
 		};
 		
-		// remove a question from DB
+		// remove a quiz question from DB
 		$scope.removeQuestion = function(question_obj){
 			var id = question_obj._id;	//id of current question
 			//.delete map to service

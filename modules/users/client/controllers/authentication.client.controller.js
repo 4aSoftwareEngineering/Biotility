@@ -175,7 +175,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 route = '/api/auth/signup/student';
                 console.log("Is a student");
             } else if($scope.credentials.profileType === "Admin") {
-                route = '/api/auth/signup/admin';
+                // user the teacher route because it doesn't ask for course code to register
+                route = '/api/auth/signup/teacher';
                 console.log("Is an Admin");
             } else if($scope.credentials.profileType === "Teacher") {
                 route = '/api/auth/signup/teacher';
@@ -200,8 +201,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         };
 // 
-
-      
         $scope.signin = function(isValid) {
 
             $scope.error = null;
@@ -237,5 +236,19 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             // Effectively call OAuth authentication route:
             $window.location.href = url;
         };
+
+        if ($scope.authentication.user) {
+            // flags for determining if current user is an admin or teacher
+            $scope.authentication = Authentication;
+            $scope.isAdmin = false;
+            $scope.isTeacher = false;
+            if ($scope.authentication.user.profileType === "Admin") {
+                console.log("I am a admin");
+                $scope.isAdmin = true;
+            } else if ($scope.authentication.user.profileType === "Teacher") {
+                console.log("I am a teacher");
+                $scope.isTeacher = true;
+            }
+        }
     }
 ]);
