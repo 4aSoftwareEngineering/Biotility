@@ -88,6 +88,7 @@ exports.sendMail = function(req, res) {
 };
 
 
+
 exports.getGradesForAdmin = function(req, res) {
     Subject.find({}, { 'name': 1 }).lean().exec(function(err, courses) {
         for (var place = 0; place < courses.length; place++) {
@@ -182,6 +183,7 @@ exports.getGradesForAdmin = function(req, res) {
 
 
 };
+
 
 
 
