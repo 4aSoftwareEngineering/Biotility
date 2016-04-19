@@ -10,14 +10,10 @@ module.exports = function(app) {
     var schedule = require('node-schedule');
     var Email = require('email').Email;
 
-    var multer = require('multer');
-    app.use(multer({storage:'./uploads/'}));
-    app.post('/upload', function(req,res){
-        console.log(req.body);
-        console.log(req.files);
-        console.log(req.file);
-        res.json({success:true});
-    });
+    //Change user photos
+    app.route('/photo_upload')
+        .post(users.photoUpload);
+
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
 
@@ -55,10 +51,10 @@ module.exports = function(app) {
     //Isabel's Work Sprint2/Sprint3
     app.route('/api/data/plot').get(core.plot);
     app.route('/api/data/email').post(core.email);
-	//for the comments
-	app.route('/api/get_Comments')
-		.get(core.getComments);
-		
+    //for the comments
+    app.route('/api/get_Comments')
+        .get(core.getComments);
+
     app.route('/api/data/adminGrades').get(core.getGradesForAdmin);
 
     app.route('/api/data/emailV').post(core.sendMail);

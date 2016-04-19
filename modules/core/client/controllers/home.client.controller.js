@@ -241,8 +241,8 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 'ResourceClicks', 'Comments', 'multipartForm',
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, multipartForm) {
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'Grades', 'ResourceClicks', 'Comments', 'multipartForm', 'Upload',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, multipartForm, Upload) {
 
 
         //Isabel- modal for resource request 
@@ -388,52 +388,29 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             "Other"
         ];
 
-        //Isabel- Upload New Profile Photo
-        $scope.photos = {};
-        $scope.Submit = function() {
-            var uploadUrl = '/upload';
-            multipartForm.post(uploadUrl, $scope.photos);
-        }
-
-        $scope.photoupdate = function() {
-            console.log("PHOTO UPDATES");
-            var x = document.getElementById("uploadPhoto").files[0];
-            console.log(x);
-
-            // var route = '/api/users/' + $scope.authentication.user._id;
-            // $scope.authentication.user.profileImageURL = x;
-
-            // $http.post(route, $scope.user).success(function(response) {
-
-            //     $scope.authentication.user = response;
-
-
-            // }).error(function(response) {
-            //     console.log("Unable to POST.");
-            //     // console.log(response);
-            //     console.dir("RESPONSE: " + response);
-
-            //     $scope.error = response.message;
-            // });
-        };
-
         //Isabel AND MATT-change profile picture
         $scope.uploadFiles = function(file, errFiles) {
             console.log("uploading photo...");
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
+            //Get file
             var data = {
                 file: file
             };
+            //Upload if file exists.
             if (file) {
                 file.upload = Upload.upload({
-                    url: '/uploads',
+                    url: '/photo_upload',
                     data: data
                 });
 
                 //File upload
                 file.upload.then(function(response) {
-                    Console.log("photo", response);
+                    //Change current picture to newly uploaded one!
+                    console.log("Photo upload:", response.data.message);
+                    if (response.status == 200) {
+                        $(".user-pic").attr("src", response.data.url);
+                    }
                 });
             }
         };
