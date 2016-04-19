@@ -44,7 +44,7 @@
           </form> -->
 
           <!--navigation menu-->
-          <nav aria-label="context" role="navigation">
+         <!--  <nav aria-label="context" role="navigation">
             <ul class="nav" id="section-tabs">
 
               <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Classes</a></li>
@@ -55,7 +55,16 @@
 
               <li class="section"><a ng-click="toShow='resourceVisible'" class="resource active" href="#" tabindex="0">Request a Resource</a></li>
             </ul>
-          </nav>
+          </nav> -->
+
+               <nav aria-label="context" role="navigation">
+                    <ul class="nav nav-pills nav-stacked" role="tablist">
+                        <li role="presentation" class="active"><a href="#classes"        aria-controls="classes"        role="tab" data-toggle="tab">Classes</a></li>
+                        <li role="presentation">               <a href="#settings"       aria-controls="settings"       role="tab" data-toggle="tab">Settings</a></li>
+                        <li role="presentation">               <a href="#statistics"     aria-controls="statistics"     role="tab" data-toggle="tab">Statistics</a></li>
+                        <li role="presentation">               <a href="#resource"       aria-controls="resource"       role="tab" data-toggle="tab">Request a Resource</a></li>
+                    </ul>
+                </nav>
 
         </div>
       </div>
@@ -79,9 +88,9 @@
         </div>
        </div>
     
-
+     <div class="tab-content" class="col-md-9">
       <!-- Course Codes -->
-      <div class="col-md-9" ng-show="toShow=='profileVisible'">
+      <div role="tabpanel" class="tab-pane" id="classes">
         <!--table of current teachers class codes-->
         <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
           <caption>Please give course codes to students </caption>
@@ -99,7 +108,7 @@
       </div>
 
       <!--Show Statistics -->
-      <div class="col-md-9 " ng-show="toShow=='statsicsVisible'">
+      <div  role="tabpanel" class="tab-pane" id="settings">
          <label>Class:</label>
          <select ng-model="ClassNames" style="height: 30px;">
                    <option  ng-repeat="quiz in classQuiz">{{quiz}}</option>
@@ -117,17 +126,15 @@
             </div> -->
            <button type="button" class="btn btn-default col-md-offset-1" ng-click="viewStats(ClassNames, ClassCodes,  ClassStats)">
               Update Statistics
-          </button>
+            </button>
             <div>
               <canvas id="myChart" width="300px" height="300px"></canvas>
             </div>
-            
-          <!-- </div> -->
-
+        <!-- </div> -->
       </div>
          
       <!--Update Settings-->
-      <div class="col-md-9" ng-show="toShow=='settingsVisible'">
+      <div  role="tabpanel" class="tab-pane" id="statistics">
         <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
           <div class="form-group">
 
@@ -272,7 +279,7 @@
      
 
       <!-- Request a resource -->
-      <div class="col-md-9 " ng-show="toShow=='resourceVisible'">
+      <div  role="tabpanel" class="tab-pane" id="resource">
         <h3 > Please fill out form to request a resource </h3>
         <!-- input form for teachers to submit resource requests to admins via email --> 
         <form class="form-horizontal" role="form" ng-submit="sendEmail(true)">
@@ -340,5 +347,6 @@
         </form>
 
     </div>
+  </div>
   <hr>
 </div>
