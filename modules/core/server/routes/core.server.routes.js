@@ -26,24 +26,25 @@ module.exports = function(app) {
 
 
     // Fetch user data from database
-
     app.route('/api/data/users/:userId').put(core.update);
-
     app.route('/api/parse/user').get(core.parseUsers);
-    //Eric's Work
 
+    //Eric's Routes for Resources
     app.route('/api/parse/resources').get(core.parseResources);
-    app.route('/api/parse/resources/clicks').get(core.parseClicks);
     app.route('/api/data/resources').post(core.addResource);
     app.route('/api/data/resources/:resourceId').delete(core.deleteResource);
     app.route('/api/data/resources/:resourceId').put(core.updateResource);
     app.route('/api/data/resources/click/:resourceId').put(core.clickResource);
 
-    //Routes for subheadings
+    //Eric's Routes for subheadings
     app.route('/api/parse/subheads').get(core.parseSubHeads);
     app.route('/api/data/subheads').post(core.addSubHead);
     app.route('/api/data/subheads/:subHeadId').delete(core.deleteSubHead);
     app.route('/api/data/subheads/:subHeadId').put(core.updateSubHead);
+
+    //Eric's Routes for Admin Page Charts
+    app.route('/api/data/resources/clicks').get(core.parseClicks);
+    app.route('/api/data/adminGrades').get(core.getGradesForAdmin);
 
     // Fetch student data from database
     app.route('/api/data/students').post(core.findStudents);
@@ -52,11 +53,13 @@ module.exports = function(app) {
     //Isabel's Work Sprint2/Sprint3
     app.route('/api/data/plot').get(core.plot);
     app.route('/api/data/email').post(core.email);
+
     //for the comments
     app.route('/api/get_Comments')
         .get(core.getComments);
 
     app.route('/api/data/adminGrades').get(core.getGradesForAdmin);
+
 
     app.route('/api/data/emailV').post(core.sendMail);
 

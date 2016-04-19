@@ -49,7 +49,7 @@
             <h4 class="modal-title">Delete SubHead</h4>
           </div>
           <div class="modal-body">
-            <p>Are you sure you want to delete <b>{{deleteSubHeadObj.title}}</b> and all its resource links?</p>
+            <p>Are you sure you want to delete <b>{{deleteSubHeadObj.title}}</b> and <b><u>all its resource links</b></u>?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" ng-click="deleteSubHead()" data-dismiss="modal">Delete SubHead</button>
@@ -59,13 +59,9 @@
 
       </div>
     </div>
-    <div ng-show="authentication.user.profileType === 'Admin'" class="container head" style="padding-left: 70px">
-        <!-- Edit Box -->
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-model="editMode">Edit?
-            </label>
-        </div>
+
+
+    <div class="container head" style="padding-left: 70px">
         <!-- Error Message -->
         <div ng-show="error" class="text-danger">
             <strong ng-bind="error"></strong>
@@ -76,17 +72,19 @@
           <strong ng-bind="success"></strong>
           <span style="color: black;" class="glyphicon glyphicon-remove" ng-click="clearSuccessMessage()"></span>
         </div>
-
         <!--Add/Edit forms-->
-        <div ng-show="editMode === true" class="panel panel-default">
+        <div ng-show="editMode" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="text-center panel-title">{{editHeading}}</h3>
+            </div>
             <div class="panel-body">
                 <!-- Resource/SubHead Selection -->
                 <form>
                    <label class="radio-inline">
-                        <input type="radio" ng-value = "true" ng-model="ResourceField"> Edit Links
+                        <input type="radio" ng-value = "true" ng-model="ResourceField"> Links
                    </label>
                    <label class="radio-inline">
-                        <input type="radio" ng-value = "false" ng-model="ResourceField"> Edit Sub Headings
+                        <input type="radio" ng-value = "false" ng-model="ResourceField"> Sub Headings
                    </label>
                 </form>
                 <br>
@@ -94,57 +92,50 @@
                 <!-- Resource Forms -->
                 <div ng-show="ResourceField == true">
                     <!--Add Resource form-->
-
                     <form class="form-inline" ng-show="updateMode === false" ng-submit="addResource()">
-
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                                 <label>Title</label>
                                 <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                                 <label>Url</label>
                                 <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
                         </div>
 
 
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>SubHead</label>
                             <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
                                 <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption._id}}">{{subHeadOption.title}}</option>
                             </select>
                         </div>
-
-
-
-
-                        <!-- <div class="input-group input-group-sm">
-                          <span class="input-group-addon" id="sizing-addon3">@</span>
-                          <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
-                        </div> -->
-
-                        <button type="submit" class="btn btn-default">Add Resource</button>
-                        <span style="color: black;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        <div class="form-group" style="padding-bottom: 12px">
+                            <button type="submit" class="btn btn-default btn-sm">Add Resource</button>
+                            <span style="color: black;font-size:20px;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        </div>
                     </form>
 
                     <!--Update Resource form-->
                     <form class="form-inline" ng-show="updateMode === true" ng-submit="updateResource(newResource)">
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>Title</label>
                             <input type="text" class="form-control input-sm" placeholder="Link Title" ng-model="newResource.title">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>Url</label>
                             <input type="text" class="form-control input-sm" placeholder="http//..." ng-model="newResource.url">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>SubHead</label>
                             <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newResource.subject">
                                   <option ng-repeat="subHeadOption in subHeads | filter:{subject: subject}:strict" value="{{subHeadOption._id}}">{{subHeadOption.title}}</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-default">Update Resource</button>
-                        <span style="color: black;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        <div class="form-group" style="padding-bottom: 12px">
+                            <button type="submit" class="btn btn-default btn-sm">Update Resource</button>
+                            <span style="color: black;font-size:20px" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        </div>
                     </form>
                 </div>
 
@@ -152,57 +143,59 @@
                 <div ng-show="ResourceField == false">
                     <!-- Add SubHead Form -->
                     <form  class="form-inline" ng-show="updateMode === false" ng-submit="addSubHead()">
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>Title</label>
                             <input type="text" class="form-control input-sm" placeholder="Subhead" ng-model="newSubHead.title">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>Subject</label>
                             <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newSubHead.subject">
                                 <option ng-repeat="subjectOption in subjects" value="{{subjectOption.name}}">{{subjectOption.name}}</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-default">Add SubHead</button>
-                        <span style="color: black;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        <div class="form-group" style="padding-bottom: 12px">
+                            <button type="submit" class="btn btn-default btn-sm">Add SubHead</button>
+                            <span style="color: black;font-size:20px;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        </div>
                     </form>
 
                     <!-- Update SubHead Form -->
                     <form  class="form-inline" ng-show="updateMode === true" ng-submit="updateSubHead(newSubHead)">
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>Title</label>
                             <input type="text" class="form-control input-sm" placeholder="Subhead" ng-model="newSubHead.title">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="padding-bottom: 12px">
                             <label>Subject</label>
                             <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="newSubHead.subject">
                                 <option ng-repeat="subjectOption in subjects" value="{{subjectOption.name}}">{{subjectOption.name}}</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-default">Update SubHead</button>
-                        <span style="color: black;" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        <div class="form-group" style="padding-bottom: 12px">
+                            <button type="submit" class="btn btn-default btn-sm">Update SubHead</button>
+                            <span style="color: black;font-size:20px" class="glyphicon glyphicon-erase" ng-click="clearResourceField()"></span>
+                        </div>
                     </form>
                     <br>
                 </div>
             </div>
         </div>
     </div>
-    <br><br>
 
     <!-- SubHeadings -->
     <div ng-repeat="subHead in subHeads | filter:{subject: subject}:strict" class="container head res-sub">
         <tr>
-            <td>{{subHead.title}}</td>
+            <td style="font-size:20px">{{subHead.title}}</td>
             <td><span style="color: blue;" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editSubHead(subHead)"></span></td>
             <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="getDeleteSubHead(subHead)" data-toggle="modal" data-target="#myModal2"></span></td>
             
         </tr>
         <!-- Links -->
-        <div ng-repeat="resource in resources | filter:{subject: subHead._id}:strict" class="container head con">
-            <br>
+        <div style="padding-top: 8px" ng-repeat="resource in resources | filter:{subject: subHead._id}:strict" class="container head con">
             <tr>
-                <td><a ng-mousedown="recordClick(resource,resources.indexOf(resource),resource.url)">{{resource.title}}</a></td>
-                <td><span style="color: blue;" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editResource(resource)"></span></td>
-                <td><span style="color: red;" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="getDeleteResource(resource)" data-toggle="modal" data-target="#myModal"></span></td>
+                <td ><a style="font-size: 15px" ng-mousedown="recordClick(resource,resources.indexOf(resource),resource.url)">{{resource.title}}</a></td>
+                <td><span style="color: blue;font-size:20px" ng-show="editMode === true" class="glyphicon glyphicon-pencil" ng-click="editResource(resource)"></span></td>
+                <td><span style="color: red;font-size:20px" ng-show="editMode === true" class="glyphicon glyphicon-trash" ng-click="getDeleteResource(resource)" data-toggle="modal" data-target="#myModal"></span></td>
             </tr>
         </div>
     </div>
