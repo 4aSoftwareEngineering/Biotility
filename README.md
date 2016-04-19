@@ -68,7 +68,9 @@ Updating registered users can be done through the user registration page or the 
 
 Admins can update quizzes in their profile. 
 
-## To connect to the database please use: `mongodb://team4a:team4a@ds041394.mlab.com:41394/biotility`.
+#### To connect to the database
+
+Please use: `mongodb://team4a:team4a@ds041394.mlab.com:41394/biotility`.
 
 To link the site to a new database connection please use: `/Biotility/config/env/production.js`.
 
