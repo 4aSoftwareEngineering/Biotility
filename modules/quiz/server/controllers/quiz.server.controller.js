@@ -106,15 +106,19 @@ exports.quizQuestionByID = function(req, res, next, id) {
 };
 
 exports.CSVtoJSON = function(req, res) {
+    //Actually only for excel to json!
     var file = req.files.file;
     var appDir = path.dirname(require.main.filename);
     var newPath = appDir + "/uploads/" + file.originalname;
     var data = file.buffer;
+
+    //Save file using fs to newPath.
     fs.writeFile(newPath, data, function(err) {
         if (err)
             console.log("Error uploading XLSX.");
         else {
             console.log(file.originalname + " successfully transferred.");
+            //Use module, create temporary output we don't care about. Output is necessary or this wont work!
             xlsxj({
                 input: newPath,
                 output: "./temp/output.json"
@@ -128,11 +132,11 @@ exports.CSVtoJSON = function(req, res) {
             });
         }
     });
-    //res.end("hello lol");
 };
 
 function uploadQuizQuestions(result, res) {
     console.log("Uploading quiz questions...");
+    //Gets all quiz questions and puts them into an array for duplicate checking.
     QuizQuestion.find({}).exec(function(err, questions) {
         if (!err) {
             //Load Quiz Bank and then parse to check for dupes.
@@ -146,12 +150,17 @@ function uploadQuizQuestions(result, res) {
 }
 
 function parseQuizQuestions(result, res) {
+    //Function handles excel spreadsheet parsing.
     var dupeCount = 0;
     var itrCount = -1;
     var out = null;
+
+    //Iterate through each excel sheet row.
     for (var key in result) {
         itrCount++;
         var item = result[key];
+
+        //Doesnt match what we expect; we dont have a question type or text which is needed!
         if (itrCount === 0) {
             if (!item.Category && !item['Question Type'] && !item.Question) {
                 out = {
@@ -162,6 +171,7 @@ function parseQuizQuestions(result, res) {
             }
         }
 
+        //Ignore blank items. These are ONLY at the end of excel sheets. Not at beginning!
         if (item.Category === "") break;
 
         //Set up question obj
@@ -191,6 +201,7 @@ function parseQuizQuestions(result, res) {
             question.answers.MA = {};
             question.answers.MA.correct = [];
 
+            //There is an MA1,2,... assign it!
             if (item['Matching Answer 1'] !== "") question.answers.MA.correct.push(item['Matching Answer 1']);
             if (item['Matching Answer 2'] !== "") question.answers.MA.correct.push(item['Matching Answer 2']);
             if (item['Matching Answer 3'] !== "") question.answers.MA.correct.push(item['Matching Answer 3']);
@@ -200,13 +211,16 @@ function parseQuizQuestions(result, res) {
             //Prune for empty strings.
             question.answers.MA.correct = _.compact(question.answers.MA.correct);
 
-            //Shuffle
+            //Shuffle array so we have an order to store them in.
             question.answers.MA.present = question.answers.MA.correct;
             question.answers.MA.present = _.shuffle(question.answers.MA.present);
         }
+
+        //Get hint and link
         question.hint = item['Hint upon incorrect answer'];
         question.link = item['Topic Link(s) or Text'];
 
+        //Found a duplicate
         var isDuplicate = questionExists(question);
         if (isDuplicate) {
             dupeCount++;
@@ -215,6 +229,7 @@ function parseQuizQuestions(result, res) {
 
         saveQuestion(question);
     }
+    //Object we send out as a response.
     out = {
         error: false,
         numDuplicates: dupeCount,
