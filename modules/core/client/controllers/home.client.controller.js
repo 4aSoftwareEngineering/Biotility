@@ -346,9 +346,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         for (var k = 0; k < teachersCurrentClasses.length; k++) {
             var label = teachersCurrentClasses[k].courseName;
             // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
-            $scope.classQuiz.push(label);
+            $scope.classQuiz.push(teachersCurrentClasses[k].courseName);
             $scope.classCodes.push(teachersCurrentClasses[k].number);
-            // console.log(teachersCurrentClasses[k].courseName);
+            console.log($scope.classQuiz[k]);
         }
 
         //get quiz names
@@ -671,57 +671,12 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
 
-        /*
-        <<<<<<< HEAD
-                $scope.viewStats = function(course) {
-                    // Chart.js Stuff
-                    var ctx = $("#myChart").get(0).getContext("2d");
-                    // // This will get the first returned node in the jQuery collection.
-                    // var myNewChart = new Chart(ctx);
-                    var myBarChart = new Chart(ctx).Bar(data);
-                    var data = {
-                        labels: ["January", "February", "March", "April", "May", "June", "July"],
-                        datasets: [{
-                            label: "My First dataset",
-                            fillColor: "rgba(220,220,220,0.5)",
-                            strokeColor: "rgba(220,220,220,0.8)",
-                            highlightFill: "rgba(220,220,220,0.75)",
-                            highlightStroke: "rgba(220,220,220,1)",
-                            data: [65, 59, 80, 81, 56, 55, 40]
-                        }, {
-                            label: "My Second dataset",
-                            fillColor: "rgba(151,187,205,0.5)",
-                            strokeColor: "rgba(151,187,205,0.8)",
-                            highlightFill: "rgba(151,187,205,0.75)",
-                            highlightStroke: "rgba(151,187,205,1)",
-                            data: [28, 48, 40, 19, 86, 27, 90]
-                        }]
-                    };
-        */
-
-        //Plotly Stuff
-        // console.log("Passing: "+ course);
-        // var route = '/api/data/plotly';
-
-        // // var params = ({
-        // //     person: $scope.user, 
-        // //     given: course 
-        // // });
-
-        // $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
-        // // $http.get(route, params).success(function (req, res) {
-        //     console.log("plotly go");
-        // }); 
-
-
-        // location.reload();
-        //=======
-
+      
         //Isabel - bar graph
-        $scope.viewStats = function(classname, code, quiz) {
-
+                $scope.viewStats = function(classname, code, quiz){
+           
             // Plotly Stuff
-            console.log("Passing: " + classname);
+            console.log("Passing: "+ classname);
             var route = '/api/data/plot';
 
             // var params = ({
@@ -730,24 +685,17 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             // });
 
-            $http.get(route, {
-                params: {
-                    "person": $scope.user,
-                    "quiz": quiz,
-                    "classname": classname,
-                    "code": code
-                }
-            }).then(function(res) {
+            $http.get(route, {params:{"person": $scope.user, "quiz": quiz, "classname": classname, "code": code}}).then(function(res) { 
                 // your data
-                //  console.log("ploting");
-                //  console.log(res.data);
-                // console.log(res.data.length);
-
+               //  console.log("ploting");
+               //  console.log(res.data);
+               // console.log(res.data.length);
+                
                 //get correct number of questions for X axis
-                var label = [];
-                for (var i = 0; i < res.data.length; i++) {
-                    var number = i + 1;
-                    label[i] = "Question " + number;
+                var label =[];
+                for(var i = 0; i < res.data.length; i++){
+                    var number = i+1;
+                    label[i] = "Question " + number; 
                 }
 
                 // console.log(res);
@@ -755,39 +703,40 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 // ctx.destroy();
                 // ctx.canvas.width = 5;
                 // ctx.canvas.height = 5;
-                var data = {
+                  var data = {
                     labels: label,
-                    datasets: [{
-                        label: "Course Settings",
-                        fillColor: "blue",
-                        strokeColor: "rgba(220,220,220,0.8)",
-                        // highlightFill: "rgba(220,220,220,0.75)",
-                        // highlightStroke: "rgba(220,220,220,1)",
-                        data: res.data
-                    }, ]
-                };
+                    datasets: [
+                        {
+                            label: "Course Settings",
+                            fillColor: "blue",
+                            strokeColor: "rgba(220,220,220,0.8)",
+                            // highlightFill: "rgba(220,220,220,0.75)",
+                            // highlightStroke: "rgba(220,220,220,1)",
+                            data: res.data
+                        },
+                    ]
+                  };
 
-                var options = {
-                    responsive: false,
-                    maintainAspectRatio: true,
-                    barShowStroke: false
-                }
+                  var options = { 
+                        responsive: false,
+                        maintainAspectRatio: true,
+                        barShowStroke : false
+                    }
 
-                var myBarChart = new Chart(ctx).Bar(data, options);
-            }).then(function(error) {
-                console.log("Plot eror" + error);
-            });
+                  var myBarChart = new Chart(ctx).Bar(data,options);
+                    }).then(function(error) {
+                        console.log("Plot eror" + error);
+                    });
 
             // if (parsedData.Item1 != "") {
             //     $("#nograpdata").show();
             // }
 
-
+                  
 
             // Chart.defaults.global.responsive = true;
 
         };
-
 
 
 
