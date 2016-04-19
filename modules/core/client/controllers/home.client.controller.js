@@ -296,7 +296,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-        
+        //to check the type that the user is
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
         $scope.isAdmin = false;
@@ -396,7 +396,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
 
         };
-
+	//This is to get the Course data for teacher and student 
         if ($scope.authentication.user.profileType !== "Admin") {
             //for each course in their schema
             $scope.authentication.user.courses.forEach(
@@ -508,7 +508,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 });
             }
         };
-
+	//this retrieves the subject's statistics from the server which retrieved it from the DB, and exports it to a excel file
 		$scope.exportToCSV = function(subject) {
         var arrData = ["Cells", "Genetics", "Laboratory Skills and Applications", "Research & Scientific Method","General Topics","Applied Mathematics","Biotechnology Skills","Laboratory Equipment","Preparing Solutions","Biotech Careers","Applications","Chemistry & Biochemistry"];
         var CSV = "";
@@ -539,22 +539,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 
                 //CSV += "Statistics" + '\r\n\n';
                 
-                //This condition will generate the Label/Header
-                
-                //1st loop is to extract each row
-                //for (var i = 0; i < arrData.length; i++) {
-                //  var row = "";
-            //      
-                //  //2nd loop will extract each column and convert it in string comma-seprated
-                //  for (var index in arrData[i]) {
-                //      row += '"' + arrData[i][index] + '",';
-                //  }//
-
-                //  row.slice(0, row.length - 1);
-                //  
-                    //add a line break after each row
-                //  CSV += row + '\r\n';
-                //}
+               
             
                 if (CSV == '') {        
                     alert("Invalid data");
@@ -564,18 +549,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 //Generate a file name
                 var fileName = "Statistics";
                 var ReportTitle = "Quiz Statistics";
-                //this will remove the blank-spaces from the title and replace it with an underscore
+                
                 fileName += ReportTitle.replace(/ /g,"_");   
                 
                 //Initialize file format you want csv or xls
                 var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
                 
-                // Now the little tricky part.
-                // you can use either>> window.open(uri);
-                // but this will not work in some browsers
-                // or you will not get the correct file extension    
+                 
                 
-                //this trick will generate a temp <a /> tag
+                
                 var link = document.createElement("a");    
                 link.href = uri;
                 
