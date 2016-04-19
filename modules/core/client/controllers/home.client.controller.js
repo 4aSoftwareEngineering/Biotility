@@ -246,10 +246,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
 angular.module('core').controller('authController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http',
     function($scope, $state, $location, Users, Authentication, $http) {
-        //This is a min config for authenticating admin features
+        //This is a min config controller for authenticating admin/teacher features only
+        // It defines $scope flags that can be used for hiding/showing admin or teacher only content
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-
 
         $scope.isTeacher = false;
         $scope.isAdmin = false;
@@ -296,7 +296,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-        
+        //to check the type that the user is
         $scope.oneAtATime = true;
         $scope.isTeacher = false;
         $scope.isAdmin = false;
@@ -370,8 +370,14 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 if(myQuizStatsChart !==  undefined){
                     myQuizStatsChart.destroy();
                 }
+                var labels = [];
+                var questNames = [];
+                for(var ques_names = 1; ques_names < res.data.question_names.length+1; ques_names++) {
+                    labels.push("Question "+ ques_names);
+                    questNames.push(ques_names+". "+res.data.question_names[ques_names-1]);
+                }
                 var data = {
-                        labels: res.data.question_names,
+                        labels: labels,
                         datasets: [
                             {
                                 label: "Percent Correct",
@@ -384,26 +390,28 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         ]
                     };
                 myQuizStatsChart = new Chart(ctx2).Bar(data,{scaleOverride: true, scaleStartValue: 0, scaleStepWidth: 0.1, scaleSteps: 10});
-                $scope.questNames = res.data.question_names;
+                $scope.questNames = questNames;
                 $scope.averageAttempts = res.data.avgs;
                 $scope.firstIncorrect = res.data.modes;
             });
 
         };
+	//This is to get the Course data for teacher and student 
+        if ($scope.authentication.user.profileType !== "Admin") {
+            //for each course in their schema
+            $scope.authentication.user.courses.forEach(
+                function(element, index, array) {
+                    //stores each course Name and number of the course that a teacher has
 
-        //for each course in their schema
-        $scope.authentication.user.courses.forEach(
-            function(element, index, array) {
-                //stores each course Name and number of the course that a teacher has
+                    $scope.input.courseNames.push(element.courseName);
+                    $scope.input.courseNums.push(element.number);
+                    $scope.input.coursePeriods.push(element.section);
 
-                $scope.input.courseNames.push(element.courseName);
-                $scope.input.courseNums.push(element.number);
-                $scope.input.coursePeriods.push(element.section);
-
-                //used for testing purposes to make sure a teacher has the correct courses
-                // console.log($scope.input.courseNums);
-            }
-        );
+                    //used for testing purposes to make sure a teacher has the correct courses
+                    // console.log($scope.input.courseNums);
+                }
+            );
+        }
 
         //Isabel- how I actuall populate the classes shown
         $scope.input.coursesComplete = $scope.authentication.user.courses;
@@ -422,15 +430,18 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.classQuiz = [];
         $scope.classPeriods = [];
 
-        //get course names
-        var teachersCurrentClasses = $scope.authentication.user.courses;
-        console.log(teachersCurrentClasses);
-        for (var k = 0; k < teachersCurrentClasses.length; k++) {
-            var label = teachersCurrentClasses[k].courseName;
-            // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
-            $scope.classQuiz.push(teachersCurrentClasses[k].courseName);
-            $scope.classCodes.push(teachersCurrentClasses[k].number);
-            console.log($scope.classQuiz[k]);
+
+        if ($scope.authentication.user.profileType !== "Admin") {
+            //get course names
+            var teachersCurrentClasses = $scope.authentication.user.courses;
+            console.log(teachersCurrentClasses);
+            for (var k = 0; k < teachersCurrentClasses.length; k++) {
+                var label = teachersCurrentClasses[k].courseName;
+                // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
+                $scope.classQuiz.push(label);
+                $scope.classCodes.push(teachersCurrentClasses[k].number);
+                // console.log(teachersCurrentClasses[k].courseName);
+            }
         }
 
         //get quiz names
@@ -498,7 +509,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 });
             }
         };
-
+	//this retrieves the subject's statistics from the server which retrieved it from the DB, and exports it to a excel file
 		$scope.exportToCSV = function(subject) {
         var arrData = ["Cells", "Genetics", "Laboratory Skills and Applications", "Research & Scientific Method","General Topics","Applied Mathematics","Biotechnology Skills","Laboratory Equipment","Preparing Solutions","Biotech Careers","Applications","Chemistry & Biochemistry"];
         var CSV = "";
@@ -529,22 +540,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 
                 //CSV += "Statistics" + '\r\n\n';
                 
-                //This condition will generate the Label/Header
-                
-                //1st loop is to extract each row
-                //for (var i = 0; i < arrData.length; i++) {
-                //  var row = "";
-            //      
-                //  //2nd loop will extract each column and convert it in string comma-seprated
-                //  for (var index in arrData[i]) {
-                //      row += '"' + arrData[i][index] + '",';
-                //  }//
-
-                //  row.slice(0, row.length - 1);
-                //  
-                    //add a line break after each row
-                //  CSV += row + '\r\n';
-                //}
+               
             
                 if (CSV == '') {        
                     alert("Invalid data");
@@ -554,18 +550,15 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 //Generate a file name
                 var fileName = "Statistics";
                 var ReportTitle = "Quiz Statistics";
-                //this will remove the blank-spaces from the title and replace it with an underscore
+                
                 fileName += ReportTitle.replace(/ /g,"_");   
                 
                 //Initialize file format you want csv or xls
                 var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
                 
-                // Now the little tricky part.
-                // you can use either>> window.open(uri);
-                // but this will not work in some browsers
-                // or you will not get the correct file extension    
+                 
                 
-                //this trick will generate a temp <a /> tag
+                
                 var link = document.createElement("a");    
                 link.href = uri;
                 

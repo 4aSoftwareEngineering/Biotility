@@ -1,3 +1,5 @@
+<!-- View for creating a list of all quiz questions currently in the database, which can be 
+	edited and deleted, or have new questions added. Only accessible by an admin. -RB -->
 <div class="margin-top-75">
     <!-- -->
 </div>
@@ -12,7 +14,7 @@
 		        <i class="glyphicon glyphicon-submit"></i>
 		        Add a New Question
 		    </a> <br><br>
-
+		    <!-- List is sorted by category by default, but can also be filtered with a search query. -->
 			<div class="input-group" id="searchBar">
 			  <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>
 			  <input type="text" class="form-control" placeholder="Search questions" ng-model="query">
@@ -27,15 +29,12 @@
 				<th>Category</th>
 				<th>Type</th>
 				<th>Description</th>
-			<!--	<th>Answers</th> -->
 			</thead>
 			<tbody>
 				<tr ng-repeat="question in questions| filter: query" ui-sref="question_view({ questionId: question._id })"> 	<!-- -->
 					<td>{{question.category}}</td>
 					<td>{{question.type}}</td>
 					<td>{{question.text}}</td> 
-				<!--	<td>{{d.answers}}</td>	-->
-				<!--	<td ng-show="editMode" ng-click="removeQuestion(question)"><span class="glyphicon glyphicon-remove"></span></td> <!--deleteQuestion($index)-->
 				</tr>
 			</tbody>
 

@@ -20,6 +20,7 @@
                     Select File
                 </button>
                 <!--profile menu-->
+                 <!-- this is for the buttons that you can choose what to do -->
                 <nav aria-label="context" role="navigation">
                     <ul class="nav nav-pills nav-stacked" role="tablist">
                         <li role="presentation" class="active"><a href="#profile"        aria-controls="profile"        role="tab" data-toggle="tab">Profile</a></li>
@@ -50,7 +51,9 @@
         		      <label>Username</label>
         		      <span>{{user.userName}}</span>
         		    </div>
-    		    </div>
+    		    </div><br>
+                <!-- Button for adding new admin account -RB -->
+                <a ui-sref="authentication.signup" class="btn btn-primary" value=""> Create New Admin Account</a><br><br>
     		</div> <!-- end show profile -->
 
             <!-- Settings -->
@@ -168,11 +171,12 @@
                 </div>
     		</div>
 
-            <!-- Quiz Control -->
+            <!-- Quiz Control: This tab on the admin profile makes buttons for uploading or editing quiz questions, individually or in bulk. -RB -->
             <div role="tabpanel" class="tab-pane" id="quizControl">
                 <br>
-                <a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
-                <a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a><br><br>
+                <a ui-sref="question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
+               
+                <a ui-sref="question_edit" class="btn btn-primary" value=""> Edit Questions</a><br><br>
             </div>
 
             <!-- Quiz Stats -->
@@ -189,6 +193,7 @@
                     </div>
                     <div class="col-md-2">
                         <a class="btn btn-primary" ng-click="exportToCSV(SubjectForQuizStats)">DownloadStatistics</a>
+                         <!-- this is for the downloading of statistics, it sends the current statistic clicked on-->
                     </div>
                     <!-- Chart itself -->
                     <div class="col-md-6">
@@ -199,6 +204,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr> 
+                                     <!-- this gets the statistics for the quiz, each question, and puts it in the table -->
                                         <th>Question Text</th>
                                         <th>Average # of Attempts</th>
                                         <th>Most Common Wrong Choice</th>
@@ -206,6 +212,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="questName in questNames track by $index">
+                                       <!-- this is for the actual statistics, it retrieves it from the DB-->
                                         <td>{{questName}}</td>
                                         <td>{{averageAttempts[$index]}}</td>
                                         <td>{{firstIncorrect[$index]}}</td>
@@ -217,7 +224,7 @@
                 </div>
             </div>
 
-
+ <!-- this is for the whole part of comments (for each quiz)-->
             <!-- Quiz Comments -->
             <div role="tabpanel" class="tab-pane" id="quizComments">
                 <div class="col-md-6">
@@ -230,6 +237,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="comments in Comments">
+                               <!-- this prints out the comments that are in the  -->
                                 <td>{{comments.category}}</td>
                                 <td>{{comments.comment}}</td>
                             </tr>

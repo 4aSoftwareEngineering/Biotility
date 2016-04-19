@@ -89,206 +89,112 @@ exports.sendMail = function(req, res) {
 
 
 
-exports.getGradesForAdmin = function(req, res) {
-    Subject.find({}, { 'name': 1 }).lean().exec(function(err, courses) {
-        for (var place = 0; place < courses.length; place++) {
-
-            getAttempts(courses[place].name);
-
-        }
-        return res.end(JSON.stringify(courses));
-    });
-    //console.log("Quiz: "+ courses[place].name);
-    function getAttempts(cat) {
-        StudentGrades.find({ 'analytics.question.type': 'SC', 'category': cat }, { 'analytics': 1, 'category': 1 }).lean().exec(function(err, aData) {
-            var sizeOfQuiz = 0;
-            for (var g = 0; g < aData.length; g++) {
-                if (aData[g].analytics.length > sizeOfQuiz) sizeOfQuiz = aData[g].analytics.length;
-            }
-            var avgs = [0];
-            var modes = [0];
-            //make array of averages
-            //make arrar of modes0
-            for (var ez = 1; ez < sizeOfQuiz; ez++) {
-                avgs[avgs.length] = 0;
-                modes[modes.length] = 0;
-            }
-
-            for (var j = 0; j < sizeOfQuiz; j++) {
-                var choice = 0;
-                var total = 0;
-                var counter = 0;
-                var ans = [0, 0, 0, 0, 0, 0];
-                for (var i = 0; i < aData.length; i++) {
-
-                    if (j >= aData[i].analytics.length) var z = 5;
-                    else {
-                        if (aData[i].analytics[j].attempts == 1) {
-                            choice = parseInt(aData[i].analytics[j].question.answers.correct);
-                            //console.log("answer: "+choice);
-
-                        } else {
-                            for (var wrong = 0; wrong < aData[i].analytics[j].question.answers.MCTF.length; wrong++) {
-                                if (aData[i].analytics[j].firstIncorrect == aData[i].analytics[j].question.answers.MCTF[wrong]) {
-                                    choice = wrong;
-                                    break;
-                                }
-                            }
-                            choice++;
-                            //console.log("answer: "+choice);
-
-                        }
-                        total += aData[i].analytics[j].attempts;
-                        ans[choice] += 1;
-                        counter++;
-
-                    }
-                }
-                var average = total / counter;
-                var amount = 0;
-                var mode = 0;
-                avgs[j] = average;
-                for (var ayy = 1; ayy < ans.length; ayy++) {
-
-                    if (ans[ayy] > amount) {
-                        amount = ans[ayy];
-                        mode = ayy;
-                    }
-
-                }
-                modes[j] = mode;
-
-
-
-            }
-
-
-            //////////////////////////////////////////////////////////// 
-
-
-
-
-            //loop again
-            //get data
-            //somehow save it?
-            //console.log("Quiz: "+cat);
-            for (var pr = 0; pr < avgs.length; pr++) {
-                //console.log("Question: "+pr+"   Average: "+ avgs[pr]+ "    Mode: "+ modes[pr]);
-            }
-
-
-            return res.end(JSON.stringify(aData));
-        });
-    }
-
-
-};
-
 
 
 
 
 // Isabel - plot for statistics on teachers page 
-exports.plot = function(req,res){
-  console.log("plotting statistics");
-  
-  var nameofClass = req.param('classname');
-  var searchQuiz = req.param('quiz');
-  var courseCodes = req.param('code');
-  // console.log(nameofClass +" "+  searchQuiz);
+exports.plot = function(req, res) {
+    console.log("plotting statistics");
 
-  //array of courses for the teacher
-  var num = [];
-  var classes = [];
-  var grade = [0];
-  var students = [];
-  
-     
-  //find all the courses   
-  for(var i = 0; i < req.user.courses.length ; i++){
-    num.push(req.user.courses[i].number);
-  }  
+    var nameofClass = req.param('classname');
+    var searchQuiz = req.param('quiz');
+    var courseCodes = req.param('code');
+    // console.log(nameofClass +" "+  searchQuiz);
 
-  var findcount = false; 
-  //find all the students in that course 
-  // console.log("AMOUNT:" + req.user.courses.length);
-  // for(var s = 0; s < req.user.courses.length ; s++){  
+    //array of courses for the teacher
+    var num = [];
+    var classes = [];
+    var grade = [0];
+    var students = [];
+
+
+    //find all the courses   
+    for (var i = 0; i < req.user.courses.length; i++) {
+        num.push(req.user.courses[i].number);
+    }
+
+    var findcount = false;
+    //find all the students in that course 
+    // console.log("AMOUNT:" + req.user.courses.length);
+    // for(var s = 0; s < req.user.courses.length ; s++){  
     findStudents();
-  // }
+    // }
 
-  for(var gradesize = 0; gradesize < 5 ; gradesize++){
-    grade[gradesize] = 0;
-  }
+    for (var gradesize = 0; gradesize < 5; gradesize++) {
+        grade[gradesize] = 0;
+    }
 
 
 
-  function findStudents(){
-    User.find({ 'profileType': 'Student', 'courseCode': courseCodes}).lean().exec(function(err, users) {  
-      for (var i = 0; i < users.length; i++) {           
-          // console.log("STUDENTS: " +users[i].userName);  
-          if (i === users.length -1 ) {
-            findcount = true;
-          } 
-          findGrades(users[i], courseCodes);
-      }
-    });
-  }
+    function findStudents() {
+        User.find({ 'profileType': 'Student', 'courseCode': courseCodes }).lean().exec(function(err, users) {
+            for (var i = 0; i < users.length; i++) {
+                // console.log("STUDENTS: " +users[i].userName);  
+                if (i === users.length - 1) {
+                    findcount = true;
+                }
+                findGrades(users[i], courseCodes);
+            }
+        });
+    }
 
-   //find all grades for the course code
-  function findGrades(givenstudent, course){
-    StudentGrades.find({'student.studentName' : givenstudent.userName}).lean().exec(function(err, grades) { 
-        //lookup a test
+    //find all grades for the course code
+    function findGrades(givenstudent, course) {
+        StudentGrades.find({ 'student.studentName': givenstudent.userName }).lean().exec(function(err, grades) {
+            //lookup a test
 
-        for (var i = 0; i < grades.length;  i++) {
-            // console.log(grades[i].category);
-            for (var c = 0; c < grades[i].student.courses.length; c++){
-                //see if the test has a category that the teacher is looking for
-                if(grades[i].category === searchQuiz){
-                  // console.log("Current course code: "+ courseCodes);
-                    //see if test has a course code that matches the teachers 
-                  // console.log(grades[i].student.courses[c]);
-                   if(grades[i].student.courses[c] == courseCodes){                    
-                    // console.log("COURSES: "+ grades[i].student.courses[0]);
+            for (var i = 0; i < grades.length; i++) {
+                // console.log(grades[i].category);
+                for (var c = 0; c < grades[i].student.courses.length; c++) {
+                    //see if the test has a category that the teacher is looking for
+                    if (grades[i].category === searchQuiz) {
+                        // console.log("Current course code: "+ courseCodes);
+                        //see if test has a course code that matches the teachers 
+                        // console.log(grades[i].student.courses[c]);
+                        if (grades[i].student.courses[c] == courseCodes) {
+                            // console.log("COURSES: "+ grades[i].student.courses[0]);
 
-                    //Get the amount of questions in the quiz
-                    datagraph.length = grades[i].analytics.length;
-                    var questionSize =  grades[i].analytics.length;
-                    // console.log("Question size:" + grades[i].analytics.length); 
-                    console.log("Question size:" + datagraph.length); 
-                    
-                    //iterate through analytics and see if attempt = 1
-                       for (var analytics = 0; analytics< questionSize; analytics++){
-                            if(grades[i].analytics[analytics].attempts === 1){
-                                // console.log("you got it right");
-                                grade[analytics] = grade[analytics]+1;
+                            //Get the amount of questions in the quiz
+                            datagraph.length = grades[i].analytics.length;
+                            var questionSize = grades[i].analytics.length;
+                            // console.log("Question size:" + grades[i].analytics.length); 
+                            console.log("Question size:" + datagraph.length);
+
+                            //iterate through analytics and see if attempt = 1
+                            for (var analytics = 0; analytics < questionSize; analytics++) {
+                                if (grades[i].analytics[analytics].attempts === 1) {
+                                    // console.log("you got it right");
+                                    grade[analytics] = grade[analytics] + 1;
+                                }
                             }
                         }
-                   }
+                    }
                 }
-            }         
-        }
-         datagraph = grade;
-          return res.send(datagraph);     
-    });
+            }
+            datagraph = grade;
+            return res.send(datagraph);
+        });
 
-  }
-
- 
-
-  // //output data
-  // function callgraph(datagraph){
-  //   console.log("DATAGRAPH");
-
-  //   // for(var size = 0; size < 20 ; size++){
-  //     console.log(datagraph.size);
-  //   // }
-  // }
+    }
 
 
-  console.log("DATA" + datagraph);
-  // var data = [65, 59, 80, 81, 56, 55];
- 
+
+    // //output data
+    // function callgraph(datagraph){
+    //   console.log("DATAGRAPH");
+
+    //   // for(var size = 0; size < 20 ; size++){
+    //     console.log(datagraph.size);
+    //   // }
+    // }
+
+
+    console.log("DATA" + datagraph);
+    // var data = [65, 59, 80, 81, 56, 55];
+
 };
+
 //Isabel- send emails to Admins for resource request
 exports.email = function(req, res) {
 
@@ -321,8 +227,6 @@ exports.email = function(req, res) {
         // console.log('Message sent successfully!');
     });
 };
-
-
 
 /**
  * Render the server not found responses
@@ -371,7 +275,6 @@ exports.parseSubHeads = function(req, res) {
         return res.end(JSON.stringify(subs));
     });
 };
-
 
 //Creates a new resource for the database
 exports.addResource = function(req, res) {
@@ -550,7 +453,7 @@ exports.getGradesForAdmin = function(req, res) {
         if(aData.length !== 0) {
           var question_names = [];
           for (var ques = 0;ques<aData[0].analytics.length; ques++) {
-            question_names.push(aData[0].analytics[ques].question.text.substring(0,20));
+            question_names.push(aData[0].analytics[ques].question.text);
           }
           var perc_correct = [];
           var avgs = [];
@@ -627,7 +530,7 @@ exports.getGradesForAdmin = function(req, res) {
               }
             }
             else {
-              modes.push(aData[quest].analytics[0].question.type);
+              modes.push(aData[0].analytics[quest].question.type);
             }
               
           }
@@ -652,19 +555,20 @@ exports.parseUsers = function(req, res) {
 };
 // Retrieve question data, send as response.
 exports.parseQuestions = function(req, res) {
-    // get a;; questions and sort by category 
-    QuizQuestion.find({}).lean().sort({ category: 1 }).exec(function(err, questions) {
+
+    // get all questions and sort by category 
+    QuizQuestion.find({}).lean().sort({category:1}).exec(function(err, questions) {
         return res.end(JSON.stringify(questions));
     });
 };
 
-// Read current question
+// Read current question -RB
 exports.readQuestion = function(req, res) {
     /* send back the question as json from the request */
     res.json(req.quizQuestion);
 };
 
-// Create new quiz question 
+// Create new quiz question -RB
 exports.addQuestion = function(req, res) {
     var newQuestion = new QuizQuestion(req.body);
     newQuestion.save(function(err) {
@@ -677,8 +581,7 @@ exports.addQuestion = function(req, res) {
     });
 };
 
-
-// Update quiz question 
+// Update quiz question -RB
 exports.updateQuestion = function(req, res) {
     var question_to_update = req.quizQuestion;
 
@@ -699,7 +602,7 @@ exports.updateQuestion = function(req, res) {
     });
 };
 
-// Delete quiz question 
+// Delete quiz question -RB
 exports.deleteQuestion = function(req, res) {
     var question_to_delete = req.quizQuestion;
     question_to_delete.remove(function(err) {
@@ -789,7 +692,7 @@ exports.subHeadByID = function(req, res, next, id) {
     });
 };
 
-//middleware for quizQuestions
+//middleware for quizQuestions -RB 
 exports.questionByID = function(req, res, next, id) {
     QuizQuestion.findById(id).exec(function(err, quizQuestion) {
         if (err) {
