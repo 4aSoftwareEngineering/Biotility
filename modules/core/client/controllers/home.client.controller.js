@@ -386,19 +386,21 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         };
 
-        //for each course in their schema
-        $scope.authentication.user.courses.forEach(
-            function(element, index, array) {
-                //stores each course Name and number of the course that a teacher has
+        if ($scope.authentication.user.profileType !== "Admin") {
+            //for each course in their schema
+            $scope.authentication.user.courses.forEach(
+                function(element, index, array) {
+                    //stores each course Name and number of the course that a teacher has
 
-                $scope.input.courseNames.push(element.courseName);
-                $scope.input.courseNums.push(element.number);
-                $scope.input.coursePeriods.push(element.section);
+                    $scope.input.courseNames.push(element.courseName);
+                    $scope.input.courseNums.push(element.number);
+                    $scope.input.coursePeriods.push(element.section);
 
-                //used for testing purposes to make sure a teacher has the correct courses
-                // console.log($scope.input.courseNums);
-            }
-        );
+                    //used for testing purposes to make sure a teacher has the correct courses
+                    // console.log($scope.input.courseNums);
+                }
+            );
+        }
 
         //Isabel- how I actuall populate the classes shown
         $scope.input.coursesComplete = $scope.authentication.user.courses;
@@ -417,15 +419,17 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.classQuiz = [];
         $scope.classPeriods = [];
 
-        //get course names
-        var teachersCurrentClasses = $scope.authentication.user.courses;
-        console.log(teachersCurrentClasses);
-        for (var k = 0; k < teachersCurrentClasses.length; k++) {
-            var label = teachersCurrentClasses[k].courseName;
-            // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
-            $scope.classQuiz.push(label);
-            $scope.classCodes.push(teachersCurrentClasses[k].number);
-            // console.log(teachersCurrentClasses[k].courseName);
+        if ($scope.authentication.user.profileType !== "Admin") {
+            //get course names
+            var teachersCurrentClasses = $scope.authentication.user.courses;
+            console.log(teachersCurrentClasses);
+            for (var k = 0; k < teachersCurrentClasses.length; k++) {
+                var label = teachersCurrentClasses[k].courseName;
+                // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
+                $scope.classQuiz.push(label);
+                $scope.classCodes.push(teachersCurrentClasses[k].number);
+                // console.log(teachersCurrentClasses[k].courseName);
+            }
         }
 
         //get quiz names

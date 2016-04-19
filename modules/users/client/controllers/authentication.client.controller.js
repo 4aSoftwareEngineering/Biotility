@@ -175,7 +175,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 route = '/api/auth/signup/student';
                 console.log("Is a student");
             } else if($scope.credentials.profileType === "Admin") {
-                route = '/api/auth/signup/admin';
+                route = '/api/auth/signup/teacher';
                 console.log("Is an Admin");
             } else if($scope.credentials.profileType === "Teacher") {
                 route = '/api/auth/signup/teacher';
