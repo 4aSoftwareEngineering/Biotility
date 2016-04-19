@@ -92,9 +92,9 @@ exports.sendMail = function(req, res) {
 exports.plot = function(req, res) {
     console.log("plotting statistics");
 
-    var nameofClass = req.param('classname');
-    var searchQuiz = req.param('quiz');
-    var courseCodes = req.param('code');
+    var nameofClass = req.query.classname;
+    var searchQuiz = req.query.quiz;
+    var courseCodes = req.query.code;
     // console.log(nameofClass +" "+  searchQuiz);
 
     //array of courses for the teacher
@@ -167,6 +167,7 @@ exports.plot = function(req, res) {
                     }
                 }
             }
+            console.log(grade)
             datagraph = grade;
             return res.send(datagraph);
         });
