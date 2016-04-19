@@ -388,7 +388,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             "Other"
         ];
 
-        //Isabel AND MATT-change profile picture
+        //Isabel AND MATT - change profile picture
         $scope.uploadFiles = function(file, errFiles) {
             console.log("uploading photo...");
             $scope.f = file;

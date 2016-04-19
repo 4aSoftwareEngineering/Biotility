@@ -654,6 +654,7 @@ exports.addQuestion = function(req, res) {
     });
 };
 
+
 // Update quiz question 
 exports.updateQuestion = function(req, res) {
     var question_to_update = req.quizQuestion;
@@ -777,6 +778,8 @@ exports.questionByID = function(req, res, next, id) {
     });
 };
 
+//Matt
+//Profile photo upload/change
 exports.photoUpload = function(req, res) {
     var file = req.files.file,
         storePath = "profilePics/" + file.name,
@@ -803,7 +806,5 @@ exports.photoUpload = function(req, res) {
                 });
             }
         });
-
-
     });
 };
