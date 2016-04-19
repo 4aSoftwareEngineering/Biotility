@@ -214,10 +214,11 @@ exports.oauthCallback = function(strategy) {
 
 
 
-/*Michael CODE for email*/
+/*Michael and Isabel code for email*/
 exports.sendMail = function(req, res){
     console.log("EMAILS");
     var data = req.body;
+    console.log(data.email);
     var message= {
         // sender info
         from: 'biotilitysp18@gmail.com',

@@ -14,6 +14,7 @@ This repository was an inherited from a previous group whose repository can be f
 - UF Biotility
 - Lori Wojciechowski
 - Tamara Mandell
+- [Code Acknowledgements](https://github.com/4aSoftwareEngineering/Biotility/blob/master/ACKNOWLEDGEMENTS.md)
 
 ### List of all project features implemented and associated screenshots -include landing or home page
 - Home Page
