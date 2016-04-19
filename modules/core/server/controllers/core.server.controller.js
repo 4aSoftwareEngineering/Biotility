@@ -587,7 +587,7 @@ exports.getGradesForAdmin = function(req, res) {
         if(aData.length !== 0) {
           var question_names = [];
           for (var ques = 0;ques<aData[0].analytics.length; ques++) {
-            question_names.push(aData[0].analytics[ques].question.text.substring(0,20));
+            question_names.push(aData[0].analytics[ques].question.text);
           }
           var perc_correct = [];
           var avgs = [];
@@ -664,7 +664,7 @@ exports.getGradesForAdmin = function(req, res) {
               }
             }
             else {
-              modes.push(aData[quest].analytics[0].question.type);
+              modes.push(aData[0].analytics[quest].question.type);
             }
               
           }

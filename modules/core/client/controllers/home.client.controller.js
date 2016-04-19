@@ -368,8 +368,14 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 if(myQuizStatsChart !==  undefined){
                     myQuizStatsChart.destroy();
                 }
+                var labels = [];
+                var questNames = [];
+                for(var ques_names = 1; ques_names < res.data.question_names.length+1; ques_names++) {
+                    labels.push("Question "+ ques_names);
+                    questNames.push(ques_names+". "+res.data.question_names[ques_names-1]);
+                }
                 var data = {
-                        labels: res.data.question_names,
+                        labels: labels,
                         datasets: [
                             {
                                 label: "Percent Correct",
@@ -382,7 +388,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                         ]
                     };
                 myQuizStatsChart = new Chart(ctx2).Bar(data,{scaleOverride: true, scaleStartValue: 0, scaleStepWidth: 0.1, scaleSteps: 10});
-                $scope.questNames = res.data.question_names;
+                $scope.questNames = questNames;
                 $scope.averageAttempts = res.data.avgs;
                 $scope.firstIncorrect = res.data.modes;
             });
