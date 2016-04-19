@@ -16,6 +16,17 @@ var noReturnUrls = [
     '/authentication/signin',
     '/authentication/signup'
 ];
+
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport();
+var transport = nodemailer.createTransport("SMTP", {
+    service: 'Gmail',
+    auth: {
+        user: "biotilitysp18@gmail.com",
+        pass: "team4asp18"
+    }
+});
+
 //var app = angular.module('myApp', ['noCAPTCHA']);
 //recaptcha=new reCAPTCHA({
 //  siteKey:'6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo',

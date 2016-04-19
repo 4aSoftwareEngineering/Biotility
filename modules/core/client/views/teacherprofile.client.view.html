@@ -26,9 +26,11 @@
           <br>
           <br>   -->
 
-                <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
-                <input type="file" id="photoinput" name="photoinput" file-model="photos.file">
-                <button type="submit" class="btn btn-defualt" ng-click="Submit()">Photo</button>
+                 <img ng-src="{{authentication.user.profileImageURL}}" alt="" class="img-circle user-pic">
+                <h6>Upload a different photo...</h6>
+                <button style="display: inline-block" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-pattern="'image/*'" ngf-max-height="1000" ngf-max-size="1MB">
+                    Select File
+                </button>
                 <!--  <form role="form" ng-submit="photoupdate()" >
             <h6>Upload a different photo</h6>
             <input type="file" class="form-control" ng-model="ProfilePic" name="uploadPhoto" id="uploadPhoto" >
@@ -43,20 +45,6 @@
               <input type="submit" value="Upload Image" name="submit">
           </form> -->
 
-                <!--navigation menu-->
-                <!--  <nav aria-label="context" role="navigation">
-            <ul class="nav" id="section-tabs">
-
-              <li class="section"><a ng-click="toShow='profileVisible'" class="profile" href="#" tabindex="0">Classes</a></li>
-
-              <li class="section"><a ng-click="toShow='settingsVisible'" class="profile_settings active" href="#" tabindex="0">Settings</a></li>
-
-              <li class="section"><a ng-click="toShow='statsicsVisible'" class="profile_settings active" href="#" tabindex="0">Statsitics</a></li>
-
-              <li class="section"><a ng-click="toShow='resourceVisible'" class="resource active" href="#" tabindex="0">Request a Resource</a></li>
-            </ul>
-          </nav> -->
-
                 <nav aria-label="context" role="navigation">
                     <ul class="nav nav-pills nav-stacked" role="tablist">
                         <li role="presentation"><a href="#classes" aria-controls="classes" role="tab" data-toggle="tab">Classes</a>
@@ -67,6 +55,7 @@
                         </li>
                         <li role="presentation"> <a href="#resource" aria-controls="resource" role="tab" data-toggle="tab">Request a Resource</a>
                         </li>
+
                     </ul>
                 </nav>
 
@@ -184,7 +173,6 @@
             <div role="tabpanel" class="tab-pane" id="settings">
                 <form class="form-horizontal" role="form" ng-submit="settingsupdate(true)">
                     <div class="form-group">
-
                         <label class="col-lg-3 control-label">First name:</label>
                         <div class="col-lg-8">
 
@@ -340,5 +328,6 @@
 
         </div>
     </div>
+
     <hr>
 </div>

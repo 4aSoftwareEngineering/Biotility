@@ -1,4 +1,5 @@
-<!-- This view is for viewing an individual question by the admin. -->
+<!-- This view is for viewing an individual question by the admin. 
+	Has the option to edit or delete the question. -RB -->
 <div ng-controller="authController" ng-show="isAdmin">
 	<div class="row" ng-controller="QuestionControl" ng-init="findOneQuestion()">
 	  <div class="col-md-offset-1 col-md-10">
@@ -7,7 +8,7 @@
 	    </div ng-show="question"><br><br>
 
 
-	    <!-- Modal -->
+	    <!-- Pop-up Modal to confirm deletion -->
 	    <div id="myModal" class="modal fade" role="dialog">
 	      <div class="modal-dialog">
 
@@ -29,6 +30,7 @@
 	      </div>
 	    </div>
 
+	    <!-- Listing of the current information about this question -->
 	    <div class="jumbotron">
 	      <div >
 	        <p> <b>COURSE CATEGORY:</b> {{question.category}}</p>
@@ -54,14 +56,14 @@
 	        </a>
 	      </div>
 	    </div>
-	    <!-- Edit Form Below -->
+	    <!-- Edit Form Below; Shown when 'Edit' is selected -->
 	    <div ng-show="editMode">
 	      	<br>
 			<h2 class="text-center" style="font-size: 20px;">Edit question details in form below</h2>
 
 	      	<form name="questionForm" class="form-horizontal" ng-submit="updateQuestion(question, questionForm.$valid)">
 	        <fieldset>
-
+	        	<!-- Question Category; utilizes drop down box with premade options for each cat. -->
 	            <div class="form-group">
 	                <label for="category"> Select Question Category: </label>
 	                <select class="form-control input-sm" name="repeatSelect" id="repeatSelect" ng-model="category">
@@ -82,7 +84,7 @@
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
 	            </div>
-
+	            <!-- Question type: Radio buttons to choose between the 3 question types -->
 	            <div class="form-group" show-errors>
 				   	<label for="type">Select Question Type: </label>
                     <label class="radio-inline">
@@ -98,7 +100,7 @@
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
                 </div>
-
+                <!-- Main Question Text: textbox to define the question itself -->
 				<div class="form-group" show-errors>
 				    <label for="qtext">Question Text: </label>
 				    <input name="qtext" type="text" ng-model="qtext" id="qtext" class="form-control" placeholder="{{question.text}}" ng-value="{{question.text}}" required>
@@ -106,7 +108,7 @@
 				      <p class="help-block error-text" ng-message="required">*Required</p>
 				    </div>
 				</div>
-
+				<!-- Correct answer choice: defines the single correct answer choice for T/F and SC. -->
 				<div ng-show="type!=='MA'" class="form-group" show-errors >
 					<div class="form-group" show-errors>
 					    <label for="correct">Correct Answer Choice: </label>
@@ -136,7 +138,7 @@
 					    </div>
 					</div>
 				</div>
-				<!-- MC answers -->
+				<!-- MC answers: Shows answer choices A-E -->
 				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc1">Answer A: </label>
 				    <input name="mc1" type="text" ng-model="mc1" id="mc1" class="form-control" placeholder="{{question.answers.MCTF[0]}}" ng-value="{{question.answers.MCTF[0]}}">
@@ -157,7 +159,7 @@
 				    <label for="mc5">Answer E: </label>
 				    <input name="mc5" type="text" ng-model="mc5" id="mc5" class="form-control" placeholder="{{question.answers.MCTF[4]}}" ng-value="{{question.answers.MCTF[4]}}">
 				</div><br>
-				<!-- Matching answers -->
+				<!-- Matching answers: Shows the corresponding matching answers for MA questions -->
 				<div ng-show="type==='MA'" class="form-group">
 				    <label for="ma1">Match A: </label>
 				    <input name="ma1" type="text" ng-model="ma1" id="ma1" class="form-control" placeholder="{{question.answers.MA.correct[0]}}" ng-value="{{question.answers.MA.correct[0]}}">
@@ -179,12 +181,12 @@
 				    <input name="ma5" type="text" ng-model="ma5" id="ma5" class="form-control" placeholder="{{question.answers.MA.correct[4]}}" ng-value="{{question.answers.MA.correct[4]}}">
 				    <br>
 				</div>
-				<!-- Hint -->
+				<!-- Hint: text input to help student answer correctly after a wrong guess -->
 				<div class="form-group">
 				    <label for="hint">Hint: </label>
 				    <input name="hint" type="text" ng-model="hint" id="hint" class="form-control" placeholder="{{question.hint}}" ng-value="{{question.hint}}">
 				</div>
-				<!-- Link -->
+				<!-- Link: website URL for additional reading/reference -->
 				<div class="form-group">
 				    <label for="link">Resource Link: </label>
 				    <input name="link" type="text" ng-model="link" id="link" class="form-control" placeholder="{{question.link}}" ng-value="{{question.link}}">
@@ -202,7 +204,7 @@
 	  </div>
 	</div>
 </div>
-
+<!-- If non-admin tries to access this they will be denied -->
 <div ng-hide="isAdmin" >
 	<br><br><br><br><br><br>
 	<h3 class="text-center"> Access unauthorized. </h3>

@@ -246,10 +246,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
 angular.module('core').controller('authController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http',
     function($scope, $state, $location, Users, Authentication, $http) {
-        //This is a min config for authenticating admin features
+        //This is a min config controller for authenticating admin/teacher features only
+        // It defines $scope flags that can be used for hiding/showing admin or teacher only content
         $scope.authentication = Authentication;
         $scope.user = $scope.authentication.user;
-
 
         $scope.isTeacher = false;
         $scope.isAdmin = false;
@@ -265,8 +265,10 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
     }
 ]);
 
-angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks', 'Comments','multipartForm', 
-    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks, Comments, multipartForm) {
+
+angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks', 'Comments', 'Upload',
+    function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks, Comments, Upload) {
+
 
 
         //Isabel- modal for resource request 
@@ -395,19 +397,21 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         };
 
-        //for each course in their schema
-        $scope.authentication.user.courses.forEach(
-            function(element, index, array) {
-                //stores each course Name and number of the course that a teacher has
+        if ($scope.authentication.user.profileType !== "Admin") {
+            //for each course in their schema
+            $scope.authentication.user.courses.forEach(
+                function(element, index, array) {
+                    //stores each course Name and number of the course that a teacher has
 
-                $scope.input.courseNames.push(element.courseName);
-                $scope.input.courseNums.push(element.number);
-                $scope.input.coursePeriods.push(element.section);
+                    $scope.input.courseNames.push(element.courseName);
+                    $scope.input.courseNums.push(element.number);
+                    $scope.input.coursePeriods.push(element.section);
 
-                //used for testing purposes to make sure a teacher has the correct courses
-                // console.log($scope.input.courseNums);
-            }
-        );
+                    //used for testing purposes to make sure a teacher has the correct courses
+                    // console.log($scope.input.courseNums);
+                }
+            );
+        }
 
         //Isabel- how I actuall populate the classes shown
         $scope.input.coursesComplete = $scope.authentication.user.courses;
@@ -426,15 +430,17 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.classQuiz = [];
         $scope.classPeriods = [];
 
-        //get course names
-        var teachersCurrentClasses = $scope.authentication.user.courses;
-        console.log(teachersCurrentClasses);
-        for (var k = 0; k < teachersCurrentClasses.length; k++) {
-            var label = teachersCurrentClasses[k].courseName;
-            // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
-            $scope.classQuiz.push(label);
-            $scope.classCodes.push(teachersCurrentClasses[k].number);
-            // console.log(teachersCurrentClasses[k].courseName);
+        if ($scope.authentication.user.profileType !== "Admin") {
+            //get course names
+            var teachersCurrentClasses = $scope.authentication.user.courses;
+            console.log(teachersCurrentClasses);
+            for (var k = 0; k < teachersCurrentClasses.length; k++) {
+                var label = teachersCurrentClasses[k].courseName;
+                // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
+                $scope.classQuiz.push(label);
+                $scope.classCodes.push(teachersCurrentClasses[k].number);
+                // console.log(teachersCurrentClasses[k].courseName);
+            }
         }
 
         //get quiz names
@@ -474,52 +480,31 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             "Other"
         ];
 
-        //Isabel- Upload New Profile Photo
-        $scope.photos = {};
-        $scope.Submit = function() {
-            var uploadUrl = '/upload';
-            multipartForm.post(uploadUrl, $scope.photos);
-        };
 
-        $scope.photoupdate = function() {
-            console.log("PHOTO UPDATES");
-            var x = document.getElementById("uploadPhoto").files[0];
-            console.log(x);
+        //Isabel AND MATT - change profile picture
 
-            // var route = '/api/users/' + $scope.authentication.user._id;
-            // $scope.authentication.user.profileImageURL = x;
-
-            // $http.post(route, $scope.user).success(function(response) {
-
-            //     $scope.authentication.user = response;
-
-
-            // }).error(function(response) {
-            //     console.log("Unable to POST.");
-            //     // console.log(response);
-            //     console.dir("RESPONSE: " + response);
-
-            //     $scope.error = response.message;
-            // });
-        };
-
-        //Isabel AND MATT-change profile picture
         $scope.uploadFiles = function(file, errFiles) {
             console.log("uploading photo...");
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
+            //Get file
             var data = {
                 file: file
             };
+            //Upload if file exists.
             if (file) {
                 file.upload = Upload.upload({
-                    url: '/uploads',
+                    url: '/photo_upload',
                     data: data
                 });
 
                 //File upload
                 file.upload.then(function(response) {
-                    Console.log("photo", response);
+                    //Change current picture to newly uploaded one!
+                    console.log("Photo upload:", response.data.message);
+                    if (response.status === 200) {
+                        $(".user-pic").attr("src", response.data.url);
+                    }
                 });
             }
         };
@@ -723,7 +708,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.authentication.user.displayName = $scope.authentication.user.lastName + ', ' + $scope.authentication.user.firstName;
 
             //check to make sure passwords match
-            if ($scope.credentials.password == $scope.confirmpassword) {
+            if ($scope.credentials.password === $scope.confirmpassword) {
                 // console.log("Passwords match");
                 $http.post(route, $scope.user).success(function(response) {
 
@@ -861,55 +846,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             $scope.groups[0].progress *= 25;
         };
 
-
-
-
-        /*
-        <<<<<<< HEAD
-                $scope.viewStats = function(course) {
-                    // Chart.js Stuff
-                    var ctx = $("#myChart").get(0).getContext("2d");
-                    // // This will get the first returned node in the jQuery collection.
-                    // var myNewChart = new Chart(ctx);
-                    var myBarChart = new Chart(ctx).Bar(data);
-                    var data = {
-                        labels: ["January", "February", "March", "April", "May", "June", "July"],
-                        datasets: [{
-                            label: "My First dataset",
-                            fillColor: "rgba(220,220,220,0.5)",
-                            strokeColor: "rgba(220,220,220,0.8)",
-                            highlightFill: "rgba(220,220,220,0.75)",
-                            highlightStroke: "rgba(220,220,220,1)",
-                            data: [65, 59, 80, 81, 56, 55, 40]
-                        }, {
-                            label: "My Second dataset",
-                            fillColor: "rgba(151,187,205,0.5)",
-                            strokeColor: "rgba(151,187,205,0.8)",
-                            highlightFill: "rgba(151,187,205,0.75)",
-                            highlightStroke: "rgba(151,187,205,1)",
-                            data: [28, 48, 40, 19, 86, 27, 90]
-                        }]
-                    };
-        */
-
-        //Plotly Stuff
-        // console.log("Passing: "+ course);
-        // var route = '/api/data/plotly';
-
-        // // var params = ({
-        // //     person: $scope.user, 
-        // //     given: course 
-        // // });
-
-        // $http.get(route, {params:{"person": $scope.user, "given": course}}).success(function (req, res) {
-        // // $http.get(route, params).success(function (req, res) {
-        //     console.log("plotly go");
-        // }); 
-
-
-        // location.reload();
-        //=======
-
         //Isabel - bar graph
         $scope.viewStats = function(classname, code, quiz) {
 
@@ -964,7 +900,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                     responsive: false,
                     maintainAspectRatio: true,
                     barShowStroke: false
-                }
+                };
 
                 var myBarChart = new Chart(ctx).Bar(data, options);
             }).then(function(error) {
