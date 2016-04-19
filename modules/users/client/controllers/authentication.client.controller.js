@@ -237,5 +237,17 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             // Effectively call OAuth authentication route:
             $window.location.href = url;
         };
+
+        if ($scope.authentication.user) {
+            $scope.authentication = Authentication;
+            //Set flags to true if admin or teacher 
+            if ($scope.authentication.user.profileType === "Admin") {
+                console.log("I am a admin");
+                $scope.isAdmin = true;
+            } else if ($scope.authentication.user.profileType === "Teacher") {
+                console.log("I am a teacher");
+                $scope.isTeacher = true;
+            }
+        }
     }
 ]);

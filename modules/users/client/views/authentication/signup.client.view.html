@@ -86,7 +86,7 @@
                     <input type="radio" name="profiletype" value="Student" ng-model="credentials.profileType" required> Student
                 </label>
                 <br>
-                <label>
+                <label ng-show="isAdmin">
                     <input type="radio" name="profiletype" value="Admin" ng-model="credentials.profileType" required> Admin
                 </label>
                 <br>
