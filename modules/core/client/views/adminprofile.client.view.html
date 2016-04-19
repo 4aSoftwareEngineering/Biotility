@@ -50,7 +50,9 @@
         		      <label>Username</label>
         		      <span>{{user.userName}}</span>
         		    </div>
-    		    </div>
+    		    </div><br>
+                <!-- Button for adding new admin account -RB -->
+                <a ui-sref="authentication.signup" class="btn btn-primary" value=""> Create New Admin Account</a><br><br>
     		</div> <!-- end show profile -->
 
             <!-- Settings -->
@@ -168,11 +170,11 @@
                 </div>
     		</div>
 
-            <!-- Quiz Control -->
+            <!-- Quiz Control: This tab on the admin profile makes buttons for uploading or editing quiz questions, individually or in bulk. -RB -->
             <div role="tabpanel" class="tab-pane" id="quizControl">
                 <br>
-                <a href="http://localhost:3000/admin/question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
-                <a href="http://localhost:3000/data/questions" class="btn btn-primary" value=""> Remove Questions</a><br><br>
+                <a ui-sref="question_upload" class="btn btn-primary" value=""> Upload Questions</a><br><br>
+                <a ui-sref="question_edit" class="btn btn-primary" value=""> Edit Questions</a><br><br>
             </div>
 
             <!-- Quiz Stats -->

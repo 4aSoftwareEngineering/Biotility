@@ -310,7 +310,7 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
         sub.onclick = function() {
 
             $scope.uploadUserComment();
-        }
+        };
 
         //Creates a new student grades and stores it into collection view StudentGrades
         var studentGrades = {
@@ -339,7 +339,7 @@ angular.module('quiz').controller('QuizResults', ['$http', '$scope', '$statePara
                     console.log(res);
                 });
 
-        }
+        };
 
         $http.post('/api/quiz_result', studentGrades)
             .success(function(res) {
