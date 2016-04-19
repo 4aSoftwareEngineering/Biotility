@@ -161,6 +161,10 @@ body {
     #subname {
         font-size: 30px;
     }
+    .hideThis{
+        visibility: hidden;
+        display: none;
+    }
 }
 
 

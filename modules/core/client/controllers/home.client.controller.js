@@ -269,6 +269,64 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly', 'ResourceClicks', 'Comments', 'Upload',
     function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, ResourceClicks, Comments, Upload) {
 
+        $scope.mikes = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $scope.myFunction = function(){
+            console.log($scope.mikes);
+            // Split these out so they are easy to log and debug
+            var path = '/api/its' + i;
+
+            // This must mirror the structure expected in your document for the element
+            // Therefore "comments" is represented as an array of objects, even
+            // where this is only one.
+            var data = {
+                comments: [{
+                    words: $scope.comment,
+                    userId: $scope.getCurrentUser().name
+                }]
+            };
+
+            // Call service with response
+            $http.put(path,data).success(function(stuff){
+                document.location.reload(true);
+            });
+        }
+
+
+        $scope.myFunction = function(mikes){
+            console.log('Hi Hi Hi');
+            console.log($scope.mikes);
+            var a = parseInt($scope.mikes);
+            $scope.user.courseCode.push(a);
+            var route = '/api/auth/signup/student';
+
+            $http.post(route, $scope.credentials).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+            }).error(function(response) {
+                console.log("Invalid (Sign up)", response);
+                //sets error if invalid info
+                alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
+
+                $scope.error = response.message;
+            });
+        };
 
 
         //Isabel- modal for resource request 
@@ -483,7 +541,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
         //Isabel AND MATT - change profile picture
-
         $scope.uploadFiles = function(file, errFiles) {
             console.log("uploading photo...");
             $scope.f = file;
