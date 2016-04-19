@@ -44,7 +44,7 @@ npm install -g grunt-cli
 npm install -g yo
 npm install -g generator-meanjs
 
-Access our git repository and clone to your computer : [https://github.com/4aSoftwareEngineering/Biotility]
+Access our git repository and clone to your computer : https://github.com/4aSoftwareEngineering/Biotility
 In the directory where you saved Biotility do `npm install`
 Run by using `grunt`, or `grunt --f` if you experience lint errors.
 
