@@ -123,6 +123,74 @@ exports.signup = function(req, res) {
     //////End of Previous Code//////
 };
 
+exports.signupTeacher = function(req, res) {
+    ///////Previous Code/////
+    // Init Schema
+    var newUser = new User(req.body);
+
+    // potential error message
+    var message = null;
+
+    // Then save the user
+    newUser.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err),
+                tried: newUser
+            });
+        } else {
+            // Remove sensitive data before login
+            newUser.password = undefined;
+            newUser.salt = undefined;
+
+            req.login(newUser, function(err) {
+                if (err) {
+                    return res.status(403).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    res.json(newUser);
+                }
+            });
+        }
+    });
+    //////End of Previous Code//////
+};
+
+exports.signupAdmin = function(req, res) {
+    ///////Previous Code/////
+    // Init Schema
+    var newUser = new User(req.body);
+
+    // potential error message
+    var message = null;
+
+    // Then save the user
+    newUser.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err),
+                tried: newUser
+            });
+        } else {
+            // Remove sensitive data before login
+            newUser.password = undefined;
+            newUser.salt = undefined;
+
+            req.login(newUser, function(err) {
+                if (err) {
+                    return res.status(403).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    res.json(newUser);
+                }
+            });
+        }
+    });
+    //////End of Previous Code//////
+};
+
 /**
  * Signin after passport authentication
  */

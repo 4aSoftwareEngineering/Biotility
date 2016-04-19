@@ -19,6 +19,7 @@ module.exports = function(app) {
     app.route('/api/auth/signup/teacher').post(users.signup);
     app.route('/api/auth/signup').post(users.signup).get(users.parseTeachers);
     app.route('/api/auth/signup/student').post(users.signupStudent);
+    app.route('/api/auth/signup/admin').post(users.signupAdmin);
     app.route('/api/auth/signin').post(users.signin);
     app.route('/api/auth/signout').get(users.signout);
     //app.route('/api/auth/signup/courseCode').get(users.checkStudentCode);
