@@ -12,7 +12,7 @@ var path = require('path'),
     questionBank = [],
     StudentGrades = mongoose.model('StudentGrades'),
     User = mongoose.model('User'),
-	Comments = mongoose.model('Comments'),
+    Comments = mongoose.model('Comments'),
     xlsxj = require("xlsx-to-json"),
     _ = require("underscore"),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
@@ -31,6 +31,9 @@ exports.retrieveQuestionsByCategory = function(req, res) {
     });
 };
 
+
+//Matt
+//Find is a question exists in the database after questionBank is populated.
 function questionExists(question) {
     var isMatch = false;
     if (!questionBank.length) {
@@ -55,11 +58,11 @@ exports.getGrades = function(req, res) {
 Inserts the quiz results to the Student profile
 */
 exports.uploadComments = function(req, res) {
-	console.log("it is in the upload export func");
+    console.log("it is in the upload export func");
     var comment = new Comments(req.body);
-	console.log(comment.category);
-	console.log(comment.comment);
-	comment.save(function(err) {
+    console.log(comment.category);
+    console.log(comment.comment);
+    comment.save(function(err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -69,6 +72,9 @@ exports.uploadComments = function(req, res) {
         }
     });
 };
+
+//Matt
+//Upload student grades upon quiz completion.
 exports.updateGrades = function(req, res) {
     var studentGrade = new StudentGrades(req.body);
 
@@ -105,8 +111,9 @@ exports.quizQuestionByID = function(req, res, next, id) {
     });
 };
 
+//Matt
+//Actually only for excel to json!
 exports.CSVtoJSON = function(req, res) {
-    //Actually only for excel to json!
     var file = req.files.file;
     var appDir = path.dirname(require.main.filename);
     var newPath = appDir + "/uploads/" + file.originalname;
@@ -133,10 +140,10 @@ exports.CSVtoJSON = function(req, res) {
         }
     });
 };
-
+//Matt
+//Gets all quiz questions and puts them into an array for duplicate checking.
 function uploadQuizQuestions(result, res) {
     console.log("Uploading quiz questions...");
-    //Gets all quiz questions and puts them into an array for duplicate checking.
     QuizQuestion.find({}).exec(function(err, questions) {
         if (!err) {
             //Load Quiz Bank and then parse to check for dupes.
@@ -148,9 +155,9 @@ function uploadQuizQuestions(result, res) {
     });
 
 }
-
+//Matt
+//Function handles excel spreadsheet parsing.
 function parseQuizQuestions(result, res) {
-    //Function handles excel spreadsheet parsing.
     var dupeCount = 0;
     var itrCount = -1;
     var out = null;
@@ -240,6 +247,8 @@ function parseQuizQuestions(result, res) {
     return res.end(JSON.stringify(out));
 }
 
+//Matt
+//Save new question into database.
 function saveQuestion(question) {
     var qModel = new QuizQuestion(question);
 
