@@ -146,6 +146,7 @@ body {
     }
     .hideThis{
         visibility: hidden;
+        display: none;
     }
 }
 

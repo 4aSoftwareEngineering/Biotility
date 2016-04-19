@@ -243,6 +243,14 @@ angular.module('core').controller('authController', ['$scope', '$state', '$locat
 angular.module('core').controller('ProfileController', ['$scope', '$state', '$location', 'Users', 'Authentication', '$http', 'Subjects', 'Temp', 'plotly','Grades', 'ResourceClicks', 'Comments','multipartForm', 
     function($scope, $state, $location, Users, Authentication, $http, Subjects, Temp, plotly, Grades, ResourceClicks, Comments, multipartForm) {
 
+        $scope.mikes = 0;
+
+        $scope.myFunction = function(mikes){
+            console.log('Hi Hi Hi');
+            $scope.user.courseCode.push($scope.mikes);
+            console.log($scope.mikes);
+        };
+
 
        //Isabel- modal for resource request 
        $(document).ready(function(){
@@ -250,6 +258,9 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 $("#myModal").modal();
             });
         });
+
+
+
 		
 		$scope.getComs = function() {
 			
@@ -400,7 +411,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             // var route = '/api/users/' + $scope.authentication.user._id;
             // $scope.authentication.user.profileImageURL = x;
-            
+
             // $http.post(route, $scope.user).success(function(response) {
 
             //     $scope.authentication.user = response;
