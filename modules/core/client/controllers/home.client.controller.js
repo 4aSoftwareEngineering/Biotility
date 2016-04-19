@@ -245,12 +245,62 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         $scope.mikes = 0;
 
+
+
+
+
+
+
+
+
+
+
+
+
+        $scope.myFunction = function(){
+            console.log($scope.mikes);
+            // Split these out so they are easy to log and debug
+            var path = '/api/its' + i;
+
+            // This must mirror the structure expected in your document for the element
+            // Therefore "comments" is represented as an array of objects, even
+            // where this is only one.
+            var data = {
+                comments: [{
+                    words: $scope.comment,
+                    userId: $scope.getCurrentUser().name
+                }]
+            };
+
+            // Call service with response
+            $http.put(path,data).success(function(stuff){
+                document.location.reload(true);
+            });
+        }
+
+
         $scope.myFunction = function(mikes){
             console.log('Hi Hi Hi');
-            $scope.user.courseCode.push($scope.mikes);
             console.log($scope.mikes);
-        };
+            var a = parseInt($scope.mikes);
+            $scope.user.courseCode.push(a);
+            var route = '/api/auth/signup/student';
 
+            $http.post(route, $scope.credentials).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+            }).error(function(response) {
+                console.log("Invalid (Sign up)", response);
+                //sets error if invalid info
+                alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
+
+                $scope.error = response.message;
+            });
+        };
 
        //Isabel- modal for resource request 
        $(document).ready(function(){

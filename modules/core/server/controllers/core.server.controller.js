@@ -543,6 +543,30 @@ exports.deleteResource = function(req, res) {
     });
 };
 
+
+
+exports.updateCourseCode = function(req, res){
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Update a resource from the database
 exports.updateResource = function(req, res) {
     var resource_to_update = req.resource;
