@@ -9,6 +9,7 @@ var _ = require('lodash'),
   fs = require('fs'),
   path = require('path');
 
+
 module.exports = function (grunt) {
   // Project Configuration
   grunt.initConfig({
@@ -289,3 +290,4 @@ module.exports = function (grunt) {
   // Run the project in production mode
   grunt.registerTask('prod', ['build', 'env:prod', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
 };
+grunt.registerTask('heroku:production', 'clean less mincss uglify');
