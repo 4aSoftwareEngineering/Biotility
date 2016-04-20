@@ -53,21 +53,21 @@ module.exports = function (grunt) {
       },
       clientCSS: {
         files: defaultAssets.client.css,
-        tasks: ['csslint'],
+        //tasks: ['csslint'],
         options: {
           livereload: true
         }
       },
       clientSCSS: {
         files: defaultAssets.client.sass,
-        tasks: ['sass', 'csslint'],
+        tasks: ['sass'],
         options: {
           livereload: true
         }
       },
       clientLESS: {
         files: defaultAssets.client.less,
-        tasks: ['less', 'csslint'],
+        tasks: ['less'],
         options: {
           livereload: true
         }
@@ -101,14 +101,14 @@ module.exports = function (grunt) {
         }
       }
     },*/
-    csslint: {
-      options: {
-        csslintrc: '.csslintrc'
-      },
-      all: {
-        src: defaultAssets.client.css
-      }
-    },
+    // csslint: {
+    //   options: {
+    //     csslintrc: '.csslintrc'
+    //   },
+    //   all: {
+    //     src: defaultAssets.client.css
+    //   }
+    // },
     ngAnnotate: {
       production: {
         files: {
