@@ -231,7 +231,7 @@ module.exports = function (grunt) {
 
   // Load NPM tasks
   require('load-grunt-tasks')(grunt);
-
+  grunt.loadNpmTasks('grunt-contrib-sass');
   // Make sure upload directory exists
   grunt.task.registerTask('mkdir:upload', 'Task that makes sure upload directory exists.', function () {
     // Get the callback
