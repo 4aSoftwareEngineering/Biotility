@@ -20,11 +20,12 @@ Code that was borrowed for the production of this website includes:
   -
   
 -Matt Lemmone:
-  - Borrowed from [here](http://www.howwaydo.com/how-to-check-if-two-arrays-are-equal-with-javascript/).
-  - Used to compare two arrays. Used for seeing if quiz matching answers are correct.
+	
+	- Borrowed from [here](http://www.howwaydo.com/how-to-check-if-two-arrays-are-equal-with-javascript/).
+	- Used to compare two arrays. Used for seeing if quiz matching answers are correct.
 		
 	```
-	  function arraysEqual(a, b) {
+	function arraysEqual(a, b) {
 	    if (a === b) return true;
 	    if (a === null || b === null) return false;
 	    if (a.length !== b.length) return false;
