@@ -8,7 +8,7 @@ module.exports = {
   },
   port: process.env.PORT || 8443,
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://team4a:team4a@ds041394.mongolab.com:41394/biotility',
+    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://team4a:team4a@ds041394.mlab.com:41394/biotility',
     options: {
       user: '',
       pass: ''
