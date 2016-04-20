@@ -271,7 +271,7 @@ module.exports = function (grunt) {
   //grunt.registerTask('lint', ['sass', 'less', 'jshint', 'csslint']);
 
   // Lint project files and minify them into two production files.
-  grunt.registerTask('build', ['env:dev', 'lint', 'ngAnnotate', 'uglify', 'cssmin']);
+  grunt.registerTask('build', ['env:dev', 'ngAnnotate', 'uglify', 'cssmin']);
 
   // Run the project tests
   grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'copy:localConfig', 'server', 'mochaTest', 'karma:unit']);
@@ -283,7 +283,8 @@ module.exports = function (grunt) {
   // Run the project in development mode
   grunt.registerTask('default', ['env:dev', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
 
-    grunt.registerTask('heroku:development', ['build','env:dev', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
+  grunt.registerTask('heroku:development', ['build','env:dev', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
+
 
   // Run the project in debug mode
   grunt.registerTask('debug', ['env:dev', 'lint', 'mkdir:upload', 'copy:localConfig', 'concurrent:debug']);
