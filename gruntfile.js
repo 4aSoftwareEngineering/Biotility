@@ -89,7 +89,7 @@ module.exports = function (grunt) {
       options: {
         logConcurrentOutput: true
       }
-    },
+    },/*
     jshint: {
       all: {
         src: _.union(defaultAssets.server.gruntConfig, defaultAssets.server.allJS, defaultAssets.client.js, testAssets.tests.server, testAssets.tests.client, testAssets.tests.e2e),
@@ -100,7 +100,7 @@ module.exports = function (grunt) {
           jasmine: true
         }
       }
-    },
+    },*/
     csslint: {
       options: {
         csslintrc: '.csslintrc'
