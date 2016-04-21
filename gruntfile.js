@@ -33,7 +33,7 @@ module.exports = function (grunt) {
       },
       serverJS: {
         files: _.union(defaultAssets.server.gruntConfig, defaultAssets.server.allJS),
-        //tasks: ['jshint'],
+        tasks: ['jshint'],
         options: {
           livereload: true
         }
@@ -46,28 +46,28 @@ module.exports = function (grunt) {
       },
       clientJS: {
         files: defaultAssets.client.js,
-        //tasks: ['jshint'],
+        tasks: ['jshint'],
         options: {
           livereload: true
         }
       },
       clientCSS: {
         files: defaultAssets.client.css,
-        //tasks: ['csslint'],
+        tasks: ['csslint'],
         options: {
           livereload: true
         }
       },
       clientSCSS: {
         files: defaultAssets.client.sass,
-        tasks: ['sass'],
+        tasks: ['sass', 'csslint'],
         options: {
           livereload: true
         }
       },
       clientLESS: {
         files: defaultAssets.client.less,
-        tasks: ['less'],
+        tasks: ['less', 'csslint'],
         options: {
           livereload: true
         }
@@ -84,12 +84,12 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      default: [],
+      default: ['nodemon', 'watch'],
       debug: ['nodemon', 'watch', 'node-inspector'],
       options: {
         logConcurrentOutput: true
       }
-    },/*
+    },
     jshint: {
       all: {
         src: _.union(defaultAssets.server.gruntConfig, defaultAssets.server.allJS, defaultAssets.client.js, testAssets.tests.server, testAssets.tests.client, testAssets.tests.e2e),
@@ -100,15 +100,15 @@ module.exports = function (grunt) {
           jasmine: true
         }
       }
-    },*/
-    // csslint: {
-    //   options: {
-    //     csslintrc: '.csslintrc'
-    //   },
-    //   all: {
-    //     src: defaultAssets.client.css
-    //   }
-    // },
+    },
+    csslint: {
+      options: {
+        csslintrc: '.csslintrc'
+      },
+      all: {
+        src: defaultAssets.client.css
+      }
+    },
     ngAnnotate: {
       production: {
         files: {
@@ -231,7 +231,7 @@ module.exports = function (grunt) {
 
   // Load NPM tasks
   require('load-grunt-tasks')(grunt);
-  grunt.loadNpmTasks('grunt-contrib-sass');
+
   // Make sure upload directory exists
   grunt.task.registerTask('mkdir:upload', 'Task that makes sure upload directory exists.', function () {
     // Get the callback
@@ -268,10 +268,10 @@ module.exports = function (grunt) {
   });
 
   // Lint CSS and JavaScript files.
-  //grunt.registerTask('lint', ['sass', 'less', 'jshint', 'csslint']);
+  grunt.registerTask('lint', ['sass', 'less', 'jshint', 'csslint']);
 
   // Lint project files and minify them into two production files.
-  grunt.registerTask('build', ['env:dev', 'ngAnnotate', 'uglify', 'cssmin']);
+  grunt.registerTask('build', ['env:dev', 'lint', 'ngAnnotate', 'uglify', 'cssmin']);
 
   // Run the project tests
   grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'copy:localConfig', 'server', 'mochaTest', 'karma:unit']);
@@ -281,10 +281,7 @@ module.exports = function (grunt) {
   grunt.registerTask('coverage', ['env:test', 'lint', 'mocha_istanbul:coverage']);
 
   // Run the project in development mode
-  grunt.registerTask('default', ['env:dev', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
-
-  grunt.registerTask('heroku:development', ['build','env:dev', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
-
+  grunt.registerTask('default', ['env:dev', 'lint', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
 
   // Run the project in debug mode
   grunt.registerTask('debug', ['env:dev', 'lint', 'mkdir:upload', 'copy:localConfig', 'concurrent:debug']);
