@@ -4,7 +4,7 @@
 Biotility is a web app that provides students, professionals, and researchers assessments and resources to prepare for the Biotechnician Assistant Credentialing Exam (BACE). It is used by schools and teachers in Alachua county to better prepare students and provide teachers with testing metrics to assess the skills and proficiency of their students.  
 This repository was an inherited from a previous group whose repository can be found [here](https://github.com/SoftwareEngineering5c/Biotility). 
 
-### [Deployed Page]()
+### [Deployed Page](http://biotilitysp18.herokuapp.com)
 
 ### Credit people/organizations
 - [Bossable](http://www.bossable.com/)
