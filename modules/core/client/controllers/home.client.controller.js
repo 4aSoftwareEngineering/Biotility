@@ -579,9 +579,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 //var subject=arrData[v];
             //$http.get(route, {params:{"subject": subject}}).then(function(res) { 
             $http.get(route, {params:{"subject": subject}}).then(function(res) { 
-                
+                    var g_plus_1;
                     for(var g=0;g<res.data.avgs.length;g++){
-                    CSV += "question: "+g+"\n\n";
+                    g_plus_1 = g+1;
+                    CSV += "question: "+g_plus_1+"\n\n";
                     CSV += "averages , "+res.data.avgs[g]+" , ";
                     CSV += "modes , "+res.data.modes[g]+" , ";
                     CSV += "% correct , "+res.data.perc_correct[g]+"\n";
