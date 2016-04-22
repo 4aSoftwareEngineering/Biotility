@@ -273,8 +273,58 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
 
+        //Isabel- allows students to add more classes
+        $scope.studentAddingClass=function(coursecode){
+
+               
+   
+
+            //check if code is valid
+
+            //save to student in database if it is
+            $scope.authentication.user.courses.push(coursecode);
+            
 
 
+            $scope.authentication.user.courses.forEach(
+                function(element, index, array) {
+                    //$scope.authentication.user.courses.push(courseObj);
+                    // console.log("current classes: " + element.courseName);
+                });
+
+            //to display on profile view
+            $scope.input = {};
+            //courseNums array
+            $scope.input.courseNums = [];
+            // for each course in their schema
+            $scope.authentication.user.courses.forEach(
+                function(element, index, array) {
+                    $scope.input.courseNums.push(element);
+                    console.log("input class: " + $scope.input.courseNums);
+                });
+
+            // $scope.tester();
+            // $scope.update();
+            console.dir($scope);
+            var route = '/api/users/' + $scope.authentication.user._id;
+
+            $http.put(route, $scope.user.courses).success(function(response) {
+
+                // If successful we assign the response to the global user model
+                $scope.authentication.user = response;
+
+                // And redirect to the home page
+                $location.url('/');
+
+            }).error(function(response) {
+                // console.log("Unable to PUT.");
+                console.dir(response);
+                //sets error if invalid info
+                //alert("Not updating.");
+
+                $scope.error = response.message;
+            });
+        }
 
 
 
@@ -567,6 +617,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 });
             }
         };
+
         //this retrieves the subject's statistics from the server which retrieved it from the DB, and exports it to a excel file
         $scope.exportToCSV = function(subject) {
             var arrData = ["Cells", "Genetics", "Laboratory Skills and Applications", "Research & Scientific Method", "General Topics", "Applied Mathematics", "Biotechnology Skills", "Laboratory Equipment", "Preparing Solutions", "Biotech Careers", "Applications", "Chemistry & Biochemistry"];

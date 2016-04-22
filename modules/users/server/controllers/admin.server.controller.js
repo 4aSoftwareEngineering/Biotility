@@ -24,7 +24,8 @@ exports.update = function(req, res) {
     // user.firstName = req.body;
     user.lastName = user.lastName;
     user.displayName = user.firstName + ' ' + user.lastName;
-    user.courses = req.body; //actual update
+    user.courses = req.body;
+    user.courseCode = req.body; //actual update
     // user.courses = user.courses; //used for testing form
     user.roles = user.roles;
     user.save(function(err) {
