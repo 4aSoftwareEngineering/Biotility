@@ -90,7 +90,7 @@
                     </thead>
                     <tbody>
                         <!--gets class codes from controller-->
-                        <tr ng-repeat="num in user.courseCode ">
+                        <tr ng-repeat="num in user.courseCode track by $index ">
                             <td>{{num}}</td>
                         </tr>
                     </tbody>

@@ -278,7 +278,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
                
    
-
+            
             //check if code is valid
 
             //save to student in database if it is
