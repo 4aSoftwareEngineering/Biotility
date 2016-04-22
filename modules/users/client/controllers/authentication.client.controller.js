@@ -153,7 +153,7 @@ $scope.signup = function(isValid) {
 
                 return false;
             }
-
+             var teaches = false;
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
 
@@ -173,38 +173,9 @@ $scope.signup = function(isValid) {
 
 
             } else if ($scope.credentials.profileType === "Teacher") {
-
+                teaches = true;
                 route = '/api/auth/signup/teacher';
-                console.log("Is a Teacher");
-                var coursename = "";
-                for (var i= 0; i < $scope.credentials.courses.length; i++){
-                    coursename = coursename + "Class: " + $scope.credentials.courses[i].courseName +" "+  $scope.credentials.courses[i].section+ " "
-                }
-
-            //     var data = ({
-            //         email : "biotilitysp18@gmail.com", 
-            //         subject: "A new teacher " + $scope.credentials.firstName +  " " + $scope.credentials.lastName + " registered  "  + coursename
-            //     });
-            //     console.log(data.subject);
-                
-            //     var route = '/api/auth/emailTeacherRegistration';
-            //     $http.post(route, data).success(function(req, res) {
-            //         console.log("sending teacher registration email");
-            //         $http.post(route, $scope.credentials).success(function(response) {
-
-            //     // If successful we assign the response to the global user model
-            //     $scope.authentication.user = response;
-
-            //     // And redirect to the home page
-            //     $location.url('/');
-            // }).error(function(response) {
-            //     console.log("Invalid (Sign up)", response);
-            //     //sets error if invalid info
-            //     alert("Invalid course code.");
-
-            //     $scope.error = response.message;
-            // });
-            //     });
+                console.log("Is a Teacher");                
             }
 
 
@@ -222,6 +193,24 @@ $scope.signup = function(isValid) {
 
                 $scope.error = response.message;
             });
+
+            if(teaches == true){
+                var coursename = "";
+                for (var i= 0; i < $scope.credentials.courses.length; i++){
+                    coursename = coursename + "Class: " + $scope.credentials.courses[i].courseName +" "+  $scope.credentials.courses[i].section+ " "
+                }
+
+                var data = ({
+                    email : "biotilitysp18@gmail.com", 
+                    subject: "A new teacher " + $scope.credentials.firstName +  " " + $scope.credentials.lastName + " registered  "  + coursename
+                });
+                console.log(data.subject);
+                
+                var route = '/api/auth/emailTeacherRegistration';
+                $http.post(route, data).success(function(req, res) {
+                    console.log("sending teacher registration email");
+                });
+            }
 
         };
         // 
