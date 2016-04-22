@@ -690,21 +690,23 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         //Isabel- add a course 
         $scope.add = function(course, period) {
 
-            if (course !== '') {
 
-                //Creates a new object to be used for user course schema
-                var courseObj = {};
-                courseObj.courseName = course;
-                courseObj.content = "";
-                courseObj.progress = "";
-                courseObj.section = period;
+            if (course == "" || course == null || course == undefined) return;
+            if (period == "" || period == null || period == undefined) return;
 
-                //Generate number when you add the course
-                courseObj.number = Math.floor((Math.random() * 1000) + 1);
-                //$scope.credentials.courses.push(courseObj);
-                $scope.authentication.user.courses.push(courseObj);
-                // console.log("new class " + courseObj.courseName);
-            }
+            //Creates a new object to be used for user course schema
+            var courseObj = {};
+            courseObj.courseName = course;
+            courseObj.content = "";
+            courseObj.progress = "";
+            courseObj.section = period;
+
+            //Generate number when you add the course
+            courseObj.number = Math.floor((Math.random() * 1000) + 1);
+            //$scope.credentials.courses.push(courseObj);
+            $scope.authentication.user.courses.push(courseObj);
+            // console.log("new class " + courseObj.courseName);
+
 
 
             $scope.authentication.user.courses.forEach(
@@ -749,7 +751,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             });
 
             //reset what they see to empty
-            $scope.toAdd = '';
+            //$scope.toAdd = '';
         };
 
         //Isabel- teachers can update their settings
