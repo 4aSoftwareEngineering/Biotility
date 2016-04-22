@@ -51,6 +51,53 @@
         <!--</div>-->
         <div class="row" ng-hide="isTeacher">
             <div class="col-md-9 col-md-offset-3" ng-show="profileVisible">
+           <!--    <div class = "col-xs-offset-1 row">
+                <h1>Current Course Codes: </h1>
+                <ul ng-repeat= "num in user.courseCode">
+                  <li>{{num}}</li>
+                </ul>
+              </div> -->
+            
+
+              <div class="form-group">
+                <div class="col-lg-9">
+                    <label class="pull-left control-label">New Course Code:</label>
+                    <input class="form-control" type="text" ng-model="classcode" placeholder="New course code">
+                </div>
+            </div>
+            <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" ng-click="studentAddingClass(classcode)">Add</button>
+              </span>
+
+
+
+            <div class="picked">
+                    <div class="col-md-2 col-lg-offset-4 text-right">
+                        <ul class="list-inline">
+                            <li ng-repeat="x in credentials.courses track by $index">
+                                <button type="button" class="btn btn-info">{{x.courseName}}</button>
+                                <!--  <button type="button" class="btn btn-default col-md-offset-1" ng-click="remove(toAdd)"> -
+                              </button> -->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <table class="table table-bordered" style="width: 40%;margin-left:-2px" border-spacing: "5px">
+                    
+                    <thead>
+                        <h2>Classes</h2>
+                    </thead>
+                    <tbody>
+                        <!--gets class codes from controller-->
+                        <tr ng-repeat="num in user.courseCode ">
+                            <td>{{num}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
                 <!-- <h1>Biotility</h1>
       <h3>Course Progress</h3>
       <script type="text/ng-template" id="group-template.html">
@@ -124,7 +171,7 @@
                     
 					
                     <div class="form-group">
-                        <label class="col-md-3 col-xs-offset-1 control-label"></label>
+                        <label class="col-md-3 col-md-offset-9 control-label"></label>
                         <div class="col-md-8 col-xs-offset-1 col-xs-10">
                             <input type="button" class="btn btn-primary" value="Save Changes">
                             <span></span>
@@ -132,14 +179,11 @@
                         </div>
                     </div>
 
-              <div class = "col-xs-offset-1 row">
-                <h1>Current Course Codes: </h1>
-                <ul "num in user.courseCode">
-                  <li>{{user.courseCode}}</li>
-                </ul>
-              </div>
+              
+                    
 
-                <label class="col-md-3 col-xs-offset-1 control-label">Course Code(s):</label>
+
+    <!--            <label class="pull-left control-label">New Course Code:</label>
         <div class="row">
           <div class="col-md-8 col-xs-offset-1 col-xs-10">
             <div class="input-group">
@@ -149,7 +193,7 @@
               </span>
             </div>
           </div>
-        </div>
+        </div> -->
                     <!--<input class="form-control" type="password" value="">-->
                     <!--
               <select ng-model="toAdd" style="width: 175px; height: 30px;">
