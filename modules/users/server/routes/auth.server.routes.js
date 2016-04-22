@@ -26,6 +26,9 @@ module.exports = function(app) {
     app.route('/api/auth/emailTeacherRegistration').post(users.sendTeacherMail);
     // app.route('/api/auth/signup')
 
+    //Isabel and Matt - fixing teacher route
+    app.route('/api/auth/getteachers').get(users.loadTeachers);
+
     // Setting the facebook oauth routes
     app.route('/api/auth/facebook').get(users.oauthCall('facebook', {
         scope: ['email']

@@ -18,7 +18,7 @@ angular.module('core').service('Teachers', ['$http', function($http) {
     loadTeachers: function() {
       return $http({
         method: 'GET',
-        url: '/api/auth/signup'
+        url: '/api/auth/getteachers'
       });
     }
   };

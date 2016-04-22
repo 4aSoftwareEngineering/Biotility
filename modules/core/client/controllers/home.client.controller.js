@@ -55,11 +55,10 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         $scope.error = null;
 
         //Checks wheter or not user is admin to allow edit controls
-        if($scope.authentication.user == null) {
+        if ($scope.authentication.user == null) {
             $scope.editMode = false;
-        }
-        else {
-            if($scope.authentication.user.profileType === 'Admin') {
+        } else {
+            if ($scope.authentication.user.profileType === 'Admin') {
                 $scope.editMode = true;
             }
         }
@@ -204,10 +203,9 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
 
         //Sets text for edit panel heading
         $scope.setEditHeading = function() {
-            if($scope.updateMode === false) {
+            if ($scope.updateMode === false) {
                 $scope.editHeading = "Create A New Heading / Link";
-            }
-            else {
+            } else {
                 $scope.editHeading = "Edit An Existing Heading / Link";
             }
         };
@@ -224,18 +222,17 @@ angular.module('core').controller('SubjectController', ['$scope', '$http', '$sta
         };
 
         //Whenever student account clicks link, resource's click param incremented
-        $scope.recordClick = function(resource_obj,index,link_url) {
+        $scope.recordClick = function(resource_obj, index, link_url) {
             var id = resource_obj._id;
             var name = resource_obj.title;
-            if($scope.authentication.user !== null) {
-                if($scope.authentication.user.profileType === 'Student') {
-                    $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {
-                    }).error(function(response) {});
+            if ($scope.authentication.user !== null) {
+                if ($scope.authentication.user.profileType === 'Student') {
+                    $http.put('api/data/resources/click/' + id, resource_obj).success(function(response) {}).error(function(response) {});
                 }
             }
             $scope.resources[index].clicks = $scope.resources[index].clicks + 1;
             $window.open(link_url, '_blank');
-        };//End Resource editing functions and vars
+        }; //End Resource editing functions and vars
 
         $scope.startQuiz = function() {
             $location.path('/' + $scope.subject + '/quiz');
@@ -283,7 +280,7 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
 
 
-        $scope.myFunction = function(){
+        $scope.myFunction = function() {
             console.log($scope.mikes);
             // Split these out so they are easy to log and debug
             var path = '/api/its' + i;
@@ -299,13 +296,13 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
             };
 
             // Call service with response
-            $http.put(path,data).success(function(stuff){
+            $http.put(path, data).success(function(stuff) {
                 document.location.reload(true);
             });
         }
 
 
-        $scope.myFunction = function(mikes){
+        $scope.myFunction = function(mikes) {
             console.log('Hi Hi Hi');
             console.log($scope.mikes);
             var a = parseInt($scope.mikes);
@@ -383,82 +380,85 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         });
         var ctx1;
         var myClicksChart;
-        if($scope.authentication.user.profileType === "Admin") {
+        if ($scope.authentication.user.profileType === "Admin") {
             ctx1 = $("#myClicksChart").get(0).getContext("2d");
         }
         //setup chart and function for view clicks
-        $scope.viewClicks = function(subject){
+        $scope.viewClicks = function(subject) {
             var route = '/api/data/resources/clicks';
-            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
-                if(myClicksChart !==  undefined){
+            $http.get(route, { params: { "subject": subject } }).then(function(res) {
+                if (myClicksChart !== undefined) {
                     myClicksChart.destroy();
                 }
                 var clicks = res.data;
                 var click_labels = [];
                 var click_data = [];
-                for(var i = 0; i < clicks.length; i++) {
+                for (var i = 0; i < clicks.length; i++) {
                     click_labels.push(clicks[i].name);
                     click_data.push(clicks[i].clicks);
                 }
-                  var data = {
+                var data = {
                     labels: click_labels,
-                    datasets: [
-                        {
-                            label: "Number of Clicks",
-                            fillColor: "rgba(220,220,220,0.5)",
-                            strokeColor: "rgba(220,220,220,0.8)",
-                            highlightFill: "rgba(220,220,220,0.75)",
-                            highlightStroke: "rgba(220,220,220,1)",
-                            data: click_data
-                        },
-                    ]
-                  };
+                    datasets: [{
+                        label: "Number of Clicks",
+                        fillColor: "rgba(220,220,220,0.5)",
+                        strokeColor: "rgba(220,220,220,0.8)",
+                        highlightFill: "rgba(220,220,220,0.75)",
+                        highlightStroke: "rgba(220,220,220,1)",
+                        data: click_data
+                    }, ]
+                };
                 myClicksChart = new Chart(ctx1).Bar(data);
             });
         };
         var ctx2;
         var myQuizStatsChart;
-        if($scope.authentication.user.profileType === "Admin") {
+        if ($scope.authentication.user.profileType === "Admin") {
             ctx2 = $("#myQuizStatsChart").get(0).getContext("2d");
         }
         //setup chart and function for quiz statistics
-        $scope.viewQuizStats = function(subject){
+        $scope.viewQuizStats = function(subject) {
             var route = '/api/data/adminGrades';
-            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
-                if(myQuizStatsChart !==  undefined){
+            $http.get(route, { params: { "subject": subject } }).then(function(res) {
+                if (myQuizStatsChart !== undefined) {
                     myQuizStatsChart.destroy();
                 }
                 var labels = [];
                 var questNames = [];
-                for(var ques_names = 1; ques_names < res.data.question_names.length+1; ques_names++) {
-                    labels.push("Question "+ ques_names);
-                    questNames.push(ques_names+". "+res.data.question_names[ques_names-1]);
+                for (var ques_names = 1; ques_names < res.data.question_names.length + 1; ques_names++) {
+                    labels.push("Question " + ques_names);
+                    questNames.push(ques_names + ". " + res.data.question_names[ques_names - 1]);
                 }
                 var data = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: "Percent Correct",
-                                fillColor: "rgba(204, 167, 148,0.5)",
-                                strokeColor: "rgba(204, 167, 148,0.8)",
-                                highlightFill: "rgba(204, 167, 148,0.75)",
-                                highlightStroke: "rgba(204, 167, 148,1)",
-                                data: res.data.perc_correct
-                            }
-                        ]
-                    };
-                myQuizStatsChart = new Chart(ctx2).Bar(data,{scaleOverride: true, scaleStartValue: 0, scaleStepWidth: 0.1, scaleSteps: 10});
+                    labels: labels,
+                    datasets: [{
+                        label: "Percent Correct",
+                        fillColor: "rgba(204, 167, 148,0.5)",
+                        strokeColor: "rgba(204, 167, 148,0.8)",
+                        highlightFill: "rgba(204, 167, 148,0.75)",
+                        highlightStroke: "rgba(204, 167, 148,1)",
+                        data: res.data.perc_correct
+                    }]
+                };
+                myQuizStatsChart = new Chart(ctx2).Bar(data, { scaleOverride: true, scaleStartValue: 0, scaleStepWidth: 0.1, scaleSteps: 10 });
                 $scope.questNames = questNames;
                 $scope.averageAttempts = res.data.avgs;
                 $scope.firstIncorrect = res.data.modes;
             });
 
         };
-	//This is to get the Course data for teacher and student 
+
+
+        var noClasses = false;
+        //This is to get the Course data for teacher and student 
         if ($scope.authentication.user.profileType !== "Admin") {
-            //for each course in their schema
+            //for each course in their schema           
             $scope.authentication.user.courses.forEach(
                 function(element, index, array) {
+                    if (element == null) {
+                        noClasses = true;
+                        return
+                    };
                     //stores each course Name and number of the course that a teacher has
 
                     $scope.input.courseNames.push(element.courseName);
@@ -488,17 +488,18 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         $scope.classQuiz = [];
         $scope.classPeriods = [];
 
-
-        if ($scope.authentication.user.profileType !== "Admin") {
-            //get course names
-            var teachersCurrentClasses = $scope.authentication.user.courses;
-            console.log(teachersCurrentClasses);
-            for (var k = 0; k < teachersCurrentClasses.length; k++) {
-                var label = teachersCurrentClasses[k].courseName;
-                // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
-                $scope.classQuiz.push(label);
-                $scope.classCodes.push(teachersCurrentClasses[k].number);
-                // console.log(teachersCurrentClasses[k].courseName);
+        if (!noClasses) {
+            if ($scope.authentication.user.profileType !== "Admin") {
+                //get course names
+                var teachersCurrentClasses = $scope.authentication.user.courses;
+                console.log(teachersCurrentClasses);
+                for (var k = 0; k < teachersCurrentClasses.length; k++) {
+                    var label = teachersCurrentClasses[k].courseName;
+                    // var label = teachersCurrentClasses[k].courseName +" "+  teachersCurrentClasses[k].section;
+                    $scope.classQuiz.push(label);
+                    $scope.classCodes.push(teachersCurrentClasses[k].number);
+                    // console.log(teachersCurrentClasses[k].courseName);
+                }
             }
         }
 
@@ -566,76 +567,76 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 });
             }
         };
-	//this retrieves the subject's statistics from the server which retrieved it from the DB, and exports it to a excel file
-		$scope.exportToCSV = function(subject) {
-        var arrData = ["Cells", "Genetics", "Laboratory Skills and Applications", "Research & Scientific Method","General Topics","Applied Mathematics","Biotechnology Skills","Laboratory Equipment","Preparing Solutions","Biotech Careers","Applications","Chemistry & Biochemistry"];
-        var CSV = "";
-        var route = '/api/data/adminGrades';
-        CSV+= "Statistics for "+subject + '\r\n\n';
-        //for(var v=0;v<arrData.length;v++){
-            
-                //CSV+=arrData[v];
-                //CSV+="";
-                //var subject=arrData[v];
+        //this retrieves the subject's statistics from the server which retrieved it from the DB, and exports it to a excel file
+        $scope.exportToCSV = function(subject) {
+            var arrData = ["Cells", "Genetics", "Laboratory Skills and Applications", "Research & Scientific Method", "General Topics", "Applied Mathematics", "Biotechnology Skills", "Laboratory Equipment", "Preparing Solutions", "Biotech Careers", "Applications", "Chemistry & Biochemistry"];
+            var CSV = "";
+            var route = '/api/data/adminGrades';
+            CSV += "Statistics for " + subject + '\r\n\n';
+            //for(var v=0;v<arrData.length;v++){
+
+            //CSV+=arrData[v];
+            //CSV+="";
+            //var subject=arrData[v];
             //$http.get(route, {params:{"subject": subject}}).then(function(res) { 
-            $http.get(route, {params:{"subject": subject}}).then(function(res) { 
-                    var g_plus_1;
-                    for(var g=0;g<res.data.avgs.length;g++){
-                    g_plus_1 = g+1;
-                    CSV += "question: "+g_plus_1+"\n\n";
-                    CSV += "averages , "+res.data.avgs[g]+" , ";
-                    CSV += "modes , "+res.data.modes[g]+" , ";
-                    CSV += "% correct , "+res.data.perc_correct[g]+"\n";
+            $http.get(route, { params: { "subject": subject } }).then(function(res) {
+                var g_plus_1;
+                for (var g = 0; g < res.data.avgs.length; g++) {
+                    g_plus_1 = g + 1;
+                    CSV += "question: " + g_plus_1 + "\n\n";
+                    CSV += "averages , " + res.data.avgs[g] + " , ";
+                    CSV += "modes , " + res.data.modes[g] + " , ";
+                    CSV += "% correct , " + res.data.perc_correct[g] + "\n";
                     console.log(g);
-                    }
-                CSV+='\r\n\n';
-                
-        //}
-            
-        
-                    
+                }
+                CSV += '\r\n\n';
+
+                //}
+
+
+
                 //Set Report title in first row or line
-                
+
                 //CSV += "Statistics" + '\r\n\n';
-                
-               
-            
-                if (CSV == '') {        
+
+
+
+                if (CSV == '') {
                     alert("Invalid data");
                     return;
-                }   
-                
+                }
+
                 //Generate a file name
                 var fileName = "Statistics";
                 var ReportTitle = "Quiz Statistics";
-                
-                fileName += ReportTitle.replace(/ /g,"_");   
-                
+
+                fileName += ReportTitle.replace(/ /g, "_");
+
                 //Initialize file format you want csv or xls
                 var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-                
-                 
-                
-                
-                var link = document.createElement("a");    
+
+
+
+
+                var link = document.createElement("a");
                 link.href = uri;
-                
+
                 //set the visibility hidden so it will not effect on your web-layout
                 link.style = "visibility:hidden";
                 link.download = fileName + ".csv";
-                
+
                 //this part will append the anchor tag and remove it after automatic click
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                    
-                });
-            
-                
+
+            });
+
+
         };
-		
-	
-		//Isabel- add a course 
+
+
+        //Isabel- add a course 
         $scope.add = function(course, period) {
 
             if (course !== '') {
@@ -791,12 +792,6 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
         //Isabel- send email to Admin for request resource
         $scope.sendEmail = function(isValid) {
-            // console.log("sending email for resources");
-            // console.log("Subject: " + $scope.resource.subject);
-            // console.log("Subject Details: " + $scope.resource.subjectdetails);
-            // console.log("Link: " + $scope.resource.resourcelink);
-            // console.log("Comments: " + $scope.resource.comments);
-
             //information from the form 
             var data = ({
 
@@ -888,10 +883,10 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
         };
 
         //Isabel - bar graph
-                $scope.viewStats = function(classname, code, quiz){
-           
+        $scope.viewStats = function(classname, code, quiz) {
+
             // Plotly Stuff
-            console.log("Passing: "+ classname);
+            console.log("Passing: " + classname);
             var route = '/api/data/plot';
 
             // var params = ({
@@ -900,17 +895,17 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
 
             // });
 
-            $http.get(route, {params:{"person": $scope.user, "quiz": quiz, "classname": classname, "code": code}}).then(function(res) { 
+            $http.get(route, { params: { "person": $scope.user, "quiz": quiz, "classname": classname, "code": code } }).then(function(res) {
                 // your data
-               //  console.log("ploting");
-               //  console.log(res.data);
-               // console.log(res.data.length);
-                
+                //  console.log("ploting");
+                //  console.log(res.data);
+                // console.log(res.data.length);
+
                 //get correct number of questions for X axis
-                var label =[];
-                for(var i = 0; i < res.data.length; i++){
-                    var number = i+1;
-                    label[i] = "Question " + number; 
+                var label = [];
+                for (var i = 0; i < res.data.length; i++) {
+                    var number = i + 1;
+                    label[i] = "Question " + number;
                 }
 
                 // console.log(res);
@@ -918,36 +913,34 @@ angular.module('core').controller('ProfileController', ['$scope', '$state', '$lo
                 // ctx.destroy();
                 // ctx.canvas.width = 5;
                 // ctx.canvas.height = 5;
-                  var data = {
+                var data = {
                     labels: label,
-                    datasets: [
-                        {
-                            label: "Course Settings",
-                            fillColor: "blue",
-                            strokeColor: "rgba(220,220,220,0.8)",
-                            // highlightFill: "rgba(220,220,220,0.75)",
-                            // highlightStroke: "rgba(220,220,220,1)",
-                            data: res.data
-                        },
-                    ]
-                  };
+                    datasets: [{
+                        label: "Course Settings",
+                        fillColor: "blue",
+                        strokeColor: "rgba(220,220,220,0.8)",
+                        // highlightFill: "rgba(220,220,220,0.75)",
+                        // highlightStroke: "rgba(220,220,220,1)",
+                        data: res.data
+                    }, ]
+                };
 
-                  var options = { 
-                        responsive: false,
-                        maintainAspectRatio: true,
-                        barShowStroke : false
-                    }
+                var options = {
+                    responsive: false,
+                    maintainAspectRatio: true,
+                    barShowStroke: false
+                }
 
-                  var myBarChart = new Chart(ctx).Bar(data,options);
-                    }).then(function(error) {
-                        console.log("Plot eror" + error);
-                    });
+                var myBarChart = new Chart(ctx).Bar(data, options);
+            }).then(function(error) {
+                console.log("Plot eror" + error);
+            });
 
             // if (parsedData.Item1 != "") {
             //     $("#nograpdata").show();
             // }
 
-                  
+
 
             // Chart.defaults.global.responsive = true;
 

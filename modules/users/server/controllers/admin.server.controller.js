@@ -20,7 +20,6 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
     var user = req.user;
-    console.log("Will it update?");
     //For security purposes only merge these parameters
     // user.firstName = req.body;
     user.lastName = user.lastName;
@@ -40,7 +39,6 @@ exports.update = function(req, res) {
 };
 
 exports.updates = function(req, res) {
-    console.log("Will it updates?");
     var user = req.user;
     
     //For security purposes only merge these parameters
@@ -64,7 +62,6 @@ exports.updates = function(req, res) {
 
 exports.course = function(req, res) {
     var users = User;
-   console.log("Will it clear all courses? ");
 
         User.find({}, function(err,users){
         if (err) {

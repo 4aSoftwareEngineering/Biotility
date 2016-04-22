@@ -27,24 +27,12 @@ var transport = nodemailer.createTransport("SMTP", {
     }
 });
 
-//var app = angular.module('myApp', ['noCAPTCHA']);
-//recaptcha=new reCAPTCHA({
-//  siteKey:'6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo',
-//  secretKey:'6LcGiBsTAAAAAFxhCXEIXj40XpmvyrtVywvpYqUR'
-//})
 /**
  * Signup
  */
 exports.loadTeachers = function(req, res) {
-
-    User.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
-    User.find({}).lean().exec(function(err, users) {
+    console.log("loading teach")
+    User.find({ "profileType": "Teacher" }).lean().exec(function(err, users) {
         return res.end(JSON.stringify(users));
     });
 };
@@ -98,7 +86,7 @@ exports.signupStudent = function(req, res) {
         });
 };
 
-exports.signup = function(req, res){
+exports.signup = function(req, res) {
 
     ///////Previous Code/////
     // Init Schema
@@ -140,15 +128,15 @@ exports.signin = function(req, res) {
     console.log("Sign in");
     // First find if user name exists in db.
     User.findOne({
-            'userName': req.body.username
+            'userName': req.body.username.toLowerCase()
         },
         function(err, user) {
             if (user) { // if exists, authenticate with provided password.
                 req.login(user, function(err) {
                     if (err || !user.authenticate(req.body.password)) {
-                        return res.status(403).send({
-                            message: errorHandler.getErrorMessage(err)
-                        });
+                        return res.status(403).send(
+                            "No user found. Auth error?"
+                        );
                     } else {
                         //No Error
                         res.json(user);
@@ -209,17 +197,17 @@ exports.oauthCallback = function(strategy) {
             });
         })(req, res, next);
     };
-};
+}; 
 
 
 
 
-/*Michael and Isabel code for email*/
-exports.sendMail = function(req, res){
+/*Isabel code for email*/
+exports.sendMail = function(req, res) {
     console.log("EMAILS");
     var data = req.body;
     console.log(data.email);
-    var message= {
+    var message = {
         // sender info
         from: 'biotilitysp18@gmail.com',
 
@@ -234,8 +222,8 @@ exports.sendMail = function(req, res){
 
     };
     console.log('Sending Mail');
-    transport.sendMail(message, function(error){
-        if(error){
+    transport.sendMail(message, function(error) {
+        if (error) {
             console.log('Error occured');
             console.log(error.message);
             return;
@@ -276,10 +264,6 @@ exports.sendTeacherMail = function(req, res){
         // $("#myModal").modal('show');
     });
 };
-
-
-
-
 
 
 /**

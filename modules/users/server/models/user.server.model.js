@@ -118,7 +118,7 @@ var UserSchema = new Schema({
         type: Date
     },
     courses:{
-        type: Array,
+        type: Array
     }
 });
 
