@@ -63,7 +63,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             "Other"
         ];
 
-        //Michael and Isabel- registration email
+        //Isabel- registration email
         $scope.sendMail = function(contactEmail) {
 
             console.log('Sending registration email!');
@@ -158,7 +158,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            //$scope.credentials.courses =  $scope.credentials.courseCode ? [parseInt($scope.credentials.courseCode)] : [];
+            $scope.credentials.courses =  $scope.credentials.courses.length ? $scope.credentials.courses : [];
             console.log("courses", $scope.credentials.courses)
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
@@ -184,7 +184,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }).error(function(response) {
                 console.log("Invalid (Sign up)", response);
                 //sets error if invalid info
-                alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
+                alert("Invalid course code.");
 
                 $scope.error = response.message;
             });
