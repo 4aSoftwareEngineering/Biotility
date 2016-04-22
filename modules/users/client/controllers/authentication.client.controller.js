@@ -4,8 +4,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     function($scope, $state, $http, $location, $window, PasswordValidator, Authentication, Subjects, Teachers) {
 
         //Pop for email varification - MA
-        $(document).ready(function(){
-            $("#myBtn").click(function(){
+        $(document).ready(function() {
+            $("#myBtn").click(function() {
                 $("#myModal").modal();
             });
         });
@@ -28,7 +28,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         //array of saved codes
         var savedCodes = [];
-        
+
 
         // load subjects
         Subjects.loadSubjects().then(function(response) {
@@ -40,37 +40,38 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }
             //periods
             for (var j = 1; j < $scope.subjects.length; j++) {
-                $scope.Periods.push("Period "+ j);
+                $scope.Periods.push("Period " + j);
             }
 
         });
 
         $scope.newclassNames = ["Biotechnology 1",
-                            "Biotechnology 2",
-                            "Biotechnology 3",
-                            "PLTW Principles of Biomedical Science",
-                            "PLTW Human Body Systems",
-                            "PLTW Medical Interventions",
-                            "PLTW Biomedical Innovation",
-                            "Agricultural Biotechnology",
-                            "Biology",
-                            "Honors Biology",
-                            "AP Biology",
-                            "AICE Biology",
-                            "IB Biology",
-                            "Genetics",
-                            "Forensics",
-                            "Other"];
+            "Biotechnology 2",
+            "Biotechnology 3",
+            "PLTW Principles of Biomedical Science",
+            "PLTW Human Body Systems",
+            "PLTW Medical Interventions",
+            "PLTW Biomedical Innovation",
+            "Agricultural Biotechnology",
+            "Biology",
+            "Honors Biology",
+            "AP Biology",
+            "AICE Biology",
+            "IB Biology",
+            "Genetics",
+            "Forensics",
+            "Other"
+        ];
 
         //Michael and Isabel- registration email
-        $scope.sendMail = function (contactEmail) {
+        $scope.sendMail = function(contactEmail) {
 
             console.log('Sending registration email!');
             console.log(contactEmail);
             var data = ({
-                email : contactEmail
+                email: contactEmail
             });
-            
+
 
             console.log(data.email);
             var route = '/api/auth/email';
@@ -82,101 +83,92 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         };
 
         //Isabel- check if course code already existis before adding new course
-        $scope.add = function(course,period) {
+        $scope.add = function(course, period) {
             console.log("Found course:" + course);
-            if (course !== '') {
-                //Creates a new object to be used for user course schema
-                var courseObj = {};
-                courseObj.courseName = course;
-                courseObj.content = "";
-                courseObj.progress = "";
-                courseObj.section = period;
+            console.log("user", $scope.authentication.user)
 
-                //Generate number when you add the course
-                //get all the coursecodes
-                Teachers.loadTeachers().then(function(response) {
-                    $scope.teachers = response.data;
+            //need a course!
+            if (course == "" || course == null || course == undefined) return;
+            if (period == "" || period == null || period == undefined) return;
+
+            //Creates a new object to be used for user course schema
+            var courseObj = {};
+            courseObj.courseName = course;
+            courseObj.content = "";
+            courseObj.progress = "";
+            courseObj.section = period;
+
+            //Generate number when you add the course
+            //get all the coursecodes
+            Teachers.loadTeachers().then(function(response) {
+                $scope.teachers = response.data;
+                console.log("teachers", $scope.teachers)
                     //dowload all current course codes
-                    for (var i = 0; i < $scope.teachers.length; i++) {
-                        // if ($scope.teacher[i].courses !== undefined) {
-                            // console.log("not empty");
-                            // console.log($scope.teachers[i].courses[0].number);
-                            // var number = $scope.teachers[i].courses[0].number;
-                            for(var f = 0; f < $scope.teachers[i].courses.length; f++){
-                                // console.log($scope.teachers[i].courses[f].number);
-                                var number = $scope.teachers[i].courses[f].number;
-                                //save course codes to savedCodes array
-                                savedCodes.push(number);
-                            }
-                        // }  
+                for (var i = 0; i < $scope.teachers.length; i++) {
+                    for (var f = 0; f < $scope.teachers[i].courses.length; f++) {
+                        var tc = $scope.teachers[i].courses[f];
+                        if (tc == null) continue;
+                        var number = tc.number;
+                        //save course codes to savedCodes array
+                        savedCodes.push(number);
                     }
+                    // }  
+                }
 
-                    var posted = false;
-                    var match = false;
-                    var num =  Math.floor((Math.random() * 1000) + 1);
-                    while (posted === false){
-                        match = false;
-                        //check if there is a match
-                        while (match === false){
-                            //make random number
-                            num =  Math.floor((Math.random() * 1000) + 1);
-                            match = true;
-                            for (var s = 0; s < savedCodes.length; s++) {
-                                //if there is go back to beginning 
-                                if (num === savedCodes[s]) {
-                                    match = false;
-                                    console.log("Duplicate Code");
-                                    break;
-                                }
+                var posted = false;
+                var match = false;
+                var num = Math.floor((Math.random() * 1000) + 1);
+                while (posted === false) {
+                    match = false;
+                    //check if there is a match
+                    while (match === false) {
+                        //make random number
+                        num = Math.floor((Math.random() * 1000) + 1);
+                        match = true;
+                        for (var s = 0; s < savedCodes.length; s++) {
+                            //if there is go back to beginning 
+                            if (num === savedCodes[s]) {
+                                match = false;
+                                console.log("Duplicate Code");
+                                break;
                             }
-
                         }
-                        //if not add course code
-                        console.log("New Course Code Created");
-                        courseObj.number = num;
-                        $scope.credentials.courses.push(courseObj);
-                        console.log($scope.credentials.courses[0]);
-                        posted = true; 
-                    }
-                });
-            }
 
-            $scope.toAdd = '';
+                    }
+                    //if not add course code
+                    console.log("New Course Code Created");
+                    courseObj.number = num;
+                    $scope.credentials.courses.push(courseObj);
+                    console.log($scope.credentials.courses[0]);
+                    posted = true;
+                }
+            });
+
+
+            //$scope.toAdd = '';
         };
 
         $scope.signup = function(isValid) {
             $scope.error = null;
-			//recaptcha.validate(key)
-			//.then(function(){
-			  // validated and secure
-			//})
-			//.catch(function(errorCodes){
-			  // invalid
-			//  console.log(recaptcha.translateErrors(errorCodes));// translate error codes to human readable text
-			//  console.log("invalid");
-                //sets error if invalid info
-            //    alert("Use a valid course code. For testing, use 863.");
 
-            //    $scope.error = response.message;
-			//});
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');
-				
+
                 return false;
             }
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)].length? [parseInt($scope.credentials.courseCode)] : [];
+            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)].length ? [parseInt($scope.credentials.courseCode)] : [];
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
                 route = '/api/auth/signup/student';
                 console.log("Is a student");
-            } else if($scope.credentials.profileType === "Admin") {
+            } else if ($scope.credentials.profileType === "Admin") {
                 // user the teacher route because it doesn't ask for course code to register
                 route = '/api/auth/signup/teacher';
                 console.log("Is an Admin");
-            } else if($scope.credentials.profileType === "Teacher") {
+            } else if ($scope.credentials.profileType === "Teacher") {
                 route = '/api/auth/signup/teacher';
                 console.log("Is a Teacher");
             }
@@ -198,7 +190,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             });
 
         };
-// 
+        // 
         $scope.signin = function(isValid) {
 
             $scope.error = null;

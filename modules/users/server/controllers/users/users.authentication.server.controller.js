@@ -27,24 +27,12 @@ var transport = nodemailer.createTransport("SMTP", {
     }
 });
 
-//var app = angular.module('myApp', ['noCAPTCHA']);
-//recaptcha=new reCAPTCHA({
-//  siteKey:'6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo',
-//  secretKey:'6LcGiBsTAAAAAFxhCXEIXj40XpmvyrtVywvpYqUR'
-//})
 /**
  * Signup
  */
 exports.loadTeachers = function(req, res) {
-
-    User.find({}, function(err, docs) {
-        if (!err) {
-            console.log(docs);
-        } else {
-            throw err;
-        }
-    });
-    User.find({}).lean().exec(function(err, users) {
+    console.log("loading teach")
+    User.find({ "profileType": "Teacher" }).lean().exec(function(err, users) {
         return res.end(JSON.stringify(users));
     });
 };
@@ -209,12 +197,12 @@ exports.oauthCallback = function(strategy) {
             });
         })(req, res, next);
     };
-};
+}; 
 
 
 
 
-/*Michael and Isabel code for email*/
+/*Isabel code for email*/
 exports.sendMail = function(req, res) {
     console.log("EMAILS");
     var data = req.body;
@@ -245,10 +233,6 @@ exports.sendMail = function(req, res) {
         // $("#myModal").modal('show');
     });
 };
-
-
-
-
 
 
 /**
