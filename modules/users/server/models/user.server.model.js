@@ -119,7 +119,6 @@ var UserSchema = new Schema({
     },
     courses:{
         type: Array,
-        required: true
     }
 });
 

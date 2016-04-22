@@ -143,26 +143,27 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }
 
             $scope.toAdd = '';
+            $scope.periodtoAdd = '';
         };
 
-        $scope.signup = function(isValid) {
+$scope.signup = function(isValid) {
             $scope.error = null;
-			//recaptcha.validate(key)
-			//.then(function(){
-			  // validated and secure
-			//})
-			//.catch(function(errorCodes){
-			  // invalid
-			//  console.log(recaptcha.translateErrors(errorCodes));// translate error codes to human readable text
-			//  console.log("invalid");
+            //recaptcha.validate(key)
+            //.then(function(){
+              // validated and secure
+            //})
+            //.catch(function(errorCodes){
+              // invalid
+            //  console.log(recaptcha.translateErrors(errorCodes));// translate error codes to human readable text
+            //  console.log("invalid");
                 //sets error if invalid info
             //    alert("Use a valid course code. For testing, use 863.");
 
             //    $scope.error = response.message;
-			//});
+            //});
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');
-				
+                
                 return false;
             }
 
@@ -176,14 +177,27 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             } else if($scope.credentials.profileType === "Admin") {
                 // user the teacher route because it doesn't ask for course code to register
                 route = '/api/auth/signup/teacher';
+                $scope.credentials.courses = []; 
                 console.log("Is an Admin");
+
             } else if($scope.credentials.profileType === "Teacher") {
                 route = '/api/auth/signup/teacher';
                 console.log("Is a Teacher");
-            }
+                var coursename = "";
+                for (var i= 0; i < $scope.credentials.courses.length; i++){
+                    coursename = coursename + $scope.credentials.courses[i].courseName 
+                }
 
-
-            $http.post(route, $scope.credentials).success(function(response) {
+                var data = ({
+                    email : "biotilitysp18@gmail.com", 
+                    subject: "A new teacher " + $scope.credentials.firstName +  " " + $scope.credentials.lastName + " registered course "  + $scope.credentials.courses[0]
+                });
+                console.log(data.subject);
+                
+                var route = '/api/auth/emailTeacherRegistration';
+                $http.post(route, data).success(function(req, res) {
+                    console.log("sending teacher registration email");
+                    $http.post(route, $scope.credentials).success(function(response) {
 
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
@@ -197,6 +211,24 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
                 $scope.error = response.message;
             });
+                });
+            }
+
+
+            // $http.post(route, $scope.credentials).success(function(response) {
+
+            //     // If successful we assign the response to the global user model
+            //     $scope.authentication.user = response;
+
+            //     // And redirect to the home page
+            //     $location.url('/');
+            // }).error(function(response) {
+            //     console.log("Invalid (Sign up)", response);
+            //     //sets error if invalid info
+            //     alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
+
+            //     $scope.error = response.message;
+            // });
 
         };
 // 

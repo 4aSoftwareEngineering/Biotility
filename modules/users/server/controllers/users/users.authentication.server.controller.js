@@ -246,6 +246,37 @@ exports.sendMail = function(req, res){
     });
 };
 
+//Isabel-send admin an email any type a new teacher registers
+exports.sendTeacherMail = function(req, res){
+    var data = req.body;
+    console.log(data.email);
+    var message= {
+        // sender info
+        from: 'biotilitysp18@gmail.com',
+
+        // Comma separated list of recipients
+        to: "isalau@me.com",
+
+        // Subject of the message
+        subject: "New Teacher Registered",
+
+        //text
+        text: data.subject
+
+    };
+    console.log('Sending Mail');
+    transport.sendMail(message, function(error){
+        if(error){
+            console.log('Error occured');
+            console.log(error.message);
+            return;
+        }
+        console.log('Message sent successfully!');
+        // $("#myModal").modal("show");
+        // $("#myModal").modal('show');
+    });
+};
+
 
 
 
