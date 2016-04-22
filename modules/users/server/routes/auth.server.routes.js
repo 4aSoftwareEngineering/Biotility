@@ -23,6 +23,7 @@ module.exports = function(app) {
     app.route('/api/auth/signout').get(users.signout);
     //app.route('/api/auth/signup/courseCode').get(users.checkStudentCode);
     app.route('/api/auth/email').post(users.sendMail);
+    app.route('/api/auth/emailTeacherRegistration').post(users.sendTeacherMail);
     // app.route('/api/auth/signup')
 
     //Isabel and Matt - fixing teacher route

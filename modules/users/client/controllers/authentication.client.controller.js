@@ -64,6 +64,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         ];
 
         //Isabel- registration email
+
         $scope.sendMail = function(contactEmail) {
 
             console.log('Sending registration email!');
@@ -142,12 +143,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                     posted = true;
                 }
             });
-
-
-            //$scope.toAdd = '';
         };
 
-        $scope.signup = function(isValid) {
+$scope.signup = function(isValid) {
             $scope.error = null;
 
             if (!isValid) {
@@ -155,10 +153,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
                 return false;
             }
-
+             var teaches = false;
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
+
             $scope.credentials.courses =  $scope.credentials.courses.length ? $scope.credentials.courses : [];
+
             console.log("courses", $scope.credentials.courses)
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
@@ -167,10 +167,15 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             } else if ($scope.credentials.profileType === "Admin") {
                 // user the teacher route because it doesn't ask for course code to register
                 route = '/api/auth/signup/teacher';
+                $scope.credentials.courses = []; 
                 console.log("Is an Admin");
+
+
+
             } else if ($scope.credentials.profileType === "Teacher") {
+                teaches = true;
                 route = '/api/auth/signup/teacher';
-                console.log("Is a Teacher");
+                console.log("Is a Teacher");                
             }
 
 
@@ -184,10 +189,28 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             }).error(function(response) {
                 console.log("Invalid (Sign up)", response);
                 //sets error if invalid info
-                alert("Invalid course code.");
+                alert("Use a valid course code. For testing, check the database for a teacher and use their course numbers.");
 
                 $scope.error = response.message;
             });
+
+            if(teaches == true){
+                var coursename = "";
+                for (var i= 0; i < $scope.credentials.courses.length; i++){
+                    coursename = coursename + "Class: " + $scope.credentials.courses[i].courseName +" "+  $scope.credentials.courses[i].section+ " "
+                }
+
+                var data = ({
+                    email : "biotilitysp18@gmail.com", 
+                    subject: "A new teacher " + $scope.credentials.firstName +  " " + $scope.credentials.lastName + " registered  "  + coursename
+                });
+                console.log(data.subject);
+                
+                var route = '/api/auth/emailTeacherRegistration';
+                $http.post(route, data).success(function(req, res) {
+                    console.log("sending teacher registration email");
+                });
+            }
 
         };
         // 

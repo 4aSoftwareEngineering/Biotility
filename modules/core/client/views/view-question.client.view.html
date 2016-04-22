@@ -141,7 +141,7 @@
 				<!-- MC answers: Shows answer choices A-E -->
 				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc1">Answer A: </label>
-				    <input name="mc1" type="text" ng-model="mc1" id="mc1" class="form-control" placeholder="{{question.answers.MCTF[0]}}" ng-value="{{question.answers.MCTF[0]}}">
+				    <input name="mc1" type="text" ng-model="mc1" id="mc1" class="form-control" placeholder="{{question.answers.MCTF[0]}}" ng-init="mc1 = question.answers.MCTF[0] " ng-value="{{question.answers.MCTF[0]}}">
 				</div>
 				<div ng-hide="type==='TF'" class="form-group">
 				    <label for="mc2">Answer B: </label>
