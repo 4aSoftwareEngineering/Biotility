@@ -1,81 +1,49 @@
 <!-- modules/user/client/views/signup
     This view defines the new user registration page -->
 <div ng-controller="AuthenticationController">
-
-<!--header-->
+    <!--header-->
     <div class="breadcrumbh">
-    	<div class="row topmargin-b">
-        <div class="col-md-3 col-md-offset-1 col-xs-offset-1 col-xs-4 col-sm-4 page-head">
-           	Sign-up
+        <div class="row topmargin-b">
+            <div class="col-md-3 col-md-offset-1 col-xs-offset-1 col-xs-4 col-sm-4 page-head">
+                Sign-up
+            </div>
+            <div class="col-md-7 col-sm-pull-1 col-xs-pull-1 b-head">
+                <a data-ui-sref="home">Home</a> / <a data-ui-sref="authentication.signin">Login</a> / Sign-Up
+            </div>
         </div>
-        <div class="col-md-7 col-sm-pull-1 col-xs-pull-1 b-head">
-           	<a data-ui-sref="home">Home</a> / <a data-ui-sref="authentication.signin">Login</a> / Sign-Up
-        </div>
-    	</div>
     </div>
-	<!--take off after we host it
-	<script src="/src/angular-no-captcha.js"></script>
-	-->
-	<!--take off after we host it
-	<script>
-    var SITE_KEY = '6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo';
-    var app = angular
-      .module('myApp', ['noCAPTCHA'])
-      .config(['noCAPTCHAProvider',
-        function (noCaptchaProvider){
-          noCaptchaProvider.setSiteKey(SITE_KEY);
-          noCaptchaProvider.setTheme('dark');
-        }
-      ])
-      .controller('exampleController', [
-        '$scope',
-        function exampleController($scope){
-          $scope.gRecaptchaResponse = '';
-          $scope.$watch('gRecaptchaResponse', function (){
-            $scope.expired = false;
-          });
-          $scope.expiredCallback = function expiredCallback(){
-            $scope.expired = true;
-          };
-        }]);<script src='https://www.google.com/recaptcha/api.js'></script>
-  </script>-->
-
-		
-
-
-  <!-- Michael Arboleda: Added Lables, Fixed form on mobile/smaller Screen>
-	<!--submit form-->
+    <!-- Michael Arboleda: Added Lables, Fixed form on mobile/smaller Screen-->
+    <!-- Matt Lemmone: Fixed labels and misaligned forms, fixed courses & btn alignment, fixed grammar, fixed modal misalignment, removed weird margins, centered everything-->
+    <!--submit form-->
     <form class="signup" ng-submit="signup(true)">
-   		 <div class="container topmargin-50" align="center">
-         <div class="inputs">
-           <label>First Name &nbsp;</label><input type="text" ng-model="credentials.firstName"  placeholder="First Name" required style="height:40px;">
-         </div>
-
-         <div class="inputs">
-           <label>Last Name &nbsp;</label><input type="text" ng-model="credentials.lastName" required placeholder="Last Name" required style="height:40px;">
-         </div>
-
-
-         <div class="inputs">
-           <label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;E-Mail &nbsp;</label><input type="email" ng-model="credentials.email" required placeholder="E-mail" required style="height:40px;">
-         </div>
-
-
-         <div class="inputs">
-           <label>Username &nbsp;</label><input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
-         </div>
-
-         <div class="inputs">
-           <label>Password &nbsp;</label><input type="password" ng-model="credentials.password" required placeholder="Password" required style="height:40px;">
-         </div>
-
-       </div>
-<!-- class="col-md-2 col-md-offset-4 col-xs-12 col-xs-offset-1"  -->
-<!--account type-->
-        <div class="row" align="center" style="margin-left:80px">
-                <div class="accounts">
-                  <label>Account Type: </label>
-                </div>
+        <div class="container topmargin-50" align="center">
+            <div class="inputs">
+                <label>First Name &nbsp;</label>
+                <input type="text" ng-model="credentials.firstName" placeholder="First Name" required style="height:40px;">
+            </div>
+            <div class="inputs">
+                <label>Last Name &nbsp;</label>
+                <input type="text" ng-model="credentials.lastName" required placeholder="Last Name" required style="height:40px;">
+            </div>
+            <div class="inputs">
+                <label>&nbsp; &nbsp; &nbsp; &nbsp;E-Mail &nbsp;</label>
+                <input type="email" ng-model="credentials.email" required placeholder="E-mail" required style="height:40px;">
+            </div>
+            <div class="inputs">
+                <label>Username &nbsp;</label>
+                <input type="text" ng-model="credentials.userName" required placeholder="Username" required style="height:40px;">
+            </div>
+            <div class="inputs">
+                <label>Password &nbsp;</label>
+                <input type="password" ng-model="credentials.password" required placeholder="Password" required style="height:40px;">
+            </div>
+        </div>
+        <!-- class="col-md-2 col-md-offset-4 col-xs-12 col-xs-offset-1"  -->
+        <!--account type-->
+        <div class="row" align="center">
+            <div class="accounts">
+                <label>Account Type: </label>
+            </div>
             <div class="radio account-pick">
                 <label>
                     <input type="radio" name="profiletype" value="Teacher" ng-model="credentials.profileType" required> Teacher
@@ -86,7 +54,7 @@
                 </label>
                 <br>
                 <label ng-show="isAdmin">
-                  <!-- hide this option for anyone not logged in as an admin -->
+                    <!-- hide this option for anyone not logged in as an admin -->
                     <input type="radio" name="profiletype" value="Admin" ng-model="credentials.profileType" required> Admin
                 </label>
                 <br>
@@ -94,39 +62,38 @@
         </div>
         <!-- if student - input class code -->
         <div ng-show="credentials.profileType=='Student'" class="inputs" align="center">
-          <label>Course Code </label>
-          <input type="text" ng-model="credentials.courseCode" placeholder="Class Code" style="height:40px;">
-          <div class="row">
-            You will have to verify your e-mail if you have NO course code
-            <div class = "row">
-              <button type="button" class="btn btn-primary btn-sm" id="myBtn"> Verify E-mail</button>
+            <label>Course Code </label>
+            <input type="text" ng-model="credentials.courseCode" placeholder="Course Code" style="height:40px;">
+            <div class="row">
+                <br> If you do not have a course code, you must verify your e-mail address so that you may receive a new one.
+                <div class="row">
+                    <br>
+                    <button type="button" class="btn btn-primary btn-sm" id="myBtn"> Verify E-mail</button>
+                </div>
             </div>
-          </div>
         </div>
         <!-- if teacher - select courses  -->
         <div ng-show="credentials.profileType=='Teacher'">
-            <div class="row" align="center" style="margin-left:80px">
+            <div class="row" align="center">
                 <div>
                     <div class="accounts">
-                		Courses:
-                	</div>
-                </div>
-
-                <!--select course-->
-                <div class="account-pick" align="center">
-                    <select ng-model="toAdd" class="col-md-3 col-md-offset-5 " style="width: 175px; height: 30px;">
-                        <option ng-repeat="name in newclassNames track by $index">{{name}}</option>
-                    </select>
-                    <select ng-model="periodtoAdd" class="col-md-3 " style="width: 175px; height: 30px;">
-                        <option  ng-repeat="period in Periods">{{period}}</option>
-                    </select>
-                    <!--button for adding more than one course-->
-                      <button type="button" class="btn btn-default" ng-click="add(toAdd, periodtoAdd)">
-                          +
-                      </button>
+                        <!--select course-->
+                        <h5><b> My Courses </b></h5>
+                        <div class="account-pick row" align="center">
+                            <select ng-model="toAdd" class="col-md-3 col-md-offset-5 " style="width: 175px; height: 30px;">
+                                <option ng-repeat="name in newclassNames track by $index">{{name}}</option>
+                            </select>
+                            <select ng-model="periodtoAdd" class="col-md-3 " style="width: 175px; height: 30px;">
+                                <option ng-repeat="period in Periods">{{period}}</option>
+                            </select>
+                            <!--button for adding more than one course-->
+                        </div>
+                            <button type="button" class="btn btn-default" ng-click="add(toAdd, periodtoAdd)">
+                                Add Course
+                            </button>
+                    </div>
                 </div>
             </div>
-
             <!--Classes already seleted-->
             <div class="row" align="center">
                 <div class="col-md-2 col-md-offset-5 col-sm-offset-5 col-xs-2 col-xs-offset-4">
@@ -138,31 +105,6 @@
                 </div>
             </div>
         </div>
-
-
-
-<!-- 
-		<style>
-		.capatcha {
-			text-align: center;
-		}
-
-		.g-recaptcha {
-			display: inline-block;
-		}
-		</style>
-			<div class="capatcha">
-					<div class="g-recaptcha" data-sitekey="6LcGiBsTAAAAAObQA4QThOJ5IuEu2Czosh4RZXfo"></div>
-			</div>
-
-        Registration button-->
-		<!--Google Captcha showing, not showing for now till we put it on the site
-		<no-captcha
-			g-recaptcha-response="gRecaptchaResponse"
-			theme='light'
-			control="noCaptchaControl"
-			site-key="<your site key>">
-		</no-captcha>-->
         <div class="topmargin-10" style="text-align:center;">
             <button class="btn btn-default" type="submit">
                 Register
@@ -171,38 +113,33 @@
     </form>
 </div>
 <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+<div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <!-- Header -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 style="color:red;"><span class="glyphicon glyphicon-envelope"></span> E-Mail Verification</h4>
-        </div>
-        <!-- Body -->
-        <div class="modal-body">
-          <p>Since you do not have a class code.
-            We will send you a code that works and can use.
-            You must verify your email to get this code.
-            The code will be sent immediately, please check
-            your inbox for out e-mail.
-          </p>
-          <form name="contactForm" ng-submit="sendMail(resource.email)">
-           <div class="form-group">
-                <label class="col-lg-3 control-label">Your Email:</label>
-                <div class="col-lg-8">
-                    <input class="form-control" type="text" ng-model="resource.email">
-                </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="color:red;"><span class="glyphicon glyphicon-envelope"></span> E-Mail Verification</h4>
             </div>
-            <button type="submit" id="submit" class="btn btn-default btn-success btn-block" ><span class="glyphicon glyphicon-off"></span> Confirm</button>
-          </form>
+            <!-- Body -->
+            <div class="modal-body">
+                <p>A course code will be e-mailed to you. Please check your inbox momentarily after verifying your address.
+                </p>
+                <p style="text-align: center">
+                    <b>Confirm your e-mail address below.</b>
+                </p>
+                <form name="contactForm" ng-submit="sendMail(resource.email)" style="text-align: center">
+                    <div class="form-group">
+                        <input class="form-control" type="text" ng-model="resource.email">
+                    </div>
+                    <button type="submit" id="submit" class="btn btn-default btn-success btn"><span class="glyphicon glyphicon-off"></span> Confirm</button>
+                </form>
+            </div>
+            <!-- footer -->
+            <div class="modal-footer" style="text-align: center">
+                <div class="row">Biotility &#9400</div>
+            </div>
         </div>
-        <!-- footer -->
-        <div class="modal-footer">
-          <a class="btn btn-danger" data-dismiss="modal">Close</a>
-          <div class ="row">Biotility &#9400</div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>

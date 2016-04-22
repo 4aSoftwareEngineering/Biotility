@@ -5,7 +5,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         //Pop for email varification - MA
         $(document).ready(function(){
-            console.log('Hello');
             $("#myBtn").click(function(){
                 $("#myModal").modal();
             });
