@@ -139,7 +139,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                     console.log("New Course Code Created");
                     courseObj.number = num;
                     $scope.credentials.courses.push(courseObj);
-                    console.log($scope.credentials.courses[0]);
                     posted = true;
                 }
             });
@@ -159,7 +158,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
             // Add displayName
             $scope.credentials.displayName = $scope.credentials.lastName + ', ' + $scope.credentials.firstName;
-            $scope.credentials.courses = [parseInt($scope.credentials.courseCode)].length ? [parseInt($scope.credentials.courseCode)] : [];
+            //$scope.credentials.courses =  $scope.credentials.courseCode ? [parseInt($scope.credentials.courseCode)] : [];
+            console.log("courses", $scope.credentials.courses)
             var route = '/api/auth/signup/teacher';
             if ($scope.credentials.profileType === "Student") {
                 route = '/api/auth/signup/student';
