@@ -265,7 +265,6 @@ exports.sendTeacherMail = function(req, res){
     });
 };
 
-
 /**
  * Helper function to save or update a OAuth user profile
  */
