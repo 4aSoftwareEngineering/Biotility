@@ -28,6 +28,8 @@ angular.module('core').controller('QuestionData', ['$scope', '$http',
 // Used for admin capability to add/edit/delete individual questions 
 angular.module('core').controller('QuestionControl',['$scope', '$http', '$state', '$location', '$stateParams', 'QuizQuestions',
 	function($scope, $http, $state, $location, $stateParams, QuizQuestions){
+		$scope.question = null;
+
 		// get full list of quiz questions from DB 
 		$scope.findQuestions = function(){
 			QuizQuestions.loadQuestions().then(function(response) {
@@ -42,6 +44,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 			$http.get('/api/data/questions/' + id)
 				.then(function(response){
 					$scope.question = response.data;
+					console.log(response.data);
 				}, function(error){
           			$scope.error = 'Unable to get question!\n' + error;
 				});
@@ -52,6 +55,31 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 			if(!isValid){
 				return false;
 			}
+
+			var quizQuestion_present = [];
+			var quizQuestion_correct = [];
+			var quizQuestion_MCTF = [];
+
+			if($scope.mc1) quizQuestion_MCTF.push($scope.mc1);
+			if($scope.mc2) quizQuestion_MCTF.push($scope.mc2);
+			if($scope.mc3) quizQuestion_MCTF.push($scope.mc3);
+			if($scope.mc4) quizQuestion_MCTF.push($scope.mc4);
+			if($scope.mc5) quizQuestion_MCTF.push($scope.mc5);
+
+			if($scope.ma1) quizQuestion_correct.push($scope.ma1);
+			if($scope.ma2) quizQuestion_correct.push($scope.ma2);
+			if($scope.ma3) quizQuestion_correct.push($scope.ma3);
+			if($scope.ma4) quizQuestion_correct.push($scope.ma4);
+			if($scope.ma5) quizQuestion_correct.push($scope.ma5);
+
+			if($scope.ma4) quizQuestion_present.push($scope.ma4);
+			if($scope.ma2) quizQuestion_present.push($scope.ma2);
+			if($scope.ma5) quizQuestion_present.push($scope.ma5);
+			if($scope.ma1) quizQuestion_present.push($scope.ma1);
+			if($scope.ma3) quizQuestion_present.push($scope.ma3);
+			
+
+
 			// Multiple Answer question: 
 			if($scope.type === 'MA'){
 				var quizQuestion = {
@@ -60,28 +88,10 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				    text: $scope.qtext,
 				    answers: {
 				        MA: {
-				        	present: [
-				        		$scope.ma3,
-				        		$scope.ma1,
-				        		$scope.ma5,
-				        		$scope.ma2,
-				        		$scope.ma4
-				        	],
-				        	correct: [
-				        		$scope.ma1,
-				        		$scope.ma2,
-				        		$scope.ma3,
-				        		$scope.ma4,
-				        		$scope.ma5
-				        	],
+				        	present: quizQuestion_present,
+				        	correct: quizQuestion_correct
 				        },
-				        MCTF: [
-				        	$scope.mc1,
-				        	$scope.mc2,
-				        	$scope.mc3,
-				        	$scope.mc4,
-				        	$scope.mc5
-				        ]
+				        MCTF: quizQuestion_MCTF
 				    },
 				    hint: $scope.hint,
 				    link: $scope.link
@@ -106,13 +116,7 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 				    type: $scope.type,
 				    text: $scope.qtext,
 				    answers: {
-				        MCTF: [
-				        	$scope.mc1,
-				        	$scope.mc2,
-				        	$scope.mc3,
-				        	$scope.mc4,
-				        	$scope.mc5
-				        ],
+				        MCTF: quizQuestion_MCTF,
 				        correct: $scope.correct
 				    },
 				    hint: $scope.hint,
@@ -137,73 +141,36 @@ angular.module('core').controller('QuestionControl',['$scope', '$http', '$state'
 			if (!isValid){
 				return false;
 			}
-			if($scope.type === 'MA'){
-				var quizQuestion = {
-					category: $scope.category,
-				    type: $scope.type,
-				    text: $scope.qtext,
-				    answers: {
-				        MA: {
-				        	present: [
-				        		$scope.ma3,
-				        		$scope.ma1,
-				        		$scope.ma5,
-				        		$scope.ma2,
-				        		$scope.ma4
-				        	],
-				        	correct: [
-				        		$scope.ma1,
-				        		$scope.ma2,
-				        		$scope.ma3,
-				        		$scope.ma4,
-				        		$scope.ma5
-				        	],
-				        },
-				        MCTF: [
-				        	$scope.mc1,
-				        	$scope.mc2,
-				        	$scope.mc3,
-				        	$scope.mc4,
-				        	$scope.mc5
-				        ]
-				    },
-				    hint: $scope.hint,
-				    link: $scope.link
-				};
-			} else if($scope.type === 'TF') {
-				var quizQuestion = {
-					category: $scope.category,
-				    type: $scope.type,
-				    text: $scope.qtext,
-				    answers: {
-				        MCTF: [],
-				        correct: $scope.correct
-				    },
-				    hint: $scope.hint,
-				    link: $scope.link
-				};
-			} else {
-				var quizQuestion = {
-					category: $scope.category,
-				    type: $scope.type,
-				    text: $scope.qtext,
-				    answers: {
-				        MCTF: [
-				        	$scope.mc1,
-				        	$scope.mc2,
-				        	$scope.mc3,
-				        	$scope.mc4,
-				        	$scope.mc5
-				        ],
-				        correct: $scope.correct
-				    },
-				    hint: $scope.hint,
-				    link: $scope.link
-				};
-			} 
+
+				var quizQuestion_present = [];
+				var quizQuestion_correct = [];
+				var quizQuestion_MCTF = [];
+				if($scope.question.answers.MCTF[0]) quizQuestion_MCTF.push($scope.question.answers.MCTF[0]);
+				if($scope.question.answers.MCTF[1]) quizQuestion_MCTF.push($scope.question.answers.MCTF[1]);
+				if($scope.question.answers.MCTF[2]) quizQuestion_MCTF.push($scope.question.answers.MCTF[2]);
+				if($scope.question.answers.MCTF[3]) quizQuestion_MCTF.push($scope.question.answers.MCTF[3]);
+				if($scope.question.answers.MCTF[4]) quizQuestion_MCTF.push($scope.question.answers.MCTF[4]);
+
+			if($scope.question.answers.MA){
+				if($scope.question.answers.MA.correct[0]) quizQuestion_correct.push($scope.question.answers.MA.correct[0]);
+				if($scope.question.answers.MA.correct[1]) quizQuestion_correct.push($scope.question.answers.MA.correct[1]);
+				if($scope.question.answers.MA.correct[2]) quizQuestion_correct.push($scope.question.answers.MA.correct[2]);
+				if($scope.question.answers.MA.correct[3]) quizQuestion_correct.push($scope.question.answers.MA.correct[3]);
+				if($scope.question.answers.MA.correct[4]) quizQuestion_correct.push($scope.question.answers.MA.correct[4]);
+				if($scope.question.answers.MA.correct[4]) quizQuestion_present.push($scope.question.answers.MA.correct[4]);
+				if($scope.question.answers.MA.correct[2]) quizQuestion_present.push($scope.question.answers.MA.correct[2]);
+				if($scope.question.answers.MA.correct[0]) quizQuestion_present.push($scope.question.answers.MA.correct[0]);
+				if($scope.question.answers.MA.correct[1]) quizQuestion_present.push($scope.question.answers.MA.correct[1]);
+				if($scope.question.answers.MA.correct[3]) quizQuestion_present.push($scope.question.answers.MA.correct[3]);
+
+				$scope.question.answers.MA.correct = quizQuestion_correct;
+				$scope.question.answers.MA.present = quizQuestion_present;
+			}
+				$scope.question.answers.MCTF = quizQuestion_MCTF;
+				
 			
 			// save it in the DB 
-			$http.put('/api/data/questions/' + id, quizQuestion)
+			$http.put('/api/data/questions/' + id, $scope.question)
 				.then(function(response){
 					//redirect to list if successful
 					$scope.findQuestions();	// refresh the list 
