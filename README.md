@@ -18,40 +18,41 @@ This repository was an inherited from a previous group whose repository can be f
 
 ### List of all project features implemented and associated screenshots -include landing or home page
 - Home Page
- ![alt text] (http://i.imgur.com/zHEdaW6.jpg?1)
+ ![] (https://puu.sh/osk1T/f1f5b428aa.jpg)
 - Allow non registered students to use site and take quizzes
- ![alt text] (http://i.imgur.com/kp5poly.png)
+ ![] (https://puu.sh/osk3t/9eee5c2f9a.png)
 - Teachers can create classes with periods and receive course codes to give to students 
- ![alt text] (http://i.imgur.com/UCKmPxg.png)
+ ![] (http://i.imgur.com/UCKmPxg.png)
 - Teachers can edit their settings
-![alt text] ( http://i.imgur.com/gBy4AHE.png)
+ ![] ( http://i.imgur.com/gBy4AHE.png)
 - Teachers can view statistics based on their classes first attempts at quiz questions
- ![alt text] (http://i.imgur.com/ecs4AlD.png)
+ ![] (http://i.imgur.com/ecs4AlD.png)
 - Teachers can request that a resource be added by the admin.
- ![alt text] (http://i.imgur.com/RNmImHA.png)
+ ![] (http://i.imgur.com/RNmImHA.png)
 - Teachers courses automatically reset on August 1st(backend no visual) 
 - Students can take quizzes based on subject 
 	- Quizzes have true/false, single choice, and matching answer questions.
 	- Data is stored and saved for teacher and admin statistics
- ![alt text] (http://i.imgur.com/tCjeJvc.jpg)
- ![alt text] (http://i.imgur.com/IAcjt6c.png)
+	
+ ![] (http://i.imgur.com/tCjeJvc.jpg)
+ ![] (http://i.imgur.com/IAcjt6c.png)
 - Students and teachers can provide feedback on quizzes for Admins
- ![alt text] (http://i.imgur.com/8RDIh2O.png)
+ ![] (http://i.imgur.com/8RDIh2O.png)
 - Admins now have an account
- ![alt text] (http://i.imgur.com/YTtlIY1.png)
+ ![] (http://i.imgur.com/YTtlIY1.png)
 - Admins can upload quizzes from excel files
 	- Duplicate questions are screened for and will not be uploaded 
- ![alt text] (http://i.imgur.com/XdGpXjC.png)
+ ![] (http://i.imgur.com/XdGpXjC.png)
 - Admins can add, edit and delete quiz questions 
- ![alt text] (http://i.imgur.com/pZeQZsd.png)
+ ![] (http://i.imgur.com/pZeQZsd.png)
 - Admins also can see statistics on the quizzes
-  ![alt text] (http://i.imgur.com/tcGXR2T.png)
+  ![] (http://i.imgur.com/tcGXR2T.png)
 - Admins can see statistics on resource usage
- ![alt text] (http://i.imgur.com/JjuyUuG.png)
+ ![] (http://i.imgur.com/JjuyUuG.png)
 - Admins can export statistics into csv files 
-  ![alt text] (http://i.imgur.com/vRUJeAO.png)
+  ![] (http://i.imgur.com/vRUJeAO.png)
 - Admins can edit resources 
- ![alt text] (http://i.imgur.com/InQso6q.png)
+ ![] (http://i.imgur.com/InQso6q.png)
 
 #### Instructions for how to run the project locally
 To run Biotility locally on your machines, first install the following 
