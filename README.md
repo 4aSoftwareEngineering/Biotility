@@ -42,7 +42,8 @@ This repository was an inherited from a previous group whose repository can be f
  ![] (http://i.imgur.com/YTtlIY1.png)
 - Admins can upload quizzes from excel files
 	- Duplicate questions are screened for and will not be uploaded 
- ![] (http://i.imgur.com/XdGpXjC.png)
+
+ ![] (https://puu.sh/oskod/ed0ddb0975.png)
 - Admins can add, edit and delete quiz questions 
  ![] (http://i.imgur.com/pZeQZsd.png)
 - Admins also can see statistics on the quizzes
@@ -50,7 +51,7 @@ This repository was an inherited from a previous group whose repository can be f
 - Admins can see statistics on resource usage
  ![] (http://i.imgur.com/JjuyUuG.png)
 - Admins can export statistics into csv files 
-  ![] (http://i.imgur.com/vRUJeAO.png)
+  ![] (http://puu.sh/oskiO/bb7c4792e0.png)
 - Admins can edit resources 
  ![] (http://i.imgur.com/InQso6q.png)
 
